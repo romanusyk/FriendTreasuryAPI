@@ -22,11 +22,12 @@
     <context:annotation-config />
 
     <bean class="java.net.URI" id="dbUrl">
-        <constructor-arg value="$%7BDATABASE_URL%7D"/>
+        <constructor-arg value="#{systemEnvironment['DATABASE_URL']}"/>
     </bean>
 
     <bean id="dataSource"
           class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="org.postgresql.Driver"/>
         <property name="url" value="#{ 'jdbc:postgresql://' + @dbUrl.getHost() + ':' + @dbUrl.getPort() + @dbUrl.getPath() }"/>
         <property name="username" value="#{ @dbUrl.getUserInfo().split(':')[0] }"/>
         <property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }"/>
@@ -63,7 +64,7 @@
         </property>
         <property name="jpaProperties">
             <value>
-                hibernate.dialect=org.hibernate.dialect.MySQLDialect
+                hibernate.dialect = org.hibernate.dialect.PostgresPlusDialect
                 hibernate.hbm2ddl.auto=create
             </value>
         </property>
