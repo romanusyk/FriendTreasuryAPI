@@ -22,7 +22,7 @@
     <context:annotation-config />
 
     <bean class="java.net.URI" id="dbUrl">
-        <constructor-arg value="${DATABASE_URL}"/>
+        <constructor-arg value="$%7BDATABASE_URL%7D"/>
     </bean>
 
     <bean id="dataSource"
