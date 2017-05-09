@@ -46,6 +46,7 @@ public class SpringUserService implements UserService {
 
     @Override
     public void createUser(User user) {
+        user.setPassword(MD5Encrypter.encrypt(user.getPassword()));
         userRepository.save(user);
     }
 
@@ -56,7 +57,7 @@ public class SpringUserService implements UserService {
             return false;
         }
         User trueUser = users.get(0);
-        return Objects.equals(trueUser.getPassword(), user.getPassword());
+        return Objects.equals(trueUser.getPassword(), MD5Encrypter.encrypt(user.getPassword()));
     }
 
 }
