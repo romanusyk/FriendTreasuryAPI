@@ -42,15 +42,23 @@ public class TestController {
     private static final Logger logger = Logger.getLogger(TestController.class);
 
     /**
-     * Useless method
-     * not to use
+     * Sanity check
      * @return
      */
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String hello() {
-//        userService.init();
-//        paymentService.init();
         return "Hello!";
+    }
+
+    /**
+     * Demo init database
+     * @return
+     */
+    @RequestMapping(value = "/init", method = RequestMethod.GET)
+    public String init() {
+        userService.init();
+        paymentService.init();
+        return "Initialized!";
     }
 
     @RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
@@ -64,6 +72,7 @@ public class TestController {
 
     @RequestMapping(value = "/users", method = RequestMethod.POST)
     public ResponseEntity<Integer> addUser(@RequestBody User user) {
+        logger.info("Persisting user : " + user);
         userService.createUser(user);
         return new ResponseEntity<>(user.getId(), HttpStatus.CREATED);
     }

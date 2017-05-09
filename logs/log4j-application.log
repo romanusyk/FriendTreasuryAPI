@@ -404,3 +404,42 @@ Caused by: org.postgresql.util.PSQLException: ERROR: relation "payments" does no
 2017-05-08 17:59:39 INFO  BasicTypeRegistry:148 - HHH000270: Type registration [java.util.UUID] overrides previous : org.hibernate.type.UUIDBinaryType@26f3d90c
 2017-05-08 17:59:40 INFO  SchemaCreatorImpl:488 - HHH000476: Executing import script 'org.hibernate.tool.schema.internal.exec.ScriptSourceInputNonExistentImpl@50d951e7'
 2017-05-08 17:59:40 INFO  QueryTranslatorFactoryInitiator:47 - HHH000397: Using ASTQueryTranslatorFactory
+2017-05-09 10:31:00 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2017-05-09 10:31:00 INFO  Version:45 - HHH000412: Hibernate Core {5.2.6.Final}
+2017-05-09 10:31:00 INFO  Environment:213 - HHH000206: hibernate.properties not found
+2017-05-09 10:31:00 INFO  Version:66 - HCANN000001: Hibernate Commons Annotations {5.0.1.Final}
+2017-05-09 10:31:01 INFO  Dialect:157 - HHH000400: Using dialect: org.hibernate.dialect.PostgresPlusDialect
+2017-05-09 10:31:01 INFO  LobCreatorBuilderImpl:124 - HHH000424: Disabling contextual LOB creation as createClob() method threw error : java.lang.reflect.InvocationTargetException
+2017-05-09 10:31:01 INFO  BasicTypeRegistry:148 - HHH000270: Type registration [java.util.UUID] overrides previous : org.hibernate.type.UUIDBinaryType@26f3d90c
+2017-05-09 10:31:01 INFO  SchemaCreatorImpl:488 - HHH000476: Executing import script 'org.hibernate.tool.schema.internal.exec.ScriptSourceInputNonExistentImpl@50d951e7'
+2017-05-09 10:31:01 INFO  QueryTranslatorFactoryInitiator:47 - HHH000397: Using ASTQueryTranslatorFactory
+2017-05-09 10:34:26 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2017-05-09 10:34:26 INFO  Version:45 - HHH000412: Hibernate Core {5.2.6.Final}
+2017-05-09 10:34:26 INFO  Environment:213 - HHH000206: hibernate.properties not found
+2017-05-09 10:34:26 INFO  Version:66 - HCANN000001: Hibernate Commons Annotations {5.0.1.Final}
+2017-05-09 10:34:27 INFO  Dialect:157 - HHH000400: Using dialect: org.hibernate.dialect.PostgresPlusDialect
+2017-05-09 10:34:27 INFO  LobCreatorBuilderImpl:124 - HHH000424: Disabling contextual LOB creation as createClob() method threw error : java.lang.reflect.InvocationTargetException
+2017-05-09 10:34:27 INFO  BasicTypeRegistry:148 - HHH000270: Type registration [java.util.UUID] overrides previous : org.hibernate.type.UUIDBinaryType@515f4131
+2017-05-09 10:34:27 INFO  SchemaCreatorImpl:488 - HHH000476: Executing import script 'org.hibernate.tool.schema.internal.exec.ScriptSourceInputNonExistentImpl@4eb45fec'
+2017-05-09 10:34:27 INFO  QueryTranslatorFactoryInitiator:47 - HHH000397: Using ASTQueryTranslatorFactory
+2017-05-09 13:21:47 INFO  DebtsOptimizer:79 - Fetched 5 rows.
+2017-05-09 13:21:47 INFO  DebtsOptimizer:193 - No cycles found!
+2017-05-09 13:21:47 WARN  SqlExceptionHelper:129 - SQL Error: 0, SQLState: 42601
+2017-05-09 13:21:47 ERROR SqlExceptionHelper:131 - ERROR: syntax error at or near "DUPLICATE"
+  Position: 71
+2017-05-09 13:33:13 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2017-05-09 13:33:13 INFO  Version:45 - HHH000412: Hibernate Core {5.2.6.Final}
+2017-05-09 13:33:13 INFO  Environment:213 - HHH000206: hibernate.properties not found
+2017-05-09 13:33:13 INFO  Version:66 - HCANN000001: Hibernate Commons Annotations {5.0.1.Final}
+2017-05-09 13:33:13 INFO  Dialect:157 - HHH000400: Using dialect: org.hibernate.dialect.PostgresPlusDialect
+2017-05-09 13:33:13 INFO  LobCreatorBuilderImpl:124 - HHH000424: Disabling contextual LOB creation as createClob() method threw error : java.lang.reflect.InvocationTargetException
+2017-05-09 13:33:13 INFO  BasicTypeRegistry:148 - HHH000270: Type registration [java.util.UUID] overrides previous : org.hibernate.type.UUIDBinaryType@515f4131
+2017-05-09 13:33:14 INFO  SchemaCreatorImpl:488 - HHH000476: Executing import script 'org.hibernate.tool.schema.internal.exec.ScriptSourceInputNonExistentImpl@4eb45fec'
+2017-05-09 13:33:14 INFO  QueryTranslatorFactoryInitiator:47 - HHH000397: Using ASTQueryTranslatorFactory
+2017-05-09 13:42:18 INFO  TestController:75 - Persisting user : { id : null, username : "NewUser"}
