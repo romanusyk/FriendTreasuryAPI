@@ -77,6 +77,13 @@ public class TestController {
         return new ResponseEntity<>(user.getId(), HttpStatus.CREATED);
     }
 
+    @RequestMapping(value = "/users", method = RequestMethod.PATCH)
+    public ResponseEntity<Boolean> valdateUser(@RequestBody User user) {
+        logger.info("Validating user : " + user);
+        boolean isValid = userService.validateUser(user);
+        return new ResponseEntity<>(isValid, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/user_debts/{id}", method = RequestMethod.GET)
     public ResponseEntity<Map<Integer, BigDecimal>> getUserDebts(@PathVariable("id") Integer id) {
         Map<Integer, BigDecimal> result = paymentService.getUserPayments(id);

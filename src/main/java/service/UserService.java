@@ -15,10 +15,14 @@ public interface UserService {
     @Transactional
     void init();
 
-    List<User> initTreasury(List<String> usernames);
+//    List<User> initTreasury(List<String> usernames);
 
     User getUserByID(Integer id);
 
     @Transactional
     void createUser(User user);
+
+    @Transactional(readOnly = true)
+    boolean validateUser(User user);
+
 }

@@ -14,14 +14,37 @@ public class User {
     @GeneratedValue
     private Integer id;
 
+    @Column(unique = true, nullable = false, length = 12)
+    private String phone;
+
     @Column(unique = true, nullable = false)
     private String username;
 
-    public User() {
+    @Column(nullable = false)
+    private String password;
+
+    @Override
+    public String toString() {
+        return "{ id : " + id + ", username : \"" + username + "\", phone : " + phone + ", pass : \"" + password + "\"}";
     }
 
-    public User(String username) {
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof User) {
+            User u = (User) obj;
+            return Integer.compare(id, u.getId()) == 0;
+        }
+        return false;
+    }
+
+    public User() {
+
+    }
+
+    public User(String phone, String username, String password) {
+        this.phone = phone;
         this.username = username;
+        this.password = password;
     }
 
     public Integer getId() {
@@ -40,17 +63,19 @@ public class User {
         this.username = username;
     }
 
-    @Override
-    public String toString() {
-        return "{ id : " + id + ", username : \"" + username + "\"}";
+    public String getPhone() {
+        return phone;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof User) {
-            User u = (User) obj;
-            return Integer.compare(id, u.getId()) == 0;
-        }
-        return false;
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

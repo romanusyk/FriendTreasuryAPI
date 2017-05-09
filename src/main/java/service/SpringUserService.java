@@ -8,6 +8,7 @@ import repository.UserRepository;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by romm on 28.02.17.
@@ -21,22 +22,22 @@ public class SpringUserService implements UserService {
 
     @Override
     public void init() {
-        userRepository.save(new User("Roma"));
-        userRepository.save(new User("Vova"));
-        userRepository.save(new User("Jura"));
-        userRepository.save(new User("Geka"));
+        userRepository.save(new User("380952411401", "Roma", "111"));
+        userRepository.save(new User("380952411402", "Bodya", "111"));
+        userRepository.save(new User("380960737750", "Jura", "111"));
+        userRepository.save(new User("380952411403", "Geka", "111"));
     }
 
-    @Override
-    public List<User> initTreasury(List<String> usernames) {
-        List<User> users = new LinkedList<>();
-        for (String username : usernames) {
-            User u = new User(username);
-            u = userRepository.save(u);
-            users.add(u);
-        }
-        return users;
-    }
+//    @Override
+//    public List<User> initTreasury(List<String> usernames) {
+//        List<User> users = new LinkedList<>();
+//        for (String username : usernames) {
+//            User u = new User(username);
+//            u = userRepository.save(u);
+//            users.add(u);
+//        }
+//        return users;
+//    }
 
     @Override
     public User getUserByID(Integer id) {
@@ -46,6 +47,16 @@ public class SpringUserService implements UserService {
     @Override
     public void createUser(User user) {
         userRepository.save(user);
+    }
+
+    @Override
+    public boolean validateUser(User user) {
+        List<User> users = userRepository.findUserByUsername(user.getUsername());
+        if (users.size() < 1) {
+            return false;
+        }
+        User trueUser = users.get(0);
+        return Objects.equals(trueUser.getPassword(), user.getPassword());
     }
 
 }
