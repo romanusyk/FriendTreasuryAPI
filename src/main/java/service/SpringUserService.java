@@ -22,10 +22,10 @@ public class SpringUserService implements UserService {
 
     @Override
     public void init() {
-        userRepository.save(new User("380952411401", "Roma", "111"));
-        userRepository.save(new User("380952411402", "Bodya", "111"));
-        userRepository.save(new User("380960737750", "Jura", "111"));
-        userRepository.save(new User("380952411403", "Geka", "111"));
+        createUser(new User("380952411401", "Roma", "111"));
+        createUser(new User("380952411402", "Bodya", "111"));
+        createUser(new User("380960737750", "Jura", "111"));
+        createUser(new User("380952411403", "Geka", "111"));
     }
 
 //    @Override
