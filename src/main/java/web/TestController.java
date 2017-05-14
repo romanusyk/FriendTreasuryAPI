@@ -78,10 +78,10 @@ public class TestController {
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.PATCH)
-    public ResponseEntity<Boolean> valdateUser(@RequestBody User user) {
+    public ResponseEntity<Integer> valdateUser(@RequestBody User user) {
         logger.info("Validating user : " + user);
-        boolean isValid = userService.validateUser(user);
-        return new ResponseEntity<>(isValid, HttpStatus.OK);
+        Integer validUserId = userService.validateUser(user);
+        return new ResponseEntity<>(validUserId, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/user_debts/{id}", method = RequestMethod.GET)
