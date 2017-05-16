@@ -82,6 +82,25 @@ public class SpringPaymentService implements PaymentService {
         return userDebts;
     }
 
+    public List<Payment> getPaymentsBetweenUsers(Integer userFromID, Integer userToID) {
+        User userFrom = userRepository.findOne(userFromID);
+        if (userFrom == null) {
+            logger.error("User with id = " + userFromID + " not found!");
+            return null;
+        }
+
+        User userTo = userRepository.findOne(userToID);
+        if (userTo == null) {
+            logger.error("User with id = " + userToID + " not found!");
+            return null;
+        }
+
+        List<Payment> payments = paymentRepository.findPaumentsFromUserToUser(userFrom, userTo);
+        payments.addAll(paymentRepository.findPaumentsFromUserToUser(userTo, userFrom));
+
+        return payments;
+    }
+
     @Override
     public List<Debt> getDebts() {
         return paymentRepository.getDebts();

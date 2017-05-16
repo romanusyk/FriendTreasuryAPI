@@ -20,6 +20,9 @@ public interface PaymentRepository extends CrudRepository<Payment, Integer> {
     @Query("FROM Payment p where p.userFrom = :#{#user}")
     List<Payment> findPaumentsFromUser(@Param("user") User userFrom);
 
+    @Query("FROM Payment p where p.userFrom = :#{#userFrom} and p.userTo = :#{#userTo}")
+    List<Payment> findPaumentsFromUserToUser(@Param("userFrom") User userFrom, @Param("userTo") User userTo);
+
     @Query("SELECT new Debt(P.userFrom, P.userTo, sum(P.amount)) FROM Payment P GROUP BY P.userFrom, P.userTo")
     List<Debt> getDebts();
 }

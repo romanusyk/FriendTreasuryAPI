@@ -1,6 +1,7 @@
 package service;
 
 import domain.Debt;
+import domain.Payment;
 import domain.PaymentDTO;
 import domain.User;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,8 @@ public interface PaymentService {
     boolean makeGroupPayment(PaymentDTO paymentDTO);
 
     Map<Integer, BigDecimal> getUserPayments(Integer userID);
+
+    List<Payment> getPaymentsBetweenUsers(Integer userFromID, Integer userToID);
 
     List<Debt> getDebts();
 

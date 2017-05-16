@@ -1,5 +1,6 @@
 package web;
 
+import domain.Payment;
 import domain.PaymentDTO;
 import domain.User;
 import org.apache.log4j.Logger;
@@ -87,6 +88,15 @@ public class TestController {
     @RequestMapping(value = "/user_debts/{id}", method = RequestMethod.GET)
     public ResponseEntity<Map<Integer, BigDecimal>> getUserDebts(@PathVariable("id") Integer id) {
         Map<Integer, BigDecimal> result = paymentService.getUserPayments(id);
+        if (result == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/user_debts/{id1}/{id2}", method = RequestMethod.GET)
+    public ResponseEntity<List<Payment>> getDebtsBeteenUsers(@PathVariable("id1") Integer id1, @PathVariable("id2") Integer id2) {
+        List<Payment> result = paymentService.getPaymentsBetweenUsers(id1, id2);
         if (result == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
