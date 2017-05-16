@@ -95,10 +95,20 @@ public class TestController {
     }
 
     @RequestMapping(value = "/user_debts/{id1}/{id2}", method = RequestMethod.GET)
-    public ResponseEntity<List<Payment>> getDebtsBeteenUsers(@PathVariable("id1") Integer id1, @PathVariable("id2") Integer id2) {
-        List<Payment> result = paymentService.getPaymentsBetweenUsers(id1, id2);
-        if (result == null) {
+    public ResponseEntity<List<PaymentDTO>> getDebtsBeteenUsers(@PathVariable("id1") Integer id1, @PathVariable("id2") Integer id2) {
+        List<Payment> payments = paymentService.getPaymentsBetweenUsers(id1, id2);
+        if (payments == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        List<PaymentDTO> result = new ArrayList<>(payments.size());
+        for (Payment p : payments) {
+            result.add(
+                    new PaymentDTO(
+                            p.getUserFrom().getId(),
+                            new Integer[]{p.getUserTo().getId()},
+                            p.getAmount()
+                    )
+            );
         }
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
