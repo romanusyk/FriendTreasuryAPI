@@ -11,6 +11,7 @@ import repository.PaymentRepository;
 import repository.UserRepository;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,13 +32,13 @@ public class SpringPaymentService implements PaymentService {
 
     @Override
     public void init() {
-        makeGroupPayment(new PaymentDTO(1, new Integer[]{2, 3, 4}, new BigDecimal(200)));
-        makeGroupPayment(new PaymentDTO(2, new Integer[]{3, 4}, new BigDecimal(300)));
+        makeGroupPayment(new PaymentDTO(1, new Integer[]{2, 3, 4}, new BigDecimal(200), "Test", new Date()));
+        makeGroupPayment(new PaymentDTO(2, new Integer[]{3, 4}, new BigDecimal(300), "Test", new Date()));
     }
 
     @Override
-    public boolean makePayment(User from, User to, BigDecimal amount) {
-        Payment payment = new Payment(from, to, amount);
+    public boolean makePayment(User from, User to, BigDecimal amount, String description, Date date) {
+        Payment payment = new Payment(from, to, amount, description, date);
         payment = paymentRepository.save(payment);
         return payment.getId() != null;
     }
@@ -49,7 +50,7 @@ public class SpringPaymentService implements PaymentService {
         boolean success = true;
         for (Integer userToID : paymentDTO.getUsersTo()) {
             User userTo = userRepository.findOne(userToID);
-            success &= makePayment(userFrom, userTo, amountPerUser);
+            success &= makePayment(userFrom, userTo, amountPerUser, paymentDTO.getDescription(), paymentDTO.getDate());
         }
         return success;
     }

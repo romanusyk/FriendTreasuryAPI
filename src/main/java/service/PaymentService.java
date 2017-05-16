@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +21,7 @@ public interface PaymentService {
     @Transactional
     void init();
 
-    boolean makePayment(User from, User to, BigDecimal amount);
+    boolean makePayment(User from, User to, BigDecimal amount, String description, Date date);
 
     boolean makeGroupPayment(PaymentDTO paymentDTO);
 

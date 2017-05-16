@@ -1,7 +1,10 @@
 package domain;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * Created by romm on 01.02.17.
@@ -30,15 +33,22 @@ public class Payment {
     @Column(nullable = false)
     private BigDecimal amount;
 
+    @Column
+    private String description;
+
+    @Column
+    private Date date;
+
     public Payment() {
 
     }
 
-    public Payment(User userFrom, User userTo, BigDecimal amount) {
-
+    public Payment(User userFrom, User userTo, BigDecimal amount, String description, Date date) {
         this.userFrom = userFrom;
         this.userTo = userTo;
         this.amount = amount;
+        this.description = description;
+        this.date = date;
     }
 
     public Integer getId() {
@@ -73,9 +83,25 @@ public class Payment {
         this.amount = amount;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     @Override
     public String toString() {
-        return "{ id : " + id + ", userFrom : " + userFrom + ", userTo : " + userTo + ", amount : " + amount + "}";
+        return "" + id + ": (" + userFrom + " -> " + userTo + ") of " + amount + ": " + description + " at: " + date;
     }
 
     @Override
@@ -86,5 +112,4 @@ public class Payment {
         }
         return false;
     }
-
 }

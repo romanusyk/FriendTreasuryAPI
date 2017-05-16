@@ -106,14 +106,16 @@ public class TestController {
                     new PaymentDTO(
                             p.getUserFrom().getId(),
                             new Integer[]{p.getUserTo().getId()},
-                            p.getAmount()
+                            p.getAmount(),
+                            p.getDescription(),
+                            p.getDate()
                     )
             );
         }
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "payment/", method = RequestMethod.POST)
+    @RequestMapping(value = "/payment", method = RequestMethod.POST)
     public ResponseEntity<Boolean> makeGroupPayment(@RequestBody PaymentDTO paymentDTO) {
         boolean success = false;
         paymentDTO.validate();
@@ -133,7 +135,7 @@ public class TestController {
             return new ResponseEntity<>(true, HttpStatus.OK);
         } else {
             logger.error("Transaction failed from user " + paymentDTO.getUserFrom() + " to users " + Arrays.toString(paymentDTO.getUsersTo()));
-            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
