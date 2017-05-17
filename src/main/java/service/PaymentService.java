@@ -21,7 +21,7 @@ public interface PaymentService {
     @Transactional
     void init();
 
-    boolean makePayment(User from, User to, BigDecimal amount, String description, Date date);
+    boolean makePayment(User from, User to, BigDecimal amount, String description, Date date, double longitude, double latitude);
 
     boolean makeGroupPayment(PaymentDTO paymentDTO);
 

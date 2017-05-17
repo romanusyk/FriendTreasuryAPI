@@ -108,7 +108,9 @@ public class TestController {
                             new Integer[]{p.getUserTo().getId()},
                             p.getAmount(),
                             p.getDescription(),
-                            p.getDate()
+                            p.getDate(),
+                            p.getLongitude(),
+                            p.getLatitude()
                     )
             );
         }

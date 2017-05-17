@@ -22,26 +22,35 @@ public class PaymentDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MMM-dd")
     private Date date;
 
+    private double longitude;
+    private double latitude;
+
     public PaymentDTO() {
 
     }
 
-    public PaymentDTO(Integer userFrom, Integer[] usersTo, BigDecimal amount, String description, Date date) {
+    public PaymentDTO(Integer userFrom, Integer[] usersTo, BigDecimal amount, String description,
+                      Date date, double longitude, double latitude) {
         this.userFrom = userFrom;
         this.usersTo = usersTo;
         this.amount = amount;
         this.description = description;
         this.date = date;
         this.shallIPayForMyself = 1;
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 
-    public PaymentDTO(Integer userFrom, Integer[] usersTo, BigDecimal amount, String description, Date date, Integer shallIPayForMyself) {
+    public PaymentDTO(Integer userFrom, Integer[] usersTo, BigDecimal amount, String description,
+                      Date date, double longitude, double latitude, Integer shallIPayForMyself) {
         this.userFrom = userFrom;
         this.usersTo = usersTo;
         this.amount = amount;
         this.shallIPayForMyself = shallIPayForMyself;
         this.description = description;
         this.date = date;
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 
     public void validate() {
@@ -99,5 +108,21 @@ public class PaymentDTO {
             this.shallIPayForMyself = 1;
             logger.error("Trying to set " + shallIPayForMyself + " to 'setShallIPayForMyself' field. Setting default value : " + this.shallIPayForMyself + ".");
         }
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 }

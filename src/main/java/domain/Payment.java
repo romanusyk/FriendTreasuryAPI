@@ -39,16 +39,24 @@ public class Payment {
     @Column
     private Date date;
 
+    @Column
+    private double longitude;
+
+    @Column
+    private double latitude;
+
     public Payment() {
 
     }
 
-    public Payment(User userFrom, User userTo, BigDecimal amount, String description, Date date) {
+    public Payment(User userFrom, User userTo, BigDecimal amount, String description, Date date, double longitude, double latitude) {
         this.userFrom = userFrom;
         this.userTo = userTo;
         this.amount = amount;
         this.description = description;
         this.date = date;
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 
     public Integer getId() {
@@ -111,5 +119,21 @@ public class Payment {
             return Integer.compare(id, u.getId()) == 0;
         }
         return false;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 }

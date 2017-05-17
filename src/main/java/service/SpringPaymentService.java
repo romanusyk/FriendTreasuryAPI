@@ -32,13 +32,13 @@ public class SpringPaymentService implements PaymentService {
 
     @Override
     public void init() {
-        makeGroupPayment(new PaymentDTO(1, new Integer[]{2, 3, 4}, new BigDecimal(200), "Test", new Date()));
-        makeGroupPayment(new PaymentDTO(2, new Integer[]{3, 4}, new BigDecimal(300), "Test", new Date()));
+        makeGroupPayment(new PaymentDTO(1, new Integer[]{2, 3, 4}, new BigDecimal(200), "Test", new Date(), 30.52, 50.44));
+        makeGroupPayment(new PaymentDTO(2, new Integer[]{3, 4}, new BigDecimal(300), "Test", new Date(), 30.52, 50.44));
     }
 
     @Override
-    public boolean makePayment(User from, User to, BigDecimal amount, String description, Date date) {
-        Payment payment = new Payment(from, to, amount, description, date);
+    public boolean makePayment(User from, User to, BigDecimal amount, String description, Date date, double longitude, double latitude) {
+        Payment payment = new Payment(from, to, amount, description, date, longitude, latitude);
         payment = paymentRepository.save(payment);
         return payment.getId() != null;
     }
@@ -50,7 +50,7 @@ public class SpringPaymentService implements PaymentService {
         boolean success = true;
         for (Integer userToID : paymentDTO.getUsersTo()) {
             User userTo = userRepository.findOne(userToID);
-            success &= makePayment(userFrom, userTo, amountPerUser, paymentDTO.getDescription(), paymentDTO.getDate());
+            success &= makePayment(userFrom, userTo, amountPerUser, paymentDTO.getDescription(), paymentDTO.getDate(), paymentDTO.getLongitude(), paymentDTO.getLatitude());
         }
         return success;
     }
