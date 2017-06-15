@@ -62,6 +62,15 @@ public class TestController {
         return "Initialized!";
     }
 
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    public ResponseEntity<List<User>> getUserById() {
+        List<User> users = userService.getAllUsers();
+        if (users == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
     public ResponseEntity<User> getUserById(@PathVariable("id") Integer id) {
         User user = userService.getUserByID(id);

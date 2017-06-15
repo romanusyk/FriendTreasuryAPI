@@ -25,4 +25,7 @@ public interface UserService {
     @Transactional(readOnly = true)
     Integer validateUser(User user);
 
+    @Transactional(readOnly = true)
+    List<User> getAllUsers();
+
 }

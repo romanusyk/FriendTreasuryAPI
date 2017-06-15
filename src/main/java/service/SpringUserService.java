@@ -23,7 +23,7 @@ public class SpringUserService implements UserService {
     @Override
     public void init() {
         createUser(new User("380952411401", "Roma", "111"));
-        createUser(new User("380952411402", "Bodya", "111"));
+//        createUser(new User("380952411402", "Bodya", "111"));
         createUser(new User("380960737750", "Jura", "111"));
         createUser(new User("380952411403", "Geka", "111"));
     }
@@ -58,6 +58,13 @@ public class SpringUserService implements UserService {
         }
         User trueUser = users.get(0);
         return Objects.equals(trueUser.getPassword(), MD5Encrypter.encrypt(user.getPassword())) ? trueUser.getId() : null;
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        List<User> result = new LinkedList<>();
+        userRepository.findAll().forEach(result::add);
+        return result;
     }
 
 }
