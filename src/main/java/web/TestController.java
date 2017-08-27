@@ -23,6 +23,7 @@ import java.util.*;
  * Created by romm on 01.02.17.
  */
 
+@CrossOrigin
 @RestController
 public class TestController {
 
@@ -86,7 +87,7 @@ public class TestController {
         userService.createUser(user);
         return new ResponseEntity<>(user.getId(), HttpStatus.CREATED);
     }
-
+    
     @RequestMapping(value = "/users", method = RequestMethod.PATCH)
     public ResponseEntity<Integer> valdateUser(@RequestBody User user) {
         logger.info("Validating user : " + user);
