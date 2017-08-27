@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import repository.Optimizer;
+import security.JwtUtil;
 import service.PaymentService;
 import service.SpringUserService;
 import service.UserService;
@@ -87,16 +88,22 @@ public class TestController {
         userService.createUser(user);
         return new ResponseEntity<>(user.getId(), HttpStatus.CREATED);
     }
-    
+
     @RequestMapping(value = "/users", method = RequestMethod.PATCH)
-    public ResponseEntity<Integer> valdateUser(@RequestBody User user) {
+    public ResponseEntity<String> valdateUser(@RequestBody User user) {
         logger.info("Validating user : " + user);
         Integer validUserId = userService.validateUser(user);
-        return new ResponseEntity<>(validUserId, HttpStatus.OK);
+        return new ResponseEntity<>("token: " + JwtUtil.getInstance().getToken(user), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/user_debts/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Map<Integer, BigDecimal>> getUserDebts(@PathVariable("id") Integer id) {
+    public ResponseEntity<Map<Integer, BigDecimal>> getUserDebts(
+            @RequestHeader("Authorization") String authorization,
+            @PathVariable("id") Integer id)
+    {
+        if (!checkPermissions(userService.getUserByID(id), authorization)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
         Map<Integer, BigDecimal> result = paymentService.getUserPayments(id);
         if (result == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -155,5 +162,11 @@ public class TestController {
     public String optimize() {
         optimizer.calculateDebts();
         return "Optimized!";
+    }
+
+    public boolean checkPermissions(User user, String authorizationHeader) {
+        JwtUtil jwtUtil = JwtUtil.getInstance();
+        String token = authorizationHeader.split(" ")[1];
+        return jwtUtil.hasAccess(user, token);
     }
 }
