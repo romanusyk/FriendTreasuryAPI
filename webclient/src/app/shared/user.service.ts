@@ -8,7 +8,7 @@ import '../rx-js.operators';
 
 import { ApiService, JwtService } from './index';
 
-import { User } from './models/index';
+import { User, Credentials } from './models/index';
 
 
 @Injectable()
@@ -18,11 +18,11 @@ export class UserService {
   private isAuthenticatedSubject = new ReplaySubject<boolean>(1);
   public isAuthenticated = this.isAuthenticatedSubject.asObservable();
 
-  constructor (
+  constructor(
     private apiService: ApiService,
     private http: Http,
     private jwtService: JwtService
-  ) {}
+  ) { }
 
   // Verify JWT in localstorage with server & load user's info.
   // This runs once on application startup.
@@ -30,17 +30,17 @@ export class UserService {
     // If JWT detected, attempt to get & store user's info
     if (this.jwtService.getToken()) {
       this.apiService.get('/user')
-      .subscribe(
+        .subscribe(
         data => this.setAuth(data.user),
         err => this.purgeAuth()
-      );
+        );
     } else {
       // Remove any potential remnants of previous auth states
       this.purgeAuth();
     }
   }
 
-  setAuth(token: User) {
+  setAuth(user: User) {
     // Save JWT sent from server in localstorage
     this.jwtService.saveToken(user.token);
     // Set current user data into observable
@@ -59,14 +59,38 @@ export class UserService {
   }
 
   attemptAuth(type, credentials): Observable<User> {
-    const route = (type === 'login') ? '/login' : '';
-    return this.apiService.post('/users' + route, {user: credentials})
-    .map(
+    if (type === 'login') {
+      return this.login(credentials);
+    } else {
+      return this.register(credentials);
+    }
+  }
+
+  private login(credentials: Credentials) {
+    return this.apiService.patch('/users', credentials)
+      .map(
       data => {
-        this.setAuth(data.user);
-        return data;
+        const user = {
+          token: data,
+          username: credentials.username
+        };
+        this.setAuth(user);
+        return user;
       }
-    );
+      );
+  }
+  private register(credentials: Credentials) {
+    return this.apiService.post('/users', credentials)
+      .map(
+      data => {
+        const user = {
+          token: data,
+          username: credentials.username
+        };
+        this.setAuth(user);
+        return user;
+      }
+      );
   }
 
   getCurrentUser(): User {
