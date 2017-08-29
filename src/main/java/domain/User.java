@@ -1,5 +1,7 @@
 package domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,6 +27,7 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "users", cascade = CascadeType.PERSIST)
     private Set<Group> groups;
 
