@@ -28,7 +28,7 @@ public class JwtUtil {
     }
 
 //    @Value("${jwt.secret}")
-    private Key secret = MacProvider.generateKey();
+    private static Key secret = MacProvider.generateKey();
     private static final Logger logger = Logger.getLogger(JwtUtil.class);
 
     private TokenStorage storage;
@@ -53,17 +53,17 @@ public class JwtUtil {
         }
     }
 
-    public boolean hasAccess(User u, String userToken) {
-        JwtAccessToken token = storage.getToken(u.getId());
+    public boolean hasAccess(Integer userID, String userToken) {
+        JwtAccessToken token = storage.getToken(userID);
         if (token == null) {
-            logger.debug(String.format("User %d is not authorized.", u.getId()));
+            logger.debug(String.format("User %d is not authorized.", userID));
             return false;
         } else {
             return token.getValue().equals(userToken);
         }
     }
 
-    public User parseToken(String token) {
+    public static User parseToken(String token) {
         try {
             Claims body = Jwts.parser()
                     .setSigningKey(secret)
@@ -73,7 +73,6 @@ public class JwtUtil {
             User u = new User();
             u.setId((Integer) body.get("id"));
             u.setUsername((String) body.get("username"));
-            u.setPassword((String) body.get("password"));
 
             return u;
 
@@ -82,14 +81,13 @@ public class JwtUtil {
         }
     }
 
-    public String generateToken(User u) {
+    public static String generateToken(User u) {
         if (u.getUsername() == null || u.getPassword() == null) {
             return null;
         }
         Claims claims = Jwts.claims();
         claims.put("id", u.getId());
         claims.put("username", u.getUsername());
-        claims.put("password", u.getPassword());
 
         return Jwts.builder()
                 .setClaims(claims)

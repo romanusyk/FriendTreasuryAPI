@@ -7,7 +7,7 @@ import java.util.Date;
  */
 public class JwtAccessToken {
 
-    public static final long EXPIRE_TIME = 1000 * 60;
+    public static final long EXPIRE_TIME = 1000 * 60 * 60 * 24;
 
     private String token;
     private long timestamp;

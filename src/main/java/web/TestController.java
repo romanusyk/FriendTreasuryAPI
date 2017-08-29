@@ -96,24 +96,40 @@ public class TestController {
         return new ResponseEntity<>("token: " + JwtUtil.getInstance().getToken(user), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/user_debts/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Map<Integer, BigDecimal>> getUserDebts(
-            @RequestHeader("Authorization") String authorization,
-            @PathVariable("id") Integer id)
+    @RequestMapping(value = "/user_debts/", method = RequestMethod.GET)
+    public ResponseEntity<Map<Integer, BigDecimal>> getUserDebts(@RequestHeader("Authorization") String authorization)
     {
-        if (!checkPermissions(userService.getUserByID(id), authorization)) {
+        String tokenValue = getTokenValue(authorization);
+        User u = JwtUtil.parseToken(tokenValue);
+        logger.debug(u);
+        if (u == null || u.getId() == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if (!checkPermissions(u.getId(), authorization)) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        Map<Integer, BigDecimal> result = paymentService.getUserPayments(id);
+        Map<Integer, BigDecimal> result = paymentService.getUserPayments(u.getId());
         if (result == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/user_debts/{id1}/{id2}", method = RequestMethod.GET)
-    public ResponseEntity<List<PaymentDTO>> getDebtsBeteenUsers(@PathVariable("id1") Integer id1, @PathVariable("id2") Integer id2) {
-        List<Payment> payments = paymentService.getPaymentsBetweenUsers(id1, id2);
+    @RequestMapping(value = "/user_debts/{id}", method = RequestMethod.GET)
+    public ResponseEntity<List<PaymentDTO>> getDebtsBetweenUsers(
+            @RequestHeader("Authorization") String authorization,
+            @PathVariable("id") Integer userToID
+    ) {
+        String tokenValue = getTokenValue(authorization);
+        User u = JwtUtil.parseToken(tokenValue);
+        logger.debug(u);
+        if (u == null || u.getId() == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if (!checkPermissions(u.getId(), authorization)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        List<Payment> payments = paymentService.getPaymentsBetweenUsers(u.getId(), userToID);
         if (payments == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -135,7 +151,21 @@ public class TestController {
     }
 
     @RequestMapping(value = "/payment", method = RequestMethod.POST)
-    public ResponseEntity<Boolean> makeGroupPayment(@RequestBody PaymentDTO paymentDTO) {
+    public ResponseEntity<Boolean> makeGroupPayment(
+            @RequestHeader("Authorization") String authorization,
+            @RequestBody PaymentDTO paymentDTO
+    ) {
+        String tokenValue = getTokenValue(authorization);
+        User u = JwtUtil.parseToken(tokenValue);
+        logger.debug(u);
+        if (u == null || u.getId() == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        u = userService.getUserByID(u.getId());
+        if (!checkPermissions(u.getId(), authorization)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        paymentDTO.setUserFrom(u.getId());
         boolean success = false;
         paymentDTO.validate();
         try{
@@ -164,9 +194,13 @@ public class TestController {
         return "Optimized!";
     }
 
-    public boolean checkPermissions(User user, String authorizationHeader) {
+    public static String getTokenValue(String authorizationHeader) {
+        return authorizationHeader.split(" ")[1];
+    }
+
+    public static boolean checkPermissions(Integer userID, String authorizationHeader) {
         JwtUtil jwtUtil = JwtUtil.getInstance();
         String token = authorizationHeader.split(" ")[1];
-        return jwtUtil.hasAccess(user, token);
+        return jwtUtil.hasAccess(userID, token);
     }
 }

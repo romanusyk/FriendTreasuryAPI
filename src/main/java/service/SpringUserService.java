@@ -1,14 +1,14 @@
 package service;
 
+import domain.Group;
 import domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import repository.GroupRepository;
 import repository.UserRepository;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Created by romm on 28.02.17.
@@ -20,15 +20,35 @@ public class SpringUserService implements UserService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    GroupRepository groupRepository;
+
     @Override
     public void init() {
-        createUser(new User("380952411401", "Roma", "111"));
-//        createUser(new User("380952411402", "Bodya", "111"));
-        createUser(new User("380960737750", "Jura", "111"));
-        createUser(new User("380952411403", "Geka", "111"));
+
+        Group group = new Group("505");
+
+        groupRepository.save(group);
+
+        User roma = new User("380952411401", "Roma", "111");
+        User jura = new User("380960737750", "Jura", "111");
+        User geka = new User("380952411403", "Geka", "111");
+
+        group.getUsers().add(roma);
+        group.getUsers().add(jura);
+        group.getUsers().add(geka);
+
+        roma.getGroups().add(group);
+        jura.getGroups().add(group);
+        geka.getGroups().add(group);
+
+        createUser(roma);
+        createUser(jura);
+        createUser(geka);
+
     }
 
-//    @Override
+    //    @Override
 //    public List<User> initTreasury(List<String> usernames) {
 //        List<User> users = new LinkedList<>();
 //        for (String username : usernames) {
@@ -52,7 +72,7 @@ public class SpringUserService implements UserService {
 
     @Override
     public Integer validateUser(User user) {
-        List<User> users = userRepository.findUserByUsername(user.getUsername());
+        List<User> users = userRepository.findByUsername(user.getUsername());
         if (users.size() < 1) {
             return null;
         }

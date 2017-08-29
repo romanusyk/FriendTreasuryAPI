@@ -65,7 +65,7 @@ public class SpringPaymentService implements PaymentService {
 
         Map<Integer, BigDecimal> userDebts = new HashMap<>();
 
-        List<Payment> payments = paymentRepository.findPaumentsToUser(u);
+        List<Payment> payments = paymentRepository.findPaymentsToUser(u);
         for (Payment payment : payments) {
             BigDecimal value = userDebts.get(payment.getUserFrom().getId());
             value = value == null ? new BigDecimal(0) : value;
@@ -73,7 +73,7 @@ public class SpringPaymentService implements PaymentService {
             userDebts.put(payment.getUserFrom().getId(), value);
         }
 
-        payments = paymentRepository.findPaumentsFromUser(u);
+        payments = paymentRepository.findPaymentsFromUser(u);
         for (Payment payment : payments) {
             BigDecimal value = userDebts.get(payment.getUserTo().getId());
             value = value == null ? new BigDecimal(0) : value;
@@ -96,8 +96,8 @@ public class SpringPaymentService implements PaymentService {
             return null;
         }
 
-        List<Payment> payments = paymentRepository.findPaumentsFromUserToUser(userFrom, userTo);
-        payments.addAll(paymentRepository.findPaumentsFromUserToUser(userTo, userFrom));
+        List<Payment> payments = paymentRepository.findPaymentsFromUserToUser(userFrom, userTo);
+        payments.addAll(paymentRepository.findPaymentsFromUserToUser(userTo, userFrom));
 
         return payments;
     }
