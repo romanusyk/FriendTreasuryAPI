@@ -50,20 +50,18 @@ public class User {
     }
 
     public User() {
-
-    }
-
-    public User(String phone, String username, String password) {
-        this.phone = phone;
-        this.username = username;
-        this.password = password;
         this.groups = new HashSet<>();
     }
 
-    public User(String phone, String username, String password, Set<Group> groups) {
+    public User(String phone, String username, String password) {
+        this();
         this.phone = phone;
         this.username = username;
         this.password = password;
+    }
+
+    public User(String phone, String username, String password, Set<Group> groups) {
+        this(phone, username, password);
         this.groups = groups;
     }
 
