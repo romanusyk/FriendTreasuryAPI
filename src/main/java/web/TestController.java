@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import repository.Optimizer;
+import security.JwtAccessToken;
+import security.JwtUtil;
 import service.PaymentService;
 import service.SpringUserService;
 import service.UserService;
@@ -23,6 +25,7 @@ import java.util.*;
  * Created by romm on 01.02.17.
  */
 
+@CrossOrigin
 @RestController
 public class TestController {
 
@@ -88,24 +91,49 @@ public class TestController {
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.PATCH)
-    public ResponseEntity<Integer> valdateUser(@RequestBody User user) {
+    public ResponseEntity<JwtAccessToken> valdateUser(@RequestBody User user) {
         logger.info("Validating user : " + user);
-        Integer validUserId = userService.validateUser(user);
-        return new ResponseEntity<>(validUserId, HttpStatus.OK);
+        user = userService.validateUser(user);
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(JwtUtil.getInstance().getToken(user), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/user_debts/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Map<Integer, BigDecimal>> getUserDebts(@PathVariable("id") Integer id) {
-        Map<Integer, BigDecimal> result = paymentService.getUserPayments(id);
+    @RequestMapping(value = "/user_debts/", method = RequestMethod.GET)
+    public ResponseEntity<Map<Integer, BigDecimal>> getUserDebts(@RequestHeader("Authorization") String authorization)
+    {
+        String tokenValue = getTokenValue(authorization);
+        User u = JwtUtil.parseToken(tokenValue);
+        logger.debug(u);
+        if (u == null || u.getId() == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if (!checkPermissions(u.getId(), authorization)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        Map<Integer, BigDecimal> result = paymentService.getUserPayments(u.getId());
         if (result == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/user_debts/{id1}/{id2}", method = RequestMethod.GET)
-    public ResponseEntity<List<PaymentDTO>> getDebtsBeteenUsers(@PathVariable("id1") Integer id1, @PathVariable("id2") Integer id2) {
-        List<Payment> payments = paymentService.getPaymentsBetweenUsers(id1, id2);
+    @RequestMapping(value = "/user_debts/{id}", method = RequestMethod.GET)
+    public ResponseEntity<List<PaymentDTO>> getDebtsBetweenUsers(
+            @RequestHeader("Authorization") String authorization,
+            @PathVariable("id") Integer userToID
+    ) {
+        String tokenValue = getTokenValue(authorization);
+        User u = JwtUtil.parseToken(tokenValue);
+        logger.debug(u);
+        if (u == null || u.getId() == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if (!checkPermissions(u.getId(), authorization)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        List<Payment> payments = paymentService.getPaymentsBetweenUsers(u.getId(), userToID);
         if (payments == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -127,7 +155,21 @@ public class TestController {
     }
 
     @RequestMapping(value = "/payment", method = RequestMethod.POST)
-    public ResponseEntity<Boolean> makeGroupPayment(@RequestBody PaymentDTO paymentDTO) {
+    public ResponseEntity<Boolean> makeGroupPayment(
+            @RequestHeader("Authorization") String authorization,
+            @RequestBody PaymentDTO paymentDTO
+    ) {
+        String tokenValue = getTokenValue(authorization);
+        User u = JwtUtil.parseToken(tokenValue);
+        logger.debug(u);
+        if (u == null || u.getId() == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        u = userService.getUserByID(u.getId());
+        if (!checkPermissions(u.getId(), authorization)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        paymentDTO.setUserFrom(u.getId());
         boolean success = false;
         paymentDTO.validate();
         try{
@@ -154,5 +196,15 @@ public class TestController {
     public String optimize() {
         optimizer.calculateDebts();
         return "Optimized!";
+    }
+
+    public static String getTokenValue(String authorizationHeader) {
+        return authorizationHeader.split(" ")[1];
+    }
+
+    public static boolean checkPermissions(Integer userID, String authorizationHeader) {
+        JwtUtil jwtUtil = JwtUtil.getInstance();
+        String token = authorizationHeader.split(" ")[1];
+        return jwtUtil.hasAccess(userID, token);
     }
 }

@@ -1,6 +1,10 @@
 package domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by romm on 01.02.17.
@@ -23,9 +27,17 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "users", cascade = CascadeType.PERSIST)
+    private Set<Group> groups;
+
     @Override
     public String toString() {
-        return "{ id : " + id + ", username : \"" + username + "\", phone : " + phone + ", pass : \"" + password + "\"}";
+        return "{ id : " + id +
+               ", username : \"" + username +
+               "\", phone : " + phone +
+               ", pass : \"" + password +
+               "\", groups: [" + groups.stream().toString() + "]}";
     }
 
     @Override
@@ -38,13 +50,19 @@ public class User {
     }
 
     public User() {
-
+        this.groups = new HashSet<>();
     }
 
     public User(String phone, String username, String password) {
+        this();
         this.phone = phone;
         this.username = username;
         this.password = password;
+    }
+
+    public User(String phone, String username, String password, Set<Group> groups) {
+        this(phone, username, password);
+        this.groups = groups;
     }
 
     public Integer getId() {
@@ -77,5 +95,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(Set<Group> groups) {
+        this.groups = groups;
     }
 }
