@@ -26,13 +26,14 @@ public class TokenStorage {
         return token;
     }
 
-    public void putToken(Integer userID, String tokenValue) {
+    public JwtAccessToken putToken(Integer userID, String tokenValue) {
         JwtAccessToken token = storage.get(userID);
         if (token == null) {
             token = new JwtAccessToken(tokenValue);
         }
         token.refresh();
         storage.put(userID, token);
+        return token;
     }
 
 }

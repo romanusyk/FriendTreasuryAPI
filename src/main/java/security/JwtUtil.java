@@ -36,7 +36,7 @@ public class JwtUtil {
         storage = new TokenStorage();
     }
 
-    public String getToken(User u) {
+    public JwtAccessToken getToken(User u) {
         JwtAccessToken token = storage.getToken(u.getId());
         if (token == null) {
             logger.debug(String.format("User %s has not token yet. Creating new token..", u.getUsername()));
@@ -45,11 +45,11 @@ public class JwtUtil {
                 logger.error("Failed to create token.");
                 return null;
             }
-            storage.putToken(u.getId(), tokenValue);
-            return tokenValue;
+            token = storage.putToken(u.getId(), tokenValue);
+            return token;
         } else {
             logger.debug(String.format("User %s already has token %s", u.getUsername(), token.getValue()));
-            return token.getValue();
+            return token;
         }
     }
 

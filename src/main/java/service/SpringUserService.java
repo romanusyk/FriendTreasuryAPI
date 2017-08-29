@@ -71,13 +71,13 @@ public class SpringUserService implements UserService {
     }
 
     @Override
-    public Integer validateUser(User user) {
+    public User validateUser(User user) {
         List<User> users = userRepository.findByUsername(user.getUsername());
         if (users.size() < 1) {
             return null;
         }
         User trueUser = users.get(0);
-        return Objects.equals(trueUser.getPassword(), MD5Encrypter.encrypt(user.getPassword())) ? trueUser.getId() : null;
+        return Objects.equals(trueUser.getPassword(), MD5Encrypter.encrypt(user.getPassword())) ? trueUser : null;
     }
 
     @Override

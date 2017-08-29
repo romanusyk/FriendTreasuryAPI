@@ -23,7 +23,7 @@ public interface UserService {
     void createUser(User user);
 
     @Transactional(readOnly = true)
-    Integer validateUser(User user);
+    User validateUser(User user);
 
     @Transactional(readOnly = true)
     List<User> getAllUsers();

@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import repository.Optimizer;
+import security.JwtAccessToken;
 import security.JwtUtil;
 import service.PaymentService;
 import service.SpringUserService;
@@ -90,10 +91,13 @@ public class TestController {
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.PATCH)
-    public ResponseEntity<String> valdateUser(@RequestBody User user) {
+    public ResponseEntity<JwtAccessToken> valdateUser(@RequestBody User user) {
         logger.info("Validating user : " + user);
-        Integer validUserId = userService.validateUser(user);
-        return new ResponseEntity<>("token: " + JwtUtil.getInstance().getToken(user), HttpStatus.OK);
+        user = userService.validateUser(user);
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(JwtUtil.getInstance().getToken(user), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/user_debts/", method = RequestMethod.GET)
