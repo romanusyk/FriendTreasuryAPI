@@ -54,7 +54,7 @@
         <property name="jpaProperties">
             <value>
                 hibernate.dialect = org.hibernate.dialect.PostgresPlusDialect
-                hibernate.hbm2ddl.auto=create
+                hibernate.hbm2ddl.auto=validate
             </value>
         </property>
     </bean>
