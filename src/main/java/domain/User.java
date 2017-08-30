@@ -28,7 +28,7 @@ public class User {
     private String password;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "users", cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "users", cascade = CascadeType.PERSIST)
     private Set<Group> groups;
 
     @Override
@@ -37,7 +37,7 @@ public class User {
                ", username : \"" + username +
                "\", phone : " + phone +
                ", pass : \"" + password +
-               "\", groups: [" + groups.stream().toString() + "]}";
+               "\", groups: " + groups.toString() + "}";
     }
 
     @Override

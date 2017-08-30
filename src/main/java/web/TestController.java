@@ -1,5 +1,6 @@
 package web;
 
+import domain.Group;
 import domain.Payment;
 import domain.PaymentDTO;
 import domain.User;
@@ -83,6 +84,21 @@ public class TestController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/user/groups", method = RequestMethod.GET)
+    public ResponseEntity<Set<Group>> getUserById(@RequestHeader("Authorization") String authorization) {
+        String tokenValue = getTokenValue(authorization);
+        User u = JwtUtil.parseToken(tokenValue);
+        logger.debug(u);
+        if (u == null || u.getId() == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        if (!checkPermissions(u.getId(), authorization)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        u = userService.getUserByID(u.getId());
+        return new ResponseEntity<>(u.getGroups(), HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/users", method = RequestMethod.POST)
     public ResponseEntity<Integer> addUser(@RequestBody User user) {
         logger.info("Persisting user : " + user);
@@ -100,14 +116,14 @@ public class TestController {
         return new ResponseEntity<>(JwtUtil.getInstance().getToken(user), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/user_debts/", method = RequestMethod.GET)
+    @RequestMapping(value = "/user_debts", method = RequestMethod.GET)
     public ResponseEntity<Map<Integer, BigDecimal>> getUserDebts(@RequestHeader("Authorization") String authorization)
     {
         String tokenValue = getTokenValue(authorization);
         User u = JwtUtil.parseToken(tokenValue);
         logger.debug(u);
         if (u == null || u.getId() == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         if (!checkPermissions(u.getId(), authorization)) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -128,7 +144,7 @@ public class TestController {
         User u = JwtUtil.parseToken(tokenValue);
         logger.debug(u);
         if (u == null || u.getId() == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         if (!checkPermissions(u.getId(), authorization)) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -163,7 +179,7 @@ public class TestController {
         User u = JwtUtil.parseToken(tokenValue);
         logger.debug(u);
         if (u == null || u.getId() == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         u = userService.getUserByID(u.getId());
         if (!checkPermissions(u.getId(), authorization)) {
@@ -192,7 +208,7 @@ public class TestController {
         }
     }
 
-    @RequestMapping(value = "optimize/", method = RequestMethod.GET)
+    @RequestMapping(value = "optimize", method = RequestMethod.GET)
     public String optimize() {
         optimizer.calculateDebts();
         return "Optimized!";
