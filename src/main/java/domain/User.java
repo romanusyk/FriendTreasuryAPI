@@ -1,8 +1,10 @@
 package domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,12 +20,15 @@ public class User {
     @GeneratedValue
     private Integer id;
 
+    @NotNull
     @Column(unique = true, nullable = false, length = 12)
     private String phone;
 
+    @NotNull
     @Column(unique = true, nullable = false)
     private String username;
 
+    @NotNull
     @Column(nullable = false)
     private String password;
 
