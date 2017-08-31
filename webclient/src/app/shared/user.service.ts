@@ -6,7 +6,8 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import '../rx-js.operators';
 
-import { ApiService, JwtService } from './index';
+import { ApiService } from './api.service';
+import { UserCacheService } from './user-cache.service';
 
 import { User, Credentials } from './models/index';
 
@@ -21,19 +22,20 @@ export class UserService {
   constructor(
     private apiService: ApiService,
     private http: Http,
-    private jwtService: JwtService
+    private userCacheService: UserCacheService
   ) { }
 
   // Verify JWT in localstorage with server & load user's info.
   // This runs once on application startup.
   populate() {
     // If JWT detected, attempt to get & store user's info
-    if (this.jwtService.getToken()) {
-      this.apiService.get('/user')
-        .subscribe(
-        data => this.setAuth(data.user),
-        err => this.purgeAuth()
-        );
+    const user = this.userCacheService.getUser();
+    if (user) {
+      if (user.token.expireTime >= Date.now()) {
+        this.setAuth(user);
+      } else {
+        this.purgeAuth();
+      }
     } else {
       // Remove any potential remnants of previous auth states
       this.purgeAuth();
@@ -41,8 +43,7 @@ export class UserService {
   }
 
   setAuth(user: User) {
-    // Save JWT sent from server in localstorage
-    this.jwtService.saveToken(user.token);
+    this.userCacheService.saveUser(user);
     // Set current user data into observable
     this.currentUserSubject.next(user);
     // Set isAuthenticated to true
@@ -51,7 +52,7 @@ export class UserService {
 
   purgeAuth() {
     // Remove JWT from localstorage
-    this.jwtService.destroyToken();
+    this.userCacheService.destroyUser();
     // Set current user to an empty object
     this.currentUserSubject.next(new User());
     // Set auth status to false
