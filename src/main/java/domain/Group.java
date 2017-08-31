@@ -1,5 +1,7 @@
 package domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,6 +20,7 @@ public class Group {
     @Column(nullable = false, unique = true, length = 100)
     private String title;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "group_user")
     private Set<User> users;
@@ -64,6 +67,6 @@ public class Group {
 
     @Override
     public String toString() {
-        return "{ id: " + id + ", title: \"" + title + "\", users: [" + users.toString() + "]}";
+        return "{ id: " + id + ", title: \"" + title + "\", users: " + users.toString() + "}";
     }
 }
