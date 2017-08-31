@@ -68,7 +68,7 @@ export class UserService {
   }
 
   private login(credentials: Credentials) {
-    return this.apiService.patch('/users', credentials)
+    return this.apiService.patch('users', credentials)
       .map(
       data => {
         const user = {
@@ -81,7 +81,7 @@ export class UserService {
       );
   }
   private register(credentials: Credentials) {
-    return this.apiService.post('/users', credentials)
+    return this.apiService.post('users', credentials)
       .map(
       data => {
         const user = {

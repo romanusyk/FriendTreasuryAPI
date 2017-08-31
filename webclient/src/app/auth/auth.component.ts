@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./auth.component.scss']
 })
 export class AuthComponent implements OnInit {
-  authType: String = '';
+  authType: String = 'login';
   errors: Errors = new Errors();
   authForm: FormGroup;
   title = 'Login';
@@ -24,15 +24,16 @@ export class AuthComponent implements OnInit {
     });
   }
  ngOnInit() {
-    this.route.url.subscribe(data => {
-      // Get the last piece of the URL (it's either 'login' or 'register')
-      this.authType = data[data.length - 1].path;
+   this.route.url.subscribe(data => {
+     // Get the last piece of the URL (it's either 'login' or 'register')
+     this.authType = data[data.length - 1].path;
+      console.log(data);
       // Set a title for the page accordingly
       this.title = (this.authType === 'login') ? 'Sign in' : 'Sign up';
       // add form control for username if this is the register page
     });
   }
-  submit() {
+  submitForm() {
     this.loading = true;
     this.errors = new Errors();
 

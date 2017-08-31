@@ -6,7 +6,10 @@ import { Token, User } from './models/index';
 export class UserCacheService {
 
   getUser(): User {
-    return JSON.parse(window.localStorage['user']);
+    if (window.localStorage['user']) {
+      return JSON.parse(window.localStorage['user']);
+    }
+    return null;
   }
 
   saveUser(user: User) {
