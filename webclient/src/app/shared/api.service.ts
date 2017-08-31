@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/Rx';
-import { JwtService } from './index';
+import { UserCacheService } from './user-cache.service';
 import { environment } from './../../environments/environment';
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
@@ -8,7 +8,7 @@ import '../rx-js.operators';
 export class ApiService {
 constructor(
     private http: Http,
-    private jwtService: JwtService
+    private userCacheUser: UserCacheService
   ) {}
 
   private setHeaders(): Headers {
@@ -17,8 +17,8 @@ constructor(
       'Accept': 'application/json'
     };
 
-    if (this.jwtService.getToken()) {
-      headersConfig['Authorization'] = `Bearer ${this.jwtService.getToken()}`;
+    if (this.userCacheUser.getUser()) {
+      headersConfig['Authorization'] = `Bearer ${this.userCacheUser.getUser().token}`;
     }
     return new Headers(headersConfig);
   }
