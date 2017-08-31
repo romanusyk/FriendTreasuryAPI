@@ -19,7 +19,7 @@ export class AuthComponent implements OnInit {
     private userService: UserService,
     private fb: FormBuilder) {
     this.authForm = this.fb.group({
-      'email': ['', Validators.required, Validators.email],
+      'userName': ['', Validators.required],
       'password': ['', Validators.required]
     });
   }

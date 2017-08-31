@@ -10,7 +10,7 @@
     <a [routerLink]="['/login']" *ngIf="authType == 'register'">Have an account?</a>
     <a [routerLink]="['/register']" *ngIf="authType == 'login'">Need an account?</a>
   </p>
-  <list-errors [errors]="errors"></list-errors>
+  <app-list-errors [errors]="errors"></app-list-errors>
   <div class="row">
     <div class="col-md-3"></div>
     <div class="col-md-6">
@@ -18,7 +18,7 @@
         <label class="sr-only" for="user-name">Login</label>
         <div class="input-group mb-2 mr-sm-2 mb-sm-0">
           <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-user"></i></div>
-          <input type="text" name="user-name" class="form-control" id="user-name" placeholder="Login" required autofocus>
+          <input type="text" formControlName="userName" name="user-name" class="form-control" id="user-name" placeholder="Login" autofocus>
         </div>
       </div>
     </div>
@@ -30,7 +30,7 @@
         <label class="sr-only" for="password">Password</label>
         <div class="input-group mb-2 mr-sm-2 mb-sm-0">
           <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-key"></i></div>
-          <input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
+          <input type="password" formControlName="password" name="password" class="form-control" id="password" placeholder="Password">
         </div>
       </div>
     </div>
@@ -38,7 +38,7 @@
   <div class="row" style="padding-top: 1rem">
     <div class="col-md-3"></div>
     <div class="col-md-6">
-      <button type="button" class="btn btn-success" (click)="send(loginForm)"><i class="fa fa-sign-in"></i>Submit</button>
+      <button type="button" class="btn btn-success" (click)="submit()"><i class="fa fa-sign-in"></i>Submit</button>
       <button type="button" class="btn btn-secondary" *ngIf="loading" disabled>
       <i class="fa fa-refresh fa-spin fa-fw"></i>
         
