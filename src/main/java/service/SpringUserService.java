@@ -87,4 +87,14 @@ public class SpringUserService implements UserService {
         return result;
     }
 
+    @Override
+    public User getUserByUsername(String username) {
+        List<User> users = userRepository.findByUsername(username);
+        if (users.size() == 0) {
+            return null;
+        } else {
+            return users.get(0);
+        }
+    }
+
 }

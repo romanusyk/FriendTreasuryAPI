@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import repository.Optimizer;
 import security.JwtAccessToken;
@@ -19,6 +21,9 @@ import service.SpringUserService;
 import service.UserService;
 
 import javax.annotation.Resource;
+import javax.swing.*;
+import javax.validation.Valid;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -100,10 +105,24 @@ public class TestController {
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.POST)
-    public ResponseEntity<Integer> addUser(@RequestBody User user) {
+    public ResponseEntity<?> addUser(@RequestBody @Valid User user,
+                                     BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            Map<String, String> response = new HashMap<>();
+            for (ObjectError e : bindingResult.getAllErrors()) {
+                response.put(e.getObjectName(), e.toString());
+            }
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        User user1 = userService.getUserByUsername(user.getUsername());
+        if (user1 != null) {
+            Map<String, String> response = new HashMap<>();
+            response.put("username", String.format("User with username '%s' already exists!", user1.getUsername()));
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
         logger.info("Persisting user : " + user);
         userService.createUser(user);
-        return new ResponseEntity<>(user.getId(), HttpStatus.CREATED);
+        return new ResponseEntity<>(JwtUtil.getInstance().getToken(user), HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.PATCH)
