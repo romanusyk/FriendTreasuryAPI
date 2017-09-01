@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class AuthComponent implements OnInit {
   authType: String = 'login';
-  errors: Errors = new Errors();
+  errors: Object = new Errors();
   authForm: FormGroup;
   title = 'Login';
   loading = false;
@@ -32,7 +32,7 @@ export class AuthComponent implements OnInit {
       this.title = (this.authType === 'login') ? 'Sign in' : 'Sign up';
       this.authForm.addControl('phone', new FormControl('', [Validators.required, Validators.maxLength(12)]));
       // add form control for username if this is the register page
-      this.authForm.valueChanges.subscribe(this.onValueChange);
+      this.authForm.valueChanges.subscribe(p => this.onValueChange(p, this.authForm));
     });
   }
   submitForm() {
@@ -50,21 +50,19 @@ export class AuthComponent implements OnInit {
       );
   }
 
-  onValueChange(data?: any) {
-    console.log(data);
-    for (const key in this.authForm.controls) {
-      if (this.authForm.controls.hasOwnProperty(key)) {
-        const control = this.authForm.get(key);
+  onValueChange(data: any, form) {
+    for (const key in form.controls) {
+      if (form.controls.hasOwnProperty(key)) {
+        const control = form.get(key);
         if (control && control.dirty && !control.valid) {
           const message = ValidationMessages[key];
-              for (const error in control.errors) {
-                if (this.authForm.controls.hasOwnProperty(key)) {
-                  // this.errors.errors()
-              }
+          for (const error in control.errors) {
+            if (form.controls.hasOwnProperty(key)) {
+            }
+          }
         }
       }
     }
-  }
     // array.forEach(element => {
     // });
     // // tslint:disable-next-line:forin
