@@ -11,6 +11,11 @@
     <a [routerLink]="['/register']" *ngIf="authType === 'login'">Need an account?</a>
   </p>
   <app-list-errors [errors]="errors"></app-list-errors>
+  <ul>
+    <li *ngFor="let error of authForm.errors">
+      error
+    </li>
+  </ul>
   <div class="row">
     <div class="col-md-3"></div>
     <div class="col-md-6">
