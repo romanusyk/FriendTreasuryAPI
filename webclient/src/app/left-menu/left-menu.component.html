@@ -1,8 +1,8 @@
 <div class="left-menu-list">
   <ul class="list-group">
     <button *ngIf="loading" class="btn btn-secondary"><i class="fa fa-refresh fa-spin fa-fw"></i></button>
-    <li *ngFor="let group of groups" class="list-group-item">
+    <button type="button" (click)="onActiveClick(group)" *ngFor="let group of groups" class="group list-group-item list-group-item-action" [ngClass]="{'active':active==group}">
       {{group.title}}
-    </li>
+    </button>
   </ul>
 </div>

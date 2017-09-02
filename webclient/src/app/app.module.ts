@@ -10,6 +10,7 @@ import { ApiService, UserCacheService, UserService } from './shared/index';
 import { ListErrorsComponent } from './list-errors/list-errors.component';
 import { IndexComponent } from './index/index.component';
 import { LeftMenuComponent } from './left-menu/left-menu.component';
+import { GroupInfoComponent } from './group-info/group-info.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { LeftMenuComponent } from './left-menu/left-menu.component';
     AuthComponent,
     ListErrorsComponent,
     IndexComponent,
-    LeftMenuComponent
+    LeftMenuComponent,
+    GroupInfoComponent
   ],
   imports: [
     BrowserModule,

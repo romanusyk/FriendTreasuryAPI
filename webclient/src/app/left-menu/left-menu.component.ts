@@ -10,6 +10,7 @@ import { Group } from '../shared/models/index';
 export class LeftMenuComponent implements OnInit {
   groups: Array<Group> = new Array();
   loading = true;
+  active: Group;
   constructor(private groupService: GroupService) { }
 
   ngOnInit() {
@@ -18,6 +19,10 @@ export class LeftMenuComponent implements OnInit {
         this.loading = false;
         this.groups = data;
       });
+  }
+  onActiveClick(group) {
+    console.log(group);
+    this.active = group;
   }
 
 }
