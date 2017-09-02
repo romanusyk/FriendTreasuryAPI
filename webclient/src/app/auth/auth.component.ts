@@ -25,15 +25,19 @@ export class AuthComponent implements OnInit {
   }
   ngOnInit() {
     this.route.url.subscribe(data => {
-      // Get the last piece of the URL (it's either 'login' or 'register')
       this.authType = data[data.length - 1].path;
-      console.log(data);
-      // Set a title for the page accordingly
-      this.title = (this.authType === 'login') ? 'Sign in' : 'Sign up';
-      this.authForm.addControl('phone', new FormControl('', [Validators.required, Validators.maxLength(12)]));
-      // add form control for username if this is the register page
-      this.authForm.valueChanges.subscribe(p => this.onValueChange(p, this.authForm));
+      this.title = this.isLogin() ? 'Sign in' : 'Sign up';
+      if (this.isLogin()) {
+        try {
+          this.authForm.removeControl('phone');
+        } catch (e) {
+        }
+      } else {
+        this.authForm.addControl('phone', new FormControl('', [Validators.required, Validators.maxLength(12)]));
+      }
     });
+    this.authForm.valueChanges.subscribe(p => this.onValueChange(p, this.authForm));
+
   }
   submitForm() {
     this.loading = true;
@@ -42,7 +46,7 @@ export class AuthComponent implements OnInit {
     this.userService
       .attemptAuth(this.authType, credentials)
       .subscribe(
-      data => this.router.navigateByUrl('/'),
+      data => this.router.navigateByUrl('/index'),
       err => {
         this.errors = err;
         this.loading = false;
@@ -63,20 +67,10 @@ export class AuthComponent implements OnInit {
         }
       }
     }
-    // array.forEach(element => {
-    // });
-    // // tslint:disable-next-line:forin
-    // this.authForm.controls.forEach((field: FormControl) => {
-    //   const control = this.authForm.get(field);
-    // });
+  }
 
-    //   if (control && control.dirty && !control.valid) {
-    //     const message = this.validationMessages[field];
-    //     for (const key in control.errors) {
-    //       this.formErrors[field] += message[key] + ' ';
-    //     }
-    //   }
-    // }
+  isLogin(): Boolean {
+    return this.authType === 'login';
   }
 
 }

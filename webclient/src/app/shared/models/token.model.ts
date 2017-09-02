@@ -1,4 +1,4 @@
 export class Token {
-    token: string;
+    value: string;
     expireTime: number;
 }

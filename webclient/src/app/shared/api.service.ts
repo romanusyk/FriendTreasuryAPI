@@ -18,7 +18,7 @@ constructor(
     };
 
     if (this.userCacheUser.getUser()) {
-      headersConfig['Authorization'] = `Bearer ${this.userCacheUser.getUser().token}`;
+      headersConfig['Authorization'] = `Bearer ${this.userCacheUser.getUser().token.value}`;
     }
     return new Headers(headersConfig);
   }
