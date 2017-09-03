@@ -1,13 +1,12 @@
-package security;
+package romanusyk.ft.security;
 
-import domain.User;
+import romanusyk.ft.domain.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.crypto.MacProvider;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 
 import java.security.Key;

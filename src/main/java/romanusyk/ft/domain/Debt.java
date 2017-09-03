@@ -1,4 +1,4 @@
-package domain;
+package romanusyk.ft.domain;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

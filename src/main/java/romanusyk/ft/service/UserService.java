@@ -1,6 +1,6 @@
-package service;
+package romanusyk.ft.service;
 
-import domain.User;
+import romanusyk.ft.domain.User;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;

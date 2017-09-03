@@ -1,10 +1,10 @@
-package service;
+package romanusyk.ft.service;
 
-import domain.Group;
-import domain.User;
+import romanusyk.ft.domain.Group;
+import romanusyk.ft.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repository.GroupRepository;
+import romanusyk.ft.repository.GroupRepository;
 
 /**
  * Created by romm on 29.08.17.

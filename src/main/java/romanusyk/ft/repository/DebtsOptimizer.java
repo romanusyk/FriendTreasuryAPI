@@ -1,17 +1,15 @@
-package repository;
+package romanusyk.ft.repository;
 
-import domain.Debt;
-import domain.DebtKey;
+import romanusyk.ft.domain.Debt;
+import romanusyk.ft.domain.DebtKey;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.query.NativeQuery;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import service.PaymentService;
+import romanusyk.ft.service.PaymentService;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

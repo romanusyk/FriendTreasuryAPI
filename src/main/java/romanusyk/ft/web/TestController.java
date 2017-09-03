@@ -1,29 +1,27 @@
-package web;
+package romanusyk.ft.web;
 
-import domain.Group;
-import domain.Payment;
-import domain.PaymentDTO;
-import domain.User;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import romanusyk.ft.domain.Group;
+import romanusyk.ft.domain.Payment;
+import romanusyk.ft.domain.PaymentDTO;
+import romanusyk.ft.domain.User;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-import repository.Optimizer;
-import security.JwtAccessToken;
-import security.JwtUtil;
-import service.PaymentService;
-import service.SpringUserService;
-import service.UserService;
+import romanusyk.ft.repository.Optimizer;
+import romanusyk.ft.security.JwtAccessToken;
+import romanusyk.ft.security.JwtUtil;
+import romanusyk.ft.service.PaymentService;
+import romanusyk.ft.service.SpringUserService;
+import romanusyk.ft.service.UserService;
 
-import javax.annotation.Resource;
-import javax.swing.*;
 import javax.validation.Valid;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -33,6 +31,8 @@ import java.util.*;
 
 @CrossOrigin
 @RestController
+@Api("Test controller")
+@RequestMapping("/api/v1")
 public class TestController {
 
 //    @Autowired
@@ -71,6 +71,11 @@ public class TestController {
         return "Initialized!";
     }
 
+    @ApiOperation(
+            value = "get all users",
+            notes = "get all all all users",
+            produces = "Application/json"
+    )
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public ResponseEntity<List<User>> getUserById() {
         List<User> users = userService.getAllUsers();

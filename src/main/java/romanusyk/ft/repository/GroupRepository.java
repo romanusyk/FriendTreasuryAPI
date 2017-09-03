@@ -1,6 +1,6 @@
-package repository;
+package romanusyk.ft.repository;
 
-import domain.Group;
+import romanusyk.ft.domain.Group;
 import org.springframework.data.repository.CrudRepository;
 
 /**

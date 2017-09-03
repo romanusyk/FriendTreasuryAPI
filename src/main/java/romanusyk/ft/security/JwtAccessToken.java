@@ -1,4 +1,4 @@
-package security;
+package romanusyk.ft.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

@@ -11,7 +11,8 @@
            http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd"
 >
 
-    <context:component-scan base-package="web"/>
-    <mvc:annotation-driven/>
+    <context:component-scan base-package="romanusyk.ft.web"/>
+    <context:component-scan base-package="romanusyk.ft.configuration"/>
+    <!--<mvc:annotation-driven/>-->
 
 </beans>

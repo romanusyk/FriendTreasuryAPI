@@ -1,4 +1,4 @@
-package service;
+package romanusyk.ft.service;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

@@ -17,9 +17,9 @@
            http://www.springframework.org/schema/data/jpa/spring-jpa.xsd "
 >
 
-    <context:component-scan base-package="service"/>
-    <context:component-scan base-package="repository"/>
-    <context:component-scan base-package="web"/>
+    <context:component-scan base-package="romanusyk.ft.service"/>
+    <context:component-scan base-package="romanusyk.ft.repository"/>
+    <context:component-scan base-package="romanusyk.ft.web"/>
     <mvc:annotation-driven/>
 
     <context:annotation-config/>
@@ -44,7 +44,7 @@
     <bean id="entityManagerFactory"
           class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource"/>
-        <property name="packagesToScan" value="domain"/>
+        <property name="packagesToScan" value="romanusyk.ft.domain"/>
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
                 <property name="generateDdl" value="true"/>
@@ -66,6 +66,6 @@
 
     <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="false"/>
 
-    <jpa:repositories base-package="repository"/>
+    <jpa:repositories base-package="romanusyk.ft.repository"/>
 
 </beans>

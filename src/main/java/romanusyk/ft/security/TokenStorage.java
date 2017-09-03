@@ -1,8 +1,7 @@
-package security;
+package romanusyk.ft.security;
 
-import domain.User;
+import romanusyk.ft.domain.User;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.HashMap;
 import java.util.Map;
 

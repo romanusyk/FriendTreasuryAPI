@@ -1,4 +1,4 @@
-package domain;
+package romanusyk.ft.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

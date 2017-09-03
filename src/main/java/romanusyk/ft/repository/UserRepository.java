@@ -1,8 +1,7 @@
-package repository;
+package romanusyk.ft.repository;
 
-import domain.Group;
-import domain.User;
-import org.springframework.data.jpa.repository.Query;
+import romanusyk.ft.domain.Group;
+import romanusyk.ft.domain.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 

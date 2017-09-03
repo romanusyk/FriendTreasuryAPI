@@ -1,4 +1,4 @@
-package repository;
+package romanusyk.ft.repository;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;

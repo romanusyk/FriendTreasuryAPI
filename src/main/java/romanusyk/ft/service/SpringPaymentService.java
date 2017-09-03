@@ -1,14 +1,14 @@
-package service;
+package romanusyk.ft.service;
 
-import domain.Debt;
-import domain.Payment;
-import domain.PaymentDTO;
-import domain.User;
+import romanusyk.ft.domain.Debt;
+import romanusyk.ft.domain.Payment;
+import romanusyk.ft.domain.PaymentDTO;
+import romanusyk.ft.domain.User;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repository.PaymentRepository;
-import repository.UserRepository;
+import romanusyk.ft.repository.PaymentRepository;
+import romanusyk.ft.repository.UserRepository;
 
 import java.math.BigDecimal;
 import java.util.Date;

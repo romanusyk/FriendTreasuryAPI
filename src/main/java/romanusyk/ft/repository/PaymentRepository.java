@@ -1,8 +1,8 @@
-package repository;
+package romanusyk.ft.repository;
 
-import domain.Debt;
-import domain.Payment;
-import domain.User;
+import romanusyk.ft.domain.Debt;
+import romanusyk.ft.domain.Payment;
+import romanusyk.ft.domain.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

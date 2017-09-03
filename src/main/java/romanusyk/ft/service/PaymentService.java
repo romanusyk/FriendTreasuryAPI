@@ -1,9 +1,9 @@
-package service;
+package romanusyk.ft.service;
 
-import domain.Debt;
-import domain.Payment;
-import domain.PaymentDTO;
-import domain.User;
+import romanusyk.ft.domain.Debt;
+import romanusyk.ft.domain.Payment;
+import romanusyk.ft.domain.PaymentDTO;
+import romanusyk.ft.domain.User;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;

@@ -1,4 +1,4 @@
-package domain;
+package romanusyk.ft.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.log4j.Logger;

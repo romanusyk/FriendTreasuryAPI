@@ -1,6 +1,6 @@
-package service;
+package romanusyk.ft.service;
 
-import domain.User;
+import romanusyk.ft.domain.User;
 
 /**
  * Created by romm on 29.08.17.

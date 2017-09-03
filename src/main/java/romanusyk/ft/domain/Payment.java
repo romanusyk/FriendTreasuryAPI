@@ -1,6 +1,4 @@
-package domain;
-
-import com.fasterxml.jackson.annotation.JsonSubTypes;
+package romanusyk.ft.domain;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
