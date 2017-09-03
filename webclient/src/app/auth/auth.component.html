@@ -7,8 +7,8 @@
     </div>
   </div>
   <p class="text-xs-center">
-    <a [routerLink]="['/login']" *ngIf="authType == 'register'">Have an account?</a>
-    <a [routerLink]="['/register']" *ngIf="authType == 'login'">Need an account?</a>
+    <a [routerLink]="['/login']" *ngIf="authType === 'register'">Have an account?</a>
+    <a [routerLink]="['/register']" *ngIf="authType === 'login'">Need an account?</a>
   </p>
   <app-list-errors [errors]="errors"></app-list-errors>
   <div class="row">
@@ -18,7 +18,19 @@
         <label class="sr-only" for="user-name">Login</label>
         <div class="input-group mb-2 mr-sm-2 mb-sm-0">
           <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-user"></i></div>
-          <input type="text" formControlName="userName" name="user-name" class="form-control" id="user-name" placeholder="Login" autofocus>
+          <input type="text" formControlName="username" name="user-name" class="form-control" id="user-name" placeholder="Login" autofocus>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="authType === 'register'">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <div class="form-group has-danger">
+        <label class="sr-only" for="phone">Phone</label>
+        <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+          <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-user"></i></div>
+          <input type="text" formControlName="phone" name="phone" class="form-control" id="phone" placeholder="Phone">
         </div>
       </div>
     </div>
@@ -38,7 +50,7 @@
   <div class="row" style="padding-top: 1rem">
     <div class="col-md-3"></div>
     <div class="col-md-6">
-      <button type="submit" class="btn btn-success"><i class="fa fa-sign-in"></i>  Submit</button>
+      <button type="submit" [disabled]="!authForm.valid" class="btn btn-success"><i class="fa fa-sign-in"></i>  Submit</button>
       <button type="button" class="btn btn-secondary" *ngIf="loading" disabled>
       <i class="fa fa-refresh fa-spin fa-fw"></i>
         
