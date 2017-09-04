@@ -13,6 +13,5 @@
 
     <context:component-scan base-package="romanusyk.ft.web"/>
     <context:component-scan base-package="romanusyk.ft.configuration"/>
-    <!--<mvc:annotation-driven/>-->
 
 </beans>
