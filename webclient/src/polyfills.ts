@@ -46,7 +46,7 @@ import 'core-js/es7/reflect';
  * Required to support Web Animations `@angular/animation`.
  * Needed for: All but Chrome, Firefox and Opera. http://caniuse.com/#feat=web-animation
  **/
-// import 'romanusyk.ft.web-animations-js';  // Run `npm install --save romanusyk.ft.web-animations-js`.
+// import 'romanusyk.ft.romanusyk.ft.web-animations-js';  // Run `npm install --save romanusyk.ft.romanusyk.ft.web-animations-js`.
 
 
 

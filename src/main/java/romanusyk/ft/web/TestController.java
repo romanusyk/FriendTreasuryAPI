@@ -18,7 +18,6 @@ import romanusyk.ft.repository.Optimizer;
 import romanusyk.ft.security.JwtAccessToken;
 import romanusyk.ft.security.JwtUtil;
 import romanusyk.ft.service.PaymentService;
-import romanusyk.ft.service.SpringUserService;
 import romanusyk.ft.service.UserService;
 
 import javax.validation.Valid;

@@ -72,12 +72,11 @@ public class SpringUserService implements UserService {
 
     @Override
     public User validateUser(User user) {
-        List<User> users = userRepository.findByUsername(user.getUsername());
-        if (users.size() < 1) {
+        User returnedUser = userRepository.findUserByUsername(user.getUsername());
+        if (returnedUser == null) {
             return null;
         }
-        User trueUser = users.get(0);
-        return Objects.equals(trueUser.getPassword(), MD5Encrypter.encrypt(user.getPassword())) ? trueUser : null;
+        return Objects.equals(returnedUser.getPassword(), MD5Encrypter.encrypt(user.getPassword())) ? returnedUser : null;
     }
 
     @Override
@@ -89,12 +88,7 @@ public class SpringUserService implements UserService {
 
     @Override
     public User getUserByUsername(String username) {
-        List<User> users = userRepository.findByUsername(username);
-        if (users.size() == 0) {
-            return null;
-        } else {
-            return users.get(0);
-        }
+        return userRepository.findUserByUsername(username);
     }
 
 }

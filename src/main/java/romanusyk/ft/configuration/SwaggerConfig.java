@@ -26,10 +26,4 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter {
                 .build();
     }
 
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addRedirectViewController("/configuration/ui", "/swagger-resources/configuration/ui");
-        registry.addRedirectViewController("/configuration/security", "/swagger-resources/configuration/security");
-    }
-
 }
