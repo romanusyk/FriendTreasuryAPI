@@ -13,8 +13,7 @@ import java.util.*;
 /**
  * Created by romm on 28.02.17.
  */
-@Service("springUserService")
-@Qualifier("springUserServiceBean")
+@Service
 public class SpringUserService implements UserService {
 
     @Autowired

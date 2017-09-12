@@ -9,7 +9,7 @@ import romanusyk.ft.repository.GroupRepository;
 /**
  * Created by romm on 29.08.17.
  */
-@Service("springGroupService")
+@Service
 public class SpringGroupService implements GroupService {
 
     @Autowired

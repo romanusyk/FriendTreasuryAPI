@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+import romanusyk.ft.exception.UserNotFoundException;
 import romanusyk.ft.repository.Optimizer;
 import romanusyk.ft.security.JwtAccessToken;
 import romanusyk.ft.security.JwtUtil;
@@ -34,15 +35,10 @@ import java.util.*;
 @RequestMapping("/api/v1")
 public class TestController {
 
-//    @Autowired
-//    @Qualifier("simpleUserServiceBean")
-//    private UserService userService;
-
     @Autowired
     private PaymentService paymentService;
 
     @Autowired
-    @Qualifier("springUserServiceBean")
     private UserService userService;
 
     @Autowired
@@ -70,29 +66,6 @@ public class TestController {
         return "Initialized!";
     }
 
-    @ApiOperation(
-            value = "get all users",
-            notes = "get all all all users",
-            produces = "Application/json"
-    )
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public ResponseEntity<List<User>> getUserById() {
-        List<User> users = userService.getAllUsers();
-        if (users == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(users, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
-    public ResponseEntity<User> getUserById(@PathVariable("id") Integer id) {
-        User user = userService.getUserByID(id);
-        if (user == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(user, HttpStatus.OK);
-    }
-
     @RequestMapping(value = "/user/groups", method = RequestMethod.GET)
     public ResponseEntity<Set<Group>> getUserById(@RequestHeader("Authorization") String authorization) {
         String tokenValue = getTokenValue(authorization);
@@ -106,37 +79,6 @@ public class TestController {
         }
         u = userService.getUserByID(u.getId());
         return new ResponseEntity<>(u.getGroups(), HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/users", method = RequestMethod.POST)
-    public ResponseEntity<?> addUser(@RequestBody @Valid User user,
-                                     BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            Map<String, String> response = new HashMap<>();
-            for (ObjectError e : bindingResult.getAllErrors()) {
-                response.put(e.getObjectName(), e.toString());
-            }
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        }
-        User user1 = userService.getUserByUsername(user.getUsername());
-        if (user1 != null) {
-            Map<String, String> response = new HashMap<>();
-            response.put("username", String.format("User with username '%s' already exists!", user1.getUsername()));
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        }
-        logger.info("Persisting user : " + user);
-        userService.createUser(user);
-        return new ResponseEntity<>(JwtUtil.getInstance().getToken(user), HttpStatus.CREATED);
-    }
-
-    @RequestMapping(value = "/users", method = RequestMethod.PATCH)
-    public ResponseEntity<JwtAccessToken> valdateUser(@RequestBody User user) {
-        logger.info("Validating user : " + user);
-        user = userService.validateUser(user);
-        if (user == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(JwtUtil.getInstance().getToken(user), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/user_debts", method = RequestMethod.GET)

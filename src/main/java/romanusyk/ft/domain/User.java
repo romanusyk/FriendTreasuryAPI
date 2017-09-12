@@ -1,6 +1,7 @@
 package romanusyk.ft.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -29,6 +30,7 @@ public class User {
 
     @NotNull
     @Column(nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @JsonIgnore
@@ -37,11 +39,17 @@ public class User {
 
     @Override
     public String toString() {
-        return "{ id : " + id +
-               ", username : \"" + username +
-               "\", phone : " + phone +
-               ", pass : \"" + password +
-               "\", groups: " + groups.toString() + "}";
+        return "{ id: " + id +
+               ", username: \"" + username +
+               "\", phone: \"" + phone + "\"}";
+    }
+
+    public String toDetailedString() {
+        return "{ id: " + id +
+                ", username: \"" + username +
+                "\", phone: \"" + phone +
+                "\", pass : \"" + password +
+                "\", groups: " + groups.toString() + "}";
     }
 
     @Override

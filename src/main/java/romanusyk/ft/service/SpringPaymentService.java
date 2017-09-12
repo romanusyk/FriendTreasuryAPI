@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * Created by romm on 16.03.17.
  */
-@Service("springPaymentService")
+@Service
 public class SpringPaymentService implements PaymentService {
 
     @Autowired
