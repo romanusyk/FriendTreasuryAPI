@@ -19,7 +19,7 @@ import java.util.*;
 /**
  * Created by romm on 27.02.17.
  */
-@Service("optimizer")
+@Service
 public class DebtsOptimizer implements Optimizer {
 
     public EntityManager getEntityManager() {

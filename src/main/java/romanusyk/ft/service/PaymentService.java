@@ -1,5 +1,6 @@
 package romanusyk.ft.service;
 
+import org.springframework.data.domain.Page;
 import romanusyk.ft.domain.Debt;
 import romanusyk.ft.domain.Payment;
 import romanusyk.ft.domain.PaymentDTO;
@@ -17,10 +18,6 @@ import java.util.Map;
  */
 public interface PaymentService {
 
-    @PostConstruct
-    @Transactional
-    void init();
-
     boolean makePayment(User from, User to, BigDecimal amount, String description, Date date, double longitude, double latitude);
 
     boolean makeGroupPayment(PaymentDTO paymentDTO);
@@ -30,5 +27,7 @@ public interface PaymentService {
     List<Payment> getPaymentsBetweenUsers(Integer userFromID, Integer userToID);
 
     List<Debt> getDebts();
+
+    Page<Payment> getPayments(int page, int size, Integer userFromID, Integer userToID, Integer groupID);
 
 }

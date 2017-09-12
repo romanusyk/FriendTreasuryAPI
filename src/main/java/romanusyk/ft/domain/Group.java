@@ -10,7 +10,7 @@ import java.util.Set;
  * Created by romm on 28.08.17.
  */
 @Entity
-@Table(name = "groups")
+@Table(name = "pgroups")
 public class Group {
 
     @Id
@@ -22,7 +22,7 @@ public class Group {
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinTable(name = "group_user")
+    @JoinTable(name = "pgroup_user")
     private Set<User> users;
 
 
@@ -39,6 +39,24 @@ public class Group {
 
         this.title = title;
         this.users = users;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "{id: %d, title: \"%s\"}",
+                id,
+                title
+        );
+    }
+
+    public String toDetailedString() {
+        return String.format(
+                "{id: %d, title: \"%s\", users: %s}",
+                id,
+                title,
+                users.toString()
+        );
     }
 
     public Integer getId() {
@@ -63,10 +81,5 @@ public class Group {
 
     public void setUsers(Set<User> users) {
         this.users = users;
-    }
-
-    @Override
-    public String toString() {
-        return "{ id: " + id + ", title: \"" + title + "\", users: " + users.toString() + "}";
     }
 }

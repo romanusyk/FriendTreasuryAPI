@@ -12,7 +12,7 @@ spring:
     password: romm
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create-drop
     show-sql: true
     database-platform: org.hibernate.dialect.PostgresPlusDialect
 

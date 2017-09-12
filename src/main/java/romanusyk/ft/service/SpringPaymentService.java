@@ -1,13 +1,14 @@
 package romanusyk.ft.service;
 
-import romanusyk.ft.domain.Debt;
-import romanusyk.ft.domain.Payment;
-import romanusyk.ft.domain.PaymentDTO;
-import romanusyk.ft.domain.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import romanusyk.ft.domain.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import romanusyk.ft.repository.PaymentRepository;
+import romanusyk.ft.repository.PaymentSpecs;
 import romanusyk.ft.repository.UserRepository;
 
 import java.math.BigDecimal;
@@ -30,15 +31,16 @@ public class SpringPaymentService implements PaymentService {
 
     private static final Logger logger = Logger.getLogger(SpringPaymentService.class);
 
-    @Override
-    public void init() {
-//        makeGroupPayment(new PaymentDTO(1, new Integer[]{2, 3, 4}, new BigDecimal(200), "Test", new Date(), 30.52, 50.44));
-//        makeGroupPayment(new PaymentDTO(2, new Integer[]{3, 4}, new BigDecimal(300), "Test", new Date(), 30.52, 50.44));
+    public Page<Payment> getPayments(int page, int size, Integer userFromID, Integer userToID, Integer groupID) {
+        Pageable pageable = new PageRequest(
+                page,size
+        );
+        return paymentRepository.findAll(PaymentSpecs.filterPayment(userFromID, userToID, groupID), pageable);
     }
 
     @Override
     public boolean makePayment(User from, User to, BigDecimal amount, String description, Date date, double longitude, double latitude) {
-        Payment payment = new Payment(from, to, amount, description, date, longitude, latitude);
+        Payment payment = new Payment(from, to, null, amount, description, date, longitude, latitude);
         payment = paymentRepository.save(payment);
         return payment.getId() != null;
     }

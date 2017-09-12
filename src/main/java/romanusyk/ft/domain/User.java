@@ -39,17 +39,24 @@ public class User {
 
     @Override
     public String toString() {
-        return "{ id: " + id +
-               ", username: \"" + username +
-               "\", phone: \"" + phone + "\"}";
+        return String.format(
+                "{id: %d, username: \"%s\", phone: \"%s\"}",
+                id,
+                username,
+                phone
+        );
     }
 
     public String toDetailedString() {
-        return "{ id: " + id +
-                ", username: \"" + username +
-                "\", phone: \"" + phone +
-                "\", pass : \"" + password +
-                "\", groups: " + groups.toString() + "}";
+        return String.format(
+                "{id: %d, username: \"%s\", phone: \"%s\", " +
+                        "password : \"%s\", groups: %s}",
+                id,
+                username,
+                phone,
+                password,
+                groups.toString()
+        );
     }
 
     @Override

@@ -1,8 +1,10 @@
 package romanusyk.ft.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.invoke.MethodHandles;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -11,10 +13,11 @@ import java.util.Date;
  */
 public class PaymentDTO {
 
-    private static final Logger logger = Logger.getLogger(PaymentDTO.class);
+    private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     private Integer userFrom;
     private Integer[] usersTo;
+    private Integer group;
     private BigDecimal amount;
     private Integer shallIPayForMyself;
     private String description;
@@ -29,10 +32,12 @@ public class PaymentDTO {
 
     }
 
-    public PaymentDTO(Integer userFrom, Integer[] usersTo, BigDecimal amount, String description,
+    public PaymentDTO(Integer userFrom, Integer[] usersTo, Integer group,
+                      BigDecimal amount, String description,
                       Date date, double longitude, double latitude) {
         this.userFrom = userFrom;
         this.usersTo = usersTo;
+        this.group = group;
         this.amount = amount;
         this.description = description;
         this.date = date;
@@ -41,20 +46,10 @@ public class PaymentDTO {
         this.latitude = latitude;
     }
 
-    public PaymentDTO(Integer userFrom, Integer[] usersTo, BigDecimal amount, String description,
+    public PaymentDTO(Integer userFrom, Integer[] usersTo, Integer group, BigDecimal amount, String description,
                       Date date, double longitude, double latitude, Integer shallIPayForMyself) {
-        this.userFrom = userFrom;
-        this.usersTo = usersTo;
-        this.amount = amount;
-        this.shallIPayForMyself = shallIPayForMyself;
-        this.description = description;
-        this.date = date;
-        this.longitude = longitude;
-        this.latitude = latitude;
-    }
-
-    public void validate() {
-        setShallIPayForMyself(getShallIPayForMyself());
+        this(userFrom, usersTo, group, amount, description, date, longitude, latitude);
+        setShallIPayForMyself(shallIPayForMyself);
     }
 
     public Integer getUserFrom() {

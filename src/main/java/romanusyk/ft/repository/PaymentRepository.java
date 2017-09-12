@@ -1,5 +1,8 @@
 package romanusyk.ft.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import romanusyk.ft.domain.Debt;
 import romanusyk.ft.domain.Payment;
 import romanusyk.ft.domain.User;
@@ -23,6 +26,8 @@ public interface PaymentRepository extends CrudRepository<Payment, Integer> {
     @Query("FROM Payment p where p.userFrom = :#{#userFrom} and p.userTo = :#{#userTo}")
     List<Payment> findPaymentsFromUserToUser(@Param("userFrom") User userFrom, @Param("userTo") User userTo);
 
-    @Query("SELECT new Debt(P.userFrom, P.userTo, sum(P.amount)) FROM Payment P GROUP BY P.userFrom, P.userTo")
+    @Query("SELECT new Debt(P.userFrom, P.userTo, P.group, sum(P.amount)) FROM Payment P GROUP BY P.userFrom, P.userTo, P.group")
     List<Debt> getDebts();
+
+    Page<Payment> findAll(Specification<Payment> specification, Pageable pageable);
 }

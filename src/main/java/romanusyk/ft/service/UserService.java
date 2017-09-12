@@ -11,12 +11,6 @@ import java.util.List;
  */
 public interface UserService {
 
-    @PostConstruct
-    @Transactional
-    void init();
-
-//    List<User> initTreasury(List<String> usernames);
-
     User getUserByID(Integer id);
 
     @Transactional

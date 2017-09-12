@@ -19,34 +19,6 @@ public class SpringUserService implements UserService {
     @Autowired
     UserRepository userRepository;
 
-    @Autowired
-    GroupRepository groupRepository;
-
-    @Override
-    public void init() {
-
-        Group group = new Group("505");
-
-        groupRepository.save(group);
-
-        User roma = new User("380952411401", "Roma", "111");
-        User jura = new User("380960737750", "Jura", "111");
-        User geka = new User("380952411403", "Geka", "111");
-
-        group.getUsers().add(roma);
-        group.getUsers().add(jura);
-        group.getUsers().add(geka);
-
-        roma.getGroups().add(group);
-        jura.getGroups().add(group);
-        geka.getGroups().add(group);
-
-        createUser(roma);
-        createUser(jura);
-        createUser(geka);
-
-    }
-
     //    @Override
 //    public List<User> initTreasury(List<String> usernames) {
 //        List<User> users = new LinkedList<>();

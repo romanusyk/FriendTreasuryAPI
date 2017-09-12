@@ -2,6 +2,7 @@ package romanusyk.ft.domain;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.Date;
 
 /**
@@ -11,7 +12,8 @@ import java.util.Date;
 @Entity
 @Table(name = "payments", indexes = {
         @Index(columnList = "user_from", name = "from_index"),
-        @Index(columnList = "user_to", name = "to_index")
+        @Index(columnList = "user_to", name = "to_index"),
+        @Index(columnList = "pgroup", name = "pgroup_index")
 })
 public class Payment {
 
@@ -28,14 +30,18 @@ public class Payment {
     @JoinColumn(name = "user_to", nullable = false)
     private User userTo;
 
+    @ManyToOne
+    @JoinColumn(name = "pgroup", nullable = false)
+    private Group group;
+
     @Column(nullable = false)
     private BigDecimal amount;
 
     @Column
     private String description;
 
-    @Column
-    private Date date;
+    @Column(nullable = false)
+    private Long timestamp;
 
     @Column
     private double longitude;
@@ -44,17 +50,65 @@ public class Payment {
     private double latitude;
 
     public Payment() {
-
+        this.timestamp = new Date().getTime();
     }
 
-    public Payment(User userFrom, User userTo, BigDecimal amount, String description, Date date, double longitude, double latitude) {
+    public Payment(User userFrom, User userTo, Group group, BigDecimal amount, String description, double longitude, double latitude) {
+        this();
         this.userFrom = userFrom;
         this.userTo = userTo;
+        this.group = group;
         this.amount = amount;
         this.description = description;
-        this.date = date;
         this.longitude = longitude;
         this.latitude = latitude;
+    }
+
+    public Payment(User userFrom, User userTo, Group group, BigDecimal amount, String description, Date date, double longitude, double latitude) {
+        this(userFrom, userTo, group, amount, description, longitude, latitude);
+        this.timestamp = date.getTime();
+    }
+
+    public Payment(User userFrom, User userTo, Group group, BigDecimal amount, String description, Long timestamp, double longitude, double latitude) {
+        this(userFrom, userTo, group, amount, description, longitude, latitude);
+        this.timestamp = timestamp;
+    }
+
+    @Override
+    public String toString() {
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
+        return String.format(
+                "{id: %d, key: (%s: %s -> %s), amount: %s, time: %d}",
+                id,
+                group.getTitle(),
+                userFrom.getUsername(),
+                userTo.getUsername(),
+                df.format(amount),
+                timestamp
+        );
+    }
+
+    public String toDetailedString() {
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
+        return String.format(
+                "{id: %d, key: %s, amount: %s, description: %s, time: %d}",
+                id,
+                new DebtKey(userFrom, userTo, group),
+                df.format(amount),
+                description,
+                timestamp
+        );
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Payment) {
+            Payment u = (Payment) obj;
+            return Integer.compare(id, u.getId()) == 0;
+        }
+        return false;
     }
 
     public Integer getId() {
@@ -97,28 +151,6 @@ public class Payment {
         this.description = description;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    @Override
-    public String toString() {
-        return "" + id + ": (" + userFrom + " -> " + userTo + ") of " + amount + ": " + description + " at: " + date;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof Payment) {
-            Payment u = (Payment) obj;
-            return Integer.compare(id, u.getId()) == 0;
-        }
-        return false;
-    }
-
     public double getLongitude() {
         return longitude;
     }
@@ -133,5 +165,21 @@ public class Payment {
 
     public void setLatitude(double latitude) {
         this.latitude = latitude;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
     }
 }
