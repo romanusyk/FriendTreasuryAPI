@@ -7,7 +7,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import romanusyk.ft.domain.Debt;
 import romanusyk.ft.domain.Payment;
+import romanusyk.ft.service.Optimizer;
 import romanusyk.ft.service.PaymentService;
 
 import java.math.BigDecimal;
@@ -25,6 +27,9 @@ public class PaymentController {
     @Autowired
     private PaymentService paymentService;
 
+    @Autowired
+    private Optimizer optimizer;
+
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
     public Page<Payment> getPayments(
@@ -39,17 +44,18 @@ public class PaymentController {
         return pageResult;
     }
 
-//    @RequestMapping(value = "/sum", method = RequestMethod.GET)
-//    @ResponseBody
-//    public BigDecimal getPaymentSum(
-//            @RequestHeader("Authorization") String authorization,
-//            @RequestParam(required = false) Integer userFrom,
-//            @RequestParam(required = false) Integer userTo,
-//            @RequestParam(required = false) Integer group
-//    ) {
-//
-//        BigDecimal result = paymentService.getPaymentSum(userFrom, userTo, group);
-//        return result;
-//    }
+    @RequestMapping(value = "/sum", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Debt> getPaymentSum(
+            @RequestHeader("Authorization") String authorization,
+            @RequestParam(required = false) Integer userFrom,
+            @RequestParam(required = false) Integer userTo,
+            @RequestParam(required = false) Integer group
+    ) {
+
+        optimizer.sumPayments(paymentService.getPayments(userFrom, userTo, group), group);
+        optimizer.optimizeDebts();
+        return optimizer.getDebts();
+    }
 
 }

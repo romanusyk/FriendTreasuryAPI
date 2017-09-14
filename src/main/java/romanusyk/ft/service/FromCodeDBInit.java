@@ -18,9 +18,6 @@ import java.math.BigDecimal;
 public class FromCodeDBInit implements DBInit {
 
     @Autowired
-    UserRepository userRepository;
-
-    @Autowired
     UserService userService;
 
     @Autowired
@@ -32,37 +29,50 @@ public class FromCodeDBInit implements DBInit {
     @Override
     public void init() {
 
-        Group group = new Group("505");
+        Group guys = new Group("guys");
+        Group universe = new Group("universe");
 
-//        groupRepository.save(group);
+        groupRepository.save(guys);
+        groupRepository.save(universe);
 
         User roma = new User("380952411401", "Roma", "111");
         User jura = new User("380960737750", "Jura", "111");
         User geka = new User("380952411403", "Geka", "111");
 
-        group.getUsers().add(roma);
-        group.getUsers().add(jura);
-        group.getUsers().add(geka);
+        guys.getUsers().add(roma);
+        guys.getUsers().add(jura);
+        guys.getUsers().add(geka);
 
-        roma.getGroups().add(group);
-        jura.getGroups().add(group);
-        geka.getGroups().add(group);
+        universe.getUsers().add(roma);
+        universe.getUsers().add(jura);
+        universe.getUsers().add(geka);
 
-//        userRepository.save(roma);
-//        userRepository.save(jura);
-//        userRepository.save(geka);
+        roma.getGroups().add(guys);
+        jura.getGroups().add(guys);
+        geka.getGroups().add(guys);
+
+        roma.getGroups().add(universe);
+        jura.getGroups().add(universe);
+        geka.getGroups().add(universe);
 
         userService.createUser(roma);
         userService.createUser(jura);
         userService.createUser(geka);
 
-        Payment payment1 = new Payment(roma, jura, group, new BigDecimal(100), "Test", 33.33, 6.66);
-        Payment payment2 = new Payment(jura, roma, group, new BigDecimal(200), "Test", 33.33, 6.66);
-        Payment payment3 = new Payment(roma, jura, group, new BigDecimal(300), "Test", 33.33, 6.66);
+        Payment payment1 = new Payment(roma, jura, guys, new BigDecimal(100), "Test", 33.33, 6.66);
+        Payment payment3 = new Payment(roma, jura, guys, new BigDecimal(300), "Test", 33.33, 6.66);
+        Payment payment2 = new Payment(jura, roma, guys, new BigDecimal(200), "Test", 33.33, 6.66);
+
+        Payment payment4 = new Payment(roma, jura, universe, new BigDecimal(100), "Test", 33.33, 6.66);
+        Payment payment5 = new Payment(jura, geka, universe, new BigDecimal(300), "Test", 33.33, 6.66);
+        Payment payment6 = new Payment(geka, roma, universe, new BigDecimal(200), "Test", 33.33, 6.66);
 
         paymentRepository.save(payment1);
         paymentRepository.save(payment2);
         paymentRepository.save(payment3);
+        paymentRepository.save(payment4);
+        paymentRepository.save(payment5);
+        paymentRepository.save(payment6);
 
     }
 }
