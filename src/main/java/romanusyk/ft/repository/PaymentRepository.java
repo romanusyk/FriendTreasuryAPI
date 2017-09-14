@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -30,4 +31,7 @@ public interface PaymentRepository extends CrudRepository<Payment, Integer> {
     List<Debt> getDebts();
 
     Page<Payment> findAll(Specification<Payment> specification, Pageable pageable);
+
+    List<Payment> findAll(Specification<Payment> specification);
+
 }

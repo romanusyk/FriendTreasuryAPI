@@ -18,7 +18,7 @@ import java.util.Date;
 public class Payment {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.TABLE)
     @Column(name = "id")
     private Integer id;
 
@@ -51,6 +51,11 @@ public class Payment {
 
     public Payment() {
         this.timestamp = new Date().getTime();
+    }
+
+    public Payment(BigDecimal amount) {
+        this();
+        this.amount = amount;
     }
 
     public Payment(User userFrom, User userTo, Group group, BigDecimal amount, String description, double longitude, double latitude) {

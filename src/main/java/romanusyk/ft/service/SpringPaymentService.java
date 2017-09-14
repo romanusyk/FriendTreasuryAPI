@@ -31,11 +31,17 @@ public class SpringPaymentService implements PaymentService {
 
     private static final Logger logger = Logger.getLogger(SpringPaymentService.class);
 
-    public Page<Payment> getPayments(int page, int size, Integer userFromID, Integer userToID, Integer groupID) {
+    @Override
+    public Page<Payment> getPaymentsPage(int page, int size, Integer userFromID, Integer userToID, Integer groupID) {
         Pageable pageable = new PageRequest(
                 page,size
         );
         return paymentRepository.findAll(PaymentSpecs.filterPayment(userFromID, userToID, groupID), pageable);
+    }
+
+    @Override
+    public List<Payment> getPayments(Integer userFromID, Integer userToID, Integer groupID) {
+        return paymentRepository.findAll(PaymentSpecs.filterPayment(userFromID, userToID, groupID));
     }
 
     @Override

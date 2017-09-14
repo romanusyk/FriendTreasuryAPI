@@ -28,6 +28,8 @@ public interface PaymentService {
 
     List<Debt> getDebts();
 
-    Page<Payment> getPayments(int page, int size, Integer userFromID, Integer userToID, Integer groupID);
+    Page<Payment> getPaymentsPage(int page, int size, Integer userFromID, Integer userToID, Integer groupID);
+
+    List<Payment> getPayments(Integer userFromID, Integer userToID, Integer groupID);
 
 }

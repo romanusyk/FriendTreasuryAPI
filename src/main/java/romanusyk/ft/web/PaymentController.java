@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import romanusyk.ft.domain.Payment;
 import romanusyk.ft.service.PaymentService;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -34,8 +35,21 @@ public class PaymentController {
             @RequestParam(required = false) Integer group
             ) {
 
-        Page<Payment> pageResult = paymentService.getPayments(page, size, userFrom, userTo, group);
+        Page<Payment> pageResult = paymentService.getPaymentsPage(page, size, userFrom, userTo, group);
         return pageResult;
     }
+
+//    @RequestMapping(value = "/sum", method = RequestMethod.GET)
+//    @ResponseBody
+//    public BigDecimal getPaymentSum(
+//            @RequestHeader("Authorization") String authorization,
+//            @RequestParam(required = false) Integer userFrom,
+//            @RequestParam(required = false) Integer userTo,
+//            @RequestParam(required = false) Integer group
+//    ) {
+//
+//        BigDecimal result = paymentService.getPaymentSum(userFrom, userTo, group);
+//        return result;
+//    }
 
 }

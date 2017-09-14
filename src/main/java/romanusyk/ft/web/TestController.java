@@ -1,27 +1,18 @@
 package romanusyk.ft.web;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import romanusyk.ft.domain.Group;
-import romanusyk.ft.domain.Payment;
-import romanusyk.ft.domain.PaymentDTO;
 import romanusyk.ft.domain.User;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-import romanusyk.ft.exception.UserNotFoundException;
-import romanusyk.ft.repository.Optimizer;
-import romanusyk.ft.security.JwtAccessToken;
+import romanusyk.ft.service.Optimizer;
 import romanusyk.ft.security.JwtUtil;
 import romanusyk.ft.service.PaymentService;
 import romanusyk.ft.service.UserService;
 
-import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -164,7 +155,7 @@ public class TestController {
 
     @RequestMapping(value = "optimize", method = RequestMethod.GET)
     public String optimize() {
-        optimizer.calculateDebts();
+        optimizer.optimizeDebts();
         return "Optimized!";
     }
 
