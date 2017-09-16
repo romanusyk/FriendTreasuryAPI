@@ -1,10 +1,20 @@
 package romanusyk.ft.service;
 
+import romanusyk.ft.domain.Group;
 import romanusyk.ft.domain.User;
+
+import java.util.List;
 
 /**
  * Created by romm on 29.08.17.
  */
 public interface GroupService {
-    void createGroup(String title, User creator);
+
+    Integer createGroup(Group group, User creator);
+
+    Group getGroupByTitle(String groupTitle);
+
+    void updateGroup(Group group);
+
+    List<Group> getGroupsByUser(User user);
 }

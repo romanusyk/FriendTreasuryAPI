@@ -5,19 +5,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import romanusyk.ft.domain.User;
 import romanusyk.ft.repository.GroupRepository;
 import romanusyk.ft.repository.UserRepository;
-
-import java.util.Collections;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.nullValue;
@@ -29,9 +22,7 @@ import static org.mockito.Mockito.*;
  * Created by Roman Usyk on 06.09.17.
  */
 @RunWith(SpringRunner.class)
-@TestPropertySource(
-        locations = "classpath:application-integration-test.yml"
-)
+@ActiveProfiles("test")
 public class SpringUserServiceTest {
 
     @InjectMocks

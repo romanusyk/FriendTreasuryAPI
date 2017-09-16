@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -31,10 +32,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(TestController.class)
-@TestPropertySource(
-        locations = "classpath:application-integration-test.yml"
-)
+@WebMvcTest(UserController.class)
+@ActiveProfiles("test")
 public class UserControllerTest {
 
     @Autowired
@@ -44,22 +43,16 @@ public class UserControllerTest {
     private PaymentService paymentService;
 
     @MockBean
-    @Qualifier("springUserServiceBean")
-    private UserService userService;
-
-    @MockBean
     private Optimizer optimizer;
 
-    private User roma;
-
-    @Before
-    public void setUp() {
-        roma = new User("12345", "roma", "111");
-        roma.setId(1);
-    }
+    @MockBean
+    private UserService userService;
 
     @Test
     public void testGetUserByIdOnValidId() throws Exception {
+
+        User roma = new User("12345", "roma", "111");
+        roma.setId(1);
 
         when(userService.getUserByID(roma.getId())).thenReturn(roma);
 
@@ -71,6 +64,9 @@ public class UserControllerTest {
 
     @Test
     public void testGetUserByUsernameOnInvalidUsername() throws Exception {
+
+        User roma = new User("12345", "roma", "111");
+        roma.setId(1);
 
         when(userService.getUserByID(anyInt())).thenReturn(null);
 

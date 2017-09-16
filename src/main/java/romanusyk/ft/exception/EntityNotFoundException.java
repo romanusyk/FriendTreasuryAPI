@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * Created by Roman Usyk on 12.09.17.
  */
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class UserNotFoundException extends RuntimeException {
+public class EntityNotFoundException extends RuntimeException {
 
-    public UserNotFoundException(Integer userID) {
-        super(String.format("User with id %s was not found.", userID));
+    public EntityNotFoundException(Class entityClass, Object entity) {
+        super(String.format("Entity of type %s: %s was not found.", entityClass, entity.toString()));
     }
 
-    public UserNotFoundException(String message) {
+    public EntityNotFoundException(String message) {
         super(message);
     }
 

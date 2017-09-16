@@ -39,6 +39,10 @@ public class FromCodeDBInit implements DBInit {
         User jura = new User("380960737750", "Jura", "111");
         User geka = new User("380952411403", "Geka", "111");
 
+        userService.createUser(roma);
+        userService.createUser(jura);
+        userService.createUser(geka);
+
         guys.getUsers().add(roma);
         guys.getUsers().add(jura);
         guys.getUsers().add(geka);
@@ -55,9 +59,8 @@ public class FromCodeDBInit implements DBInit {
         jura.getGroups().add(universe);
         geka.getGroups().add(universe);
 
-        userService.createUser(roma);
-        userService.createUser(jura);
-        userService.createUser(geka);
+        groupRepository.save(guys);
+        groupRepository.save(universe);
 
         Payment payment1 = new Payment(roma, jura, guys, new BigDecimal(100), "Test", 33.33, 6.66);
         Payment payment3 = new Payment(roma, jura, guys, new BigDecimal(300), "Test", 33.33, 6.66);

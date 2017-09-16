@@ -23,7 +23,7 @@ import java.util.*;
 @CrossOrigin
 @RestController
 @Api("Test controller")
-@RequestMapping("/api/v1")
+//@RequestMapping("/api/v1")
 public class TestController {
 
     @Autowired
@@ -41,12 +41,12 @@ public class TestController {
      * Sanity check
      * @return
      */
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+//    @RequestMapping(value = "/", method = RequestMethod.GET)
     public String hello() {
         return "Hello!";
     }
 
-    @RequestMapping(value = "/user/groups", method = RequestMethod.GET)
+//    @RequestMapping(value = "/user/groups", method = RequestMethod.GET)
     public ResponseEntity<Set<Group>> getUserById(@RequestHeader("Authorization") String authorization) {
         String tokenValue = getTokenValue(authorization);
         User u = JwtUtil.parseToken(tokenValue);
@@ -61,7 +61,7 @@ public class TestController {
         return new ResponseEntity<>(u.getGroups(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/user_debts", method = RequestMethod.GET)
+//    @RequestMapping(value = "/user_debts", method = RequestMethod.GET)
     public ResponseEntity<Map<Integer, BigDecimal>> getUserDebts(@RequestHeader("Authorization") String authorization)
     {
         String tokenValue = getTokenValue(authorization);
@@ -153,7 +153,7 @@ public class TestController {
 //        }
 //    }
 
-    @RequestMapping(value = "optimize", method = RequestMethod.GET)
+//    @RequestMapping(value = "optimize", method = RequestMethod.GET)
     public String optimize() {
         optimizer.optimizeDebts();
         return "Optimized!";

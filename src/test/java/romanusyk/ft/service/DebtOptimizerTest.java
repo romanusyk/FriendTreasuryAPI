@@ -1,14 +1,11 @@
 package romanusyk.ft.service;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import romanusyk.ft.FTApplication;
@@ -17,7 +14,6 @@ import romanusyk.ft.domain.Payment;
 import romanusyk.ft.domain.User;
 import romanusyk.ft.repository.GroupRepository;
 import romanusyk.ft.repository.UserRepository;
-import romanusyk.ft.service.Optimizer;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -35,9 +31,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
         classes = FTApplication.class
 )
 @AutoConfigureMockMvc
-@TestPropertySource(
-        locations = "classpath:application-integration-test.yml"
-)
+@ActiveProfiles("test")
 public class DebtOptimizerTest {
 
     @Autowired private UserRepository userRepository;

@@ -1,10 +1,13 @@
 package romanusyk.ft.web;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import romanusyk.ft.domain.Group;
-import romanusyk.ft.domain.Payment;
 import romanusyk.ft.domain.User;
+import romanusyk.ft.exception.EntityNotFoundException;
+import romanusyk.ft.service.GroupService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -18,10 +21,48 @@ import java.util.List;
 @RequestMapping("/api/v1/groups")
 public class GroupController {
 
-    public Group getGroupByName(String groupName) { return null; }
+    @Autowired
+    GroupService groupService;
 
+    @ApiOperation(
+            value = "Get group by title",
+            produces = "Application/json"
+    )
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    @ResponseBody
+    public Group getGroupByTitle(@RequestParam("title") String groupTitle) {
+        Group group = groupService.getGroupByTitle(groupTitle);
+        if (group == null) {
+            throw new EntityNotFoundException(Group.class, new Group(groupTitle));
+        }
+        return group;
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    @ResponseBody
+    public Integer createGroup(
+            @RequestHeader("Authorization") String authorization,
+            @RequestBody @Valid Group group) {
+        //TODO: Parse user from token
+        User creator = null;
+
+        return groupService.createGroup(group, creator);
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.PATCH)
+    public void updateGroup(
+            @RequestHeader("Authorization") String authorization,
+            @RequestBody @Valid Group group) {
+        groupService.updateGroup(group);
+    }
+
+    @RequestMapping(value = "/my", method = RequestMethod.GET)
+    @ResponseBody
     public List<Group> getUserGroups(@RequestHeader("Authorization") String authorization) {
-        return null;
+        //TODO: Parse user from token
+        User user = new User();
+        user.setId(1);
+        return groupService.getGroupsByUser(user);
     }
 
 }

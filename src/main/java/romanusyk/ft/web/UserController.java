@@ -6,24 +6,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import romanusyk.ft.domain.User;
 import romanusyk.ft.exception.EntityAlreadyExistsException;
 import romanusyk.ft.exception.NotValidEntityException;
 import romanusyk.ft.exception.NotValidPasswordException;
-import romanusyk.ft.exception.UserNotFoundException;
+import romanusyk.ft.exception.EntityNotFoundException;
 import romanusyk.ft.security.JwtAccessToken;
 import romanusyk.ft.security.JwtUtil;
 import romanusyk.ft.service.UserService;
 
 import javax.validation.Valid;
 import java.lang.invoke.MethodHandles;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Roman Usyk on 12.09.17.
@@ -52,8 +48,11 @@ public class UserController {
     @ResponseBody
     public User getUserById(@PathVariable("id") Integer id) {
         User user = userService.getUserByID(id);
+        logger.debug(String.format("getUserById(%d) -> %s", id, user));
         if (user == null) {
-            throw new UserNotFoundException(id);
+            User fakeUser = new User();
+            fakeUser.setId(id);
+            throw new EntityNotFoundException(User.class, fakeUser);
         }
         return user;
     }
@@ -88,6 +87,12 @@ public class UserController {
 
         return JwtUtil.getInstance().getToken(validatedUser);
     }
+
+    public void updateUser(@RequestHeader("Authorization") String authorization, User user) {return;}
+
+    public void joinGroup(@RequestHeader("Authorization") String authorization, Integer groupID) { return; }
+
+    public void leaveGroup(@RequestHeader("Authorization") String authorization, Integer groupID) { return; }
 
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 }

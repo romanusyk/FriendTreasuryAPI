@@ -1,8 +1,11 @@
 package romanusyk.ft.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModelProperty;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,6 +20,8 @@ public class Group {
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Integer id;
 
+    @NotEmpty
+    @NotNull
     @Column(nullable = false, unique = true, length = 100)
     private String title;
 
@@ -27,17 +32,16 @@ public class Group {
 
 
     public Group() {
-    }
-
-    public Group(String title) {
-
-        this.title = title;
         this.users = new HashSet<>();
     }
 
-    public Group(String title, Set<User> users) {
-
+    public Group(String title) {
+        this();
         this.title = title;
+    }
+
+    public Group(String title, Set<User> users) {
+        this(title);
         this.users = users;
     }
 
