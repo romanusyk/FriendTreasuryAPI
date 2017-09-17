@@ -11,6 +11,9 @@ spring:
   profiles:
     active: "dev"
 
+ft:
+  token:
+    header: "X-Auth-Token"
 
 ---
 

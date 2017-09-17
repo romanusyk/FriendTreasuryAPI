@@ -1,18 +1,15 @@
 package romanusyk.ft.service;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import romanusyk.ft.domain.Group;
-import romanusyk.ft.exception.NotValidEntityException;
+import romanusyk.ft.exception.EntityNotValidException;
 import romanusyk.ft.repository.GroupRepository;
+import romanusyk.ft.service.implementations.SpringGroupService;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -46,7 +43,7 @@ public class SpringGroupServiceTest {
 
     }
 
-    @Test(expected = NotValidEntityException.class)
+    @Test(expected = EntityNotValidException.class)
     public void testCreateGroupOnGroupWithId() {
 
         Group group = new Group("testGroup");

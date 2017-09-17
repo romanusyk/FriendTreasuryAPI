@@ -1,4 +1,4 @@
-package romanusyk.ft.service;
+package romanusyk.ft.service.implementations;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import romanusyk.ft.repository.PaymentRepository;
 import romanusyk.ft.repository.PaymentSpecs;
 import romanusyk.ft.repository.UserRepository;
+import romanusyk.ft.service.interfaces.PaymentService;
 
 import java.math.BigDecimal;
 import java.util.Date;

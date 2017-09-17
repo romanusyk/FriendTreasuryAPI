@@ -1,5 +1,6 @@
 package romanusyk.ft.repository;
 
+import org.springframework.data.repository.query.QueryByExampleExecutor;
 import romanusyk.ft.domain.Group;
 import romanusyk.ft.domain.User;
 import org.springframework.data.repository.CrudRepository;
@@ -10,7 +11,7 @@ import java.util.List;
 /**
  * Created by romm on 28.02.17.
  */
-public interface UserRepository extends CrudRepository<User, Integer> {
+public interface UserRepository extends CrudRepository<User, Integer>, QueryByExampleExecutor<User> {
 
     User findUserByUsername(@Param("username") String username);
 

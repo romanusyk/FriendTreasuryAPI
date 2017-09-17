@@ -6,16 +6,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindingResult;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import romanusyk.ft.domain.User;
 import romanusyk.ft.exception.EntityAlreadyExistsException;
-import romanusyk.ft.exception.NotValidEntityException;
 import romanusyk.ft.exception.NotValidPasswordException;
 import romanusyk.ft.exception.EntityNotFoundException;
 import romanusyk.ft.security.JwtAccessToken;
 import romanusyk.ft.security.JwtUtil;
-import romanusyk.ft.service.UserService;
+import romanusyk.ft.security.JwtUtilImpl;
+import romanusyk.ft.service.implementations.SpringUserService;
+import romanusyk.ft.service.interfaces.UserService;
 
 import javax.validation.Valid;
 import java.lang.invoke.MethodHandles;
@@ -32,6 +33,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @ApiOperation(
             value = "get all users",
@@ -60,39 +64,58 @@ public class UserController {
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public JwtAccessToken addUser(@RequestBody @Valid User user, BindingResult bindingResult) {
-
-        if (bindingResult.hasErrors()) {
-            throw new NotValidEntityException(User.class,
-                    NotValidEntityException.getStringErrors(bindingResult));
-        }
+    public JwtAccessToken addUser(@RequestBody @Valid User user) {
 
         User existingUser = userService.getUserByUsername(user.getUsername());
         if (existingUser != null) throw new EntityAlreadyExistsException(User.class, existingUser);
 
-        logger.info("Persisting user : " + user);
+        SpringUserService.encryptPassword(user);
         userService.createUser(user);
 
-        return JwtUtil.getInstance().getToken(user);
+        return jwtUtil.generateToken(user);
     }
 
-    @RequestMapping(value = "", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/access", method = RequestMethod.POST)
     @ResponseBody
     public JwtAccessToken validateUser(@RequestBody User user) {
 
         logger.info("Validating user : " + user);
+        logger.debug(user.getPassword());
         User validatedUser = userService.validateUser(user);
 
         if (validatedUser == null) throw new NotValidPasswordException(user);
 
-        return JwtUtil.getInstance().getToken(validatedUser);
+        return jwtUtil.generateToken(validatedUser);
     }
 
-    public void updateUser(@RequestHeader("Authorization") String authorization, User user) {return;}
 
-    public void joinGroup(@RequestHeader("Authorization") String authorization, Integer groupID) { return; }
+    @RequestMapping(value = "", method = RequestMethod.PATCH)
+    @PreAuthorize("@securityService.hasRole('user')")
+    public void updateUser(@RequestBody @Valid User user) {
+        userService.updateUser(user);
+    }
 
-    public void leaveGroup(@RequestHeader("Authorization") String authorization, Integer groupID) { return; }
+    @RequestMapping(value = "group/{group}", method = RequestMethod.PUT)
+    public void joinGroup(
+            @RequestHeader("Authorization") String authorization,
+            @PathVariable("group") Integer groupID) {
+        //TODO Parse user
+        User user = new User();
+        user.setId(1);
+
+        userService.addUserToGroup(user.getId(), groupID);
+    }
+
+    @RequestMapping(value = "group/{group}", method = RequestMethod.DELETE)
+    public void leaveGroup(
+            @RequestHeader("Authorization") String authorization,
+            @PathVariable("group") Integer groupID) {
+        //TODO Parse user
+        User user = new User();
+        user.setId(1);
+
+        userService.removeUserFromGroup(user.getId(), groupID);
+    }
 
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 }

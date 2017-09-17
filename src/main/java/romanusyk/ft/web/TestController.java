@@ -1,20 +1,12 @@
 package romanusyk.ft.web;
 
 import io.swagger.annotations.Api;
-import romanusyk.ft.domain.Group;
-import romanusyk.ft.domain.User;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import romanusyk.ft.service.Optimizer;
-import romanusyk.ft.security.JwtUtil;
-import romanusyk.ft.service.PaymentService;
-import romanusyk.ft.service.UserService;
-
-import java.math.BigDecimal;
-import java.util.*;
+import romanusyk.ft.service.interfaces.Optimizer;
+import romanusyk.ft.service.interfaces.PaymentService;
+import romanusyk.ft.service.interfaces.UserService;
 
 /**
  * Created by romm on 01.02.17.
@@ -47,38 +39,38 @@ public class TestController {
     }
 
 //    @RequestMapping(value = "/user/groups", method = RequestMethod.GET)
-    public ResponseEntity<Set<Group>> getUserById(@RequestHeader("Authorization") String authorization) {
-        String tokenValue = getTokenValue(authorization);
-        User u = JwtUtil.parseToken(tokenValue);
-        logger.debug(u);
-        if (u == null || u.getId() == null) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-        if (!checkPermissions(u.getId(), authorization)) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-        u = userService.getUserByID(u.getId());
-        return new ResponseEntity<>(u.getGroups(), HttpStatus.OK);
-    }
+//    public ResponseEntity<Set<Group>> getUserById(@RequestHeader("Authorization") String authorization) {
+//        String tokenValue = getTokenValue(authorization);
+//        User u = JwtUtil.parseToken(tokenValue);
+//        logger.debug(u);
+//        if (u == null || u.getId() == null) {
+//            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+//        }
+//        if (!checkPermissions(u.getId(), authorization)) {
+//            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+//        }
+//        u = userService.getUserByID(u.getId());
+//        return new ResponseEntity<>(u.getGroups(), HttpStatus.OK);
+//    }
 
 //    @RequestMapping(value = "/user_debts", method = RequestMethod.GET)
-    public ResponseEntity<Map<Integer, BigDecimal>> getUserDebts(@RequestHeader("Authorization") String authorization)
-    {
-        String tokenValue = getTokenValue(authorization);
-        User u = JwtUtil.parseToken(tokenValue);
-        logger.debug(u);
-        if (u == null || u.getId() == null) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-        if (!checkPermissions(u.getId(), authorization)) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-        Map<Integer, BigDecimal> result = paymentService.getUserPayments(u.getId());
-        if (result == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
+//    public ResponseEntity<Map<Integer, BigDecimal>> getUserDebts(@RequestHeader("Authorization") String authorization)
+//    {
+//        String tokenValue = getTokenValue(authorization);
+//        User u = JwtUtil.parseToken(tokenValue);
+//        logger.debug(u);
+//        if (u == null || u.getId() == null) {
+//            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+//        }
+//        if (!checkPermissions(u.getId(), authorization)) {
+//            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+//        }
+//        Map<Integer, BigDecimal> result = paymentService.getUserPayments(u.getId());
+//        if (result == null) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        return new ResponseEntity<>(result, HttpStatus.OK);
+//    }
 
 //    @RequestMapping(value = "/user_debts/{id}", method = RequestMethod.GET)
 //    public ResponseEntity<List<PaymentDTO>> getDebtsBetweenUsers(
@@ -163,9 +155,9 @@ public class TestController {
         return authorizationHeader.split(" ")[1];
     }
 
-    public static boolean checkPermissions(Integer userID, String authorizationHeader) {
-        JwtUtil jwtUtil = JwtUtil.getInstance();
-        String token = authorizationHeader.split(" ")[1];
-        return jwtUtil.hasAccess(userID, token);
-    }
+//    public static boolean checkPermissions(Integer userID, String authorizationHeader) {
+//        JwtUtil jwtUtil = JwtUtil.getInstance();
+//        String token = authorizationHeader.split(" ")[1];
+//        return jwtUtil.hasAccess(userID, token);
+//    }
 }

@@ -1,19 +1,18 @@
-package romanusyk.ft.service;
+package romanusyk.ft.service.implementations;
 
-import org.hibernate.HibernateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import romanusyk.ft.domain.Group;
 import romanusyk.ft.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import romanusyk.ft.exception.NotValidEntityException;
+import romanusyk.ft.exception.EntityNotValidException;
 import romanusyk.ft.repository.GroupRepository;
 import romanusyk.ft.repository.UserRepository;
+import romanusyk.ft.service.interfaces.GroupService;
 
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -32,7 +31,7 @@ public class SpringGroupService implements GroupService {
     public Integer createGroup(Group group, User creator) {
 
         if (group.getId() != null) {
-            throw new NotValidEntityException(
+            throw new EntityNotValidException(
                     String.format(
                             "Attempt to create group \"%s\" with non-empty id: %d",
                             group.getTitle(),
@@ -42,7 +41,7 @@ public class SpringGroupService implements GroupService {
         }
 
         if (!group.getUsers().isEmpty()) {
-            throw new NotValidEntityException(
+            throw new EntityNotValidException(
                     String.format(
                             "Attempt to create group \"%s\" with non-empty set of users.",
                             group.getTitle()
@@ -71,13 +70,13 @@ public class SpringGroupService implements GroupService {
     public void updateGroup(Group group) {
 
         if (group.getId() == null) {
-            throw new NotValidEntityException("Attempt to update group with null id");
+            throw new EntityNotValidException("Attempt to update group with null id");
         }
 
         Group existingGroup = groupRepository.findOne(group.getId());
 
         if (existingGroup == null) {
-            throw new NotValidEntityException("Attempt to update non-exising group by id: " + group.getId());
+            throw new EntityNotValidException("Attempt to update non-existing group by id: " + group.getId());
         }
 
         existingGroup.setTitle(group.getTitle());

@@ -41,7 +41,7 @@ public class SimpleIntegrationTest {
 
     @Before
     public void setUp() {
-        roma = new User("12345", "roma", "111");
+        roma = new User("12345", "roma", "111", "user");
         userRepository.save(roma);
     }
 

@@ -13,8 +13,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import romanusyk.ft.domain.Group;
-import romanusyk.ft.exception.NotValidEntityException;
-import romanusyk.ft.service.GroupService;
+import romanusyk.ft.exception.EntityNotValidException;
+import romanusyk.ft.service.interfaces.GroupService;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -87,7 +87,7 @@ public class GroupControllerTest {
         Group group = new Group("testGroup");
         group.setId(1);
 
-        when(groupService.createGroup(any(), any())).thenThrow(new NotValidEntityException(""));
+        when(groupService.createGroup(any(), any())).thenThrow(new EntityNotValidException(""));
 
         mvc.perform(post("/api/v1/groups/")
                 .header("Authorization", "dsdfsf")

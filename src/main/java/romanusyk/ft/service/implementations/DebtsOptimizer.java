@@ -1,9 +1,8 @@
-package romanusyk.ft.service;
+package romanusyk.ft.service.implementations;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import romanusyk.ft.domain.Debt;
 import romanusyk.ft.domain.Group;
@@ -11,6 +10,7 @@ import romanusyk.ft.domain.Payment;
 import romanusyk.ft.domain.User;
 import romanusyk.ft.repository.GroupRepository;
 import romanusyk.ft.repository.UserRepository;
+import romanusyk.ft.service.interfaces.Optimizer;
 
 import java.lang.invoke.MethodHandles;
 import java.math.BigDecimal;

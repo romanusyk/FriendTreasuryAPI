@@ -1,4 +1,4 @@
-package romanusyk.ft.service;
+package romanusyk.ft.service.interfaces;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;

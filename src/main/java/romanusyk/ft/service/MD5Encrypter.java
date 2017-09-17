@@ -11,6 +11,11 @@ public class MD5Encrypter {
     public static String encrypt(String password) {
 
         String result = null;
+
+        if (password == null) {
+            return result;
+        }
+
         try {
             // Create MessageDigest instance for MD5
             MessageDigest md = MessageDigest.getInstance("MD5");

@@ -1,4 +1,4 @@
-package romanusyk.ft.service;
+package romanusyk.ft.service.interfaces;
 
 import org.springframework.data.domain.Page;
 import romanusyk.ft.domain.Debt;

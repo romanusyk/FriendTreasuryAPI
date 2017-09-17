@@ -34,8 +34,12 @@ public class User {
     private String password;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "users", cascade = CascadeType.MERGE    )
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "users", cascade = CascadeType.MERGE)
     private Set<Group> groups;
+
+    @Column
+    @JsonIgnore
+    private String authorities;
 
     @Override
     public String toString() {
@@ -72,15 +76,16 @@ public class User {
         this.groups = new HashSet<>();
     }
 
-    public User(String phone, String username, String password) {
+    public User(String phone, String username, String password, String authorities) {
         this();
         this.phone = phone;
         this.username = username;
         this.password = password;
+        this.authorities = authorities;
     }
 
-    public User(String phone, String username, String password, Set<Group> groups) {
-        this(phone, username, password);
+    public User(String phone, String username, String password, String authorities, Set<Group> groups) {
+        this(phone, username, password, authorities);
         this.groups = groups;
     }
 
@@ -122,5 +127,13 @@ public class User {
 
     public void setGroups(Set<Group> groups) {
         this.groups = groups;
+    }
+
+    public String getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(String authorities) {
+        this.authorities = authorities;
     }
 }

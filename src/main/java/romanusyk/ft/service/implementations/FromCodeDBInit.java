@@ -1,4 +1,4 @@
-package romanusyk.ft.service;
+package romanusyk.ft.service.implementations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,7 +7,8 @@ import romanusyk.ft.domain.Payment;
 import romanusyk.ft.domain.User;
 import romanusyk.ft.repository.GroupRepository;
 import romanusyk.ft.repository.PaymentRepository;
-import romanusyk.ft.repository.UserRepository;
+import romanusyk.ft.service.interfaces.DBInit;
+import romanusyk.ft.service.interfaces.UserService;
 
 import java.math.BigDecimal;
 
@@ -35,9 +36,13 @@ public class FromCodeDBInit implements DBInit {
         groupRepository.save(guys);
         groupRepository.save(universe);
 
-        User roma = new User("380952411401", "Roma", "111");
-        User jura = new User("380960737750", "Jura", "111");
-        User geka = new User("380952411403", "Geka", "111");
+        User roma = new User("380952411401", "Roma", "111", "user");
+        User jura = new User("380960737750", "Jura", "111", "user");
+        User geka = new User("380952411403", "Geka", "111", "user");
+
+        SpringUserService.encryptPassword(roma);
+        SpringUserService.encryptPassword(jura);
+        SpringUserService.encryptPassword(geka);
 
         userService.createUser(roma);
         userService.createUser(jura);

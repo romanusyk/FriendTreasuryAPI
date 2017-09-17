@@ -3,16 +3,12 @@ package romanusyk.ft.web;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import romanusyk.ft.domain.Debt;
 import romanusyk.ft.domain.Payment;
-import romanusyk.ft.service.Optimizer;
-import romanusyk.ft.service.PaymentService;
+import romanusyk.ft.service.interfaces.Optimizer;
+import romanusyk.ft.service.interfaces.PaymentService;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 /**

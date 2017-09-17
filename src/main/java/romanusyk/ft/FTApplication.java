@@ -3,7 +3,7 @@ package romanusyk.ft;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-import romanusyk.ft.service.FromCodeDBInit;
+import romanusyk.ft.service.implementations.FromCodeDBInit;
 
 /**
  * Created by Roman Usyk on 03.09.17.

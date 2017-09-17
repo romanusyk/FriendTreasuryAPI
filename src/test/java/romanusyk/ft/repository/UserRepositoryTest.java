@@ -37,7 +37,7 @@ public class UserRepositoryTest {
 
     @Before
     public void init() {
-        roma = new User("12345", "Roma", "111");
+        roma = new User("12345", "Roma", "111", "user");
         entityManager.persist(roma);
         entityManager.flush();
     }

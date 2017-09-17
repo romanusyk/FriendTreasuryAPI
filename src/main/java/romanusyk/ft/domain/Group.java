@@ -86,4 +86,13 @@ public class Group {
     public void setUsers(Set<User> users) {
         this.users = users;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Group) {
+            Group that = (Group) obj;
+            return !(this.id == null || that.id == null) && this.id.equals(that.id);
+        }
+        return false;
+    }
 }

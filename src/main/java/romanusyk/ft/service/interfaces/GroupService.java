@@ -1,4 +1,4 @@
-package romanusyk.ft.service;
+package romanusyk.ft.service.interfaces;
 
 import romanusyk.ft.domain.Group;
 import romanusyk.ft.domain.User;

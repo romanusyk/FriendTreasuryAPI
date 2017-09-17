@@ -1,4 +1,4 @@
-package romanusyk.ft.service;
+package romanusyk.ft.service.interfaces;
 
 import romanusyk.ft.domain.User;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,16 +13,18 @@ public interface UserService {
 
     User getUserByID(Integer id);
 
-    @Transactional
-    void createUser(User user);
-
-    @Transactional(readOnly = true)
     User validateUser(User user);
 
-    @Transactional(readOnly = true)
     List<User> getAllUsers();
 
-    @Transactional(readOnly = true)
     User getUserByUsername(String username);
+
+    Integer createUser(User user);
+
+    void updateUser(User user);
+
+    void addUserToGroup(Integer userID, Integer groupID);
+
+    void removeUserFromGroup(Integer userID, Integer groupID);
 
 }

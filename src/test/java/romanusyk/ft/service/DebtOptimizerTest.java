@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import romanusyk.ft.FTApplication;
 import romanusyk.ft.domain.Group;
@@ -14,6 +13,7 @@ import romanusyk.ft.domain.Payment;
 import romanusyk.ft.domain.User;
 import romanusyk.ft.repository.GroupRepository;
 import romanusyk.ft.repository.UserRepository;
+import romanusyk.ft.service.interfaces.Optimizer;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -45,9 +45,9 @@ public class DebtOptimizerTest {
     public void testSumPayments() {
 
         Group group = new Group("groupTitle");
-        User alice = new User("123", "Alice", "12345");
-        User bob = new User("456", "Bob", "12345");
-        User carol = new User("789", "Carol", "12345");
+        User alice = new User("123", "Alice", "12345", "user");
+        User bob = new User("456", "Bob", "12345", "user");
+        User carol = new User("789", "Carol", "12345", "user");
 
         groupRepository.save(group);
         userRepository.save(alice);
@@ -93,9 +93,9 @@ public class DebtOptimizerTest {
     public void testOptimizeDebtsOnOneCircle() {
 
         Group group = new Group("groupTitle");
-        User alice = new User("123", "Alice", "12345");
-        User bob = new User("456", "Bob", "12345");
-        User carol = new User("789", "Carol", "12345");
+        User alice = new User("123", "Alice", "12345", "user");
+        User bob = new User("456", "Bob", "12345", "user");
+        User carol = new User("789", "Carol", "12345", "user");
 
         groupRepository.save(group);
         userRepository.save(alice);
@@ -135,10 +135,10 @@ public class DebtOptimizerTest {
 
         Group group = new Group("groupTitle");
 
-        User alice = new User("123", "Alice", "12345");
-        User bob = new User("456", "Bob", "12345");
-        User carol = new User("789", "Carol", "12345");
-        User dan = new User("147", "Dan", "12345");
+        User alice = new User("123", "Alice", "12345", "user");
+        User bob = new User("456", "Bob", "12345", "user");
+        User carol = new User("789", "Carol", "12345", "user");
+        User dan = new User("147", "Dan", "12345", "user");
 
         groupRepository.save(group);
         userRepository.save(alice);

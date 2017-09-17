@@ -9,34 +9,25 @@ import java.util.Date;
  */
 public class JwtAccessToken {
 
-    public static final long EXPIRE_TIME = 1000 * 60 * 60 * 24;
-
     private String token;
 
     private long expireTime;
 
-    public JwtAccessToken(String token) {
+    public JwtAccessToken() {}
+
+    public JwtAccessToken(String token, long expireTime) {
         this.token = token;
-        expireTime = new Date().getTime() + EXPIRE_TIME;
+        this.expireTime = expireTime;
     }
 
-    public void refresh() {
-        expireTime = new Date().getTime() + EXPIRE_TIME;
-    }
-
-    @JsonIgnore
-    public boolean isExpired() {
-        return new Date().getTime() > expireTime;
-    }
-
-    public String getValue() {
+    public String getToken() {
         return token;
     }
 
-    public void setValue(String token) {
+    public void setToken(String token) {
         this.token = token;
-        refresh();
     }
+
 
     public long getExpireTime() {
         return expireTime;

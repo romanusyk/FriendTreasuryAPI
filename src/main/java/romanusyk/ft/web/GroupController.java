@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import romanusyk.ft.domain.Group;
 import romanusyk.ft.domain.User;
 import romanusyk.ft.exception.EntityNotFoundException;
-import romanusyk.ft.service.GroupService;
+import romanusyk.ft.service.interfaces.GroupService;
 
 import javax.validation.Valid;
 import java.util.List;

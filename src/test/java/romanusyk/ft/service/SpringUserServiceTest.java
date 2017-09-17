@@ -6,11 +6,11 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import romanusyk.ft.domain.User;
 import romanusyk.ft.repository.GroupRepository;
 import romanusyk.ft.repository.UserRepository;
+import romanusyk.ft.service.implementations.SpringUserService;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.nullValue;
@@ -38,7 +38,7 @@ public class SpringUserServiceTest {
 
     @Before
     public void setUp() {
-        roma = new User("12345", "roma", "111");
+        roma = new User("12345", "roma", "111", "user");
     }
 
     @Test

@@ -1,21 +1,18 @@
 package romanusyk.ft.web;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import romanusyk.ft.domain.User;
-import romanusyk.ft.service.Optimizer;
-import romanusyk.ft.service.PaymentService;
-import romanusyk.ft.service.UserService;
+import romanusyk.ft.service.interfaces.Optimizer;
+import romanusyk.ft.service.interfaces.PaymentService;
+import romanusyk.ft.service.interfaces.UserService;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -51,7 +48,7 @@ public class UserControllerTest {
     @Test
     public void testGetUserByIdOnValidId() throws Exception {
 
-        User roma = new User("12345", "roma", "111");
+        User roma = new User("12345", "roma", "111", "user");
         roma.setId(1);
 
         when(userService.getUserByID(roma.getId())).thenReturn(roma);
@@ -65,7 +62,7 @@ public class UserControllerTest {
     @Test
     public void testGetUserByUsernameOnInvalidUsername() throws Exception {
 
-        User roma = new User("12345", "roma", "111");
+        User roma = new User("12345", "roma", "111", "user");
         roma.setId(1);
 
         when(userService.getUserByID(anyInt())).thenReturn(null);
