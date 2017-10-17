@@ -1,0 +1,8 @@
+.spinner-loading.fixed-middle-position {
+  .fa-spinner {
+    position: fixed;
+  }
+  &::after {
+    position: fixed;
+  }
+}

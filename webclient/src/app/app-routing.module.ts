@@ -1,25 +1,26 @@
-import { IndexComponent } from './index/index.component';
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { AuthComponent } from './auth/auth.component';
+import { AuthComponent } from './auths/components/auth.component';
+import { Error404Component } from './shared/components/error404/error404.component';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+
+import {AppConfig} from './config/app.config';
 
 const routes: Routes = [
-  {
-    path: 'register',
-    component: AuthComponent
-  },
-  {
-    path: 'login',
-    component: AuthComponent
-  },
-  {
-    path: 'index',
-    component: IndexComponent
-  }
+  {path: '', redirectTo: 'login', pathMatch: 'full'},
+  {path: AppConfig.routes.error404, component: Error404Component},
+  {path: 'login', component: AuthComponent},
+  {path: 'register', component: AuthComponent},
+  {path: '**', redirectTo: '/' + AppConfig.routes.error404}
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  imports: [
+    RouterModule.forRoot(routes)
+  ],
+  exports: [
+    RouterModule
+  ]
 })
-export class AppRoutingModule { }
+
+export class AppRoutingModule {
+}
