@@ -1,9 +1,13 @@
 package romanusyk.ft.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.lang.invoke.MethodHandles;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -15,11 +19,25 @@ public class PaymentDTO {
 
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
+    @NotNull
     private Integer userFrom;
+
+    @NotNull
+    @NotEmpty
     private Integer[] usersTo;
+
+    @NotNull
     private Integer group;
+
+    @NotNull
     private BigDecimal amount;
+
+    @Min(0)
+    @Max(1)
     private Integer shallIPayForMyself;
+
+    @NotNull
+    @NotEmpty
     private String description;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MMM-dd")
@@ -29,19 +47,19 @@ public class PaymentDTO {
     private double latitude;
 
     public PaymentDTO() {
-
+        shallIPayForMyself = 1;
     }
 
     public PaymentDTO(Integer userFrom, Integer[] usersTo, Integer group,
                       BigDecimal amount, String description,
                       Date date, double longitude, double latitude) {
+        this();
         this.userFrom = userFrom;
         this.usersTo = usersTo;
         this.group = group;
         this.amount = amount;
         this.description = description;
         this.date = date;
-        this.shallIPayForMyself = 1;
         this.longitude = longitude;
         this.latitude = latitude;
     }
@@ -97,11 +115,10 @@ public class PaymentDTO {
     }
 
     public void setShallIPayForMyself(Integer shallIPayForMyself) {
-        if (shallIPayForMyself == 0 || shallIPayForMyself == 1) {
-            this.shallIPayForMyself = shallIPayForMyself;
-        } else {
+        if (shallIPayForMyself == null) {
             this.shallIPayForMyself = 1;
-            logger.error("Trying to set " + shallIPayForMyself + " to 'setShallIPayForMyself' field. Setting default value : " + this.shallIPayForMyself + ".");
+        } else {
+            this.shallIPayForMyself = shallIPayForMyself;
         }
     }
 
@@ -120,4 +137,13 @@ public class PaymentDTO {
     public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
+
+    public Integer getGroup() {
+        return group;
+    }
+
+    public void setGroup(Integer group) {
+        this.group = group;
+    }
+
 }

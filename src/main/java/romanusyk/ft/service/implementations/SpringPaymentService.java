@@ -7,6 +7,7 @@ import romanusyk.ft.domain.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import romanusyk.ft.repository.GroupRepository;
 import romanusyk.ft.repository.PaymentRepository;
 import romanusyk.ft.repository.PaymentSpecs;
 import romanusyk.ft.repository.UserRepository;
@@ -25,10 +26,13 @@ import java.util.Map;
 public class SpringPaymentService implements PaymentService {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    PaymentRepository paymentRepository;
+    private GroupRepository groupRepository;
+
+    @Autowired
+    private PaymentRepository paymentRepository;
 
     private static final Logger logger = Logger.getLogger(SpringPaymentService.class);
 
@@ -46,22 +50,34 @@ public class SpringPaymentService implements PaymentService {
     }
 
     @Override
-    public boolean makePayment(User from, User to, BigDecimal amount, String description, Date date, double longitude, double latitude) {
-        Payment payment = new Payment(from, to, null, amount, description, date, longitude, latitude);
-        payment = paymentRepository.save(payment);
-        return payment.getId() != null;
-    }
-
-    @Override
-    public boolean makeGroupPayment(PaymentDTO paymentDTO) {
+    public void makeGroupPayment(PaymentDTO paymentDTO) {
         User userFrom = userRepository.findOne(paymentDTO.getUserFrom());
-        BigDecimal amountPerUser = paymentDTO.getAmount().divide(new BigDecimal(paymentDTO.getUsersTo().length + paymentDTO.getShallIPayForMyself()), 2, BigDecimal.ROUND_CEILING);
-        boolean success = true;
+        Group group = groupRepository.findOne(paymentDTO.getGroup());
+
+        checkUserInGroup(userFrom, group);
+
+        BigDecimal amountPerUser = paymentDTO.getAmount().divide(
+                new BigDecimal(paymentDTO.getUsersTo().length + paymentDTO.getShallIPayForMyself()),
+                2,
+                BigDecimal.ROUND_CEILING
+        );
         for (Integer userToID : paymentDTO.getUsersTo()) {
             User userTo = userRepository.findOne(userToID);
-            success &= makePayment(userFrom, userTo, amountPerUser, paymentDTO.getDescription(), paymentDTO.getDate(), paymentDTO.getLongitude(), paymentDTO.getLatitude());
+
+            if (userTo == null) {
+                throw new RuntimeException(String.format("Unable to make payment. User with id %d does not exists.", userToID));
+            }
+            checkUserInGroup(userTo, group);
+
+            Payment payment = new Payment(
+                    userFrom, userTo, group, amountPerUser,
+                    paymentDTO.getDescription(),
+                    paymentDTO.getDate(),
+                    paymentDTO.getLongitude(), paymentDTO.getLatitude()
+            );
+            paymentRepository.save(payment);
         }
-        return success;
+
     }
 
     @Override
@@ -114,6 +130,16 @@ public class SpringPaymentService implements PaymentService {
     @Override
     public List<Debt> getDebts() {
         return paymentRepository.getDebts();
+    }
+
+    private static void checkUserInGroup(User u, Group g) {
+        if (!g.getUsers().contains(u)) {
+            throw new RuntimeException(String.format(
+                    "Unable to make payment. User %s is not in group %s.",
+                    u.getId(),
+                    g.getId()
+            ));
+        }
     }
 
 }

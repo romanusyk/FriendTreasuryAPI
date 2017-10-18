@@ -18,9 +18,7 @@ import java.util.Map;
  */
 public interface PaymentService {
 
-    boolean makePayment(User from, User to, BigDecimal amount, String description, Date date, double longitude, double latitude);
-
-    boolean makeGroupPayment(PaymentDTO paymentDTO);
+    void makeGroupPayment(PaymentDTO paymentDTO);
 
     Map<Integer, BigDecimal> getUserPayments(Integer userID);
 
