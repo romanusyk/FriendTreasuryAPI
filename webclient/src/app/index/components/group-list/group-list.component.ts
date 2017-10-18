@@ -1,6 +1,6 @@
-import { Group } from './../models/group.model';
-import { LoadingComponent } from './../../../../shared/components/loading/loading.component';
 import { Component, ViewChild } from '@angular/core';
+import { LoadingComponent } from '../../../shared/components/loading/loading.component';
+import { Group } from '../../../shared/models/group.model';
 
 @Component({
     moduleId: module.id,

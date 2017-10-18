@@ -20,7 +20,8 @@
       "prefix": "app",
       "styles": [
         "assets/styles.scss",
-        "assets/icon-font.scss"
+        "assets/icon-font.scss",
+        "../node_modules/ng2-toastr/bundles/ng2-toastr.min.css"
       ],
       "scripts": [
       ],

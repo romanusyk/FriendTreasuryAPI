@@ -7,4 +7,8 @@ import { Component, ViewContainerRef } from '@angular/core';
 })
 
 export class AppComponent {
+  constructor(public toastr: ToastsManager, vRef: ViewContainerRef) {
+    this.toastr.setRootViewContainerRef(vRef);
+    this.toastr.info('Test');
+  }
 }
