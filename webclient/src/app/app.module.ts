@@ -1,34 +1,41 @@
-import { GroupService } from './shared/group.service';
+import { AppErrorHandler } from './app.error-handler';
+import { ToastModule } from 'ng2-toastr/ng2-toastr';
+import { RouterModule } from '@angular/router';
+import { AuthModule } from './auths/auth.module';
+import { SharedModule } from './shared/shared.module';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { HttpModule } from '@angular/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+import { MdlModule, MdlIconComponent } from 'angular2-mdl';
+import { APP_CONFIG, AppConfig } from './config/app.config';
+
 import { AppRoutingModule } from './app-routing.module';
+
 import { AppComponent } from './app.component';
-import { AuthComponent } from './auth/auth.component';
-import { ApiService, UserCacheService, UserService } from './shared/index';
-import { ListErrorsComponent } from './list-errors/list-errors.component';
-import { IndexComponent } from './index/index.component';
-import { LeftMenuComponent } from './left-menu/left-menu.component';
-import { GroupInfoComponent } from './group-info/group-info.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    AuthComponent,
-    ListErrorsComponent,
-    IndexComponent,
-    LeftMenuComponent,
-    GroupInfoComponent
-  ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
+    BrowserAnimationsModule,
     FormsModule,
-    HttpModule,
-    ReactiveFormsModule
+    HttpClientModule,
+    SharedModule,
+    RouterModule,
+    AuthModule,
+    AppRoutingModule,
+    ToastModule.forRoot()
   ],
-  providers: [ApiService, UserCacheService, UserService, GroupService],
+  declarations: [
+    AppComponent
+  ],
+  providers: [
+    // { provide: ErrorHandler, useClass: AppErrorHandler },
+    { provide: APP_CONFIG, useValue: AppConfig },
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+
+export class AppModule {
+}
