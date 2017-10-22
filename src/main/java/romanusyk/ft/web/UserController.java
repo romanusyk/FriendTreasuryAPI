@@ -12,6 +12,7 @@ import romanusyk.ft.domain.User;
 import romanusyk.ft.exception.EntityAlreadyExistsException;
 import romanusyk.ft.exception.NotValidPasswordException;
 import romanusyk.ft.exception.EntityNotFoundException;
+import romanusyk.ft.exception.UserAuthenticationException;
 import romanusyk.ft.security.JwtAccessToken;
 import romanusyk.ft.security.JwtUtil;
 import romanusyk.ft.security.JwtUtilImpl;
@@ -43,12 +44,14 @@ public class UserController {
             produces = "Application/json"
     )
     @RequestMapping(value = "", method = RequestMethod.GET)
+    @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
     public User getUserById(@PathVariable("id") Integer id) {
         User user = userService.getUserByID(id);
@@ -91,29 +94,34 @@ public class UserController {
 
     @RequestMapping(value = "", method = RequestMethod.PATCH)
     @PreAuthorize("@securityService.hasRole('user')")
-    public void updateUser(@RequestBody @Valid User user) {
+    public void updateUser(
+            @RequestHeader("${ft.token.header}") String authorization,
+            @RequestBody @Valid User user
+        ) {
+        User u = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        if (!u.equals(user)) {
+            logger.debug(String.format("Access denied for user %d trying to modify user %d", u.getId(), user.getId()));
+            throw new UserAuthenticationException();
+        }
         userService.updateUser(user);
     }
 
     @RequestMapping(value = "group/{group}", method = RequestMethod.PUT)
+    @PreAuthorize("@securityService.hasRole('user')")
     public void joinGroup(
-            @RequestHeader("Authorization") String authorization,
+            @RequestHeader("${ft.token.header}") String authorization,
             @PathVariable("group") Integer groupID) {
-        //TODO Parse user
-        User user = new User();
-        user.setId(1);
 
+        User user = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
         userService.addUserToGroup(user.getId(), groupID);
     }
 
     @RequestMapping(value = "group/{group}", method = RequestMethod.DELETE)
+    @PreAuthorize("@securityService.hasRole('user')")
     public void leaveGroup(
-            @RequestHeader("Authorization") String authorization,
+            @RequestHeader("${ft.token.header}") String authorization,
             @PathVariable("group") Integer groupID) {
-        //TODO Parse user
-        User user = new User();
-        user.setId(1);
-
+        User user = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
         userService.removeUserFromGroup(user.getId(), groupID);
     }
 

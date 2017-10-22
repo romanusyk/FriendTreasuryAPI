@@ -11,6 +11,7 @@ import romanusyk.ft.domain.Debt;
 import romanusyk.ft.domain.Payment;
 import romanusyk.ft.domain.PaymentDTO;
 import romanusyk.ft.domain.User;
+import romanusyk.ft.exception.UserAuthenticationException;
 import romanusyk.ft.security.JwtUtil;
 import romanusyk.ft.service.interfaces.Optimizer;
 import romanusyk.ft.service.interfaces.PaymentService;
@@ -38,9 +39,9 @@ public class PaymentController {
     private JwtUtil jwtUtil;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
+    @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
     public Page<Payment> getPayments(
-            @RequestHeader("Authorization") String authorization,
             @RequestParam int page, @RequestParam int size,
             @RequestParam(required = false) Integer userFrom,
             @RequestParam(required = false) Integer userTo,
@@ -52,9 +53,9 @@ public class PaymentController {
     }
 
     @RequestMapping(value = "/sum", method = RequestMethod.GET)
+    @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
     public List<Debt> getPaymentSum(
-            @RequestHeader("Authorization") String authorization,
             @RequestParam(required = false) Integer userFrom,
             @RequestParam(required = false) Integer userTo,
             @RequestParam(required = false) Integer group
@@ -68,12 +69,13 @@ public class PaymentController {
     @RequestMapping(value = "/", method = RequestMethod.POST)
     @PreAuthorize("@securityService.hasRole('user')")
     public void makeGroupPayment(
-            @RequestHeader("Authorization") String authorization,
+            @RequestHeader("${ft.token.header}") String authorization,
             @RequestBody PaymentDTO paymentDTO
     ) {
         User u = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
         if (!Objects.equals(u.getId(), paymentDTO.getUserFrom())) {
-            throw new RuntimeException("User can conduct payments only from himself.");
+            logger.debug(String.format("Access denied. User %d tried to pay from user %d.", u.getId(), paymentDTO.getUserFrom()));
+            throw new UserAuthenticationException();
         }
 
         paymentService.makeGroupPayment(paymentDTO);
