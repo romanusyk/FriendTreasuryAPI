@@ -71,12 +71,12 @@ public class Payment {
 
     public Payment(User userFrom, User userTo, Group group, BigDecimal amount, String description, Date date, double longitude, double latitude) {
         this(userFrom, userTo, group, amount, description, longitude, latitude);
-        this.timestamp = date.getTime();
+        this.timestamp = date == null ? new Date().getTime() : date.getTime();
     }
 
     public Payment(User userFrom, User userTo, Group group, BigDecimal amount, String description, Long timestamp, double longitude, double latitude) {
         this(userFrom, userTo, group, amount, description, longitude, latitude);
-        this.timestamp = timestamp;
+        this.timestamp = timestamp == null ? new Date().getTime() : timestamp;
     }
 
     @Override
