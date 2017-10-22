@@ -2,14 +2,22 @@ package romanusyk.ft.web;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import romanusyk.ft.domain.Group;
 import romanusyk.ft.domain.User;
 import romanusyk.ft.exception.EntityNotFoundException;
+import romanusyk.ft.exception.UserAuthenticationException;
+import romanusyk.ft.security.JwtUtil;
 import romanusyk.ft.service.interfaces.GroupService;
+import romanusyk.ft.service.interfaces.UserService;
 
 import javax.validation.Valid;
+import java.lang.invoke.MethodHandles;
 import java.util.List;
 
 /**
@@ -24,11 +32,18 @@ public class GroupController {
     @Autowired
     GroupService groupService;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
     @ApiOperation(
             value = "Get group by title",
             produces = "Application/json"
     )
     @RequestMapping(value = "", method = RequestMethod.GET)
+    @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
     public Group getGroupByTitle(@RequestParam("title") String groupTitle) {
         Group group = groupService.getGroupByTitle(groupTitle);
@@ -39,30 +54,39 @@ public class GroupController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
+    @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
     public Integer createGroup(
-            @RequestHeader("Authorization") String authorization,
+            @RequestHeader("${ft.token.header}") String authorization,
             @RequestBody @Valid Group group) {
-        //TODO: Parse user from token
-        User creator = null;
 
-        return groupService.createGroup(group, creator);
+        User u = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        logger.debug(String.format("User %d is creating group %s", u.getId(), group.toString()));
+        return groupService.createGroup(group, u);
     }
 
     @RequestMapping(value = "", method = RequestMethod.PATCH)
+    @PreAuthorize("@securityService.hasRole('user')")
     public void updateGroup(
-            @RequestHeader("Authorization") String authorization,
+            @RequestHeader("${ft.token.header}") String authorization,
             @RequestBody @Valid Group group) {
+        User u = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        User user = userService.getUserByID(u.getId());
+        if (!user.getGroups().contains(group)) {
+            logger.debug(String.format("Access denied for user %d trying to modify group %s", u.getId(), group.toString()));
+            throw new UserAuthenticationException("Group can be modified only by its participants.");
+        }
         groupService.updateGroup(group);
     }
 
     @RequestMapping(value = "/my", method = RequestMethod.GET)
+    @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
-    public List<Group> getUserGroups(@RequestHeader("Authorization") String authorization) {
-        //TODO: Parse user from token
-        User user = new User();
-        user.setId(1);
+    public List<Group> getUserGroups(@RequestHeader("${ft.token.header}") String authorization) {
+        User user = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
         return groupService.getGroupsByUser(user);
     }
+
+    private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 }
