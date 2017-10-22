@@ -1,3 +1,4 @@
+import { IndexModule } from './index/index.module';
 import { AppErrorHandler } from './app.error-handler';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { RouterModule } from '@angular/router';
@@ -24,6 +25,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     SharedModule,
     RouterModule,
     AuthModule,
+    IndexModule,
     AppRoutingModule,
     ToastModule.forRoot()
   ],

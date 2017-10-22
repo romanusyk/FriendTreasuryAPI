@@ -1,4 +1,4 @@
-<div [ngClass]="{'spinner-loading':isLoadingMaskVisible}">
-    <i class="fa fa-cog fa-spin fa-3x spinner" aria-hidden="true" *ngIf="isVisible"></i>
+<div [ngClass]="{'spinner-loading':isVisible}">
+    <i class="fa fa-cog fa-spin fa-3x spinner" *ngIf="isSpinnerVisible" aria-hidden="true"></i>
     <ng-content *ngIf="isContentDisplayed()"></ng-content>
 </div>

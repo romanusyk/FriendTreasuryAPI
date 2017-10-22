@@ -1,1 +1,7 @@
-<!--component html goes here -->
+<app-loading [isContentVisible]="true">
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--3">
+            <app-group-list [groups]="groups" (onSelect)="onGroupSelect"></app-group-list>
+        </div>
+    </div>
+</app-loading>

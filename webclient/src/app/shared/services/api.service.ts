@@ -1,3 +1,5 @@
+import { ErrorPipe } from './../pipes/error.pipe';
+import { Error } from './../models/error.model';
 import { IAppConfig } from './../../config/iapp.config';
 import { APP_CONFIG } from './../../config/app.config';
 import { UserStorageService } from './user-storage.service';
@@ -14,7 +16,7 @@ export class ApiService {
         @Inject(APP_CONFIG) appConfig: IAppConfig,
         private userStorageService: UserStorageService
     ) {
-      this.config = appConfig;
+        this.config = appConfig;
     }
 
     private setHeaders(): Headers {
@@ -24,14 +26,13 @@ export class ApiService {
         };
         const user = this.userStorageService.get();
         if (user) {
-            headersConfig['Authorization'] = `Bearer ${user.token.value}`;
+            console.log(user.token);
+            headersConfig['X-Auth-Token'] = `${user.token.token}`;
         }
         return new Headers(headersConfig);
     }
 
-    private formatErrors(error: any) {
-        return Observable.throw(error.json());
-    }
+
 
     get(path: string, params: URLSearchParams = new URLSearchParams()): Observable<any> {
         return this.http.get(`${this.config.endpoint}${path}`,
@@ -44,7 +45,7 @@ export class ApiService {
         return this.http.get(`${this.config.endpoint}${path}`,
             { headers: this.setHeaders(), search: params })
             .catch(this.formatErrors)
-            .map( data => data.json());
+            .map(data => data.json());
     }
 
     put(path: string, body: Object = {}): Observable<any> {
@@ -80,5 +81,18 @@ export class ApiService {
             { headers: this.setHeaders() })
             .catch(this.formatErrors)
             .map((res: Response) => res.json());
+    }
+
+    private generateServerError(): Promise<any> {
+        return Promise.resolve({
+            exception : 'ServerError'
+        });
+    }
+
+    private formatErrors(error: Response): Observable<any> {
+        if (error.status >= 500 || typeof(error.type === 'cors')) {
+            return Observable.throw(this.generateServerError());
+        }
+        return Observable.throw(error.json());
     }
 }

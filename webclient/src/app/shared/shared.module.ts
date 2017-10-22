@@ -1,3 +1,5 @@
+import { GroupService } from './services/group.service';
+import { ErrorPipe } from './pipes/error.pipe';
 import { ToastServiceOptions } from './services/toast-service.options';
 import { LoadingComponent } from './components/loading/loading.component';
 import { MdlModule } from 'angular2-mdl';
@@ -28,18 +30,22 @@ import { ToastModule, ToastOptions } from 'ng2-toastr/ng2-toastr';
     declarations: [
         Error404Component,
         ListErrorsComponent,
-        LoadingComponent
+        LoadingComponent,
+        ErrorPipe
     ],
     providers: [
         UserStorageService,
         UserService,
         ApiService,
+        ErrorPipe,
+        GroupService,
         { provide: ToastOptions, useClass: ToastServiceOptions }
     ],
     exports: [
         Error404Component,
         ListErrorsComponent,
-        LoadingComponent
+        LoadingComponent,
+        ErrorPipe
     ]
 })
 export class SharedModule {

@@ -9,7 +9,7 @@ export const AppConfig: IAppConfig = {
       heroes: 'heroes',
       error404: '404'
     },
-    endpoint: 'http://localhost:4200/',
+    endpoint: 'https://afternoon-reaches-25317.herokuapp.com/ft/api/v1/',
     votesLimit: 3,
     topHeroesLimit: 4,
     snackBarDuration: 3000,

@@ -59,7 +59,7 @@ export class UserService {
   }
 
   private login(credentials: Credentials) {
-    return this.apiService.patch('users', credentials)
+    return this.apiService.post('users/access', credentials)
       .map(
       data => {
         const user = {

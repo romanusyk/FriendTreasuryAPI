@@ -20,7 +20,7 @@
                 <mdl-textfield label="Confirm Password" floating-label autofocus type="password" formControlName="confirmPassword" name="confirmPassword"></mdl-textfield>
             </div>
             <div>
-                <button class="full-width" mdl-button mdl-button-type="raised" type="submit" mdl-colored="primary" [disabled]="authForm.valid"
+                <button class="full-width" mdl-button mdl-button-type="raised" type="submit" mdl-colored="primary" [disabled]="!authForm.valid"
                     mdl-ripple>
                     <mdl-icon>send</mdl-icon>
                     Submit

@@ -8,21 +8,22 @@ import { Component, Input } from '@angular/core';
   ]
 })
 export class LoadingComponent {
-  public isLoadingMaskVisible = false;
   public isVisible = false;
+  public isSpinnerVisible = false;
   @Input() isContentVisible = false;
 
   public show(): void {
-    this.isLoadingMaskVisible = true;
     this.isVisible = true;
+    this.isSpinnerVisible = true;
   }
 
   public hide(): void {
-    this.isLoadingMaskVisible = false;
     this.isVisible = false;
+    this.isSpinnerVisible = false;
+    console.debug('hide');
   }
 
   public isContentDisplayed(): boolean {
-    return this.isContentVisible || !this.isLoadingMaskVisible;
+    return this.isContentVisible || this.isVisible;
   }
 }
