@@ -1,7 +1,9 @@
+import { PaymentsService } from './../../../shared/services/payments.service';
+import { PaymentsListComponent } from './../payments-list/payments-list.component';
 import { LoadingComponent } from './../../../shared/components/loading/loading.component';
 import { GroupService } from './../../../shared/services/group.service';
-import { Group } from './../../models/group.model';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Group } from '../../../shared/models/group.model';
 
 @Component({
     moduleId: module.id,
@@ -15,24 +17,37 @@ export class IndexComponent implements OnInit {
     currentGroup: Group;
 
     @ViewChild(LoadingComponent) loading: LoadingComponent;
-    constructor(private groupService: GroupService) { }
+    @ViewChild(PaymentsListComponent) paymentsComponent: PaymentsListComponent;
+    constructor(private groupService: GroupService, private paymentService: PaymentsService) { }
 
     ngOnInit(): void {
         this.loading.show();
         this.groupService.getGroups().subscribe(
-        (data: Array<Group>) => {
-            console.log(data);
-            this.groups = data;
-            this.loading.hide();
-        },
-        err => {
-            console.log(err);
-            this.loading.hide();
-        });
+            (data: Array<Group>) => {
+                this.groups = data;
+                this.loading.hide();
+            },
+            err => {
+                console.log(err);
+                this.loading.hide();
+            }
+        );
     }
 
     onGroupSelect(group: Group): void {
+        console.log(group);
+        this.loading.show();
         this.currentGroup = group;
+        this.paymentService.get(group.id).subscribe(
+            (data) => {
+                this.paymentsComponent.payments = data;
+                this.loading.hide();
+            },
+            err => {
+                console.log(err);
+                this.loading.hide();
+            }
+        );
     }
 
 }

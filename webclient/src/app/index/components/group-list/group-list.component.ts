@@ -14,7 +14,6 @@ export class GroupListComponent {
     @Output() select: EventEmitter<Group> = new EventEmitter();
 
     onSelect(group: Group): void {
-        console.log(group);
         this.select.emit(group);
     }
 }

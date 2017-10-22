@@ -1,3 +1,4 @@
+import { PaymentsListComponent } from './components/payments-list/payments-list.component';
 import { SharedModule } from './../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -21,10 +22,12 @@ import { IndexComponent } from './components/index/index.component';
     declarations: [
         GroupListComponent,
         IndexComponent,
+        PaymentsListComponent
     ],
     exports: [
         GroupListComponent,
         IndexComponent,
+        PaymentsListComponent
     ]
 })
 export class IndexModule {

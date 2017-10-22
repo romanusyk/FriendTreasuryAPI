@@ -34,14 +34,15 @@ export class ApiService {
 
 
 
-    get(path: string, params: URLSearchParams = new URLSearchParams()): Observable<any> {
+    get(path: string, params?: URLSearchParams): Observable<any> {
+        console.log(params);
         return this.http.get(`${this.config.endpoint}${path}`,
             { headers: this.setHeaders(), search: params })
             .catch(this.formatErrors)
             .map((res: Response) => res.json());
     }
 
-    getData<T>(path: string, params: URLSearchParams = new URLSearchParams()): Observable<T> {
+    getData<T>(path: string, params?: URLSearchParams): Observable<T> {
         return this.http.get(`${this.config.endpoint}${path}`,
             { headers: this.setHeaders(), search: params })
             .catch(this.formatErrors)
@@ -91,7 +92,7 @@ export class ApiService {
 
     private formatErrors(error: Response): Observable<any> {
         if (error.status >= 500 || typeof(error.type === 'cors')) {
-            return Observable.throw(this.generateServerError());
+            return Observable.throw(this.generateServerError.bind(this)());
         }
         return Observable.throw(error.json());
     }

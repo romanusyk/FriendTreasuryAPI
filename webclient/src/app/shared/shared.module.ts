@@ -1,3 +1,4 @@
+import { PaymentsService } from './services/payments.service';
 import { GroupService } from './services/group.service';
 import { ErrorPipe } from './pipes/error.pipe';
 import { ToastServiceOptions } from './services/toast-service.options';
@@ -39,6 +40,7 @@ import { ToastModule, ToastOptions } from 'ng2-toastr/ng2-toastr';
         ApiService,
         ErrorPipe,
         GroupService,
+        PaymentsService,
         { provide: ToastOptions, useClass: ToastServiceOptions }
     ],
     exports: [

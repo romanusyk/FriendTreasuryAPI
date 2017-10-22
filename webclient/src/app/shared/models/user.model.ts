@@ -1,6 +1,5 @@
-import { Token } from './token.model';
-
 export class User {
-    username: string;
-    token: Token;
+    constructor(id: number, phone: string, username: string) {
+
+    }
 }
