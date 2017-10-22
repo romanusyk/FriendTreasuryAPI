@@ -5,5 +5,20 @@ $color-primary-dark: $palette-blue-700;
 $color-accent: $palette-amber-A200;
 $color-primary-contrast: $color-dark-contrast;
 $color-accent-contrast: $color-dark-contrast;
+$color-danger: rgb(226, 66, 17);
 
 @import '~angular2-mdl/scss/material-design-lite';
+
+
+.center-items {
+    justify-content: center;
+}
+.text-center{
+    text-align: center;
+}
+.full-width{
+    width: 100%;
+}
+.text-danger{
+    color: rgb(226, 66, 17);
+}

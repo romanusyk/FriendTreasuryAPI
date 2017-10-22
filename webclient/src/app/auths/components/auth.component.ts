@@ -40,9 +40,10 @@ export class AuthComponent implements OnInit {
             }
         });
         this.authForm.valueChanges.subscribe(p => this.onValueChange(p, this.authForm));
+        this.loadingComponent.show();
     }
     submitForm() {
-        this.loadingComponent.showLoadingMask();
+        this.loadingComponent.show();
         this.errors = new Array<Error>();
         const credentials = this.authForm.value;
         console.log(credentials);
@@ -53,20 +54,23 @@ export class AuthComponent implements OnInit {
             err => {
                 // console.log(err)
                 this.errors = err;
-                this.loadingComponent.hideLoadingMask();
+                this.loadingComponent.hide();
             });
     }
 
     onValueChange(data: any, form: FormGroup) {
+        console.log(data)
         this.errors = new Array<Error>();
         for (const key in form.controls) {
             if (form.controls.hasOwnProperty(key)) {
                 const control = form.get(key);
                 if (control && control.dirty && !control.valid) {
                     const message = ValidationMessages[key];
-                    for (const error in control.errors) {
-                        if (control.errors.hasOwnProperty(error)) {
-                            this.errors.push(new Error(message[error], key));
+                    if (!!message) {
+                        for (const error in control.errors) {
+                            if (control.errors.hasOwnProperty(error)) {
+                                this.errors.push(new Error(message[error], key));
+                            }
                         }
                     }
                 }

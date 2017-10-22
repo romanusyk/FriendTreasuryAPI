@@ -9,23 +9,17 @@ import { Component, Input } from '@angular/core';
 })
 export class LoadingComponent {
   public isLoadingMaskVisible = false;
-  public isSpinnerVisible = false;
+  public isVisible = false;
   @Input() isContentVisible = false;
-  @Input() isFixedOnTheMiddle = false;
 
-  public showLoadingMask(): void {
+  public show(): void {
     this.isLoadingMaskVisible = true;
-    this.isSpinnerVisible = true;
+    this.isVisible = true;
   }
 
-  public hideLoadingMask(): void {
+  public hide(): void {
     this.isLoadingMaskVisible = false;
-    this.isSpinnerVisible = false;
-  }
-
-  public showOnlySpinner(): void {
-    this.isLoadingMaskVisible = false;
-    this.isSpinnerVisible = true;
+    this.isVisible = false;
   }
 
   public isContentDisplayed(): boolean {
