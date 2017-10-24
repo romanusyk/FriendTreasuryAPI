@@ -1,0 +1,20 @@
+<button #createPaymentButton mdl-button mdl-button-type="fab" mdl-colored="accent" mdl-ripple (click)="chooseUsersDialog.show()">
+    <mdl-icon>add</mdl-icon> 
+</button>
+
+<mdl-dialog #chooseUsersDialog [mdl-dialog-config]="{
+  clickOutsideToClose: true,
+  styles:{'width': '300px'},
+  isModal:true,
+  openFrom: createPaymentButton,
+  enterTransitionDuration: 400,
+  leaveTransitionDuration: 400}" >
+    <h3 class="mdl-dialog__title">Select Users</h3>
+    <div class="mdl-dialog__content">
+        <mdl-textfield type="text" label="Username" [(ngModel)]="username" floating-label autofocus></mdl-textfield>
+    </div>
+    <div class="mdl-dialog__actions">
+        <button mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple>Save</button>
+        <button mdl-button (click)="chooseUsersDialog.close()" mdl-ripple>Cancel</button>
+    </div>
+</mdl-dialog>
