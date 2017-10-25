@@ -1,5 +1,6 @@
 server:
   contextPath: /ft
+  port: 9999
 
 logging:
   level:
