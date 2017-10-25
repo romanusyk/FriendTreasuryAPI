@@ -73,11 +73,11 @@ public class PaymentController {
             @RequestBody PaymentDTO paymentDTO
     ) {
         User u = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
-        if (!Objects.equals(u.getId(), paymentDTO.getUserFrom())) {
-            logger.debug(String.format("Access denied. User %d tried to pay from user %d.", u.getId(), paymentDTO.getUserFrom()));
-            throw new UserAuthenticationException();
+        if (paymentDTO.getUserFrom() != null) {
+            logger.debug(String.format("Rejected. User %d tried to pay from user %d.", u.getId(), paymentDTO.getUserFrom()));
+            throw new UserAuthenticationException("userFrom should be null. It is taken from auth token.");
         }
-
+        paymentDTO.setUserFrom(u.getId());
         paymentService.makeGroupPayment(paymentDTO);
     }
 

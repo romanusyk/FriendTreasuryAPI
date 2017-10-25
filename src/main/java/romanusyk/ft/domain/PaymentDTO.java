@@ -19,7 +19,6 @@ public class PaymentDTO {
 
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    @NotNull
     private Integer userFrom;
 
     @NotNull
