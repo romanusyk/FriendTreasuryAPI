@@ -1,3 +1,4 @@
+import { ErrorPipe } from './../../shared/pipes/error.pipe';
 import { LoadingComponent } from './../../shared/components/loading/loading.component';
 import { UserService } from './../../shared/services/user.service';
 import { Error } from './../../shared/models/error.model';
@@ -21,7 +22,8 @@ export class AuthComponent implements OnInit {
     constructor(private route: ActivatedRoute,
         private router: Router,
         private userService: UserService,
-        private fb: FormBuilder) {
+        private fb: FormBuilder,
+        private errorPipe: ErrorPipe) {
         this.authForm = this.fb.group({
             'username': ['', Validators.required],
             'password': ['', Validators.required]
@@ -40,20 +42,18 @@ export class AuthComponent implements OnInit {
             }
         });
         this.authForm.valueChanges.subscribe(p => this.onValueChange(p, this.authForm));
-        this.loadingComponent.show();
     }
     submitForm() {
         this.loadingComponent.show();
         this.errors = new Array<Error>();
         const credentials = this.authForm.value;
-        console.log(credentials);
         this.userService
             .attemptAuth(this.authType, credentials)
             .subscribe(
             data => this.router.navigateByUrl('/index'),
             err => {
-                // console.log(err)
-                this.errors = err;
+                console.log(err)
+                this.errors.push(this.errorPipe.transform(err))
                 this.loadingComponent.hide();
             });
     }

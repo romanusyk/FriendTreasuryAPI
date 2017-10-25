@@ -1,5 +1,5 @@
+import { UserLoginRequest } from './../models/user-login-request.model';
 import { Credentials, CredentialsType } from './../models/credentials.model';
-import { User } from './../models/user.model';
 import { UserStorageService } from './user-storage.service';
 
 import { Injectable } from '@angular/core';
@@ -12,7 +12,7 @@ import { ApiService } from './api.service';
 
 @Injectable()
 export class UserService {
-  private currentUserSubject = new BehaviorSubject<User>(new User());
+  private currentUserSubject = new BehaviorSubject<UserLoginRequest>(new UserLoginRequest());
   public currentUser = this.currentUserSubject.asObservable().distinctUntilChanged();
   private isAuthenticatedSubject = new ReplaySubject<boolean>(1);
   public isAuthenticated = this.isAuthenticatedSubject.asObservable();
@@ -23,7 +23,7 @@ export class UserService {
     private userStorageService: UserStorageService
   ) { }
 
-  getCurrentUser(): User {
+  getCurrentUser(): UserLoginRequest {
     return this.currentUserSubject.value;
   }
 
@@ -37,7 +37,7 @@ export class UserService {
     }
   }
 
-  setAuth(user: User) {
+  setAuth(user: UserLoginRequest) {
     this.userStorageService.save(user);
     this.currentUserSubject.next(user);
     this.isAuthenticatedSubject.next(true);
@@ -50,7 +50,7 @@ export class UserService {
     this.isAuthenticatedSubject.next(false);
   }
 
-  attemptAuth(type: CredentialsType, credentials): Observable<User> {
+  attemptAuth(type: CredentialsType, credentials): Observable<UserLoginRequest> {
     if (type === CredentialsType.login) {
       return this.login(credentials);
     } else if (type === CredentialsType.register) {
@@ -59,7 +59,7 @@ export class UserService {
   }
 
   private login(credentials: Credentials) {
-    return this.apiService.patch('users', credentials)
+    return this.apiService.post('users/access', credentials)
       .map(
       data => {
         const user = {

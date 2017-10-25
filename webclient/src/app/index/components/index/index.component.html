@@ -1,1 +1,11 @@
-<!--component html goes here -->
+<app-loading [isContentVisible]="true">
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--3">
+            <app-group-list [groups]="groups" (select)="onGroupSelect($event)"></app-group-list>
+        </div>
+        <div class="md-cell md-cell--6">
+            <app-payments-list></app-payments-list>
+        </div>
+    </div>
+    <app-create-payment></app-create-payment>
+</app-loading> 

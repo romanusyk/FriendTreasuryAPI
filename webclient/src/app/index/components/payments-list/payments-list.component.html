@@ -1,0 +1,7 @@
+<mdl-list>
+        <mdl-list-item *ngFor="let payment of payments.content">
+            <mdl-list-item-primary-content>
+                    {{payment.userFrom.username}} to {{payment.userTo.username}}: {{payment.description}} - {{payment.amount}}
+            </mdl-list-item-primary-content>
+        </mdl-list-item>
+</mdl-list>
