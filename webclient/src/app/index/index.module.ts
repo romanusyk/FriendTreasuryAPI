@@ -1,3 +1,4 @@
+import { MdlSelectModule } from '@angular-mdl/select';
 import { CreatePaymentComponent } from './components/create-payment/create-payment/create-payment.component';
 import { PaymentsListComponent } from './components/payments-list/payments-list.component';
 import { SharedModule } from './../shared/shared.module';
@@ -18,6 +19,7 @@ import { MdlModule } from '@angular-mdl/core';
         FormsModule,
         RouterModule,
         MdlModule,
+        MdlSelectModule,
         SharedModule
     ],
     declarations: [

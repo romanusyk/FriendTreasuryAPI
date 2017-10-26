@@ -10,11 +10,15 @@
   enterTransitionDuration: 400,
   leaveTransitionDuration: 400}" >
     <h3 class="mdl-dialog__title">Select Users</h3>
-    <div class="mdl-dialog__content">
-        <mdl-textfield type="text" label="Username" [(ngModel)]="username" floating-label autofocus></mdl-textfield>
-    </div>
+    <mdl-select [(ngModel)]="selectedUsers" [multiple]="true" placeholder="Select users">
+        <mdl-option mdl-ripple *ngFor="let u of users" [value]="u.id">{{u.username}}</mdl-option>
+      </mdl-select>
     <div class="mdl-dialog__actions">
         <button mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple>Save</button>
         <button mdl-button (click)="chooseUsersDialog.close()" mdl-ripple>Cancel</button>
     </div>
 </mdl-dialog>
+
+<ul>
+    <li *ngFor="let i of selectedUsers">{{i}}</li>
+</ul>
