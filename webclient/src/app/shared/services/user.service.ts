@@ -1,3 +1,4 @@
+import { User } from './../models/user.model';
 import { UserLoginRequest } from './../models/user-login-request.model';
 import { Credentials, CredentialsType } from './../models/credentials.model';
 import { UserStorageService } from './user-storage.service';
@@ -56,6 +57,10 @@ export class UserService {
     } else if (type === CredentialsType.register) {
       return this.register(credentials);
     }
+  }
+
+  getUsersInGroup(groupId: number): Observable<Array<User>> {
+    return this.apiService.get('').map(data => data.json());
   }
 
   private login(credentials: Credentials) {

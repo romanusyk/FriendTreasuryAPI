@@ -2,23 +2,38 @@
     <mdl-icon>add</mdl-icon> 
 </button>
 
-<mdl-dialog #chooseUsersDialog [mdl-dialog-config]="{
-  clickOutsideToClose: true,
-  styles:{'width': '300px'},
-  isModal:true,
-  openFrom: createPaymentButton,
-  enterTransitionDuration: 400,
-  leaveTransitionDuration: 400}" >
+<mdl-dialog #chooseUsersDialog>
     <h3 class="mdl-dialog__title">Select Users</h3>
-    <mdl-select [(ngModel)]="selectedUsers" [multiple]="true" placeholder="Select users">
+    <mdl-select [(ngModel)]="model.usersTo" [multiple]="true" placeholder="Select users">
         <mdl-option mdl-ripple *ngFor="let u of users" [value]="u.id">{{u.username}}</mdl-option>
-      </mdl-select>
+    </mdl-select>
     <div class="mdl-dialog__actions">
-        <button mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple>Save</button>
-        <button mdl-button (click)="chooseUsersDialog.close()" mdl-ripple>Cancel</button>
+        <button mdl-button mdl-button-type="raised" mdl-colored="primary" (click)="onNext()" mdl-ripple>Save</button>
+        <button mdl-button (click)="onCLose()" mdl-ripple>Cancel</button>
     </div>
 </mdl-dialog>
-
-<ul>
-    <li *ngFor="let i of selectedUsers">{{i}}</li>
-</ul>
+ 
+<mdl-dialog #fillDataDialog>
+    <h3 class="mdl-dialog__title">Fill data</h3>
+    <mdl-textfield
+        type="text"
+        label="Enter amount"
+        pattern="-?[0-9]*(\.[0-9]+)?"
+        error-msg="Input is not a number!"
+        required
+        [(ngModel)]="model.amount">
+    </mdl-textfield>
+    <mdl-textfield label="Text..." 
+        [(ngModel)]="model.description" 
+        rows="3" 
+        maxrows="3" 
+        floating-label>
+    </mdl-textfield>
+    <mdl-checkbox [mdl-ripple]="true" [(ngModel)]="model.shallIPayForMyself">
+        Shall i pay for my self
+      </mdl-checkbox>
+    <div class="mdl-dialog__actions">
+        <button mdl-button mdl-button-type="raised" mdl-colored="primary" (click)="onComplete()" mdl-ripple>Save</button>
+        <button mdl-button (click)="onCLose()" mdl-ripple>Cancel</button>
+    </div>
+</mdl-dialog>
