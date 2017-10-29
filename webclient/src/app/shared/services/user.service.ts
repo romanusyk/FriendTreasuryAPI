@@ -60,7 +60,7 @@ export class UserService {
   }
 
   getUsersInGroup(groupId: number): Observable<Array<User>> {
-    return this.apiService.get('').map(data => data.json());
+    return this.apiService.get('users/group/' + groupId);
   }
 
   private login(credentials: Credentials) {

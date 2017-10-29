@@ -52,14 +52,12 @@ export class AuthComponent implements OnInit {
             .subscribe(
             data => this.router.navigateByUrl('/index'),
             err => {
-                console.log(err)
                 this.errors.push(this.errorPipe.transform(err))
                 this.loadingComponent.hide();
             });
     }
 
     onValueChange(data: any, form: FormGroup) {
-        console.log(data)
         this.errors = new Array<Error>();
         for (const key in form.controls) {
             if (form.controls.hasOwnProperty(key)) {

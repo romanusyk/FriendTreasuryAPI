@@ -26,7 +26,6 @@ export class ApiService {
         };
         const user = this.userStorageService.get();
         if (user) {
-            console.log(user.token);
             headersConfig['X-Auth-Token'] = `${user.token.token}`;
         }
         return new Headers(headersConfig);
@@ -35,7 +34,6 @@ export class ApiService {
 
 
     get(path: string, params?: URLSearchParams): Observable<any> {
-        console.log(params);
         return this.http.get(`${this.config.endpoint}${path}`,
             { headers: this.setHeaders(), search: params })
             .catch(this.formatErrors)
@@ -73,7 +71,12 @@ export class ApiService {
             JSON.stringify(body),
             { headers: this.setHeaders() })
             .catch(this.formatErrors)
-            .map((res: Response) => res.json());
+            .map((res: Response) => {
+                if (res['_body']) {
+                    return res.json();
+                }
+                return res;
+            });
     }
 
     delete(path): Observable<any> {
@@ -86,12 +89,12 @@ export class ApiService {
 
     private generateServerError(): Promise<any> {
         return Promise.resolve({
-            exception : 'ServerError'
+            exception: 'ServerError'
         });
     }
 
     private formatErrors(error: Response): Observable<any> {
-        if (error.status >= 500 || typeof(error.type === 'cors')) {
+        if (error.status >= 500 || typeof (error.type === 'cors')) {
             return Observable.throw(this.generateServerError.bind(this)());
         }
         return Observable.throw(error.json());

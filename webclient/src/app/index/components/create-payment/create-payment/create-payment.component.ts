@@ -1,6 +1,6 @@
 import { CreatePaymentModel } from './../../../../shared/models/create-payment.model';
 import { User } from './../../../../shared/models/user.model';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { MdlDialogComponent, MdlButtonComponent, IMdlDialogConfiguration } from '@angular-mdl/core';
 
 @Component({
@@ -10,7 +10,8 @@ import { MdlDialogComponent, MdlButtonComponent, IMdlDialogConfiguration } from 
     styleUrls: ['create-payment.component.scss']
 })
 export class CreatePaymentComponent implements OnInit {
-    users: Array<User>;
+    @Input() users: Array<User>;
+    @Output() complete: EventEmitter<CreatePaymentModel> = new EventEmitter();
     model: CreatePaymentModel;
     @ViewChild('chooseUsersDialog') chooseUsersDialog: MdlDialogComponent;
     @ViewChild('fillDataDialog') fillDataDialog: MdlDialogComponent;
@@ -19,9 +20,13 @@ export class CreatePaymentComponent implements OnInit {
     }
     ngOnInit(): void {
         this.clearData();
-        this.users = new Array(new User(1, '', 'Roma'), new User(2, '', 'Yura'), new User(3, '', 'Geka'));
         this.chooseUsersDialog.config = this.createModalConfig();
         this.fillDataDialog.config = this.createModalConfig();
+    }
+
+    onStart() {
+        this.clearData();
+        this.chooseUsersDialog.show();
     }
 
     onNext() {
@@ -30,6 +35,7 @@ export class CreatePaymentComponent implements OnInit {
     }
 
     onComplete() {
+        this.complete.emit(this.model);
         this.fillDataDialog.close();
     }
 
