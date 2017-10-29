@@ -1,2 +1,2 @@
 npm i 
-sudo ng build -prod -ec -dop -scd -v -op /var/www/html
+sudo ng build -prod -ec -dop -op /var/www/html
