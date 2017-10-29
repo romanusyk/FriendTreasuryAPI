@@ -2,6 +2,7 @@ package romanusyk.ft.web;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +58,7 @@ public class GroupController {
     @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
     public Integer createGroup(
-            @RequestHeader("${ft.token.header}") String authorization,
+            @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
             @RequestBody @Valid Group group) {
 
         User me = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
@@ -69,7 +70,7 @@ public class GroupController {
     @RequestMapping(value = "", method = RequestMethod.PATCH)
     @PreAuthorize("@securityService.hasRole('user')")
     public void updateGroup(
-            @RequestHeader("${ft.token.header}") String authorization,
+            @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
             @RequestBody @Valid Group group) {
         User u = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
         User user = userService.getUserByID(u.getId());
@@ -83,7 +84,9 @@ public class GroupController {
     @RequestMapping(value = "/my", method = RequestMethod.GET)
     @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
-    public List<Group> getUserGroups(@RequestHeader("${ft.token.header}") String authorization) {
+    public List<Group> getUserGroups(
+            @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization
+        ) {
         User user = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
         return groupService.getGroupsByUser(user);
     }

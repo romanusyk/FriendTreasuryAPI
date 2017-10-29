@@ -2,6 +2,7 @@ package romanusyk.ft.web;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,7 +103,7 @@ public class UserController {
     @RequestMapping(value = "", method = RequestMethod.PATCH)
     @PreAuthorize("@securityService.hasRole('user')")
     public void updateUser(
-            @RequestHeader("${ft.token.header}") String authorization,
+            @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
             @RequestBody @Valid User user
         ) {
         User u = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
@@ -116,7 +117,7 @@ public class UserController {
     @RequestMapping(value = "group/{group}", method = RequestMethod.PUT)
     @PreAuthorize("@securityService.hasRole('user')")
     public void joinGroup(
-            @RequestHeader("${ft.token.header}") String authorization,
+            @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
             @PathVariable("group") Integer groupID) {
 
         User user = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
@@ -126,7 +127,7 @@ public class UserController {
     @RequestMapping(value = "group/{group}", method = RequestMethod.DELETE)
     @PreAuthorize("@securityService.hasRole('user')")
     public void leaveGroup(
-            @RequestHeader("${ft.token.header}") String authorization,
+            @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
             @PathVariable("group") Integer groupID) {
         User user = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
         userService.removeUserFromGroup(user.getId(), groupID);
@@ -136,7 +137,7 @@ public class UserController {
     @ResponseBody
     @PreAuthorize("@securityService.hasRole('user')")
     public List<User> getUsersInGroup(
-            @RequestHeader("${ft.token.header}") String authorization,
+            @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
             @PathVariable("group") Integer groupID) {
         Group group = groupService.getGroupById(groupID);
         if (group == null) {

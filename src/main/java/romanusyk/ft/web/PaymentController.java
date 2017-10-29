@@ -1,6 +1,7 @@
 package romanusyk.ft.web;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +70,7 @@ public class PaymentController {
     @RequestMapping(value = "/", method = RequestMethod.POST)
     @PreAuthorize("@securityService.hasRole('user')")
     public void makeGroupPayment(
-            @RequestHeader("${ft.token.header}") String authorization,
+            @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
             @RequestBody PaymentDTO paymentDTO
     ) {
         User u = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
