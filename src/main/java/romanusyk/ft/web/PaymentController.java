@@ -67,7 +67,7 @@ public class PaymentController {
         return optimizer.getDebts();
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.POST)
     @PreAuthorize("@securityService.hasRole('user')")
     public void makeGroupPayment(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
