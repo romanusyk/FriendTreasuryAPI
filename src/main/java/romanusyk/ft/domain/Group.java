@@ -22,7 +22,7 @@ public class Group {
 
     @NotEmpty
     @NotNull
-    @Column(nullable = false, unique = true, length = 100)
+    @Column(nullable = false, length = 100)
     private String title;
 
     @JsonIgnore
@@ -52,11 +52,6 @@ public class Group {
                 id,
                 title
         );
-    }
-
-    @Override
-    public int hashCode() {
-        return id == null ? 0 : id;
     }
 
     public String toDetailedString() {
@@ -99,5 +94,10 @@ public class Group {
             return !(this.id == null || that.id == null) && this.id.equals(that.id);
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return id == null ? 0 : id;
     }
 }

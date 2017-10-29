@@ -60,9 +60,10 @@ public class GroupController {
             @RequestHeader("${ft.token.header}") String authorization,
             @RequestBody @Valid Group group) {
 
-        User u = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
-        logger.debug(String.format("User %d is creating group %s", u.getId(), group.toString()));
-        return groupService.createGroup(group, u);
+        User me = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        logger.debug(String.format("User %d is creating group %s", me.getId(), group.toString()));
+        User creator = userService.getUserByID(me.getId());
+        return groupService.createGroup(group, creator);
     }
 
     @RequestMapping(value = "", method = RequestMethod.PATCH)
