@@ -11,7 +11,7 @@ const routes: Routes = [
   // {path: AppConfig.routes.error404, component: Error404Component},
   { path: 'login', component: AuthComponent },
   { path: 'register', component: AuthComponent },
-  { path: '**', redirectTo: '/' + 'index' }
+  { path: '**', redirectTo: '/' + 'login' }
 ];
 
 @NgModule({
