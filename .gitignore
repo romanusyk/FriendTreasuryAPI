@@ -4,4 +4,8 @@ lib/
 cli/
 *.iml
 logs/
+server.pid
 webclient/package-lock.json
+webclient/server.pid
+server.log
+
