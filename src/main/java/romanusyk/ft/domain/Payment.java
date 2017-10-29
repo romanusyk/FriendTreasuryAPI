@@ -116,6 +116,11 @@ public class Payment {
         return false;
     }
 
+    @Override
+    public int hashCode() {
+        return id == null ? 0 : id;
+    }
+
     public Integer getId() {
         return id;
     }

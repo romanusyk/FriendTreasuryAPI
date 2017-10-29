@@ -54,6 +54,11 @@ public class Group {
         );
     }
 
+    @Override
+    public int hashCode() {
+        return id == null ? 0 : id;
+    }
+
     public String toDetailedString() {
         return String.format(
                 "{id: %d, title: \"%s\", users: %s}",

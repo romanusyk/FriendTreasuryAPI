@@ -2,9 +2,12 @@ package romanusyk.ft.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.lang.invoke.MethodHandles;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -72,6 +75,11 @@ public class User {
         return false;
     }
 
+    @Override
+    public int hashCode() {
+        return id == null ? 0 : id;
+    }
+
     public User() {
         this.groups = new HashSet<>();
     }
@@ -136,4 +144,5 @@ public class User {
     public void setAuthorities(String authorities) {
         this.authorities = authorities;
     }
+
 }

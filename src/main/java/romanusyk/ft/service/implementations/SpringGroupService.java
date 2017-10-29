@@ -97,6 +97,11 @@ public class SpringGroupService implements GroupService {
     }
 
     @Override
+    public Group getGroupById(Integer groupID) {
+        return groupRepository.findOne(groupID);
+    }
+
+    @Override
     public Group getGroupByTitle(String groupTitle) {
         return groupRepository.findByTitle(groupTitle);
     }

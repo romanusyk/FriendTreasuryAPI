@@ -17,4 +17,7 @@ public interface GroupService {
     void updateGroup(Group group);
 
     List<Group> getGroupsByUser(User user);
+
+    Group getGroupById(Integer groupID);
+
 }

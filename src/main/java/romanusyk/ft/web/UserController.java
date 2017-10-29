@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import romanusyk.ft.domain.Group;
 import romanusyk.ft.domain.User;
 import romanusyk.ft.exception.EntityAlreadyExistsException;
 import romanusyk.ft.exception.NotValidPasswordException;
@@ -17,11 +18,14 @@ import romanusyk.ft.security.JwtAccessToken;
 import romanusyk.ft.security.JwtUtil;
 import romanusyk.ft.security.JwtUtilImpl;
 import romanusyk.ft.service.implementations.SpringUserService;
+import romanusyk.ft.service.interfaces.GroupService;
 import romanusyk.ft.service.interfaces.UserService;
 
 import javax.validation.Valid;
 import java.lang.invoke.MethodHandles;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Roman Usyk on 12.09.17.
@@ -34,6 +38,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private GroupService groupService;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -123,6 +130,27 @@ public class UserController {
             @PathVariable("group") Integer groupID) {
         User user = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
         userService.removeUserFromGroup(user.getId(), groupID);
+    }
+
+    @RequestMapping(value = "group/{group}", method = RequestMethod.GET)
+    @ResponseBody
+    @PreAuthorize("@securityService.hasRole('user')")
+    public List<User> getUsersInGroup(
+            @RequestHeader("${ft.token.header}") String authorization,
+            @PathVariable("group") Integer groupID) {
+        Group group = groupService.getGroupById(groupID);
+        if (group == null) {
+            throw new EntityNotFoundException(String.format("Group with id %d does not exist.", groupID));
+        }
+        User me = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        if (!group.getUsers().contains(me)) {
+            logger.debug(String.format(
+                    "Access denied for user %d trying to get users of group %d",
+                    me.getId(), group.getId()
+            ));
+            throw new UserAuthenticationException("Group members are available only for its members.");
+        }
+        return new ArrayList<>(group.getUsers());
     }
 
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());

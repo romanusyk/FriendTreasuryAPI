@@ -75,6 +75,14 @@ public class Debt {
         return false;
     }
 
+    @Override
+    public int hashCode() {
+        int userFromId = userFrom == null ? 0 : userFrom.getId();
+        int userToId = userTo == null ? 0 : userTo.getId();
+        int groupId = group == null ? 0 : group.getId();
+        return 31 * (31 * userFromId + userToId) + groupId;
+    }
+
     public User getUserFrom() {
         return userFrom;
     }
