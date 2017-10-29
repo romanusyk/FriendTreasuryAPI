@@ -1,1 +1,1 @@
-sudo ng build -v -op /var/www/html
+ sudo ng build -prod -ec -dop -scd -v -op /var/www/html
