@@ -12,6 +12,7 @@ import { NgModule } from '@angular/core';
 // This Module's Components
 import { IndexComponent } from './components/index/index.component';
 import { MdlModule } from '@angular-mdl/core';
+import { BusyModule } from 'angular2-busy';
 
 @NgModule({
     imports: [
@@ -20,7 +21,8 @@ import { MdlModule } from '@angular-mdl/core';
         RouterModule,
         MdlModule,
         MdlSelectModule,
-        SharedModule
+        SharedModule,
+        BusyModule
     ],
     declarations: [
         GroupListComponent,
