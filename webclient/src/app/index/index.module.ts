@@ -11,7 +11,7 @@ import { NgModule } from '@angular/core';
 
 // This Module's Components
 import { IndexComponent } from './components/index/index.component';
-import { MdlModule } from '@angular-mdl/core';
+import { MdlModule, MdlDialogModule } from '@angular-mdl/core';
 import { BusyModule } from 'angular2-busy';
 
 @NgModule({
@@ -22,6 +22,7 @@ import { BusyModule } from 'angular2-busy';
         MdlModule,
         MdlSelectModule,
         SharedModule,
+        MdlDialogModule.forRoot(),
         BusyModule
     ],
     declarations: [

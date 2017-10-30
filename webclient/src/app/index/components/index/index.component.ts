@@ -1,3 +1,4 @@
+import { MdlDialogService } from '@angular-mdl/core';
 import { User } from './../../../shared/models/user.model';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { CreatePaymentModel } from './../../../shared/models/create-payment.model';
@@ -30,7 +31,9 @@ export class IndexComponent implements OnInit {
     private groupService: GroupService,
     private paymentService: PaymentsService,
     private userService: UserService,
-    private toastrManager: ToastsManager) {
+    private toastrManager: ToastsManager,
+    private dialogService: MdlDialogService
+  ) {
   }
 
   ngOnInit(): void {

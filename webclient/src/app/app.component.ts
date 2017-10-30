@@ -1,5 +1,6 @@
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { Component, ViewContainerRef } from '@angular/core';
+import { MdlDialogService } from '@angular-mdl/core';
 
 @Component({
   selector: 'app-root',

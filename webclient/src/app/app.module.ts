@@ -1,4 +1,4 @@
-import { MdlModule } from '@angular-mdl/core';
+import { MdlModule, MdlDialogModule } from '@angular-mdl/core';
 import { MdlSelectModule } from '@angular-mdl/select';
 import { IndexModule } from './index/index.module';
 import { AppErrorHandler } from './app.error-handler';
@@ -27,6 +27,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     RouterModule,
     MdlModule,
     MdlSelectModule,
+    MdlDialogModule.forRoot(),
     AuthModule,
     IndexModule,
     AppRoutingModule,
