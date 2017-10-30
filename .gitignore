@@ -4,9 +4,7 @@ lib/
 cli/
 *.iml
 logs/
-server.pid
+*.log
+*.pid
 webclient/package-lock.json
-webclient/server.pid
-server.log
-
 npm-debug.log

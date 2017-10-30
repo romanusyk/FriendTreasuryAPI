@@ -1,4 +1,3 @@
 cd /home/yevhenii/FriendTreasuryAPI/webclient/
-npm i 
-sudo ng build -prod -ec -dop -op /var/www/html
+bash run.sh >> server.log 2>&1 &
 
