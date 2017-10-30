@@ -9,3 +9,4 @@ webclient/package-lock.json
 webclient/server.pid
 server.log
 
+npm-debug.log

@@ -1,31 +1,32 @@
-<app-loading [isContentVisible]="true">
-    <div class="mdl-grid center-items">
-        <form role="form" [formGroup]="authForm" (ngSubmit)="submitForm()" class="">
-            <h2 class="text-center">{{title}}</h2>
-            <hr>
-            <button class="full-width" mdl-button mdl-ripple [routerLink]="['/login']" *ngIf="!isLogin()">Have an account?</button>
-            <button class="full-width" mdl-button mdl-ripple [routerLink]="['/register']" *ngIf="isLogin()">Need an account?</button>
-            <app-errors [errors]="errors"></app-errors>
+<div class="mdl-grid center-items">
+  <form role="form" [formGroup]="authForm" (ngSubmit)="submitForm()" class="">
+    <h2 class="text-center">{{title}}</h2>
+    <hr>
+    <button class="full-width" mdl-button mdl-ripple [routerLink]="['/login']" *ngIf="!isLogin()">Have an account?</button>
+    <button class="full-width" mdl-button mdl-ripple [routerLink]="['/register']" *ngIf="isLogin()">Need an account?</button>
+    <app-errors [errors]="errors"></app-errors>
 
-            <div>
-                <mdl-textfield label="UserName" floating-label autofocus type="text" formControlName="username" name="username"></mdl-textfield>
-            </div>
-            <div *ngIf="!isLogin()">
-                <mdl-textfield label="Phone" floating-label type="text" formControlName="phone" name="phone"></mdl-textfield>
-            </div>
-            <div>
-                <mdl-textfield label="Password" floating-label autofocus type="password" formControlName="password" name="password"></mdl-textfield>
-            </div>
-            <div *ngIf="!isLogin()">
-                <mdl-textfield label="Confirm Password" floating-label autofocus type="password" formControlName="confirmPassword" name="confirmPassword"></mdl-textfield>
-            </div>
-            <div>
-                <button class="full-width" mdl-button mdl-button-type="raised" type="submit" mdl-colored="primary" [disabled]="!authForm.valid"
-                    mdl-ripple>
-                    <mdl-icon>send</mdl-icon>
-                    Submit
-                </button>
-            </div>
-        </form>
+    <div>
+      <mdl-textfield label="UserName" floating-label autofocus type="text" formControlName="username" name="username"></mdl-textfield>
     </div>
-</app-loading>
+    <div *ngIf="!isLogin()">
+      <mdl-textfield label="Phone" floating-label type="text" formControlName="phone" name="phone"></mdl-textfield>
+    </div>
+    <div>
+      <mdl-textfield label="Password" floating-label autofocus type="password" formControlName="password" name="password"></mdl-textfield>
+    </div>
+    <div *ngIf="!isLogin()">
+      <mdl-textfield label="Confirm Password" floating-label autofocus type="password" formControlName="confirmPassword" name="confirmPassword"></mdl-textfield>
+    </div>
+    <div>
+      <button class="full-width" mdl-button mdl-button-type="raised" type="submit" mdl-colored="primary" [disabled]="!authForm.valid"
+        mdl-ripple>
+        <mdl-icon>send</mdl-icon>
+        Submit
+      </button>
+    </div>
+  </form>
+</div>
+<div
+  [ngBusy]="busy">
+</div>
