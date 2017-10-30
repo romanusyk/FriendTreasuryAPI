@@ -1,9 +1,9 @@
 <div class="mdl-grid">
-  <div class="mdl-cell mdl-cell--3">
+  <div class="mdl-cell mdl-cell--2">
     <div [ngBusy]="groupsBusy"></div>
     <app-group-list [groups]="groups" (select)="onGroupSelect($event)"></app-group-list>
   </div>
-  <div class="md-cell md-cell--6">
+  <div class="md-cell md-cell--10">
     <app-payments-list></app-payments-list>
   </div>
 </div>

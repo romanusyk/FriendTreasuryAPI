@@ -1,6 +1,40 @@
 :host(){
     height: 100vh;
+    font-size: 16px;
+    font-weight: 400;
+    font-family: 'Open Sans', sans-serif;
+    width: 300px;
 }
+.group-parrent{
+    padding: 2px;
+}
+
+.wrapper-name-group {
+    display: flex;
+    flex-direction: column;
+
+}
+.wrapper-name-group span {
+    font-weight: 500;
+}
+
+.wrapper-name-group h5 {
+    margin: 0 0 5px;
+}
+
+.positive {
+    color: green;
+    &:before {
+        content: '+';
+
+    }
+}
+
+
 .group{
-    padding: 0;
+    transition: background .6s;
+    &:hover{
+        background: rgba(0,0,0,0.1);
+        cursor: pointer;
+    }
 }

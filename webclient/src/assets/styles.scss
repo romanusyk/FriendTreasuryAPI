@@ -1,4 +1,6 @@
 @import "~@angular-mdl/core/scss/color-definitions";
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,500,600,700');
+
 
 $color-primary: $palette-blue-500;
 $color-primary-dark: $palette-blue-700;
@@ -12,7 +14,16 @@ $color-danger: rgb(226, 66, 17);
 @import '~@angular-mdl/popover/popover';
 @import '~@angular-mdl/select/select';
 
+body {
+    font-size: 16px;
+    font-family: 'Open Sans', sans-serif;
 
+}
+
+.mdl-layout {
+    max-width: 1200px;
+    margin: 0 auto;
+}
 
 .center-items {
     justify-content: center;

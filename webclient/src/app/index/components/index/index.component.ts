@@ -23,7 +23,7 @@ export class IndexComponent implements OnInit {
   currentGroup: Group;
   users: Array<User> = new Array();
   groupsBusy: Subscription;
-  paymentsBusy: Set<Subscription> = new Set();
+  paymentsBusy: Subscription;
   @ViewChild(PaymentsListComponent) paymentsComponent: PaymentsListComponent;
   @ViewChild(CreatePaymentComponent) createPaymentComponent: CreatePaymentComponent;
   constructor(
@@ -47,16 +47,7 @@ export class IndexComponent implements OnInit {
 
   onGroupSelect(group: Group): void {
     this.currentGroup = group;
-    this.paymentsBusy.add(this.paymentService.get(group.id).subscribe(
-      (data) => {
-        this.paymentsComponent.payments = data;
-      },
-      err => {
-        console.log(err);
-        this.toastrManager.error('Error');
-      }
-    ));
-
+    this.updatePayments();
     this.userService.getUsersInGroup(group.id).subscribe(
       (data) => this.users = data,
       (err) => {
@@ -72,11 +63,22 @@ export class IndexComponent implements OnInit {
     this.paymentService.create(model).subscribe(
       (success) => {
         this.toastrManager.success('Payment Created');
-        this.onGroupSelect(this.currentGroup);
+        this.updatePayments();
       },
       (err) => {
         this.toastrManager.error('Payment error');
       }
     );
+  }
+
+  updatePayments() {
+    this.paymentsBusy = this.paymentService.get(this.currentGroup.id).subscribe(
+      (data) => {
+        this.paymentsComponent.payments = data;
+      },
+      err => {
+        console.log(err);
+        this.toastrManager.error('Error');
+      });
   }
 }
