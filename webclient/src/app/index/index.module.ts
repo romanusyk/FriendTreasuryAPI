@@ -1,3 +1,4 @@
+import { PaymentFiltersComponent } from './components/payment-filters/payment-filters.component';
 import { MdlSelectModule } from '@angular-mdl/select';
 import { CreatePaymentComponent } from './components/create-payment/create-payment/create-payment.component';
 import { PaymentsListComponent } from './components/payments-list/payments-list.component';
@@ -29,13 +30,15 @@ import { BusyModule } from 'angular2-busy';
         GroupListComponent,
         PaymentsListComponent,
         CreatePaymentComponent,
-        IndexComponent
+        IndexComponent,
+        PaymentFiltersComponent
     ],
     exports: [
         GroupListComponent,
         IndexComponent,
         PaymentsListComponent,
-        CreatePaymentComponent
+        CreatePaymentComponent,
+        PaymentFiltersComponent
     ]
 })
 export class IndexModule {
