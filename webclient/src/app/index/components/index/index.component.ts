@@ -6,7 +6,6 @@ import { CreatePaymentComponent } from './../create-payment/create-payment/creat
 import { UserService } from './../../../shared/services/user.service';
 import { PaymentsService } from './../../../shared/services/payments.service';
 import { PaymentsListComponent } from './../payments-list/payments-list.component';
-import { LoadingComponent } from './../../../shared/components/loading/loading.component';
 import { GroupService } from './../../../shared/services/group.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Group } from '../../../shared/models/group.model';

@@ -2,7 +2,6 @@ import { PaymentsService } from './services/payments.service';
 import { GroupService } from './services/group.service';
 import { ErrorPipe } from './pipes/error.pipe';
 import { ToastServiceOptions } from './services/toast-service.options';
-import { LoadingComponent } from './components/loading/loading.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ApiService } from './services/api.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -31,7 +30,6 @@ import { MdlModule } from '@angular-mdl/core';
     declarations: [
         Error404Component,
         ListErrorsComponent,
-        LoadingComponent,
         ErrorPipe
     ],
     providers: [
@@ -46,7 +44,6 @@ import { MdlModule } from '@angular-mdl/core';
     exports: [
         Error404Component,
         ListErrorsComponent,
-        LoadingComponent,
         ErrorPipe
     ]
 })

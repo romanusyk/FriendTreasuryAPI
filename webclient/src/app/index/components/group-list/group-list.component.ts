@@ -1,5 +1,4 @@
 import { Component, ViewChild, Input, EventEmitter, Output } from '@angular/core';
-import { LoadingComponent } from '../../../shared/components/loading/loading.component';
 import { Group } from '../../../shared/models/group.model';
 
 @Component({
@@ -9,7 +8,6 @@ import { Group } from '../../../shared/models/group.model';
     styleUrls: ['group-list.component.scss']
 })
 export class GroupListComponent {
-    // @ViewChild(LoadingComponent) loading: LoadingComponent;
     @Input() groups: Array<Group> = new Array();
     @Output() select: EventEmitter<Group> = new EventEmitter();
 
