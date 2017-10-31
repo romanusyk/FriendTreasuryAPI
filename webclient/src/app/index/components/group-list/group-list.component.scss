@@ -5,10 +5,6 @@
     font-family: 'Open Sans', sans-serif;
     width: 300px;
 }
-.group-parrent{
-    padding: 2px;
-}
-
 .wrapper-name-group {
     display: flex;
     flex-direction: column;
@@ -33,6 +29,8 @@
 
 .group{
     transition: background .6s;
+    padding-left: 0;
+    
     &:hover{
         background: rgba(0,0,0,0.1);
         cursor: pointer;

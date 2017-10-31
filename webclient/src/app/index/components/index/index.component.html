@@ -1,15 +1,62 @@
-<div class="mdl-grid">
-  <div class="mdl-cell mdl-cell--2">
-    <div [ngBusy]="groupsBusy"></div>
-    <app-group-list [groups]="groups" (select)="onGroupSelect($event)"></app-group-list>
-  </div>
-  <div class="md-cell md-cell--10">
-    <app-payments-list></app-payments-list>
-    <div [ngBusy]="paymentsBusy"></div>
-  </div>
-</div>
-<app-create-payment
-  *ngIf="currentGroup"
-  (complete)="createPayment($event)"
-  [users]="users">
-</app-create-payment>
+<mdl-layout md>
+  <mdl-layout-header mdl-layout-header-transparent>
+    <mdl-layout-header-row>
+      <mdl-textfield type="text" placeholder="search"></mdl-textfield>
+      <mdl-layout-title *ngIf="currentGroup">
+        {{currentGroup.title}}
+        {{users.length}} members
+      </mdl-layout-title>
+      <mdl-layout-spacer></mdl-layout-spacer>
+      
+      <nav class="mdl-navigation">
+          <button>sum</button>
+          <button>group</button>
+          <button>from anybody</button>
+          <button>to anybody</button>  
+        
+        </nav>
+      <mdl-layout-spacer></mdl-layout-spacer>
+      
+        <button mdl-button #btn1="mdlButton" (click)="m1.toggle($event, btn1)" mdl-button-type="icon" mdl-ripple><mdl-icon>more_vert</mdl-icon></button>
+        
+    </mdl-layout-header-row>
+
+  </mdl-layout-header>
+  <mdl-layout-drawer>
+    <mdl-layout-title>
+      <mdl-icon>
+        person
+      </mdl-icon>
+
+    </mdl-layout-title>
+    <mdl-layout-title>
+        users
+        -3322
+    </mdl-layout-title>        
+    <nav class="mdl-navigation">
+      <a class="mdl-navigation__link" [routerLink]="['/layout/l1']" (click)="mdlLayout1.closeDrawer()">Link 1</a>
+      <a class="mdl-navigation__link" [routerLink]="['/layout/l2']" (click)="mdlLayout1.closeDrawer()">Link 2</a>
+      <a class="mdl-navigation__link" [routerLink]="['/layout/l3']" (click)="mdlLayout1.closeDrawer()">Link 3</a>
+    </nav>
+  </mdl-layout-drawer>
+  <mdl-layout-content>
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--2">
+        <div [ngBusy]="groupsBusy"></div>
+        <app-group-list [groups]="groups" (select)="onGroupSelect($event)"></app-group-list>
+      </div>
+      <div class="md-cell md-cell--10">
+        <app-payments-list></app-payments-list>
+        <div [ngBusy]="paymentsBusy"></div>
+      </div>
+    </div>
+    <app-create-payment *ngIf="currentGroup" (complete)="createPayment($event)" [users]="users">
+    </app-create-payment>
+  </mdl-layout-content>
+</mdl-layout>
+<mdl-menu #m1="mdlMenu" mdl-menu-position="bottom-right">
+    <mdl-menu-item mdl-ripple (click)="action()">Some Action</mdl-menu-item>
+    <mdl-menu-item mdl-ripple mdl-menu-item-full-bleed-divider>Another Action</mdl-menu-item>
+    <mdl-menu-item mdl-ripple disabled>Disabled Action</mdl-menu-item>
+    <mdl-menu-item>Yet Another Action</mdl-menu-item>
+ </mdl-menu>
