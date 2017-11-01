@@ -7,18 +7,18 @@
         {{users.length}} members
       </mdl-layout-title>
       <mdl-layout-spacer></mdl-layout-spacer>
-      
+
       <nav class="mdl-navigation">
           <button>sum</button>
           <button>group</button>
           <button>from anybody</button>
-          <button>to anybody</button>  
-        
+          <button>to anybody</button>
+
         </nav>
       <mdl-layout-spacer></mdl-layout-spacer>
-      
+
         <button mdl-button #btn1="mdlButton" (click)="m1.toggle($event, btn1)" mdl-button-type="icon" mdl-ripple><mdl-icon>more_vert</mdl-icon></button>
-        
+
     </mdl-layout-header-row>
 
   </mdl-layout-header>
@@ -32,11 +32,11 @@
     <mdl-layout-title>
         users
         -3322
-    </mdl-layout-title>        
+    </mdl-layout-title>
     <nav class="mdl-navigation">
-      <a class="mdl-navigation__link" [routerLink]="['/layout/l1']" (click)="mdlLayout1.closeDrawer()">Link 1</a>
-      <a class="mdl-navigation__link" [routerLink]="['/layout/l2']" (click)="mdlLayout1.closeDrawer()">Link 2</a>
-      <a class="mdl-navigation__link" [routerLink]="['/layout/l3']" (click)="mdlLayout1.closeDrawer()">Link 3</a>
+      <a class="mdl-navigation__link" [routerLink]="['/layout/l1']" >Link 1</a>
+      <a class="mdl-navigation__link" [routerLink]="['/layout/l2']" >Link 2</a>
+      <a class="mdl-navigation__link" [routerLink]="['/layout/l3']" >Link 3</a>
     </nav>
   </mdl-layout-drawer>
   <mdl-layout-content>
@@ -55,7 +55,7 @@
   </mdl-layout-content>
 </mdl-layout>
 <mdl-menu #m1="mdlMenu" mdl-menu-position="bottom-right">
-    <mdl-menu-item mdl-ripple (click)="action()">Some Action</mdl-menu-item>
+    <mdl-menu-item mdl-ripple>Some Action</mdl-menu-item>
     <mdl-menu-item mdl-ripple mdl-menu-item-full-bleed-divider>Another Action</mdl-menu-item>
     <mdl-menu-item mdl-ripple disabled>Disabled Action</mdl-menu-item>
     <mdl-menu-item>Yet Another Action</mdl-menu-item>
