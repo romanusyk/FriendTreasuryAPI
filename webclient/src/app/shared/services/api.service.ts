@@ -32,14 +32,22 @@ export class ApiService {
   }
 
   get(path: string, params?: UrlParamsHelper): Observable<any> {
-    return this.http.get(`${this.config.endpoint}${path}${params.toString()}`,
+    let url = `${this.config.endpoint}${path}`;
+    if (!!params) {
+      url += params.toString();
+    }
+    return this.http.get(url,
       { headers: this.setHeaders() })
       .catch(this.formatErrors)
       .map((res: Response) => res.json());
   }
 
   getData<T>(path: string, params?: UrlParamsHelper): Observable<T> {
-    return this.http.get(`${this.config.endpoint}${path}${params.toString()}`,
+    let url = `${this.config.endpoint}${path}`;
+    if (!!params) {
+      url += params.toString();
+    }
+    return this.http.get(url,
       { headers: this.setHeaders() })
       .catch(this.formatErrors)
       .map(data => data.json());
