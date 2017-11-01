@@ -43,6 +43,7 @@ public class PaymentController {
     @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
     public Page<Payment> getPayments(
+            @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
             @RequestParam int page, @RequestParam int size,
             @RequestParam(required = false) Integer userFrom,
             @RequestParam(required = false) Integer userTo,
@@ -57,6 +58,7 @@ public class PaymentController {
     @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
     public List<Debt> getPaymentSum(
+            @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
             @RequestParam(required = false) Integer userFrom,
             @RequestParam(required = false) Integer userTo,
             @RequestParam(required = false) Integer group
