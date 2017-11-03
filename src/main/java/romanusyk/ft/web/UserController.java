@@ -54,14 +54,19 @@ public class UserController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
-    public List<User> getAllUsers() {
+    public List<User> getAllUsers(
+            @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization
+    ) {
         return userService.getAllUsers();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
-    public User getUserById(@PathVariable("id") Integer id) {
+    public User getUserById(
+            @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
+            @PathVariable("id") Integer id
+    ) {
         User user = userService.getUserByID(id);
         logger.debug(String.format("getUserById(%d) -> %s", id, user));
         if (user == null) {
@@ -80,6 +85,7 @@ public class UserController {
         User existingUser = userService.getUserByUsername(user.getUsername());
         if (existingUser != null) throw new EntityAlreadyExistsException(User.class, existingUser);
 
+        user.setAuthorities("user");
         SpringUserService.encryptPassword(user);
         userService.createUser(user);
 

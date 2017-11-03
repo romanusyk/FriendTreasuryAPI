@@ -46,7 +46,10 @@ public class GroupController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
-    public Group getGroupByTitle(@RequestParam("title") String groupTitle) {
+    public Group getGroupByTitle(
+            @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
+            @RequestParam("title") String groupTitle
+    ) {
         Group group = groupService.getGroupByTitle(groupTitle);
         if (group == null) {
             throw new EntityNotFoundException(Group.class, new Group(groupTitle));
