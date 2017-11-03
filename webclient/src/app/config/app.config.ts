@@ -7,7 +7,8 @@ export let APP_CONFIG = new InjectionToken('app.config');
 export const AppConfig: IAppConfig = {
     routes: {
       login: 'login',
-      error404: '404'
+      error404: '404',
+      main: 'index'
     },
     endpoint: 'http://52.186.121.68:9999/ft/api/v1/',
     votesLimit: 3,

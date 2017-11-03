@@ -17,6 +17,7 @@ import { ToastModule, ToastOptions } from 'ng2-toastr/ng2-toastr';
 import { MdlModule } from '@angular-mdl/core';
 import { MainGuard } from './guards/main.guard';
 import { AppConfig, APP_CONFIG } from '../config/app.config';
+import { LoginGuard } from './guards/login.guard';
 
 @NgModule({
     imports: [
@@ -44,7 +45,7 @@ import { AppConfig, APP_CONFIG } from '../config/app.config';
         PaymentsService,
         { provide: ToastOptions, useClass: ToastServiceOptions },
         MainGuard,
-
+        LoginGuard
     ],
     exports: [
         Error404Component,

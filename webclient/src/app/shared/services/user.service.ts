@@ -10,6 +10,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 import { ApiService } from './api.service';
+import { DateHelper } from './date.helper';
 
 @Injectable()
 export class UserService {
@@ -30,6 +31,7 @@ export class UserService {
 
   isAuthorized(): boolean {
     const user = this.userStorageService.get();
+    console.log(user);
     if (user != null && user.token != null && !this.isExpired(user.token.expireTime)) {
       return true;
     }
@@ -37,14 +39,14 @@ export class UserService {
   }
 
   private isExpired(date: number): boolean {
-    return date <= Date.now();
+    return date <= DateHelper.currentUnixTime();
   }
 
   populate() {
     const user = this.userStorageService.get();
     if (user && user.token && user.token.expireTime >= Date.now()) {
       this.setAuth(user);
-      setTimeout(this.purgeAuth.bind(this), user.token.expireTime - Date.now());
+      setTimeout(this.purgeAuth.bind(this), user.token.expireTime - DateHelper.currentUnixTime());
     } else {
       this.purgeAuth();
     }

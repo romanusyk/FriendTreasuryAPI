@@ -5,15 +5,15 @@ import { Inject, Injectable } from '@angular/core';
 import { APP_CONFIG } from '../../config/app.config';
 import { UserService } from '../services/user.service';
 @Injectable()
-export class MainGuard implements CanActivate {
+export class LoginGuard implements CanActivate {
   private config: IAppConfig;
   constructor(private userService: UserService, @Inject(APP_CONFIG) appConfig: IAppConfig, private router: Router) {
     this.config = appConfig;
   }
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
-    if (this.userService.isAuthorized()) {
+    if (!this.userService.isAuthorized()) {
       return true;
     }
-    this.router.navigateByUrl(this.config.routes.login);
+    this.router.navigateByUrl(this.config.routes.main);
   }
 }
