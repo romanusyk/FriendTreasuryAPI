@@ -6,7 +6,7 @@ export let APP_CONFIG = new InjectionToken('app.config');
 
 export const AppConfig: IAppConfig = {
     routes: {
-      heroes: 'heroes',
+      login: 'login',
       error404: '404'
     },
     endpoint: 'http://52.186.121.68:9999/ft/api/v1/',

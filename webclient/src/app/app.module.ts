@@ -37,8 +37,6 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     AppComponent
   ],
   providers: [
-    // { provide: ErrorHandler, useClass: AppErrorHandler },
-    { provide: APP_CONFIG, useValue: AppConfig },
   ],
   bootstrap: [AppComponent]
 })

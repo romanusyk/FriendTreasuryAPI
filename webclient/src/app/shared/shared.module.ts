@@ -15,6 +15,8 @@ import { CommonModule } from '@angular/common';
 import { HttpModule } from '@angular/http';
 import { ToastModule, ToastOptions } from 'ng2-toastr/ng2-toastr';
 import { MdlModule } from '@angular-mdl/core';
+import { MainGuard } from './guards/main.guard';
+import { AppConfig, APP_CONFIG } from '../config/app.config';
 
 @NgModule({
     imports: [
@@ -34,12 +36,15 @@ import { MdlModule } from '@angular-mdl/core';
     ],
     providers: [
         UserStorageService,
+        { provide: APP_CONFIG, useValue: AppConfig },
         UserService,
         ApiService,
         ErrorPipe,
         GroupService,
         PaymentsService,
-        { provide: ToastOptions, useClass: ToastServiceOptions }
+        { provide: ToastOptions, useClass: ToastServiceOptions },
+        MainGuard,
+
     ],
     exports: [
         Error404Component,

@@ -5,9 +5,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AppConfig } from './config/app.config';
+import { MainGuard } from './shared/guards/main.guard';
 
 const routes: Routes = [
-  { path: 'index', component: IndexComponent},
+  { path: 'index', component: IndexComponent, canActivate: [MainGuard]},
   // {path: AppConfig.routes.error404, component: Error404Component},
   { path: 'login', component: AuthComponent },
   { path: 'register', component: AuthComponent },

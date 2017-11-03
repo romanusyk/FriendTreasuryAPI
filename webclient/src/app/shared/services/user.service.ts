@@ -1,5 +1,5 @@
 import { User } from './../models/user.model';
-import { UserLoginRequest } from './../models/user-login-request.model';
+import { UserLoginResponse } from './../models/user-login-request.model';
 import { Credentials, CredentialsType } from './../models/credentials.model';
 import { UserStorageService } from './user-storage.service';
 
@@ -13,7 +13,7 @@ import { ApiService } from './api.service';
 
 @Injectable()
 export class UserService {
-  private currentUserSubject = new BehaviorSubject<UserLoginRequest>(new UserLoginRequest());
+  private currentUserSubject = new BehaviorSubject<UserLoginResponse>(new UserLoginResponse());
   public currentUser = this.currentUserSubject.asObservable().distinctUntilChanged();
   private isAuthenticatedSubject = new ReplaySubject<boolean>(1);
   public isAuthenticated = this.isAuthenticatedSubject.asObservable();
@@ -24,21 +24,33 @@ export class UserService {
     private userStorageService: UserStorageService
   ) { }
 
-  getCurrentUser(): UserLoginRequest {
+  getCurrentUser(): UserLoginResponse {
     return this.currentUserSubject.value;
+  }
+
+  isAuthorized(): boolean {
+    const user = this.userStorageService.get();
+    if (user != null && user.token != null && !this.isExpired(user.token.expireTime)) {
+      return true;
+    }
+    this.purgeAuth();
+  }
+
+  private isExpired(date: number): boolean {
+    return date <= Date.now();
   }
 
   populate() {
     const user = this.userStorageService.get();
     if (user && user.token && user.token.expireTime >= Date.now()) {
-        this.setAuth(user);
-        setTimeout(this.purgeAuth, user.token.expireTime - Date.now());
+      this.setAuth(user);
+      setTimeout(this.purgeAuth.bind(this), user.token.expireTime - Date.now());
     } else {
       this.purgeAuth();
     }
   }
 
-  setAuth(user: UserLoginRequest) {
+  setAuth(user: UserLoginResponse) {
     this.userStorageService.save(user);
     this.currentUserSubject.next(user);
     this.isAuthenticatedSubject.next(true);
@@ -51,7 +63,7 @@ export class UserService {
     this.isAuthenticatedSubject.next(false);
   }
 
-  attemptAuth(type: CredentialsType, credentials): Observable<UserLoginRequest> {
+  attemptAuth(type: CredentialsType, credentials): Observable<UserLoginResponse> {
     if (type === CredentialsType.login) {
       return this.login(credentials);
     } else if (type === CredentialsType.register) {

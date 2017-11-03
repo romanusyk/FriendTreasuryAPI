@@ -1,6 +1,6 @@
 import { Token } from './token.model';
 
-export class UserLoginRequest {
+export class UserLoginResponse {
     username: string;
     token: Token;
 }
