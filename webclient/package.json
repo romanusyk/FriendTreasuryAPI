@@ -6,6 +6,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:prod:publish": "ng build -prod -ec -dop -op /var/www/html",
     "test": "ng test",
     "lint": "ng lint"
   },

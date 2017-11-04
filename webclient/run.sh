@@ -1,3 +1,2 @@
 npm i 
-ng build -prod -ec -dop -op /var/www/html
-
+npm run build:prod:publish
