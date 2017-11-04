@@ -2,7 +2,7 @@ import { PaymentsFilters } from './../../../shared/models/payments-filters.model
 import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
 
 @Component({
-    selector: 'app-payments-filters',
+    selector: 'ft-payments-filters',
     templateUrl: 'payments-filters.component.html',
     styleUrls: ['payments-filters.component.scss']
 })

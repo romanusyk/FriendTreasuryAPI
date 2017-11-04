@@ -5,7 +5,7 @@ import { MdlDialogComponent, MdlButtonComponent, IMdlDialogConfiguration } from 
 
 @Component({
     moduleId: module.id,
-    selector: 'app-create-payment',
+    selector: 'ft-create-payment',
     templateUrl: 'create-payment.component.html',
     styleUrls: ['create-payment.component.scss']
 })

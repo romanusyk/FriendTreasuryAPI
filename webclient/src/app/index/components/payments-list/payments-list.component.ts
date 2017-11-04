@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
 
 @Component({
     moduleId: module.id,
-    selector: 'app-payments-list',
+    selector: 'ft-payments-list',
     templateUrl: 'payments-list.component.html',
     styleUrls: ['payments-list.component.scss']
 })

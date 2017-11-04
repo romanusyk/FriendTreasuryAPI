@@ -3,7 +3,7 @@ import { Component, Input } from '@angular/core';
 
 @Component({
     moduleId: module.id,
-    selector: 'app-errors',
+    selector: 'ft-errors',
     templateUrl: 'list-errors.component.html',
     styleUrls: ['list-errors.component.scss']
 })

@@ -8,11 +8,11 @@
       </mdl-layout-title>
       <mdl-layout-spacer></mdl-layout-spacer>
 
-      <app-payments-filters
+      <ft-payments-filters
         *ngIf="currentGroup"
         [group]="currentGroup.id"
         (change)="onFilterChange($event)">
-      </app-payments-filters>
+      </ft-payments-filters>
       <mdl-layout-spacer></mdl-layout-spacer>
 
         <button mdl-button #btn1="mdlButton" (click)="m1.toggle($event, btn1)" mdl-button-type="icon" mdl-ripple><mdl-icon>more_vert</mdl-icon></button>
@@ -41,15 +41,15 @@
     <div class="mdl-grid">
       <div class="mdl-cell mdl-cell--2">
         <div [ngBusy]="groupsBusy"></div>
-        <app-group-list [groups]="groups" (select)="onGroupSelect($event)"></app-group-list>
+        <ft-group-list [groups]="groups" (select)="onGroupSelect($event)"></ft-group-list>
       </div>
       <div class="md-cell md-cell--10">
-        <app-payments-list></app-payments-list>
+        <ft-payments-list></ft-payments-list>
         <div [ngBusy]="paymentsBusy"></div>
       </div>
     </div>
-    <app-create-payment *ngIf="currentGroup" (complete)="createPayment($event)" [users]="users">
-    </app-create-payment>
+    <ft-create-payment *ngIf="currentGroup" (complete)="createPayment($event)" [users]="users">
+    </ft-create-payment>
   </mdl-layout-content>
 </mdl-layout>
 <mdl-menu #m1="mdlMenu" mdl-menu-position="bottom-right">

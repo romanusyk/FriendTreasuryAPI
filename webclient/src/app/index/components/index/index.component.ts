@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs/Rx';
 
 @Component({
   moduleId: module.id,
-  selector: 'app-index',
+  selector: 'ft-index',
   templateUrl: 'index.component.html',
   styleUrls: ['index.component.scss']
 })

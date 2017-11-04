@@ -3,7 +3,7 @@ import { Group } from '../../../shared/models/group.model';
 
 @Component({
     moduleId: module.id,
-    selector: 'app-group-list',
+    selector: 'ft-group-list',
     templateUrl: 'group-list.component.html',
     styleUrls: ['group-list.component.scss']
 })
