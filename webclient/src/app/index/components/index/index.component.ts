@@ -1,3 +1,4 @@
+import { PaymentsFilters } from './../../../shared/models/payments-filters.model';
 import { MdlDialogService } from '@angular-mdl/core';
 import { User } from './../../../shared/models/user.model';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
@@ -22,6 +23,7 @@ export class IndexComponent implements OnInit {
   groups: Array<Group> = new Array();
   currentGroup: Group;
   users: Array<User> = new Array();
+  filters: PaymentsFilters;
   groupsBusy: Subscription;
   paymentsBusy: Subscription;
   @ViewChild(PaymentsListComponent) paymentsComponent: PaymentsListComponent;
@@ -36,6 +38,7 @@ export class IndexComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.filters = new PaymentsFilters();
     this.groupsBusy = this.groupService.getGroups().subscribe(
       (data: Array<Group>) => {
         this.groups = data;
@@ -49,6 +52,7 @@ export class IndexComponent implements OnInit {
 
   onGroupSelect(group: Group): void {
     this.currentGroup = group;
+    this.filters.group = group.id;
     this.updatePayments();
     this.userService.getUsersInGroup(group.id).subscribe(
       (data) => this.users = data,
@@ -57,6 +61,10 @@ export class IndexComponent implements OnInit {
         this.toastrManager.error('Error');
       }
     );
+  }
+
+  onFilterChange(filters: PaymentsFilters) {
+    this.updatePayments();
   }
 
   createPayment(model: CreatePaymentModel) {
@@ -74,7 +82,7 @@ export class IndexComponent implements OnInit {
   }
 
   updatePayments() {
-    this.paymentsBusy = this.paymentService.get(this.currentGroup.id).subscribe(
+    this.paymentsBusy = this.paymentService.get(this.filters).subscribe(
       (data) => {
         this.paymentsComponent.payments = data;
       },

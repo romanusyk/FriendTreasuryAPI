@@ -8,13 +8,11 @@
       </mdl-layout-title>
       <mdl-layout-spacer></mdl-layout-spacer>
 
-      <nav class="mdl-navigation">
-          <button>sum</button>
-          <button>group</button>
-          <button>from anybody</button>
-          <button>to anybody</button>
-
-        </nav>
+      <app-payments-filters
+        *ngIf="currentGroup"
+        [group]="currentGroup.id"
+        (change)="onFilterChange($event)">
+      </app-payments-filters>
       <mdl-layout-spacer></mdl-layout-spacer>
 
         <button mdl-button #btn1="mdlButton" (click)="m1.toggle($event, btn1)" mdl-button-type="icon" mdl-ripple><mdl-icon>more_vert</mdl-icon></button>

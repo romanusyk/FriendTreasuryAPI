@@ -1,7 +1,8 @@
 export class UrlParamsHelper {
   private params: UrlParam[];
   constructor(...params: UrlParam[]) { this.params = params; }
-  add(param: UrlParam) { this.params.push(param); }
+  push(param: UrlParam) { this.params.push(param); }
+  add(name: string, value: any) { this.params.push({ name: name, value: value }); }
   toString() { return '?' + this.params.map(p => p.name + '=' + p.value).join('&'); }
 }
 

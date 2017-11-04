@@ -1,3 +1,4 @@
+import { PaymentsFilters } from './../models/payments-filters.model';
 import { CreatePaymentModel } from './../models/create-payment.model';
 import { PaymentDTO } from './../models/paymentDTO.model';
 import { PagedCollection } from './../models/paged-collection.model';
@@ -11,13 +12,8 @@ export class PaymentsService {
 
   constructor(private apiService: ApiService) { }
 
-  get(groupId: number, page: number = 0, size: number = 50): Observable<PagedCollection<PaymentDTO>> {
-    return this.apiService.get('payments',
-      new UrlParamsHelper(
-        { name: 'group', value: groupId },
-        { name: 'page', value: page },
-        { name: 'size', value: size }
-      ));
+  get(filters: PaymentsFilters): Observable<PagedCollection<PaymentDTO>> {
+    return this.apiService.get('payments' + filters.toUrl());
   }
 
   create(model: CreatePaymentModel): Observable<any> {

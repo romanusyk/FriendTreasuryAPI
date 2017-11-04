@@ -9,10 +9,10 @@ import { MainGuard } from './shared/guards/main.guard';
 import { LoginGuard } from './shared/guards/login.guard';
 
 const routes: Routes = [
-  { path: 'index', component: IndexComponent, canActivate: [MainGuard]},
+  { path: 'index', component: IndexComponent/*, canActivate: [MainGuard]*/},
   // {path: AppConfig.routes.error404, component: Error404Component},
-  { path: 'login', component: AuthComponent, canActivate: [LoginGuard] },
-  { path: 'register', component: AuthComponent, canActivate: [LoginGuard] },
+  { path: 'login', component: AuthComponent/*, canActivate: [LoginGuard] */},
+  { path: 'register', component: AuthComponent/*, canActivate: [LoginGuard]*/ },
   { path: '**', redirectTo: '/' + 'login' }
 ];
 
