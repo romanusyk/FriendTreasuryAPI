@@ -41,7 +41,7 @@ export class AuthComponent implements OnInit {
                 this.authForm.addControl('phone', new FormControl('',
                     [
                         Validators.required,
-                        Validators.maxLength(12)
+                        FtValidators.Length(8, 12)
                     ]));
                 this.authForm.addControl('confirmPassword', new FormControl('',
                     [
@@ -74,7 +74,7 @@ export class AuthComponent implements OnInit {
                     if (!!message) {
                         for (const error in control.errors) {
                             if (control.errors.hasOwnProperty(error)) {
-                                this.errors.push(new Error(message[error], key));
+                                this.errors.push(new Error(message[error]));
                             }
                         }
                     }
@@ -108,16 +108,17 @@ export class AuthComponent implements OnInit {
 
 export const ValidationMessages = {
     username: {
-        required: 'This field is requ'
+        required: 'Username is required'
     },
     password: {
-        required: 'Обязательное поле.'
+        required: 'Password is required'
     },
     phone: {
-        required: 'Обязательное поле.',
-        maxlength: 'Обязательное поле.'
+        required: 'Phone is required',
+        range: 'Phone should be in range [8:12]'
     },
     confirmPassword: {
-        equalTo: 'Should be equal to password'
+        required: 'Password confirmation is required',
+        equalTo: 'Password\'s doesn\'t match'
     }
 };

@@ -1,6 +1,5 @@
 export class Error {
     constructor(
-        public message: string,
-        public subject: string = null) {
+        public message: string) {
     }
 }

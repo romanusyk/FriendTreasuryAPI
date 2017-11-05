@@ -11,6 +11,8 @@ export class ListErrorsComponent {
     @Input() errors: Array<Error>;
 
     set(errors) {
-        this.errors = errors;
+        if (!!errors) {
+            this.errors = errors;
+        }
     }
 }
