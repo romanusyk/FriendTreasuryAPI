@@ -37,6 +37,23 @@ spring:
 
 
 spring:
+  profiles: prod
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ft
+    driver-class-name: org.postgresql.Driver
+    username: romm
+    password: romm
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    database-platform: org.hibernate.dialect.PostgresPlusDialect
+
+
+---
+
+
+spring:
   profiles: test
   datasource:
     url: jdbc:h2:mem:test
