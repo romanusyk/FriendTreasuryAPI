@@ -64,6 +64,8 @@ export class IndexComponent implements OnInit {
   }
 
   onFilterChange(filters: PaymentsFilters) {
+    this.filters = filters;
+    console.log(filters);
     this.updatePayments();
   }
 
