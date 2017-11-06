@@ -1,10 +1,10 @@
+import { AuthService } from './../../../shared/services/auth.service';
 import { PaymentsFilters } from './../../../shared/models/payments-filters.model';
 import { MdlDialogService } from '@angular-mdl/core';
 import { User } from './../../../shared/models/user.model';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { CreatePaymentModel } from './../../../shared/models/create-payment.model';
 import { CreatePaymentComponent } from './../create-payment/create-payment/create-payment.component';
-import { UserService } from './../../../shared/services/user.service';
 import { PaymentsService } from './../../../shared/services/payments.service';
 import { PaymentsListComponent } from './../payments-list/payments-list.component';
 import { GroupService } from './../../../shared/services/group.service';
@@ -14,6 +14,7 @@ import { Subscription } from 'rxjs/Rx';
 import { PaymentsFiltersComponent } from '../payments-filters/payments-filters.component';
 import { UserLoginResponse } from '../../../shared/models/user-login-request.model';
 import { Router } from '@angular/router';
+import { UserService } from '../../../shared/services/user.service';
 
 @Component({
   moduleId: module.id,
@@ -39,6 +40,7 @@ export class IndexComponent implements OnInit {
     private groupService: GroupService,
     private paymentService: PaymentsService,
     private userService: UserService,
+    private authService: AuthService,
     private toastrManager: ToastsManager,
     private dialogService: MdlDialogService,
     private router: Router
@@ -56,19 +58,23 @@ export class IndexComponent implements OnInit {
         this.toastrManager.error('Error');
       }
     );
-    this.currentUserSubscription = this.userService.currentUser.subscribe(
+    this.currentUserSubscription = this.authService.currentUser.subscribe(
       (data: User) => {
+        console.log('call currentUserSubscription');
+        console.log(data);
         if (!!data) {
           this.currentUser = data;
         } else {
-          this.currentUserSubscription.unsubscribe();
+          // this.currentUserSubscription.unsubscribe();
         }
       }
     );
-    this.isAuthenticatedSubscription = this.userService.isAuthenticated.subscribe(
+    this.isAuthenticatedSubscription = this.authService.isAuthenticated.subscribe(
       (data: boolean) => {
+        console.log('call isAuthenticatedSubscription');
+        console.log(data);
         if (!data) {
-          this.isAuthenticatedSubscription.unsubscribe();
+          // this.isAuthenticatedSubscription.unsubscribe();
           this.router.navigateByUrl('login');
         }
       }
@@ -128,6 +134,6 @@ export class IndexComponent implements OnInit {
   }
 
   logout() {
-    this.userService.purgeAuth();
+    this.authService.purgeAuth();
   }
 }

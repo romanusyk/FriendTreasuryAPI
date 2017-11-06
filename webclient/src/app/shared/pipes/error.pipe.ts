@@ -11,6 +11,7 @@ export class ErrorPipe implements PipeTransform {
         let lastIndex = message.lastIndexOf('.');
         lastIndex = lastIndex === -1 ? 0 : lastIndex;
         const exeption = message.substring(lastIndex);
+        console.log(exeption);
         return new Error(ServerExeptions[exeption]);
     }
 }

@@ -1,3 +1,4 @@
+import { AuthService } from './auth.service';
 import { ErrorPipe } from './../pipes/error.pipe';
 import { Error } from './../models/error.model';
 import { IAppConfig } from './../../config/iapp.config';
@@ -14,7 +15,8 @@ export class ApiService {
   constructor(
     private http: Http,
     @Inject(APP_CONFIG) appConfig: IAppConfig,
-    private userStorageService: UserStorageService
+    private userStorageService: UserStorageService,
+    private authService: AuthService
   ) {
     this.config = appConfig;
   }
@@ -100,9 +102,13 @@ export class ApiService {
   }
 
   private formatErrors(error: Response): Observable<any> {
+    console.log(error);
     if (error.status >= 500 || typeof (error.type === 'cors')) {
       return Observable.throw(this.generateServerError.bind(this)());
     }
+    // if (error.status === 401) {
+    //   this.authService.purgeAuth();
+    // }
     return Observable.throw(error.json());
   }
 }
