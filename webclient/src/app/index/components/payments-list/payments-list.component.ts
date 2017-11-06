@@ -9,6 +9,6 @@ import { Component } from '@angular/core';
     styleUrls: ['payments-list.component.scss']
 })
 export class PaymentsListComponent {
-    public payments: PagedCollection<PaymentDTO> = new PagedCollection<PaymentDTO>();
+    public payments: Array<PaymentDTO> = new Array();
 
 }

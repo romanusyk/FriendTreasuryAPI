@@ -86,7 +86,12 @@ export class IndexComponent implements OnInit {
   updatePayments() {
     this.paymentsBusy = this.paymentService.get(this.filters).subscribe(
       (data) => {
-        this.paymentsComponent.payments = data;
+        if (this.filters.sum) {
+          this.paymentsComponent.payments = data;
+        } else {
+          this.paymentsComponent.payments = data.content;
+        }
+
       },
       err => {
         console.log(err);

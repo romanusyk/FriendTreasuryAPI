@@ -9,4 +9,5 @@ export class PaymentDTO {
     longitude: number;
     timestamp: number;
     userFrom: User;
+    userTo: User;
 }

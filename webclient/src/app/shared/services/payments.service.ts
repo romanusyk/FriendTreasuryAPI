@@ -10,13 +10,13 @@ import { UrlParamsHelper } from './url-params.helper';
 @Injectable()
 export class PaymentsService {
 
-  constructor(private apiService: ApiService) { }
+    constructor(private apiService: ApiService) { }
 
-  get(filters: PaymentsFilters): Observable<PagedCollection<PaymentDTO>> {
-    return this.apiService.get('payments' + filters.toUrl());
-  }
+    get(filters: PaymentsFilters): Observable<any> {
+        return this.apiService.get('payments' + filters.toUrl());
+    }
 
-  create(model: CreatePaymentModel): Observable<any> {
-    return this.apiService.post('payments', model);
-  }
+    create(model: CreatePaymentModel): Observable<any> {
+        return this.apiService.post('payments', model);
+    }
 }

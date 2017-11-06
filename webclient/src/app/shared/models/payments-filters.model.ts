@@ -9,8 +9,10 @@ export class PaymentsFilters {
 
     public toUrl(): string {
         const helper = new UrlParamsHelper();
-        helper.add('page', this.page);
-        helper.add('size', this.size);
+        if (!this.sum) {
+            helper.add('page', this.page);
+            helper.add('size', this.size);
+        }
         if (!!this.from) {
             helper.add('userFrom', this.from);
         }
