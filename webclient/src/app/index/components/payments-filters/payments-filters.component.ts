@@ -16,6 +16,7 @@ export class PaymentsFiltersComponent implements OnInit {
     }
 
     onChange(type: string, value?: any) {
+        console.log(type);
         switch (type.toLowerCase()) {
             case 'from':
                 this.model.from = !!value ? value : 0;
@@ -27,7 +28,7 @@ export class PaymentsFiltersComponent implements OnInit {
                 this.model.sum = !this.model.sum;
                 break;
             case 'group':
-                this.model.group = !!this.model.group ? this.group : 0;
+                this.model.group = !!this.model.group ? 0 : this.group;
                 break;
             default:
                 break;

@@ -3,19 +3,17 @@
     <mdl-layout-header-row>
       <mdl-textfield type="text" placeholder="search"></mdl-textfield>
       <mdl-layout-title *ngIf="currentGroup">
-        {{currentGroup.title}}
-        {{users.length}} members
+        {{currentGroup.title}} {{users.length}} members
       </mdl-layout-title>
       <mdl-layout-spacer></mdl-layout-spacer>
 
-      <ft-payments-filters
-        *ngIf="currentGroup"
-        [group]="currentGroup.id"
-        (change)="onFilterChange($event)">
+      <ft-payments-filters *ngIf="currentGroup" [group]="currentGroup.id" (change)="onFilterChange($event)">
       </ft-payments-filters>
       <mdl-layout-spacer></mdl-layout-spacer>
 
-        <button mdl-button #btn1="mdlButton" (click)="m1.toggle($event, btn1)" mdl-button-type="icon" mdl-ripple><mdl-icon>more_vert</mdl-icon></button>
+      <button mdl-button #btn1="mdlButton" (click)="m1.toggle($event, btn1)" mdl-button-type="icon" mdl-ripple>
+        <mdl-icon>more_vert</mdl-icon>
+      </button>
 
     </mdl-layout-header-row>
 
@@ -28,13 +26,12 @@
 
     </mdl-layout-title>
     <mdl-layout-title>
-        users
-        -3322
+      users -3322
     </mdl-layout-title>
     <nav class="mdl-navigation">
-      <a class="mdl-navigation__link" [routerLink]="['/layout/l1']" >Link 1</a>
-      <a class="mdl-navigation__link" [routerLink]="['/layout/l2']" >Link 2</a>
-      <a class="mdl-navigation__link" [routerLink]="['/layout/l3']" >Link 3</a>
+      <a class="mdl-navigation__link" [routerLink]="['/layout/l1']">Link 1</a>
+      <a class="mdl-navigation__link" [routerLink]="['/layout/l2']">Link 2</a>
+      <a class="mdl-navigation__link" [routerLink]="['/layout/l3']">Link 3</a>
     </nav>
   </mdl-layout-drawer>
   <mdl-layout-content>
@@ -44,7 +41,10 @@
         <ft-group-list [groups]="groups" (select)="onGroupSelect($event)"></ft-group-list>
       </div>
       <div class="md-cell md-cell--10">
-        <ft-payments-list></ft-payments-list>
+        <ft-payments-list
+        (toClick)="onUserFilterChange($event,'to')"
+        (fromClick)="onUserFilterChange($event,'from')">
+        </ft-payments-list>
         <div [ngBusy]="paymentsBusy"></div>
       </div>
     </div>
@@ -53,8 +53,8 @@
   </mdl-layout-content>
 </mdl-layout>
 <mdl-menu #m1="mdlMenu" mdl-menu-position="bottom-right">
-    <mdl-menu-item mdl-ripple>Some Action</mdl-menu-item>
-    <mdl-menu-item mdl-ripple mdl-menu-item-full-bleed-divider>Another Action</mdl-menu-item>
-    <mdl-menu-item mdl-ripple disabled>Disabled Action</mdl-menu-item>
-    <mdl-menu-item>Yet Another Action</mdl-menu-item>
- </mdl-menu>
+  <mdl-menu-item mdl-ripple>Some Action</mdl-menu-item>
+  <mdl-menu-item mdl-ripple mdl-menu-item-full-bleed-divider>Another Action</mdl-menu-item>
+  <mdl-menu-item mdl-ripple disabled>Disabled Action</mdl-menu-item>
+  <mdl-menu-item>Yet Another Action</mdl-menu-item>
+</mdl-menu>

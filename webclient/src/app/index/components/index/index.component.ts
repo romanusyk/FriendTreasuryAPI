@@ -11,6 +11,7 @@ import { GroupService } from './../../../shared/services/group.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Group } from '../../../shared/models/group.model';
 import { Subscription } from 'rxjs/Rx';
+import { PaymentsFiltersComponent } from '../payments-filters/payments-filters.component';
 
 @Component({
   moduleId: module.id,
@@ -27,6 +28,7 @@ export class IndexComponent implements OnInit {
   groupsBusy: Subscription;
   paymentsBusy: Subscription;
   @ViewChild(PaymentsListComponent) paymentsComponent: PaymentsListComponent;
+  @ViewChild(PaymentsFiltersComponent) filtersComponent: PaymentsFiltersComponent;
   @ViewChild(CreatePaymentComponent) createPaymentComponent: CreatePaymentComponent;
   constructor(
     private groupService: GroupService,
@@ -65,8 +67,11 @@ export class IndexComponent implements OnInit {
 
   onFilterChange(filters: PaymentsFilters) {
     this.filters = filters;
-    console.log(filters);
     this.updatePayments();
+  }
+
+  onUserFilterChange(id: number, type: string) {
+    this.filtersComponent.onChange(type, id);
   }
 
   createPayment(model: CreatePaymentModel) {
