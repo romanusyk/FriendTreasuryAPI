@@ -23,11 +23,12 @@ export class AuthService {
     public isAuthenticated;
     private config: IAppConfig;
     constructor(
-        private http: Http,
+        private apiService: ApiService,
         @Inject(APP_CONFIG) appConfig: IAppConfig,
         private userStorageService: UserStorageService,
         private userService: UserService
     ) {
+        this.apiService.notAuthorize.subscribe(this.purgeAuth);
         const user = this.userStorageService.getInfo();
         this.currentUserSubject = new BehaviorSubject<User>(user ? user : new User());
         this.currentUser = this.currentUserSubject.asObservable().distinctUntilChanged();
@@ -85,8 +86,7 @@ export class AuthService {
     }
 
     private login(credentials: Credentials) {
-        return this.http.post('users/access', credentials)
-            .map(data => data.json())
+        return this.apiService.post('users/access', credentials)
             .map(
             data => {
                 const user = {
@@ -98,8 +98,7 @@ export class AuthService {
     }
 
     private register(credentials: Credentials) {
-        return this.http.post('users', credentials)
-            .map(data => data.json())
+        return this.apiService.post('users', credentials)
             .map(
             data => {
                 const user = {
