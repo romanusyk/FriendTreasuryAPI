@@ -16,7 +16,6 @@ export class PaymentsFiltersComponent implements OnInit {
     }
 
     onChange(type: string, value?: any) {
-        console.log(type);
         switch (type.toLowerCase()) {
             case 'from':
                 this.model.from = !!value ? value : 0;

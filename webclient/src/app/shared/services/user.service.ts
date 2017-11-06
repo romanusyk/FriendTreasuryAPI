@@ -31,7 +31,6 @@ export class UserService {
 
   isAuthorized(): boolean {
     const user = this.userStorageService.get();
-    console.log(user);
     if (user != null && user.token != null && !this.isExpired(user.token.expireTime)) {
       return true;
     }
