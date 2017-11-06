@@ -63,15 +63,14 @@ public class UserController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
-    public User getUserById(
-            @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
-            @PathVariable("id") Integer id
+    public User getUserInfo(
+            @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization
     ) {
-        User user = userService.getUserByID(id);
-        logger.debug(String.format("getUserById(%d) -> %s", id, user));
+        User u = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        User user = userService.getUserByID(u.getId());
         if (user == null) {
             User fakeUser = new User();
-            fakeUser.setId(id);
+            fakeUser.setId(u.getId());
             throw new EntityNotFoundException(User.class, fakeUser);
         }
         return user;
