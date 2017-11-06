@@ -12,6 +12,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Group } from '../../../shared/models/group.model';
 import { Subscription } from 'rxjs/Rx';
 import { PaymentsFiltersComponent } from '../payments-filters/payments-filters.component';
+import { UserLoginResponse } from '../../../shared/models/user-login-request.model';
+import { Router } from '@angular/router';
 
 @Component({
   moduleId: module.id,
@@ -27,6 +29,9 @@ export class IndexComponent implements OnInit {
   filters: PaymentsFilters;
   groupsBusy: Subscription;
   paymentsBusy: Subscription;
+  currentUserSubscription: Subscription;
+  isAuthenticatedSubscription: Subscription;
+  currentUser: User;
   @ViewChild(PaymentsListComponent) paymentsComponent: PaymentsListComponent;
   @ViewChild(PaymentsFiltersComponent) filtersComponent: PaymentsFiltersComponent;
   @ViewChild(CreatePaymentComponent) createPaymentComponent: CreatePaymentComponent;
@@ -35,7 +40,8 @@ export class IndexComponent implements OnInit {
     private paymentService: PaymentsService,
     private userService: UserService,
     private toastrManager: ToastsManager,
-    private dialogService: MdlDialogService
+    private dialogService: MdlDialogService,
+    private router: Router
   ) {
   }
 
@@ -48,6 +54,23 @@ export class IndexComponent implements OnInit {
       err => {
         console.log(err);
         this.toastrManager.error('Error');
+      }
+    );
+    this.currentUserSubscription = this.userService.currentUser.subscribe(
+      (data: User) => {
+        if (!!data) {
+          this.currentUser = data;
+        } else {
+          this.currentUserSubscription.unsubscribe();
+        }
+      }
+    );
+    this.isAuthenticatedSubscription = this.userService.isAuthenticated.subscribe(
+      (data: boolean) => {
+        if (!data) {
+          this.isAuthenticatedSubscription.unsubscribe();
+          this.router.navigateByUrl('login');
+        }
       }
     );
   }
@@ -102,5 +125,9 @@ export class IndexComponent implements OnInit {
         console.log(err);
         this.toastrManager.error('Error');
       });
+  }
+
+  logout() {
+    this.userService.purgeAuth();
   }
 }

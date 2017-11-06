@@ -14,20 +14,18 @@ import { DateHelper } from './date.helper';
 
 @Injectable()
 export class UserService {
-  private currentUserSubject = new BehaviorSubject<UserLoginResponse>(new UserLoginResponse());
+  private currentUserSubject = new BehaviorSubject<User>(new User());
   public currentUser = this.currentUserSubject.asObservable().distinctUntilChanged();
   private isAuthenticatedSubject = new ReplaySubject<boolean>(1);
   public isAuthenticated = this.isAuthenticatedSubject.asObservable();
-
+  private logoutTimeout: number;
+  private tokenCheckIntervalValue = 1000;
+  private tokenCheckInterval;
   constructor(
     private apiService: ApiService,
     private http: Http,
     private userStorageService: UserStorageService
   ) { }
-
-  getCurrentUser(): UserLoginResponse {
-    return this.currentUserSubject.value;
-  }
 
   isAuthorized(): boolean {
     const user = this.userStorageService.get();
@@ -35,6 +33,7 @@ export class UserService {
       return true;
     }
     this.purgeAuth();
+    return false;
   }
 
   private isExpired(date: number): boolean {
@@ -45,7 +44,8 @@ export class UserService {
     const user = this.userStorageService.get();
     if (user && user.token && user.token.expireTime >= Date.now()) {
       this.setAuth(user);
-      setTimeout(this.purgeAuth.bind(this), user.token.expireTime - DateHelper.currentUnixTime());
+      // this.logoutTimeout = setTimeout(this.purgeAuth.bind(this), user.token.expireTime - DateHelper.currentUnixTime());
+      this.tokenCheckInterval = setInterval(this.isAuthorized, this.tokenCheckIntervalValue);
     } else {
       this.purgeAuth();
     }
@@ -53,7 +53,9 @@ export class UserService {
 
   setAuth(user: UserLoginResponse) {
     this.userStorageService.save(user);
-    this.currentUserSubject.next(user);
+    this.apiService.get('users/me').subscribe((data: User) => {
+      this.currentUserSubject.next(data);
+    });
     this.isAuthenticatedSubject.next(true);
     return user;
   }
@@ -62,6 +64,8 @@ export class UserService {
     this.userStorageService.destroy();
     this.currentUserSubject.next(null);
     this.isAuthenticatedSubject.next(false);
+    // clearTimeout(this.logoutTimeout);
+    clearInterval(this.tokenCheckInterval);
   }
 
   attemptAuth(type: CredentialsType, credentials): Observable<UserLoginResponse> {
