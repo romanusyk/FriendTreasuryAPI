@@ -60,7 +60,7 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/me", method = RequestMethod.GET)
     @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
     public User getUserInfo(
