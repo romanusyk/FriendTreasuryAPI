@@ -16,8 +16,8 @@ do
 	elif [ $LOCAL = $BASE ]; then
 		echo "Deploy"
 		git pull origin $BRANCH 
-		bash start.sh
 		bash webclient/start.sh
+		bash start.sh
 	fi;
 sleep $INTERVAL;
 done
