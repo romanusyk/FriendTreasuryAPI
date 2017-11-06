@@ -9,3 +9,5 @@ logs/
 webclient/package-lock.json
 npm-debug.log
 package-lock.json
+backup/*
+
