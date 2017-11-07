@@ -91,13 +91,12 @@ export class ApiService {
     return this.http.delete(
       `${this.config.endpoint}${path}`,
       { headers: this.setHeaders() })
-      .catch(this.formatErrors.bind(this))
+      .catch(this.formatErrors)
       .map((res: Response) => res.json());
   }
 
 
   private formatErrors(error: Response): Observable<any> {
-    console.log(error);
     if (error.status >= 500) {
       return Observable.throw(Promise.resolve({
         exception: 'ServerError'
