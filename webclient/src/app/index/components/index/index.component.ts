@@ -1,17 +1,20 @@
+import { AuthService } from './../../../shared/services/auth.service';
 import { PaymentsFilters } from './../../../shared/models/payments-filters.model';
 import { MdlDialogService } from '@angular-mdl/core';
 import { User } from './../../../shared/models/user.model';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { CreatePaymentModel } from './../../../shared/models/create-payment.model';
 import { CreatePaymentComponent } from './../create-payment/create-payment/create-payment.component';
-import { UserService } from './../../../shared/services/user.service';
 import { PaymentsService } from './../../../shared/services/payments.service';
 import { PaymentsListComponent } from './../payments-list/payments-list.component';
 import { GroupService } from './../../../shared/services/group.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Group } from '../../../shared/models/group.model';
 import { Subscription } from 'rxjs/Rx';
 import { PaymentsFiltersComponent } from '../payments-filters/payments-filters.component';
+import { UserLoginResponse } from '../../../shared/models/user-login-request.model';
+import { Router } from '@angular/router';
+import { UserService } from '../../../shared/services/user.service';
 
 @Component({
   moduleId: module.id,
@@ -19,14 +22,15 @@ import { PaymentsFiltersComponent } from '../payments-filters/payments-filters.c
   templateUrl: 'index.component.html',
   styleUrls: ['index.component.scss']
 })
-export class IndexComponent implements OnInit {
-
+export class IndexComponent implements OnInit, OnDestroy {
   groups: Array<Group> = new Array();
   currentGroup: Group;
   users: Array<User> = new Array();
   filters: PaymentsFilters;
   groupsBusy: Subscription;
   paymentsBusy: Subscription;
+  currentUserSubscription: Subscription;
+  currentUser: User;
   @ViewChild(PaymentsListComponent) paymentsComponent: PaymentsListComponent;
   @ViewChild(PaymentsFiltersComponent) filtersComponent: PaymentsFiltersComponent;
   @ViewChild(CreatePaymentComponent) createPaymentComponent: CreatePaymentComponent;
@@ -34,8 +38,10 @@ export class IndexComponent implements OnInit {
     private groupService: GroupService,
     private paymentService: PaymentsService,
     private userService: UserService,
+    private authService: AuthService,
     private toastrManager: ToastsManager,
-    private dialogService: MdlDialogService
+    private dialogService: MdlDialogService,
+    private router: Router
   ) {
   }
 
@@ -50,6 +56,24 @@ export class IndexComponent implements OnInit {
         this.toastrManager.error('Error');
       }
     );
+    this.currentUserSubscription = this.authService.currentUser.subscribe(
+      (data: User) => {
+        if (!!data) {
+          this.currentUser = data;
+        }
+      }
+    );
+  }
+  ngOnDestroy(): void {
+    if (!!this.groupsBusy) {
+      this.groupsBusy.unsubscribe();
+    }
+    if (!!this.currentUserSubscription) {
+      this.currentUserSubscription.unsubscribe();
+    }
+    if (!!this.paymentsBusy) {
+      this.paymentsBusy.unsubscribe();
+    }
   }
 
   onGroupSelect(group: Group): void {
@@ -102,5 +126,9 @@ export class IndexComponent implements OnInit {
         console.log(err);
         this.toastrManager.error('Error');
       });
+  }
+
+  logout() {
+    this.authService.purgeAuth();
   }
 }

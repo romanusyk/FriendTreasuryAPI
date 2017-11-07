@@ -7,11 +7,11 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 export class ErrorPipe implements PipeTransform {
     transform(value: ServerError): Error {
-        const message = value.message;
+        const message = value.exception;
         let lastIndex = message.lastIndexOf('.');
         lastIndex = lastIndex === -1 ? 0 : lastIndex;
-        const exeption = message.substring(lastIndex);
-        return new Error(ServerExeptions[exeption]);
+        const exception = message.substring(lastIndex + 1);
+        return new Error(ServerExeptions[exception]);
     }
 }
 

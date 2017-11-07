@@ -25,13 +25,13 @@
       </mdl-icon>
 
     </mdl-layout-title>
-    <mdl-layout-title>
-      users -3322
+    <mdl-layout-title *ngIf="currentUser">
+      {{currentUser.username}} -3322
     </mdl-layout-title>
     <nav class="mdl-navigation">
       <a class="mdl-navigation__link" [routerLink]="['/layout/l1']">Link 1</a>
       <a class="mdl-navigation__link" [routerLink]="['/layout/l2']">Link 2</a>
-      <a class="mdl-navigation__link" [routerLink]="['/layout/l3']">Link 3</a>
+      <a class="mdl-navigation__link" (click)="logout()">Logout</a>
     </nav>
   </mdl-layout-drawer>
   <mdl-layout-content>

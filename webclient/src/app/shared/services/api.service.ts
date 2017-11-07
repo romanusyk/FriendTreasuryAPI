@@ -1,9 +1,10 @@
+import { AuthService } from './auth.service';
 import { ErrorPipe } from './../pipes/error.pipe';
 import { Error } from './../models/error.model';
 import { IAppConfig } from './../../config/iapp.config';
 import { APP_CONFIG } from './../../config/app.config';
 import { UserStorageService } from './user-storage.service';
-import { Observable } from 'rxjs/Rx';
+import { Observable, Subject } from 'rxjs/Rx';
 import { Injectable, Inject } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { UrlParamsHelper } from './url-params.helper';
@@ -11,6 +12,7 @@ import { UrlParamsHelper } from './url-params.helper';
 @Injectable()
 export class ApiService {
   private config: IAppConfig;
+  public notAuthorize: Subject<any> = new Subject();
   constructor(
     private http: Http,
     @Inject(APP_CONFIG) appConfig: IAppConfig,
@@ -89,19 +91,17 @@ export class ApiService {
     return this.http.delete(
       `${this.config.endpoint}${path}`,
       { headers: this.setHeaders() })
-      .catch(this.formatErrors)
+      .catch(this.formatErrors.bind(this))
       .map((res: Response) => res.json());
   }
 
-  private generateServerError(): Promise<any> {
-    return Promise.resolve({
-      exception: 'ServerError'
-    });
-  }
 
   private formatErrors(error: Response): Observable<any> {
-    if (error.status >= 500 || typeof (error.type === 'cors')) {
-      return Observable.throw(this.generateServerError.bind(this)());
+    console.log(error);
+    if (error.status >= 500) {
+      return Observable.throw(Promise.resolve({
+        exception: 'ServerError'
+      }));
     }
     return Observable.throw(error.json());
   }
