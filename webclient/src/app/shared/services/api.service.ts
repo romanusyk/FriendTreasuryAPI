@@ -103,9 +103,6 @@ export class ApiService {
         exception: 'ServerError'
       }));
     }
-    if (error.status === 400) {
-      this.notAuthorize.next();
-    }
     return Observable.throw(error.json());
   }
 }

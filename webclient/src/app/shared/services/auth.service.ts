@@ -14,31 +14,27 @@ import { ApiService } from './api.service';
 import { DateHelper } from './date.helper';
 import { IAppConfig } from '../../config/iapp.config';
 import { APP_CONFIG } from '../../config/app.config';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthService {
     private currentUserSubject;
     public currentUser;
-    private isAuthenticatedSubject;
-    public isAuthenticated;
     private config: IAppConfig;
     constructor(
         private apiService: ApiService,
         @Inject(APP_CONFIG) appConfig: IAppConfig,
         private userStorageService: UserStorageService,
-        private userService: UserService
+        private userService: UserService,
+        private router: Router
     ) {
-        this.apiService.notAuthorize.subscribe(this.purgeAuth);
         const user = this.userStorageService.getInfo();
         this.currentUserSubject = new BehaviorSubject<User>(user ? user : new User());
         this.currentUser = this.currentUserSubject.asObservable().distinctUntilChanged();
-        this.isAuthenticatedSubject = new BehaviorSubject<boolean>(this.isAuthorized());
-        this.isAuthenticated = this.isAuthenticatedSubject.asObservable();
         this.config = appConfig;
     }
 
     isAuthorized(): boolean {
-        console.log('isAuthorized');
         const user = this.userStorageService.get();
         if (user != null && user.token != null && !this.isExpired(user.token.expireTime)) {
             return true;
@@ -65,16 +61,14 @@ export class AuthService {
             this.userStorageService.saveInfo(data);
             this.currentUserSubject.next(data);
         });
-        this.isAuthenticatedSubject.next(true);
         return user;
     }
 
     purgeAuth() {
-        console.log('call purgeAuth');
         this.userStorageService.destroy();
         this.userStorageService.destroyInfo();
         this.currentUserSubject.next(null);
-        this.isAuthenticatedSubject.next(false);
+        this.router.navigateByUrl(this.config.routes.login);
     }
 
     attemptAuth(type: CredentialsType, credentials): Observable<UserLoginResponse> {

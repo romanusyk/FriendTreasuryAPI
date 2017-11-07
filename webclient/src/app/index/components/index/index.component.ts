@@ -8,7 +8,7 @@ import { CreatePaymentComponent } from './../create-payment/create-payment/creat
 import { PaymentsService } from './../../../shared/services/payments.service';
 import { PaymentsListComponent } from './../payments-list/payments-list.component';
 import { GroupService } from './../../../shared/services/group.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Group } from '../../../shared/models/group.model';
 import { Subscription } from 'rxjs/Rx';
 import { PaymentsFiltersComponent } from '../payments-filters/payments-filters.component';
@@ -22,8 +22,7 @@ import { UserService } from '../../../shared/services/user.service';
   templateUrl: 'index.component.html',
   styleUrls: ['index.component.scss']
 })
-export class IndexComponent implements OnInit {
-
+export class IndexComponent implements OnInit, OnDestroy {
   groups: Array<Group> = new Array();
   currentGroup: Group;
   users: Array<User> = new Array();
@@ -31,7 +30,6 @@ export class IndexComponent implements OnInit {
   groupsBusy: Subscription;
   paymentsBusy: Subscription;
   currentUserSubscription: Subscription;
-  isAuthenticatedSubscription: Subscription;
   currentUser: User;
   @ViewChild(PaymentsListComponent) paymentsComponent: PaymentsListComponent;
   @ViewChild(PaymentsFiltersComponent) filtersComponent: PaymentsFiltersComponent;
@@ -60,25 +58,22 @@ export class IndexComponent implements OnInit {
     );
     this.currentUserSubscription = this.authService.currentUser.subscribe(
       (data: User) => {
-        console.log('call currentUserSubscription');
-        console.log(data);
         if (!!data) {
           this.currentUser = data;
-        } else {
-          // this.currentUserSubscription.unsubscribe();
         }
       }
     );
-    this.isAuthenticatedSubscription = this.authService.isAuthenticated.subscribe(
-      (data: boolean) => {
-        console.log('call isAuthenticatedSubscription');
-        console.log(data);
-        if (!data) {
-          // this.isAuthenticatedSubscription.unsubscribe();
-          this.router.navigateByUrl('login');
-        }
-      }
-    );
+  }
+  ngOnDestroy(): void {
+    if (!!this.groupsBusy) {
+      this.groupsBusy.unsubscribe();
+    }
+    if (!!this.currentUserSubscription) {
+      this.currentUserSubscription.unsubscribe();
+    }
+    if (!!this.paymentsBusy) {
+      this.paymentsBusy.unsubscribe();
+    }
   }
 
   onGroupSelect(group: Group): void {
