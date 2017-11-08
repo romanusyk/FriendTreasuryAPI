@@ -78,7 +78,7 @@ export class IndexComponent implements OnInit, OnDestroy {
     this.filters.group = group.id;
     this.updatePayments();
     this.userService.getUsersInGroup(group.id).subscribe(
-      (data) => this.users = data,
+      (data) => this.users = data.filter(user => user.username !== this.currentUser.username),
       (err) => {
         console.log(err);
         this.toastrManager.error('Error');
