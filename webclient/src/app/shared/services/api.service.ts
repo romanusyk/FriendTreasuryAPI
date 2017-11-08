@@ -16,7 +16,8 @@ export class ApiService {
   constructor(
     private http: Http,
     @Inject(APP_CONFIG) appConfig: IAppConfig,
-    private userStorageService: UserStorageService
+    private userStorageService: UserStorageService,
+    private authService: AuthService
   ) {
     this.config = appConfig;
   }
@@ -40,19 +41,8 @@ export class ApiService {
     }
     return this.http.get(url,
       { headers: this.setHeaders() })
-      .catch(this.formatErrors)
+      .catch(this.formatErrors.bind(this))
       .map((res: Response) => res.json());
-  }
-
-  getData<T>(path: string, params?: UrlParamsHelper): Observable<T> {
-    let url = `${this.config.endpoint}${path}`;
-    if (!!params) {
-      url += params.toString();
-    }
-    return this.http.get(url,
-      { headers: this.setHeaders() })
-      .catch(this.formatErrors)
-      .map(data => data.json());
   }
 
   put(path: string, body: Object = {}): Observable<any> {
@@ -60,7 +50,7 @@ export class ApiService {
       `${this.config.endpoint}${path}`,
       JSON.stringify(body),
       { headers: this.setHeaders() })
-      .catch(this.formatErrors)
+      .catch(this.formatErrors.bind(this))
       .map((res: Response) => res.json());
   }
 
@@ -69,7 +59,7 @@ export class ApiService {
       `${this.config.endpoint}${path}`,
       JSON.stringify(body),
       { headers: this.setHeaders() })
-      .catch(this.formatErrors)
+      .catch(this.formatErrors.bind(this))
       .map((res: Response) => res.json());
   }
 
@@ -78,7 +68,7 @@ export class ApiService {
       `${this.config.endpoint}${path}`,
       JSON.stringify(body),
       { headers: this.setHeaders() })
-      .catch(this.formatErrors)
+      .catch(this.formatErrors.bind(this))
       .map((res: Response) => {
         if (res['_body']) {
           return res.json();
@@ -91,16 +81,19 @@ export class ApiService {
     return this.http.delete(
       `${this.config.endpoint}${path}`,
       { headers: this.setHeaders() })
-      .catch(this.formatErrors)
+      .catch(this.formatErrors.bind(this))
       .map((res: Response) => res.json());
   }
 
 
   private formatErrors(error: Response): Observable<any> {
     if (error.status >= 500) {
-      return Observable.throw(Promise.resolve({
+      return Observable.throw({
         exception: 'ServerError'
-      }));
+      });
+    }
+    if (error.status >= 400) {
+      this.authService.logout();
     }
     return Observable.throw(error.json());
   }

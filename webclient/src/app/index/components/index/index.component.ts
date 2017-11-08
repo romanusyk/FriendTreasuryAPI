@@ -29,7 +29,6 @@ export class IndexComponent implements OnInit, OnDestroy {
   filters: PaymentsFilters;
   groupsBusy: Subscription;
   paymentsBusy: Subscription;
-  currentUserSubscription: Subscription;
   currentUser: User;
   @ViewChild(PaymentsListComponent) paymentsComponent: PaymentsListComponent;
   @ViewChild(PaymentsFiltersComponent) filtersComponent: PaymentsFiltersComponent;
@@ -56,20 +55,18 @@ export class IndexComponent implements OnInit, OnDestroy {
         this.toastrManager.error('Error');
       }
     );
-    this.currentUserSubscription = this.authService.currentUser.subscribe(
+    const currentUserSubscription = this.userService.getUserInfo().subscribe(
       (data: User) => {
         if (!!data) {
           this.currentUser = data;
         }
+        currentUserSubscription.unsubscribe();
       }
     );
   }
   ngOnDestroy(): void {
     if (!!this.groupsBusy) {
       this.groupsBusy.unsubscribe();
-    }
-    if (!!this.currentUserSubscription) {
-      this.currentUserSubscription.unsubscribe();
     }
     if (!!this.paymentsBusy) {
       this.paymentsBusy.unsubscribe();
@@ -129,6 +126,6 @@ export class IndexComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    this.authService.purgeAuth();
+    this.authService.logout();
   }
 }

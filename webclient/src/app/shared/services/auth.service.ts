@@ -18,19 +18,13 @@ import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthService {
-    private currentUserSubject;
-    public currentUser;
     private config: IAppConfig;
     constructor(
-        private apiService: ApiService,
         @Inject(APP_CONFIG) appConfig: IAppConfig,
         private userStorageService: UserStorageService,
-        private userService: UserService,
+        private http: Http,
         private router: Router
     ) {
-        const user = this.userStorageService.getInfo();
-        this.currentUserSubject = new BehaviorSubject<User>(user ? user : new User());
-        this.currentUser = this.currentUserSubject.asObservable().distinctUntilChanged();
         this.config = appConfig;
     }
 
@@ -51,23 +45,17 @@ export class AuthService {
         if (user && user.token && !this.isExpired(user.token.expireTime)) {
             this.setAuth(user);
         } else {
-            this.purgeAuth();
+            this.logout();
         }
     }
 
     setAuth(user: UserLoginResponse) {
         this.userStorageService.save(user);
-        this.userService.getUserInfo().subscribe((data: User) => {
-            this.userStorageService.saveInfo(data);
-            this.currentUserSubject.next(data);
-        });
         return user;
     }
 
-    purgeAuth() {
+    logout() {
         this.userStorageService.destroy();
-        this.userStorageService.destroyInfo();
-        this.currentUserSubject.next(null);
         this.router.navigateByUrl(this.config.routes.login);
     }
 
@@ -80,7 +68,8 @@ export class AuthService {
     }
 
     private login(credentials: Credentials) {
-        return this.apiService.post('users/access', credentials)
+        return this.http.post(`${this.config.endpoint}users/access`, credentials)
+            .map(data => data.json())
             .map(
             data => {
                 const user = {
@@ -92,7 +81,8 @@ export class AuthService {
     }
 
     private register(credentials: Credentials) {
-        return this.apiService.post('users', credentials)
+        return this.http.post(`${this.config.endpoint}users`, credentials)
+            .map(data => data.json())
             .map(
             data => {
                 const user = {
