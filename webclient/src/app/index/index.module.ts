@@ -1,6 +1,6 @@
 import { PaymentsFiltersComponent } from './components/payments-filters/payments-filters.component';
 import { MdlSelectModule } from '@angular-mdl/select';
-import { CreatePaymentComponent } from './components/create-payment/create-payment/create-payment.component';
+import { CreatePaymentComponent } from './components/create-payment/create-payment.component';
 import { PaymentsListComponent } from './components/payments-list/payments-list.component';
 import { SharedModule } from './../shared/shared.module';
 import { FormsModule } from '@angular/forms';

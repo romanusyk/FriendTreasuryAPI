@@ -4,7 +4,7 @@ import { MdlDialogService } from '@angular-mdl/core';
 import { User } from './../../../shared/models/user.model';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { CreatePaymentModel } from './../../../shared/models/create-payment.model';
-import { CreatePaymentComponent } from './../create-payment/create-payment/create-payment.component';
+import { CreatePaymentComponent } from './../create-payment/create-payment.component';
 import { PaymentsService } from './../../../shared/services/payments.service';
 import { PaymentsListComponent } from './../payments-list/payments-list.component';
 import { GroupService } from './../../../shared/services/group.service';

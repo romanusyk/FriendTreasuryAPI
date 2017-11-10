@@ -11,7 +11,7 @@
       </ft-payments-filters>
       <mdl-layout-spacer></mdl-layout-spacer>
 
-      <button *ngIf="currentGroup" mdl-button #btn1="mdlButton" (click)="groupExternalMenu.toggle($event, btn1)" mdl-button-type="icon" mdl-ripple>
+      <button *ngIf="currentGroup" mdl-button #extermalMenuBtn="mdlButton" (click)="groupExternalMenu.toggle($event, extermalMenuBtn)" mdl-button-type="icon" mdl-ripple>
         <mdl-icon>more_vert</mdl-icon>
       </button>
 
