@@ -9,11 +9,12 @@ import { RouterModule } from '@angular/router';
 import { GroupListComponent } from './components/group-list/group-list.component';
 // Angular Imports
 import { NgModule } from '@angular/core';
-
+import { AvatarModule } from 'ngx-avatar';
 // This Module's Components
 import { IndexComponent } from './components/index/index.component';
 import { MdlModule, MdlDialogModule } from '@angular-mdl/core';
 import { BusyModule } from 'angular2-busy';
+import { SearchComponent } from './components/search/search/search.component';
 
 @NgModule({
     imports: [
@@ -24,21 +25,18 @@ import { BusyModule } from 'angular2-busy';
         MdlSelectModule,
         SharedModule,
         MdlDialogModule.forRoot(),
-        BusyModule
+        BusyModule,
+        AvatarModule
     ],
     declarations: [
         GroupListComponent,
         PaymentsListComponent,
         CreatePaymentComponent,
         IndexComponent,
-        PaymentsFiltersComponent
+        PaymentsFiltersComponent,
+        SearchComponent
     ],
     exports: [
-        GroupListComponent,
-        IndexComponent,
-        PaymentsListComponent,
-        CreatePaymentComponent,
-        PaymentsFiltersComponent
     ]
 })
 export class IndexModule {

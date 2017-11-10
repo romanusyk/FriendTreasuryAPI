@@ -1,7 +1,3 @@
-<button #createPaymentButton mdl-button class="add-button" mdl-button-type="fab" mdl-colored="accent" mdl-ripple (click)="onStart()">
-    <mdl-icon>add</mdl-icon> 
-</button>
-
 <mdl-dialog #chooseUsersDialog>
     <h3 class="mdl-dialog__title">Select Users</h3>
     <mdl-select [(ngModel)]="model.usersTo" [multiple]="true" placeholder="Select users">
@@ -12,7 +8,7 @@
         <button mdl-button (click)="onCLose()" mdl-ripple>Cancel</button>
     </div>
 </mdl-dialog>
- 
+
 <mdl-dialog #fillDataDialog>
     <h3 class="mdl-dialog__title">Fill data</h3>
     <mdl-textfield
@@ -23,10 +19,10 @@
         required
         [(ngModel)]="model.amount">
     </mdl-textfield>
-    <mdl-textfield label="Text..." 
-        [(ngModel)]="model.description" 
-        rows="3" 
-        maxrows="3" 
+    <mdl-textfield label="Text..."
+        [(ngModel)]="model.description"
+        rows="3"
+        maxrows="3"
         floating-label>
     </mdl-textfield>
     <mdl-checkbox [mdl-ripple]="true" [(ngModel)]="model.shallIPayForMyself">

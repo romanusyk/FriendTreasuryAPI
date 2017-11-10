@@ -1,7 +1,7 @@
 <mdl-layout md>
   <mdl-layout-header mdl-layout-header-transparent>
     <mdl-layout-header-row>
-      <mdl-textfield type="text" placeholder="search"></mdl-textfield>
+      <ft-search></ft-search>
       <mdl-layout-title *ngIf="currentGroup">
         {{currentGroup.title}} {{users.length}} members
       </mdl-layout-title>
@@ -11,7 +11,7 @@
       </ft-payments-filters>
       <mdl-layout-spacer></mdl-layout-spacer>
 
-      <button mdl-button #btn1="mdlButton" (click)="m1.toggle($event, btn1)" mdl-button-type="icon" mdl-ripple>
+      <button *ngIf="currentGroup" mdl-button #btn1="mdlButton" (click)="groupExternalMenu.toggle($event, btn1)" mdl-button-type="icon" mdl-ripple>
         <mdl-icon>more_vert</mdl-icon>
       </button>
 
@@ -19,19 +19,13 @@
 
   </mdl-layout-header>
   <mdl-layout-drawer>
-    <mdl-layout-title>
-      <mdl-icon>
-        person
-      </mdl-icon>
-
-    </mdl-layout-title>
     <mdl-layout-title *ngIf="currentUser">
+      <ngx-avatar [name]="currentUser.username"></ngx-avatar>
       {{currentUser.username}} -3322
     </mdl-layout-title>
     <nav class="mdl-navigation">
-      <a class="mdl-navigation__link" [routerLink]="['/layout/l1']">Link 1</a>
-      <a class="mdl-navigation__link" [routerLink]="['/layout/l2']">Link 2</a>
-      <a class="mdl-navigation__link" (click)="logout()">Logout</a>
+      <a class="mdl-navigation__link" href="">Create Group</a>
+      <a class="mdl-navigation__link" (click)="logout()"  href="">Logout</a>
     </nav>
   </mdl-layout-drawer>
   <mdl-layout-content>
@@ -52,9 +46,8 @@
     </ft-create-payment>
   </mdl-layout-content>
 </mdl-layout>
-<mdl-menu #m1="mdlMenu" mdl-menu-position="bottom-right">
-  <mdl-menu-item mdl-ripple>Some Action</mdl-menu-item>
-  <mdl-menu-item mdl-ripple mdl-menu-item-full-bleed-divider>Another Action</mdl-menu-item>
-  <mdl-menu-item mdl-ripple disabled>Disabled Action</mdl-menu-item>
-  <mdl-menu-item>Yet Another Action</mdl-menu-item>
+<mdl-menu #groupExternalMenu="mdlMenu"  mdl-menu-position="bottom-right">
+  <mdl-menu-item mdl-ripple>Invite User</mdl-menu-item>
+  <mdl-menu-item mdl-ripple mdl-menu-item-full-bleed-divider>Generate invite link</mdl-menu-item>
+  <mdl-menu-item (click)="createPaymentComponent.onStart()">Create payment</mdl-menu-item>
 </mdl-menu>
