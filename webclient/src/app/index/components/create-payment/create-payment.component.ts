@@ -1,5 +1,5 @@
-import { CreatePaymentModel } from './../../../../shared/models/create-payment.model';
-import { User } from './../../../../shared/models/user.model';
+import { CreatePaymentModel } from './../../../shared/models/create-payment.model';
+import { User } from './../../../shared/models/user.model';
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { MdlDialogComponent, MdlButtonComponent, IMdlDialogConfiguration } from '@angular-mdl/core';
 
