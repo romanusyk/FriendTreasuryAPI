@@ -1,7 +1,9 @@
 // component css goes here
 .error{
     padding: 0;
+    min-height: 20px;
 }
-.error-text{
-    font-weight: bold;
+.error__text{
+    font-size: 14px;
+    color: red;
 }

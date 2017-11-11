@@ -1,5 +1,5 @@
 <div class="mdl-grid center-items">
-    <form role="form" [formGroup]="authForm" (ngSubmit)="submitForm()" class="">
+    <form role="form" [formGroup]="authForm" (ngSubmit)="submitForm()" class="auth-form">
         <h2 class="text-center">{{title}}</h2>
         <hr>
         <button class="full-width" mdl-button mdl-ripple [routerLink]="['/login']" *ngIf="!isLogin()">Have an account?</button>
