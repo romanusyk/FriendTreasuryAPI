@@ -10,7 +10,8 @@
       <ft-payments-filters *ngIf="currentGroup" [group]="currentGroup.id" (change)="onFilterChange($event)">
       </ft-payments-filters>
       <mdl-layout-spacer></mdl-layout-spacer>
-
+      <ft-create-payment *ngIf="currentGroup" (complete)="onCreatePaymentComplete($event)" [users]="users">
+      </ft-create-payment>
       <button *ngIf="currentGroup" mdl-button #extermalMenuBtn="mdlButton" (click)="groupExternalMenu.toggle($event, extermalMenuBtn)" mdl-button-type="icon" mdl-ripple>
         <mdl-icon>more_vert</mdl-icon>
       </button>
@@ -42,12 +43,10 @@
         <div [ngBusy]="paymentsBusy"></div>
       </div>
     </div>
-    <ft-create-payment *ngIf="currentGroup" (complete)="onCreatePaymentComplete($event)" [users]="users">
-    </ft-create-payment>
+
   </mdl-layout-content>
 </mdl-layout>
 <mdl-menu #groupExternalMenu="mdlMenu"  mdl-menu-position="bottom-right">
   <mdl-menu-item mdl-ripple>Invite User</mdl-menu-item>
   <mdl-menu-item mdl-ripple mdl-menu-item-full-bleed-divider>Generate invite link</mdl-menu-item>
-  <mdl-menu-item (click)="createPaymentComponent.onStart()">Create payment</mdl-menu-item>
 </mdl-menu>

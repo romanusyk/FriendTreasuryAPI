@@ -12,9 +12,12 @@ import { MdlDialogComponent, MdlButtonComponent, IMdlDialogConfiguration } from 
 export class CreatePaymentComponent implements OnInit {
     @Input() users: Array<User>;
     @Output() complete: EventEmitter<CreatePaymentModel> = new EventEmitter();
-    model: CreatePaymentModel;
+
     @ViewChild('chooseUsersDialog') chooseUsersDialog: MdlDialogComponent;
     @ViewChild('fillDataDialog') fillDataDialog: MdlDialogComponent;
+    @ViewChild('createPaymentButton') createPaymentButton: MdlButtonComponent;
+
+    model: CreatePaymentModel;
     constructor() {
     }
     ngOnInit(): void {
@@ -52,6 +55,7 @@ export class CreatePaymentComponent implements OnInit {
         return {
             clickOutsideToClose: false,
             isModal: true,
+            openFrom: this.createPaymentButton,
             enterTransitionDuration: 400,
             leaveTransitionDuration: 400
         };

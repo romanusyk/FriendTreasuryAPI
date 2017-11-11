@@ -1,7 +1,7 @@
 <mdl-list>
     <mdl-list-item *ngFor="let group of groups" class="group">
         <mdl-list-item-primary-content (click)="onSelect(group)" class="full-width">
-            <i class="material-icons mdl-list__item-avatar">person</i>
+                <ngx-avatar [name]="group.title"></ngx-avatar>
             <div class="wrapper-name-group">
                 <h5>{{group.title}}</h5>
                 <span class="positive">300</span>

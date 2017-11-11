@@ -1,3 +1,6 @@
+<button mdl-button mdl-ripple (click)="onStart()" title="Create payment">
+    <mdl-icon>add</mdl-icon> 
+</button>
 <mdl-dialog #chooseUsersDialog>
     <h3 class="mdl-dialog__title">Select Users</h3>
     <mdl-select [(ngModel)]="model.usersTo" [multiple]="true" placeholder="Select users">
