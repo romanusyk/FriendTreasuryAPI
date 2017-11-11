@@ -42,7 +42,7 @@
         <div [ngBusy]="paymentsBusy"></div>
       </div>
     </div>
-    <ft-create-payment *ngIf="currentGroup" (complete)="createPayment($event)" [users]="users">
+    <ft-create-payment *ngIf="currentGroup" (complete)="onCreatePaymentComplete($event)" [users]="users">
     </ft-create-payment>
   </mdl-layout-content>
 </mdl-layout>

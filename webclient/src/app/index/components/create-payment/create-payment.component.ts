@@ -15,7 +15,6 @@ export class CreatePaymentComponent implements OnInit {
     model: CreatePaymentModel;
     @ViewChild('chooseUsersDialog') chooseUsersDialog: MdlDialogComponent;
     @ViewChild('fillDataDialog') fillDataDialog: MdlDialogComponent;
-    @ViewChild('createPaymentButton') createPaymentButton: MdlButtonComponent;
     constructor() {
     }
     ngOnInit(): void {
@@ -53,7 +52,6 @@ export class CreatePaymentComponent implements OnInit {
         return {
             clickOutsideToClose: false,
             isModal: true,
-            openFrom: this.createPaymentButton,
             enterTransitionDuration: 400,
             leaveTransitionDuration: 400
         };

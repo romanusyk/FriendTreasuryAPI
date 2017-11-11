@@ -95,7 +95,7 @@ export class IndexComponent implements OnInit, OnDestroy {
     this.filtersComponent.onChange(type, id);
   }
 
-  createPayment(model: CreatePaymentModel) {
+  onCreatePaymentComplete(model: CreatePaymentModel) {
     model.group = this.currentGroup.id;
     model.shallIPayForMyself = model.shallIPayForMyself ? 1 : 0;
     this.paymentService.create(model).subscribe(
