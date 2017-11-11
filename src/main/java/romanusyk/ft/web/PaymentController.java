@@ -9,18 +9,15 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import romanusyk.ft.domain.Debt;
-import romanusyk.ft.domain.Payment;
-import romanusyk.ft.domain.PaymentDTO;
-import romanusyk.ft.domain.User;
+import romanusyk.ft.domain.*;
 import romanusyk.ft.exception.UserAuthenticationException;
 import romanusyk.ft.security.JwtUtil;
 import romanusyk.ft.service.interfaces.Optimizer;
 import romanusyk.ft.service.interfaces.PaymentService;
 
 import java.lang.invoke.MethodHandles;
+import java.util.Map;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by Roman Usyk on 12.09.17.
@@ -29,14 +26,10 @@ import java.util.Objects;
 @RestController
 @Api("Payment controller")
 @RequestMapping("/api/v1/payments")
-@Scope("request")
 public class PaymentController {
 
     @Autowired
     private PaymentService paymentService;
-
-    @Autowired
-    private Optimizer optimizer;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -51,7 +44,6 @@ public class PaymentController {
             @RequestParam(required = false) Integer userTo,
             @RequestParam(required = false) Integer group
             ) {
-
         Page<Payment> pageResult = paymentService.getPaymentsPage(page, size, userFrom, userTo, group);
         return pageResult;
     }
@@ -59,16 +51,14 @@ public class PaymentController {
     @RequestMapping(value = "/sum", method = RequestMethod.GET)
     @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
-    public List<Debt> getPaymentSum(
+    public Map<Group, List<Debt> > getPaymentSum(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
             @RequestParam(required = false) Integer userFrom,
             @RequestParam(required = false) Integer userTo,
             @RequestParam(required = false) Integer group
     ) {
-
-        optimizer.sumPayments(paymentService.getPayments(userFrom, userTo, group), group);
-        optimizer.optimizeDebts();
-        return optimizer.getDebts();
+        logger.debug("GET /getPaymentSum(" + userFrom + ", " + userTo + ", " + group + ")");
+        return paymentService.getPaymentSum(userFrom, userTo, group);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)

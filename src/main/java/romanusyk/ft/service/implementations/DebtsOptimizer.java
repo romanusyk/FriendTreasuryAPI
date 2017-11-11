@@ -29,37 +29,50 @@ public class DebtsOptimizer implements Optimizer {
 
     @Autowired private UserRepository userRepository;
 
-    @Autowired private GroupRepository groupRepository;
-
-    private Integer groupID;
-
-    private Map<Integer, Map<Integer, BigDecimal>> debtMap;
-
-    private int maxIterations;
-
-    public DebtsOptimizer() {
-        maxIterations = 1000;
-    }
-
-    public DebtsOptimizer(int maxIterations) {
-        this.maxIterations = maxIterations;
+    @Override
+    public void optimize(Map<Group, List<Debt> > debts) {
+        optimize(debts, 1000);
     }
 
     @Override
-    public void sumPayments(List<Payment> paymentList, Integer groupID) {
+    public void optimize(Map<Group, List<Debt> > debts, int maxIterations) {
+        for (Group group : debts.keySet()) {
+            List<Debt> debtList = debts.get(group);
+            Map<Integer, Map<Integer, BigDecimal> > debtMap = debts2map(debtList);
+            optimizeDebts(debtMap, maxIterations);
+            debtList = map2debts(group, debtMap);
+            debts.put(group, debtList);
+        }
+    }
 
-        this.groupID = groupID;
-        debtMap = new HashMap<>();
+    protected Map<Integer, Map<Integer, BigDecimal> > debts2map(List<Debt> debts) {
+        Map<Integer, Map<Integer, BigDecimal> > map = new HashMap<>();
 
-        for (Payment p : paymentList) {
-            Integer u = p.getUserFrom().getId();
-            Integer v = p.getUserTo().getId();
-            BigDecimal value = p.getAmount();
-            Map<Integer, BigDecimal> uMap = debtMap.computeIfAbsent(u, k -> new HashMap<>());
-            BigDecimal uvValue = uMap.computeIfAbsent(v, k -> new BigDecimal(0)).add(value);
-            uMap.put(v, uvValue);
+        for (Debt debt : debts) {
+            Integer userFrom = debt.getUserFrom().getId();
+            Integer userTo = debt.getUserTo().getId();
+            BigDecimal value = debt.getAmount();
+            Map<Integer, BigDecimal> userFromMap = map.computeIfAbsent(userFrom, k -> new HashMap<>());
+            userFromMap.merge(userTo, value, BigDecimal::add);
         }
 
+        return map;
+    }
+
+    protected List<Debt> map2debts(Group group, Map<Integer, Map<Integer, BigDecimal> > map) {
+        List<Debt> debts = new LinkedList<>();
+
+        for (Integer userFromID : map.keySet()) {
+            Map<Integer, BigDecimal> userFromMap = map.get(userFromID);
+            User userFrom = userFromID == null ? null : userRepository.findOne(userFromID);
+            for (Integer userToID : userFromMap.keySet()) {
+                User userTo = userToID == null ? null : userRepository.findOne(userToID);
+                BigDecimal value = userFromMap.get(userToID);
+                debts.add(new Debt(userFrom, userTo, group, value));
+            }
+        }
+
+        return debts;
     }
 
     private boolean dfs(
@@ -93,8 +106,7 @@ public class DebtsOptimizer implements Optimizer {
         return result;
     }
 
-    @Override
-    public void optimizeDebts() {
+    protected void optimizeDebts(Map<Integer, Map<Integer, BigDecimal>> debtMap, int maxIterations) {
 
         Map<Integer, COLOR> colors = new HashMap<>();
         List<Integer> way = new LinkedList<>();
@@ -151,28 +163,6 @@ public class DebtsOptimizer implements Optimizer {
 
     }
 
-    public Map<Integer, Map<Integer, BigDecimal>> getDebtMap() {
-        return debtMap;
-    }
-
-    @Override
-    public List<Debt> getDebts() {
-        List<Debt> debts = new LinkedList<>();
-
-        Group group = groupID != null ? groupRepository.findOne(groupID) : null;
-
-        for(Integer userFromID: debtMap.keySet()) {
-            User userFrom = userRepository.findOne(userFromID);
-
-            for(Integer userToID: debtMap.get(userFromID).keySet()) {
-                User userTo = userRepository.findOne(userToID);
-                debts.add(new Debt(userFrom, userTo, group, debtMap.get(userFromID).get(userToID)));
-            }
-        }
-
-        return debts;
-    }
-
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     public UserRepository getUserRepository() {
@@ -181,14 +171,6 @@ public class DebtsOptimizer implements Optimizer {
 
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
-    }
-
-    public GroupRepository getGroupRepository() {
-        return groupRepository;
-    }
-
-    public void setGroupRepository(GroupRepository groupRepository) {
-        this.groupRepository = groupRepository;
     }
 
 }
