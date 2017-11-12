@@ -2,17 +2,17 @@
   <mdl-layout-header mdl-layout-header-transparent>
     <mdl-layout-header-row>
       <ft-search></ft-search>
-      <mdl-layout-title *ngIf="currentGroup">
+      <mdl-layout-title *ngIf="isCurrentGroupSelected()">
         {{currentGroup.title}} {{users.length}} members
       </mdl-layout-title>
       <mdl-layout-spacer></mdl-layout-spacer>
 
-      <ft-payments-filters *ngIf="currentGroup" [group]="currentGroup.id" (change)="onFilterChange($event)">
+      <ft-payments-filters *ngIf="isCurrentGroupSelected()" [group]="currentGroup.id" (change)="onFilterChange($event)">
       </ft-payments-filters>
       <mdl-layout-spacer></mdl-layout-spacer>
-      <ft-create-payment *ngIf="currentGroup" (complete)="onCreatePaymentComplete($event)" [users]="users">
+      <ft-create-payment *ngIf="isCurrentGroupSelected()" (complete)="onCreatePaymentComplete($event)" [users]="users">
       </ft-create-payment>
-      <button *ngIf="currentGroup" mdl-button #extermalMenuBtn="mdlButton" (click)="groupExternalMenu.toggle($event, extermalMenuBtn)" mdl-button-type="icon" mdl-ripple>
+      <button *ngIf="isCurrentGroupSelected()" mdl-button #extermalMenuBtn="mdlButton" (click)="groupExternalMenu.toggle($event, extermalMenuBtn)" mdl-button-type="icon" mdl-ripple>
         <mdl-icon>more_vert</mdl-icon>
       </button>
 
@@ -31,11 +31,11 @@
   </mdl-layout-drawer>
   <mdl-layout-content>
     <div class="mdl-grid">
-      <div class="mdl-cell mdl-cell--2">
+      <div class="mdl-cell mdl-cell--3-col">
         <div [ngBusy]="groupsBusy"></div>
         <ft-group-list [groups]="groups" (select)="onGroupSelect($event)"></ft-group-list>
       </div>
-      <div class="md-cell md-cell--10">
+      <div class="mdl-cell mdl-cell--9-col">
         <ft-payments-list
         (toClick)="onUserFilterChange($event,'to')"
         (fromClick)="onUserFilterChange($event,'from')">
