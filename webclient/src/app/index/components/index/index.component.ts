@@ -12,7 +12,6 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Group } from '../../../shared/models/group.model';
 import { Subscription } from 'rxjs/Rx';
 import { PaymentsFiltersComponent } from '../payments-filters/payments-filters.component';
-import { UserLoginResponse } from '../../../shared/models/user-login-request.model';
 import { Router } from '@angular/router';
 import { UserService } from '../../../shared/services/user.service';
 
@@ -127,5 +126,9 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   logout() {
     this.authService.logout();
+  }
+
+  isCurrentGroupSelected(): boolean{
+    return !!this.currentGroup;
   }
 }

@@ -1,7 +1,9 @@
-<mdl-list>
-        <mdl-list-item *ngFor="let payment of payments">
-            <mdl-list-item-primary-content>
-                    <button (click)="onFromClick(payment.userFrom.id)">{{payment.userFrom.username}}</button> to <button (click)="onToClick(payment.userTo.id)">{{payment.userTo.username}}</button>: {{payment.description}} - {{payment.amount}} | {{payment.timestamp | date}}
-            </mdl-list-item-primary-content>
-        </mdl-list-item>
-</mdl-list>
+<div class="payments-list">
+        <mdl-list>
+                <mdl-list-item *ngFor="let payment of payments">
+                    <mdl-list-item-primary-content>
+                            <button (click)="onFromClick(payment.userFrom.id)">{{payment.userFrom.username}}</button> to <button (click)="onToClick(payment.userTo.id)">{{payment.userTo.username}}</button>: {{payment.description}} - {{payment.amount}} | {{payment.timestamp | date}}
+                    </mdl-list-item-primary-content>
+                </mdl-list-item>
+        </mdl-list>
+</div>

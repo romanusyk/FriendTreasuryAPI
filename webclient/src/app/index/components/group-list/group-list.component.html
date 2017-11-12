@@ -1,11 +1,9 @@
-<mdl-list>
-    <mdl-list-item *ngFor="let group of groups" class="group">
-        <mdl-list-item-primary-content (click)="onSelect(group)" class="full-width">
-                <ngx-avatar [name]="group.title"></ngx-avatar>
-            <div class="wrapper-name-group">
-                <h5>{{group.title}}</h5>
-                <span class="positive">300</span>
-            </div>
-        </mdl-list-item-primary-content>
-    </mdl-list-item>
-</mdl-list>
+<ul class="group-list">
+    <li *ngFor="let group of groups" class="group " [ngClass]="{'group_selected': group === currentGroup}" (click)="onSelect(group)">
+        <ngx-avatar [name]="group.title"></ngx-avatar>
+        <div class="group__name">
+            <h5 class="group__title">{{group.title}}</h5>
+            <span class="group__price group__price_negative">300</span>
+        </div>
+    </li>
+</ul>

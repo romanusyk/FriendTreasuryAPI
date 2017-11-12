@@ -1,38 +1,60 @@
 :host(){
-    height: 100vh;
     font-size: 16px;
     font-weight: 400;
-    font-family: 'Open Sans', sans-serif;
-    width: 300px;
 }
-.wrapper-name-group {
-    display: flex;
-    flex-direction: column;
-
+.group-list{
+    text-decoration: none;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    overflow-y: scroll;
 }
-.wrapper-name-group span {
-    font-weight: 500;
-}
-
-.wrapper-name-group h5 {
-    margin: 0 0 5px;
-}
-
-.positive {
-    color: green;
-    &:before {
-        content: '+';
-
-    }
-}
-
-
 .group{
-    transition: background .6s;
+    display: flex;
+    flex: 1 1 1;
+    padding: 15px 15px; transition: background .6s;
     padding-left: 0;
-    
+
     &:hover{
         background: rgba(0,0,0,0.1);
         cursor: pointer;
+    }
+
+    &_selected{
+        background-color: deepskyblue;
+    }
+
+    &__name{
+        display: flex;
+        flex-direction: column;
+        margin-left: 10px;
+    }
+
+    &__title{
+        margin: 0 0 5px;
+    }
+
+    &__price{
+        font-weight: 500;
+
+        &_positive{
+            color: green;
+            &:before {
+                content: '+';
+        
+            }
+        }
+
+        &_negative{
+            color: red;
+            &:before {
+                content: '-';
+        
+            }
+        }
+
+        &_zero{
+            color: yellow;
+        }
     }
 }

@@ -1,5 +1,5 @@
+import { Group } from './../../../shared/models/group.model';
 import { Component, ViewChild, Input, EventEmitter, Output } from '@angular/core';
-import { Group } from '../../../shared/models/group.model';
 
 @Component({
     moduleId: module.id,
@@ -10,8 +10,9 @@ import { Group } from '../../../shared/models/group.model';
 export class GroupListComponent {
     @Input() groups: Array<Group> = new Array();
     @Output() select: EventEmitter<Group> = new EventEmitter();
-
+    public currentGroup: Group;
     onSelect(group: Group): void {
+        this.currentGroup = group;
         this.select.emit(group);
     }
 }
