@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.lang.invoke.MethodHandles;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -70,7 +71,7 @@ public class User {
     public boolean equals(Object obj) {
         if (obj instanceof User) {
             User u = (User) obj;
-            return Integer.compare(id, u.getId()) == 0;
+            return Objects.equals(id, u.getId());
         }
         return false;
     }
@@ -101,8 +102,9 @@ public class User {
         return id;
     }
 
-    public void setId(Integer id) {
+    public User setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     public String getUsername() {

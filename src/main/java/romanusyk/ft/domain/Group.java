@@ -67,8 +67,9 @@ public class Group {
         return id;
     }
 
-    public void setId(Integer id) {
+    public Group setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     public String getTitle() {

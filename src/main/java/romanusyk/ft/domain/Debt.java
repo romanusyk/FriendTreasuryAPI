@@ -77,10 +77,7 @@ public class Debt {
 
     @Override
     public int hashCode() {
-        int userFromId = userFrom == null ? 0 : userFrom.getId();
-        int userToId = userTo == null ? 0 : userTo.getId();
-        int groupId = group == null ? 0 : group.getId();
-        return 31 * (31 * userFromId + userToId) + groupId;
+        return new DebtKey(userFrom, userTo, group).hashCode();
     }
 
     public User getUserFrom() {

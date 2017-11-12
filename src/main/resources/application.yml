@@ -15,6 +15,7 @@ spring:
 ft:
   token:
     header: "X-Auth-Token"
+    secret: gene444ka!
 
 ---
 
