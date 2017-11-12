@@ -53,12 +53,11 @@ public class PaymentController {
     @ResponseBody
     public Map<Group, List<Debt> > getPaymentSum(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
-            @RequestParam(required = false) Integer userFrom,
-            @RequestParam(required = false) Integer userTo,
+            @RequestParam(required = false) Integer user,
             @RequestParam(required = false) Integer group
     ) {
-        logger.debug("GET /getPaymentSum(" + userFrom + ", " + userTo + ", " + group + ")");
-        return paymentService.getPaymentSum(userFrom, userTo, group);
+        logger.debug("GET /getPaymentSum(" + user + ", " + group + ")");
+        return paymentService.getPaymentSum(user, group);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)

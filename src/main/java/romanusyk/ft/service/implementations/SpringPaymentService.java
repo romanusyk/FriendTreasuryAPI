@@ -1,5 +1,9 @@
 package romanusyk.ft.service.implementations;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,54 +44,32 @@ public class SpringPaymentService implements PaymentService {
     private static final Logger logger = Logger.getLogger(SpringPaymentService.class);
 
     @Override
-    public Map<Group, List<Debt> > getPaymentSum(Integer userFromID, Integer userToID, Integer groupID) {
+    public Map<Group, List<Debt> > getPaymentSum(Integer user, Integer groupID) {
 
         List<Payment> payments = getPayments(null, null, groupID);
 
-        User userFrom = new User();
-        userFrom.setId(userFromID);
-        User userTo = new User();
-        userTo.setId(userToID);
-        Group group = new Group();
-        group.setId(groupID);
+        boolean dropGroup = groupID == null;
+        DebtMapHolder holder = new DebtMapHolder(payments, dropGroup);
 
-        DebtKey drop = new DebtKey(userFrom, userTo, group);
+        Map<Group, List<Debt> > debtMap = holder
+                .sum(dropGroup)
+                .optimize(optimizer)
+                .applyUserFilter(user)
+                .reorderUsers()
+                .getResult();
 
-        Map<Group, List<Debt> > debtMap = sumPayments(payments, drop);
-        optimizer.optimize(debtMap);
-
-        return debtMap;
-    }
-
-    private Map<Group, List<Debt> > sumPayments(List<Payment> payments, DebtKey drop) {
-
-        Map<Group, Map<DebtKey, BigDecimal> > debtMap = new HashMap<>();
-
-        for (Payment p : payments) {
-            User userFrom = drop.getUserFrom().getId() == null ? drop.getUserFrom() : p.getUserFrom();
-            User userTo = drop.getUserTo().getId() == null ? drop.getUserTo() : p.getUserTo();
-            Group group = drop.getGroup().getId() == null ? drop.getGroup() : p.getGroup();
-
-            if (!userFrom.equals(drop.getUserFrom())) {userFrom.setId(null);}
-            if (!userTo.equals(drop.getUserTo())) {userTo.setId(null);}
-
-            BigDecimal value = p.getAmount();
-
-            logger.debug(p.toDetailedString());
-
-            Map<DebtKey, BigDecimal> groupMap = debtMap.computeIfAbsent(group, k -> new HashMap<>());
-
-            DebtKey key = new DebtKey(userFrom, userTo, group);
-            groupMap.merge(key, value, BigDecimal::add);
+        for (Group group: debtMap.keySet()) {
+            for (Debt debt : debtMap.get(group)) {
+                if (debt.getUserFrom().getId() != null && debt.getUserFrom().getId() > 0) {
+                    debt.setUserFrom(userRepository.findOne(debt.getUserFrom().getId()));
+                }
+                if (debt.getUserTo().getId() != null && debt.getUserTo().getId() > 0) {
+                    debt.setUserTo(userRepository.findOne(debt.getUserTo().getId()));
+                }
+            }
         }
 
-        return debtMap.entrySet().stream().collect(Collectors.toMap(
-                Map.Entry::getKey,
-                e -> e.getValue().entrySet().stream().map((item) -> new Debt(
-                        item.getKey().getUserFrom(), item.getKey().getUserTo(), item.getKey().getGroup(), item.getValue()
-                )).collect(Collectors.toList())
-        ));
-
+        return debtMap;
     }
 
     @Override

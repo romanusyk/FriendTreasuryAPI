@@ -72,8 +72,9 @@ public class FromCodeDBInit implements DBInit {
         Payment payment2 = new Payment(jura, roma, guys, new BigDecimal(200), "Test", 33.33, 6.66);
 
         Payment payment4 = new Payment(roma, jura, universe, new BigDecimal(100), "Test", 33.33, 6.66);
-        Payment payment5 = new Payment(jura, geka, universe, new BigDecimal(300), "Test", 33.33, 6.66);
-        Payment payment6 = new Payment(geka, roma, universe, new BigDecimal(200), "Test", 33.33, 6.66);
+        Payment payment5 = new Payment(roma, jura, universe, new BigDecimal(300), "Test", 33.33, 6.66);
+        Payment payment6 = new Payment(jura, roma, universe, new BigDecimal(200), "Test", 33.33, 6.66);
+        Payment payment7 = new Payment(roma, geka, universe, new BigDecimal(200), "Test", 33.33, 6.66);
 
         paymentRepository.save(payment1);
         paymentRepository.save(payment2);
@@ -81,6 +82,7 @@ public class FromCodeDBInit implements DBInit {
         paymentRepository.save(payment4);
         paymentRepository.save(payment5);
         paymentRepository.save(payment6);
+        paymentRepository.save(payment7);
 
     }
 }
