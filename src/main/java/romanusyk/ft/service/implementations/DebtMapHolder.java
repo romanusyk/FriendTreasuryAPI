@@ -105,10 +105,10 @@ public class DebtMapHolder {
             for (Debt debt : debtList) {
 
                 if (userId != null && !debt.getUserFrom().getId().equals(userId)) {
-                    debt.getUserFrom().setId(0);
+                    debt.setUserFrom(new User().setId(0));
                 }
                 if (userId != null && !debt.getUserTo().getId().equals(userId)) {
-                    debt.getUserTo().setId(0);
+                    debt.setUserTo(new User().setId(0));
                 }
 
                 if (!debt.getUserFrom().getId().equals(0) || !debt.getUserTo().getId().equals(0)) {

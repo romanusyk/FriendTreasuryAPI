@@ -18,6 +18,7 @@ import romanusyk.ft.service.interfaces.PaymentService;
 import java.lang.invoke.MethodHandles;
 import java.util.Map;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Roman Usyk on 12.09.17.
@@ -51,13 +52,18 @@ public class PaymentController {
     @RequestMapping(value = "/sum", method = RequestMethod.GET)
     @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
-    public Map<Group, List<Debt> > getPaymentSum(
+    public Object getPaymentSum(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
             @RequestParam(required = false) Integer user,
-            @RequestParam(required = false) Integer group
+            @RequestParam(required = false) Integer group,
+            @RequestParam(required = false) Integer map
     ) {
         logger.debug("GET /getPaymentSum(" + user + ", " + group + ")");
-        return paymentService.getPaymentSum(user, group);
+        Map <Group, List<Debt> > result = paymentService.getPaymentSum(user, group);
+        if (map != null && map == 1) {
+            return result;
+        }
+        return result.values().stream().flatMap(List::stream).collect(Collectors.toList());
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
