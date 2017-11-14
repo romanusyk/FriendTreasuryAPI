@@ -52,10 +52,12 @@ public class SpringPaymentService implements PaymentService {
         DebtMapHolder holder = new DebtMapHolder(payments, dropGroup);
 
         Map<Group, List<Debt> > debtMap = holder
-                .sum(dropGroup)
+                .dropGroup(dropGroup)
+                .sum()
                 .optimize(optimizer)
                 .applyUserFilter(user)
                 .reorderUsers()
+                .sum()
                 .getResult();
 
         for (Group group: debtMap.keySet()) {

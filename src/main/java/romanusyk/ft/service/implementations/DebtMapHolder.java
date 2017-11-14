@@ -45,7 +45,23 @@ public class DebtMapHolder {
         this(payments, false);
     }
 
-    public DebtMapHolder sum(boolean dropGroup) {
+    public DebtMapHolder dropGroup(boolean drop) {
+        if (drop) {
+            Group singleGroup = new Group().setId(0);
+
+            Map<Group, List<Debt> > newDebtMap = new HashMap<>();
+            List<Debt> newDebtList = newDebtMap.computeIfAbsent(singleGroup, k -> new LinkedList<>());
+
+            for (Group group : debtMap.keySet()) {
+                newDebtList.addAll(debtMap.get(group));
+            }
+
+            debtMap = newDebtMap;
+        }
+        return this;
+    }
+
+    public DebtMapHolder sum() {
 
         Map<Group, Map<DebtKey, BigDecimal> > debtKeyMap = new HashMap<>();
 
@@ -53,13 +69,8 @@ public class DebtMapHolder {
 
             List<Debt> debtList = debtMap.get(group);
 
-            Group groupForKey = new Group().setId(group.getId());
-            if (dropGroup) {
-                groupForKey = new Group().setId(0);
-            }
-
             Map<DebtKey, BigDecimal> debtKeyGroupMap = debtKeyMap.computeIfAbsent(
-                    groupForKey, k -> new HashMap<>());
+                    group, k -> new HashMap<>());
 
             for (Debt debt : debtList) {
 
@@ -86,48 +97,28 @@ public class DebtMapHolder {
 
     public DebtMapHolder applyUserFilter(Integer userId) {
 
-        Map<Group, Map<DebtKey, BigDecimal> > debtKeyMap = new HashMap<>();
-
         for (Group group : debtMap.keySet()) {
 
             List<Debt> debtList = debtMap.get(group);
-
-            Map<DebtKey, BigDecimal> debtKeyGroupMap = new HashMap<>();
+            List<Debt> newDebtList = new LinkedList<>();
 
             for (Debt debt : debtList) {
 
-                DebtKey key = new DebtKey(
-                        new User().setId(debt.getUserFrom().getId()),
-                        new User().setId(debt.getUserTo().getId()),
-                        group
-                );
-
-                if (userId != null && !key.getUserFrom().getId().equals(userId)) {
-                    key.getUserFrom().setId(0);
+                if (userId != null && !debt.getUserFrom().getId().equals(userId)) {
+                    debt.getUserFrom().setId(0);
                 }
-                if (userId != null && !key.getUserTo().getId().equals(userId)) {
-                    key.getUserTo().setId(0);
+                if (userId != null && !debt.getUserTo().getId().equals(userId)) {
+                    debt.getUserTo().setId(0);
                 }
 
-                if (key.getUserFrom().getId().equals(0) && key.getUserTo().getId().equals(0)) {
-                    continue;
+                if (!debt.getUserFrom().getId().equals(0) || !debt.getUserTo().getId().equals(0)) {
+                    newDebtList.add(debt);
                 }
-
-                BigDecimal value = debt.getAmount();
-
-                debtKeyGroupMap.merge(key, value, BigDecimal::add);
             }
 
-            debtKeyMap.put(group, debtKeyGroupMap);
-
+            debtMap.put(group, newDebtList);
         }
 
-        debtMap = debtKeyMap.entrySet().stream().collect(Collectors.toMap(
-                Map.Entry::getKey,
-                e -> e.getValue().entrySet().stream().map((item) -> new Debt(
-                        item.getKey().getUserFrom(), item.getKey().getUserTo(), item.getKey().getGroup(), item.getValue()
-                )).collect(Collectors.toList())
-        ));
         return this;
     }
 
