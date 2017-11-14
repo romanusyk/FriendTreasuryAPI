@@ -10,15 +10,17 @@ import { Component, Output, EventEmitter } from '@angular/core';
 })
 export class PaymentsListComponent {
     public payments: Array<PaymentDTO> = new Array();
-    @Output() toClick: EventEmitter<number> = new EventEmitter();
-    @Output() fromClick: EventEmitter<number> = new EventEmitter();
-
+    @Output() userToClick: EventEmitter<number> = new EventEmitter();
+    @Output() userFromClick: EventEmitter<number> = new EventEmitter();
+    @Output() userClick: EventEmitter<number> = new EventEmitter();
 
     onToClick(id: number) {
-        this.toClick.emit(id);
+        this.userToClick.emit(id);
+        this.userClick.emit(id);
     }
 
     onFromClick(id: number) {
-        this.fromClick.emit(id);
+        this.userFromClick.emit(id);
+        this.userClick.emit(id);
     }
 }

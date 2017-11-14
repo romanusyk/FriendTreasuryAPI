@@ -1,6 +1,11 @@
 <nav class="mdl-navigation">
-    <button [ngClass]="{'active':!!model.sum}" (click)="onChange('sum')" >sum</button>
-    <button [ngClass]="{'active':!!model.group}" (click)="onChange('group')">group</button>
-    <button [ngClass]="{'active':!!model.from}" (click)="onChange('from')">from anybody</button>
-    <button [ngClass]="{'active':!!model.to}" (click)="onChange('to')">to anybody</button>
-  </nav>
+    <button
+      *ngFor="let filter of filters" 
+      mdl-button 
+      mdl-ripple  
+      mdl-button-type="{{isActive(filter) ? 'raised' : ''}}"
+      mdl-colored="primary" 
+      (click)="onChange(filter)">
+      {{filter}}
+    </button>
+</nav>

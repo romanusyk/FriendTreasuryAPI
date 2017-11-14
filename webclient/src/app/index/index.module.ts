@@ -12,7 +12,7 @@ import { NgModule } from '@angular/core';
 import { AvatarModule } from 'ngx-avatar';
 // This Module's Components
 import { IndexComponent } from './components/index/index.component';
-import { MdlModule, MdlDialogModule } from '@angular-mdl/core';
+import { MdlModule, MdlDialogModule, MdlButtonModule } from '@angular-mdl/core';
 import { BusyModule } from 'angular2-busy';
 import { SearchComponent } from './components/search/search/search.component';
 
