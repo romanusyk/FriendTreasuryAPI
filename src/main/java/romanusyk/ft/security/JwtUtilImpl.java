@@ -119,6 +119,6 @@ public class JwtUtilImpl implements JwtUtil {
     public JwtAccessToken generateToken(User user) {
         long expireTime = new Date().getTime() / 1000 + EXPIRE_TIME;
         String token = generateToken(user, expireTime);
-        return new JwtAccessToken(token, expireTime);
+        return new JwtAccessToken(token, expireTime, user.getId());
     }
 }
