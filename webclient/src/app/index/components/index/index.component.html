@@ -37,8 +37,9 @@
       </div>
       <div class="mdl-cell mdl-cell--9-col">
         <ft-payments-list
-        (toClick)="onUserFilterChange($event,'to')"
-        (fromClick)="onUserFilterChange($event,'from')">
+        (userToClick)="onUserFilterChange($event,'user to')"
+        (userClick)="onUserFilterChange($event,'user')"
+        (userFromClick)="onUserFilterChange($event,'user from')">
         </ft-payments-list>
         <div [ngBusy]="paymentsBusy"></div>
       </div>

@@ -4,23 +4,26 @@ export class PaymentsFilters {
     public group: number;
     public from: number;
     public to: number;
+    public user: number;
     public page = 0;
     public size = 50;
-
     public toUrl(): string {
         const helper = new UrlParamsHelper();
         if (!this.sum) {
             helper.add('page', this.page);
             helper.add('size', this.size);
         }
-        if (!!this.from) {
+        if (!!this.from && !this.sum) {
             helper.add('userFrom', this.from);
         }
-        if (!!this.to) {
+        if (!!this.to && !this.sum) {
             helper.add('userTo', this.to);
         }
-        if (!!this.group && this.group > 0) {
+        if (!!this.group) {
             helper.add('group', this.group);
+        }
+        if (!!this.sum && !!this.user) {
+            helper.add('user', this.user);
         }
         if (!!this.sum) {
             return '/sum' + helper.toString();
