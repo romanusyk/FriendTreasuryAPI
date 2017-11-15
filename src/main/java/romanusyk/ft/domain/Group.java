@@ -2,6 +2,7 @@ package romanusyk.ft.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -25,6 +26,10 @@ public class Group {
     @Column(nullable = false, length = 100)
     private String title;
 
+    @Length(max = 21)
+    @Column(nullable = false, unique = true, length = 21)
+    private String name;
+
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "pgroup_user")
@@ -35,13 +40,14 @@ public class Group {
         this.users = new HashSet<>();
     }
 
-    public Group(String title) {
+    public Group(String title, String name) {
         this();
         this.title = title;
+        this.name = name;
     }
 
-    public Group(String title, Set<User> users) {
-        this(title);
+    public Group(String title, String name, Set<User> users) {
+        this(title, name);
         this.users = users;
     }
 
@@ -78,6 +84,14 @@ public class Group {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Set<User> getUsers() {

@@ -30,7 +30,8 @@ public class SpringGroupServiceTest {
     @Test
     public void testCreateGroupOnValidGroup() {
 
-        Group group = new Group("testGroup");
+        // TODO:
+        Group group = new Group("testGroup", "");
 
         when(groupRepository.save(group)).then(invocationOnMock -> {
             group.setId(1);
@@ -46,7 +47,8 @@ public class SpringGroupServiceTest {
     @Test(expected = EntityNotValidException.class)
     public void testCreateGroupOnGroupWithId() {
 
-        Group group = new Group("testGroup");
+        // TODO:
+        Group group = new Group("testGroup", "");
         group.setId(1);
 
         groupService.createGroup(group, null);

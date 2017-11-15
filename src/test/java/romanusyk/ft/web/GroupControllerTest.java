@@ -68,7 +68,8 @@ public class GroupControllerTest {
     @Test
     public void testCreateGroupOnValidGroup() throws Exception {
 
-        Group group = new Group("testGroup");
+        // TODO:
+        Group group = new Group("testGroup", "");
 
         when(groupService.createGroup(any(), eq(null))).thenReturn(1);
 
@@ -84,7 +85,8 @@ public class GroupControllerTest {
     @Test
     public void testCreateGroupOnInvalidData() throws Exception {
 
-        Group group = new Group("testGroup");
+        // TODO:
+        Group group = new Group("testGroup", "");
         group.setId(1);
 
         when(groupService.createGroup(any(), any())).thenThrow(new EntityNotValidException(""));

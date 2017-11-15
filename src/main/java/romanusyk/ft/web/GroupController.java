@@ -31,7 +31,7 @@ import java.util.List;
 public class GroupController {
 
     @Autowired
-    GroupService groupService;
+    private GroupService groupService;
 
     @Autowired
     private UserService userService;
@@ -46,13 +46,13 @@ public class GroupController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
-    public Group getGroupByTitle(
+    public Group getGroupByName(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
-            @RequestParam("title") String groupTitle
+            @RequestParam("name") String groupName
     ) {
-        Group group = groupService.getGroupByTitle(groupTitle);
+        Group group = groupService.getGroupByName(groupName);
         if (group == null) {
-            throw new EntityNotFoundException(Group.class, new Group(groupTitle));
+            throw new EntityNotFoundException(Group.class, new Group("unknown", groupName));
         }
         return group;
     }

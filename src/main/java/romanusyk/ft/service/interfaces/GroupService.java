@@ -12,12 +12,14 @@ public interface GroupService {
 
     Integer createGroup(Group group, User creator);
 
-    Group getGroupByTitle(String groupTitle);
+    Group getGroupByName(String groupTitle);
 
     void updateGroup(Group group);
 
     List<Group> getGroupsByUser(User user);
 
     Group getGroupById(Integer groupID);
+
+    void checkIfExists(Group group);
 
 }

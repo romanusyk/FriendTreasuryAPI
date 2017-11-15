@@ -23,8 +23,10 @@ public interface UserService {
 
     void updateUser(User user);
 
-    void addUserToGroup(Integer userID, Integer groupID);
+    void addUserToGroup(Integer userID, String groupName);
 
-    void removeUserFromGroup(Integer userID, Integer groupID);
+    void removeUserFromGroup(Integer userID, String groupName);
+
+    void checkIfExists(User user);
 
 }

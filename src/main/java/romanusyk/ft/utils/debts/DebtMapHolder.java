@@ -1,4 +1,4 @@
-package romanusyk.ft.service.implementations;
+package romanusyk.ft.utils.debts;
 
 import romanusyk.ft.domain.*;
 import romanusyk.ft.service.interfaces.Optimizer;

@@ -1,9 +1,5 @@
 package romanusyk.ft.service.implementations;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,10 +14,10 @@ import romanusyk.ft.repository.PaymentSpecs;
 import romanusyk.ft.repository.UserRepository;
 import romanusyk.ft.service.interfaces.Optimizer;
 import romanusyk.ft.service.interfaces.PaymentService;
+import romanusyk.ft.utils.debts.DebtMapHolder;
 
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by romm on 16.03.17.

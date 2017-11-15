@@ -2,6 +2,8 @@ package romanusyk.ft.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,12 +27,16 @@ public class User {
     private Integer id;
 
     @NotNull
-    @Column(unique = true, nullable = false, length = 12)
-    private String phone;
-
-    @NotNull
     @Column(unique = true, nullable = false)
     private String username;
+
+    @Email
+    @Column(unique = true, nullable = false)
+    private String email;
+
+    @Length(min = 12, max = 12)
+    @Column(length = 12)
+    private String phone;
 
     @NotNull
     @Column(nullable = false)
@@ -48,19 +54,21 @@ public class User {
     @Override
     public String toString() {
         return String.format(
-                "{id: %d, username: \"%s\", phone: \"%s\"}",
+                "{id: %d, username: \"%s\", email: \"%s\", phone: \"%s\"}",
                 id,
                 username,
+                email,
                 phone
         );
     }
 
     public String toDetailedString() {
         return String.format(
-                "{id: %d, username: \"%s\", phone: \"%s\", " +
+                "{id: %d, username: \"%s\", email: \"%s\", phone: \"%s\", " +
                         "password : \"%s\", groups: %s}",
                 id,
                 username,
+                email,
                 phone,
                 password,
                 groups.toString()
@@ -85,16 +93,25 @@ public class User {
         this.groups = new HashSet<>();
     }
 
-    public User(String phone, String username, String password, String authorities) {
+    public User(String username, String email, String password, String authorities) {
         this();
-        this.phone = phone;
         this.username = username;
+        this.email = email;
         this.password = password;
         this.authorities = authorities;
     }
 
-    public User(String phone, String username, String password, String authorities, Set<Group> groups) {
-        this(phone, username, password, authorities);
+    public User(String username, String email, String phone, String password, String authorities) {
+        this();
+        this.username = username;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
+        this.authorities = authorities;
+    }
+
+    public User(String username, String email, String phone, String password, String authorities, Set<Group> groups) {
+        this(username, email, phone, password, authorities);
         this.groups = groups;
     }
 
@@ -113,6 +130,14 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPhone() {
