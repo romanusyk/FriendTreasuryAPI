@@ -8,7 +8,7 @@
               [ngClass]="{
                 'group__price_negative':group.amount < 0,
                 'group__price_positive':group.amount > 0,
-                'group__price_zero':group.amount === 0
+                'group__price_zero':!group.amount
               }">
               {{group.amount}}
             </span>
