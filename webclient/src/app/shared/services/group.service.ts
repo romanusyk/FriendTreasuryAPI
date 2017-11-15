@@ -28,16 +28,18 @@ export class GroupService {
         return Observable.forkJoin(
             this.getGroups(),
             this.paymentsService.get(filters)
+        ).map(
+            (data: Array<any>) => this.enrich(data[0], data[1])
         );
     }
 
-    enrich(groups: Array<Group>, payments: Array<PaymentDTO>) {
+    private enrich(groups: Array<Group>, payments: Array<PaymentDTO>): Array<Group> {
         payments.forEach((payment: PaymentDTO) => {
             if (!!payment && !!payment.group) {
                 const group = groups.find((item: Group) => payment.group.id === item.id);
                 group.amount = payment.amount;
             }
         });
-        return Observable.of(groups);
+        return groups;
     }
 }

@@ -22,7 +22,7 @@
   <mdl-layout-drawer>
     <mdl-layout-title *ngIf="currentUser">
       <ngx-avatar [name]="currentUser.username"></ngx-avatar>
-      {{currentUser.username}} -3322
+      {{currentUser.username}} {{currentUser.debt}}
     </mdl-layout-title>
     <nav class="mdl-navigation">
       <a class="mdl-navigation__link" href="">Create Group</a>

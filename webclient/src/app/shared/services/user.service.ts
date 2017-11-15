@@ -1,3 +1,5 @@
+import { PaymentDTO } from './../models/paymentDTO.model';
+import { PaymentsService } from './payments.service';
 import { User } from './../models/user.model';
 import { Credentials, CredentialsType } from './../models/credentials.model';
 import { UserStorageService } from './user-storage.service';
@@ -10,11 +12,13 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 import { ApiService } from './api.service';
 import { DateHelper } from './date.helper';
+import { PaymentsFilters } from '../models/payments-filters.model';
 
 @Injectable()
 export class UserService {
   constructor(
     private apiService: ApiService,
+    private paymentService: PaymentsService,
     private userStorageService: UserStorageService
   ) {
   }
@@ -27,4 +31,14 @@ export class UserService {
     return this.apiService.get('users/me');
   }
 
+  enrich(user: User) {
+    const filters = new PaymentsFilters();
+    filters.sum = true;
+    filters.user = user.id;
+    return this.paymentService.get(filters)
+      .map((data: Array<PaymentDTO>) => {
+        user.debt = data[0].amount;
+        return user;
+      });
+  }
 }

@@ -9,7 +9,7 @@ export class UserStorageService {
         if (window.localStorage[this.user]) {
             return JSON.parse(window.localStorage[this.user]);
         }
-        return null;
+        return null; 
     }
 
     save(user: UserInfo) {

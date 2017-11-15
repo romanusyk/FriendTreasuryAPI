@@ -49,15 +49,19 @@ export class IndexComponent implements OnInit, OnDestroy {
         this.filters = new PaymentsFilters();
         this.currentUser = this.userStorageService.get().user;
         this.groupsBusy = this.groupService.getWithPayments(this.currentUser.id).subscribe(
-            (data) => {
-                this.groupService.enrich(data[0], data[1]).subscribe(
-                  groups => this.groups = groups
-                );
-            },
+            (data) => this.groups = data,
             err => {
                 console.log(err);
                 this.toastrManager.error('Error');
             }
+        );
+        const userEnrichSubscription:Subscription = this.userService.enrich(this.currentUser).subscribe(
+            (data) => this.currentUser = data,
+            err => {
+                console.log(err);
+                this.toastrManager.error('Error');
+            },
+            () => userEnrichSubscription.unsubscribe()
         );
     }
     ngOnDestroy(): void {
