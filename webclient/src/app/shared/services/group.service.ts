@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
-import { forkJoin } from 'rxjs/Observable/forkJoin';
+import 'rxjs/add/observable/forkJoin';
 
 import { PaymentsService } from './payments.service';
 import { PaymentsFilters } from '../models/payments-filters.model';
