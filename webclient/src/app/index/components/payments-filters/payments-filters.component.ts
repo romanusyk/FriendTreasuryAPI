@@ -77,4 +77,4 @@ export const CommonFilters = ['sum', 'group'];
 
 export const SumFilters = ['user'];
 
-export const AllFilters = ['user to', 'user from'];
+export const AllFilters = ['user from', 'user to'];
