@@ -1,12 +1,13 @@
-import { IToken } from './token.model';
+import { Token } from './token.model';
 
-export interface IUser {
+export class User {
   id: number;
-  phone: string;
+  phone?: string;
   username: string;
+  debt?: number;
 }
 
-export interface IUserInfo {
-  user: IUser;
-  token: IToken;
+export class UserInfo {
+  user: User;
+  token: Token;
 }

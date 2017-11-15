@@ -1,5 +1,5 @@
 import { UserService } from './user.service';
-import { IUser, IUserInfo } from './../models/user.model';
+import { User, UserInfo } from './../models/user.model';
 import { UserLoginResponse } from './../models/user-login-response.model';
 import { Credentials, CredentialsType } from './../models/credentials.model';
 import { UserStorageService } from './user-storage.service';
@@ -49,7 +49,7 @@ export class AuthService {
         }
     }
 
-    setAuth(user: IUserInfo): IUserInfo {
+    setAuth(user: UserInfo): UserInfo {
         this.userStorageService.save(user);
         return user;
     }
@@ -59,7 +59,7 @@ export class AuthService {
         this.router.navigateByUrl(this.config.routes.login);
     }
 
-    attemptAuth(type: CredentialsType, credentials): Observable<IUserInfo> {
+    attemptAuth(type: CredentialsType, credentials): Observable<UserInfo> {
         if (type === CredentialsType.login) {
             return this.login(credentials);
         } else if (type === CredentialsType.register) {
@@ -67,12 +67,12 @@ export class AuthService {
         }
     }
 
-    private login(credentials: Credentials): Observable<IUserInfo> {
+    private login(credentials: Credentials): Observable<UserInfo> {
         return this.http.post(`${this.config.endpoint}users/access`, credentials)
             .map(data => data.json())
             .map(
             (data: UserLoginResponse) => {
-                const user: IUserInfo = {
+                const user: UserInfo = {
                     token: {
                         expireTime: data.expireTime,
                         token: data.token
@@ -87,12 +87,12 @@ export class AuthService {
             });
     }
 
-    private register(credentials: Credentials): Observable<IUserInfo> {
+    private register(credentials: Credentials): Observable<UserInfo> {
         return this.http.post(`${this.config.endpoint}users`, credentials)
             .map(data => data.json())
             .map(
             (data: UserLoginResponse) => {
-                const user: IUserInfo = {
+                const user: UserInfo = {
                     token: {
                         expireTime: data.expireTime,
                         token: data.token

@@ -1,7 +1,7 @@
 import { AuthService } from './../../../shared/services/auth.service';
 import { PaymentsFilters } from './../../../shared/models/payments-filters.model';
 import { MdlDialogService } from '@angular-mdl/core';
-import { IUser } from './../../../shared/models/user.model';
+import { User } from './../../../shared/models/user.model';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { CreatePaymentModel } from './../../../shared/models/create-payment.model';
 import { CreatePaymentComponent } from './../create-payment/create-payment.component';
@@ -25,11 +25,11 @@ import { Observable } from 'rxjs/Observable';
 export class IndexComponent implements OnInit, OnDestroy {
     groups: Array<Group> = new Array();
     currentGroup: Group;
-    users: Array<IUser> = new Array();
+    users: Array<User> = new Array();
     filters: PaymentsFilters;
     groupsBusy: Subscription;
     paymentsBusy: Subscription;
-    currentUser: IUser;
+    currentUser: User;
     @ViewChild(PaymentsListComponent) paymentsComponent: PaymentsListComponent;
     @ViewChild(PaymentsFiltersComponent) filtersComponent: PaymentsFiltersComponent;
     @ViewChild(CreatePaymentComponent) createPaymentComponent: CreatePaymentComponent;

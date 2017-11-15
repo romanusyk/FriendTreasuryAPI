@@ -1,4 +1,4 @@
-export interface IToken {
+export class Token {
     token: string;
     expireTime: number;
 }
