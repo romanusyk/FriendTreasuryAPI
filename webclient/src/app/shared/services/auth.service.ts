@@ -1,6 +1,6 @@
 import { UserService } from './user.service';
-import { User } from './../models/user.model';
-import { UserLoginResponse } from './../models/user-login-request.model';
+import { IUser, IUserInfo } from './../models/user.model';
+import { UserLoginResponse } from './../models/user-login-response.model';
 import { Credentials, CredentialsType } from './../models/credentials.model';
 import { UserStorageService } from './user-storage.service';
 
@@ -49,7 +49,7 @@ export class AuthService {
         }
     }
 
-    setAuth(user: UserLoginResponse) {
+    setAuth(user: IUserInfo): IUserInfo {
         this.userStorageService.save(user);
         return user;
     }
@@ -59,7 +59,7 @@ export class AuthService {
         this.router.navigateByUrl(this.config.routes.login);
     }
 
-    attemptAuth(type: CredentialsType, credentials): Observable<UserLoginResponse> {
+    attemptAuth(type: CredentialsType, credentials): Observable<IUserInfo> {
         if (type === CredentialsType.login) {
             return this.login(credentials);
         } else if (type === CredentialsType.register) {
@@ -67,27 +67,41 @@ export class AuthService {
         }
     }
 
-    private login(credentials: Credentials) {
+    private login(credentials: Credentials): Observable<IUserInfo> {
         return this.http.post(`${this.config.endpoint}users/access`, credentials)
             .map(data => data.json())
             .map(
-            data => {
-                const user = {
-                    token: data,
-                    username: credentials.username
+            (data: UserLoginResponse) => {
+                const user: IUserInfo = {
+                    token: {
+                        expireTime: data.expireTime,
+                        token: data.token
+                    },
+                    user: {
+                        username: credentials.username,
+                        id: data.userId,
+                        phone: ''
+                    }
                 };
                 return this.setAuth(user);
             });
     }
 
-    private register(credentials: Credentials) {
+    private register(credentials: Credentials): Observable<IUserInfo> {
         return this.http.post(`${this.config.endpoint}users`, credentials)
             .map(data => data.json())
             .map(
-            data => {
-                const user = {
-                    token: data,
-                    username: credentials.username
+            (data: UserLoginResponse) => {
+                const user: IUserInfo = {
+                    token: {
+                        expireTime: data.expireTime,
+                        token: data.token
+                    },
+                    user: {
+                        username: credentials.username,
+                        id: data.userId,
+                        phone: ''
+                    }
                 };
                 return this.setAuth(user);
             });

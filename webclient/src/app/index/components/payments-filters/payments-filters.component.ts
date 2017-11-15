@@ -21,19 +21,19 @@ export class PaymentsFiltersComponent implements OnInit {
         console.log(type);
         switch (type.toLowerCase()) {
             case 'user':
-                this.model.user = !!value ? value : 0;
+                this.model.user = value > -1 ? value : -1;
                 break;
             case 'user from':
-                this.model.from = !!value ? value : 0;
+                this.model.from = value > -1 ? value : -1;
                 break;
             case 'user to':
-                this.model.to = !!value ? value : 0;
+                this.model.to = value > -1 ? value : -1;
                 break;
             case 'sum':
                 this.model.sum = !this.model.sum;
                 break;
             case 'group':
-                this.model.group = !!this.model.group ? 0 : this.group;
+                this.model.group = this.model.group > -1 ? -1 : this.group;
                 break;
             default:
                 break;
@@ -57,15 +57,15 @@ export class PaymentsFiltersComponent implements OnInit {
     public isActive(filter: string): boolean {
         switch (filter.toLowerCase()) {
             case 'user':
-                return !!this.model.user;
+                return this.model.user > -1;
             case 'user from':
-                return !!this.model.from;
+                return this.model.from > -1;
             case 'user to':
-                return !!this.model.to;
+                return this.model.to > -1;
             case 'sum':
                 return !!this.model.sum;
             case 'group':
-                return !!this.model.group;
+                return this.model.group > -1;
             default:
                 break;
         }
