@@ -1,5 +1,5 @@
 import { Group } from './group.model';
-import { IUser } from './user.model';
+import { User } from './user.model';
 export class PaymentDTO {
     amount: number;
     description: string;
@@ -8,6 +8,6 @@ export class PaymentDTO {
     latitude: number;
     longitude: number;
     timestamp: number;
-    userFrom: IUser;
-    userTo: IUser;
+    userFrom: User;
+    userTo: User;
 }

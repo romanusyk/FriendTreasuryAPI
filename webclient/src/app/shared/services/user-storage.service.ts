@@ -1,18 +1,18 @@
-import { IUserInfo } from './../models/user.model';
+import { UserInfo } from './../models/user.model';
 import { Injectable } from '@angular/core';
 
 
 @Injectable()
 export class UserStorageService {
     private user = 'user';
-    get(): IUserInfo {
+    get(): UserInfo {
         if (window.localStorage[this.user]) {
             return JSON.parse(window.localStorage[this.user]);
         }
         return null;
     }
 
-    save(user: IUserInfo) {
+    save(user: UserInfo) {
         window.localStorage[this.user] = JSON.stringify(user);
     }
 

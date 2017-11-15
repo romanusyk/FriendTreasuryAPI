@@ -1,4 +1,4 @@
-import { IToken } from './token.model';
+import { Token } from './token.model';
 
 export class UserLoginResponse {
   token: string;

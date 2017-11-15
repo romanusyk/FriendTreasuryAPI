@@ -1,5 +1,5 @@
 import { CreatePaymentModel } from './../../../shared/models/create-payment.model';
-import { IUser } from './../../../shared/models/user.model';
+import { User } from './../../../shared/models/user.model';
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { MdlDialogComponent, MdlButtonComponent, IMdlDialogConfiguration } from '@angular-mdl/core';
 
@@ -10,7 +10,7 @@ import { MdlDialogComponent, MdlButtonComponent, IMdlDialogConfiguration } from 
     styleUrls: ['create-payment.component.scss']
 })
 export class CreatePaymentComponent implements OnInit {
-    @Input() users: Array<IUser>;
+    @Input() users: Array<User>;
     @Output() complete: EventEmitter<CreatePaymentModel> = new EventEmitter();
 
     @ViewChild('chooseUsersDialog') chooseUsersDialog: MdlDialogComponent;

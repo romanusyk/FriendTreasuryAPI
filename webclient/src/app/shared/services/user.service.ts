@@ -1,4 +1,4 @@
-import { IUser } from './../models/user.model';
+import { User } from './../models/user.model';
 import { Credentials, CredentialsType } from './../models/credentials.model';
 import { UserStorageService } from './user-storage.service';
 
@@ -19,7 +19,7 @@ export class UserService {
   ) {
   }
 
-  getUsersInGroup(groupId: number): Observable<Array<IUser>> {
+  getUsersInGroup(groupId: number): Observable<Array<User>> {
     return this.apiService.get('users/group/' + groupId);
   }
 
