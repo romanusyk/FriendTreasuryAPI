@@ -1,12 +1,12 @@
 import { UrlParamsHelper, UrlParam } from './../services/url-params.helper';
 export class PaymentsFilters {
-    public sum: boolean;
-    public group: number;
-    public from: number;
-    public to: number;
-    public user: number;
-    public page = 0;
-    public size = 50;
+    public sum?: boolean;
+    public group?: number;
+    public from?: number;
+    public to?: number;
+    public user?: number;
+    public page? = 0;
+    public size? = 50;
     public toUrl(): string {
         const helper = new UrlParamsHelper();
         if (!this.sum) {
@@ -19,7 +19,7 @@ export class PaymentsFilters {
         if (!!this.to && !this.sum) {
             helper.add('userTo', this.to);
         }
-        if (!!this.group) {
+        if (this.group > -1) {
             helper.add('group', this.group);
         }
         if (!!this.sum && !!this.user) {

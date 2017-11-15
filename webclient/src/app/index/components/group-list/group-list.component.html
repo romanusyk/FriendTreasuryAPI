@@ -3,7 +3,15 @@
         <ngx-avatar [name]="group.title"></ngx-avatar>
         <div class="group__name">
             <h5 class="group__title">{{group.title}}</h5>
-            <span class="group__price group__price_negative">300</span>
+            <span
+              class="group__price"
+              [ngClass]="{
+                'group__price_negative':group.amount < 0,
+                'group__price_positive':group.amount > 0,
+                'group__price_zero':!group.amount
+              }">
+              {{group.amount}}
+            </span>
         </div>
     </li>
 </ul>

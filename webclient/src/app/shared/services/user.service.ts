@@ -1,5 +1,4 @@
 import { User } from './../models/user.model';
-import { UserLoginResponse } from './../models/user-login-request.model';
 import { Credentials, CredentialsType } from './../models/credentials.model';
 import { UserStorageService } from './user-storage.service';
 

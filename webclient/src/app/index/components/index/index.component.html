@@ -3,11 +3,11 @@
     <mdl-layout-header-row>
       <ft-search></ft-search>
       <mdl-layout-title *ngIf="isCurrentGroupSelected()">
-        {{currentGroup.title}} {{users.length}} members
+        {{users.length}} members
       </mdl-layout-title>
       <mdl-layout-spacer></mdl-layout-spacer>
 
-      <ft-payments-filters *ngIf="isCurrentGroupSelected()" [group]="currentGroup.id" (change)="onFilterChange($event)">
+      <ft-payments-filters *ngIf="isCurrentGroupSelected()" [user]="currentUser.id" [group]="currentGroup.id" (change)="onFilterChange($event)">
       </ft-payments-filters>
       <mdl-layout-spacer></mdl-layout-spacer>
       <ft-create-payment *ngIf="isCurrentGroupSelected()" (complete)="onCreatePaymentComplete($event)" [users]="users">
@@ -38,7 +38,6 @@
       <div class="mdl-cell mdl-cell--9-col">
         <ft-payments-list
         (userToClick)="onUserFilterChange($event,'user to')"
-        (userClick)="onUserFilterChange($event,'user')"
         (userFromClick)="onUserFilterChange($event,'user from')">
         </ft-payments-list>
         <div [ngBusy]="paymentsBusy"></div>
