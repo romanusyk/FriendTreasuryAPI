@@ -41,16 +41,11 @@
             color: green;
             &:before {
                 content: '+';
-        
             }
         }
 
         &_negative{
             color: red;
-            &:before {
-                content: '-';
-        
-            }
         }
 
         &_zero{
