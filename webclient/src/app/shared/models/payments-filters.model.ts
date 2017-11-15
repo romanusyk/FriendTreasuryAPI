@@ -13,16 +13,16 @@ export class PaymentsFilters {
             helper.add('page', this.page);
             helper.add('size', this.size);
         }
-        if (this.from > -1 && !this.sum) {
+        if (!!this.from && !this.sum) {
             helper.add('userFrom', this.from);
         }
-        if (this.to > -1 && !this.sum) {
+        if (!!this.to && !this.sum) {
             helper.add('userTo', this.to);
         }
         if (this.group > -1) {
             helper.add('group', this.group);
         }
-        if (!!this.sum && this.user > -1) {
+        if (!!this.sum && !!this.user) {
             helper.add('user', this.user);
         }
         if (!!this.sum) {

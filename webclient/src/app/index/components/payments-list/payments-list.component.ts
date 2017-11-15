@@ -12,15 +12,12 @@ export class PaymentsListComponent {
     public payments: Array<PaymentDTO> = new Array();
     @Output() userToClick: EventEmitter<number> = new EventEmitter();
     @Output() userFromClick: EventEmitter<number> = new EventEmitter();
-    @Output() userClick: EventEmitter<number> = new EventEmitter();
 
     onToClick(id: number) {
         this.userToClick.emit(id);
-        this.userClick.emit(id);
     }
 
     onFromClick(id: number) {
         this.userFromClick.emit(id);
-        this.userClick.emit(id);
     }
 }

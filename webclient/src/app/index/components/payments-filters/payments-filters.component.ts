@@ -11,6 +11,7 @@ export class PaymentsFiltersComponent implements OnInit {
     public filters: string[];
     @Output() change: EventEmitter<PaymentsFilters> = new EventEmitter();
     @Input() group: number;
+    @Input() user: number;
     ngOnInit(): void {
         this.model = new PaymentsFilters();
         this.model.group = this.group;
@@ -18,16 +19,15 @@ export class PaymentsFiltersComponent implements OnInit {
     }
 
     onChange(type: string, value?: any) {
-        console.log(type);
         switch (type.toLowerCase()) {
             case 'user':
-                this.model.user = value > -1 ? value : -1;
+                this.model.user = !!this.model.user ? 0 : this.user;
                 break;
             case 'user from':
-                this.model.from = value > -1 ? value : -1;
+                this.model.from = !!value ? value : 0;
                 break;
             case 'user to':
-                this.model.to = value > -1 ? value : -1;
+                this.model.to = !!value ? value : 0;
                 break;
             case 'sum':
                 this.model.sum = !this.model.sum;
@@ -57,11 +57,11 @@ export class PaymentsFiltersComponent implements OnInit {
     public isActive(filter: string): boolean {
         switch (filter.toLowerCase()) {
             case 'user':
-                return this.model.user > -1;
+                return !!this.model.user;
             case 'user from':
-                return this.model.from > -1;
+                return !!this.model.from;
             case 'user to':
-                return this.model.to > -1;
+                return !!this.model.to;
             case 'sum':
                 return !!this.model.sum;
             case 'group':
