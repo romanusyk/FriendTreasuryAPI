@@ -13,6 +13,7 @@ public class UserExampleBuilder {
         User exampleUser = new User();
         exampleUser.setUsername(user.getUsername());
         exampleUser.setEmail(user.getEmail());
+        exampleUser.setPhone(user.getPhone());
 
         ExampleMatcher exampleMatcher = ExampleMatcher.matchingAny();
 

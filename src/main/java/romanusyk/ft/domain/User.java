@@ -34,8 +34,8 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Length(min = 12, max = 12)
-    @Column(length = 12)
+    @Length(min = 8, max = 12)
+    @Column(length = 12, unique = true, nullable = false)
     private String phone;
 
     @NotNull

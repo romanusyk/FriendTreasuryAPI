@@ -39,15 +39,15 @@ public class FromCodeDBInit implements DBInit {
 
         RandomString randomString = new RandomString();
 
-        Group guys = new Group("guys", randomString.nextString());
-        Group universe = new Group("universe", randomString.nextString());
+        Group guys = new Group("test1", randomString.nextString());
+        Group universe = new Group("test2", randomString.nextString());
 
         groupRepository.save(guys);
         groupRepository.save(universe);
 
-        User roma = new User("Roma","romanysik@gmail.com", "380952411401", "111", "user");
-        User yura = new User("Yura","yuriikrat@gmail.com", "380960737750", "111", "user");
-        User geka = new User("Geka","gekastephan@gmail.com", "380952411403", "111", "user");
+        User roma = new User("ro","ro@gmail.com", "380123456789", "111", "user");
+        User yura = new User("yu","yu@gmail.com", "380234567891", "111", "user");
+        User geka = new User("ge","ge@gmail.com", "380345678912", "111", "user");
 
         SpringUserService.encryptPassword(roma);
         SpringUserService.encryptPassword(yura);
@@ -92,19 +92,6 @@ public class FromCodeDBInit implements DBInit {
         paymentRepository.save(payment5);
         paymentRepository.save(payment6);
         paymentRepository.save(payment7);
-
-        User userExample = new User();
-        userExample.setEmail("romanysik@gmail.com");
-        userExample.setUsername("Yura");
-
-        UserExampleBuilder matcher = new UserExampleBuilder();
-        Example<User> example = matcher.buildExistingUserExample(userExample);
-
-        Iterable<User> users = userRepository.findAll(example);
-        System.out.println("Users by example:");
-        for (User u : users) {
-            System.out.println(u.toDetailedString());
-        }
 
     }
 }

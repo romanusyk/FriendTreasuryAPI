@@ -51,6 +51,9 @@ public class SpringUserService implements UserService {
             if (u.getEmail().equals(user.getEmail())) {
                 fieldCount.computeIfAbsent("email", k -> 1);
             }
+            if (u.getPhone().equals(user.getPhone())) {
+                fieldCount.computeIfAbsent("phone", k -> 1);
+            }
         }
         if (!fieldCount.isEmpty()) {
             String[] result = new String[fieldCount.size()];
