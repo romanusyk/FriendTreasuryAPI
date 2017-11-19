@@ -1,15 +1,15 @@
-import { AuthService } from './../../shared/services/auth.service';
-import { FtValidators } from './../../shared/validators/ft-validators';
-import { ErrorPipe } from './../../shared/pipes/error.pipe';
-import { Error } from './../../shared/models/error.model';
-import { Credentials, CredentialsType } from './../../shared/models/credentials.model';
-import { ListErrorsComponent } from './../../shared/components/list-errors/list-errors.component';
+import { InviteService } from './../shared/services/invite.service';
+import { AuthService } from './../shared/services/auth.service';
+import { FtValidators } from './../shared/validators/ft-validators';
+import { ErrorPipe } from './../shared/pipes/error.pipe';
+import { Error } from './../shared/models/error.model';
+import { Credentials, CredentialsType } from './../shared/models/credentials.model';
+import { ListErrorsComponent } from './../shared/components/list-errors/list-errors.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 @Component({
-    selector: 'ft-auth',
     templateUrl: './auth.component.html',
     styleUrls: ['./auth.component.scss']
 })
@@ -24,6 +24,7 @@ export class AuthComponent implements OnInit {
         private router: Router,
         private authService: AuthService,
         private fb: FormBuilder,
+        private inviteService: InviteService,
         private errorPipe: ErrorPipe) {
         this.authForm = this.fb.group({
             'username': ['', Validators.required],
@@ -36,6 +37,7 @@ export class AuthComponent implements OnInit {
             this.updateTitle();
             if (this.isLogin()) {
                 this.authForm.removeControl('phone');
+                this.authForm.removeControl('email');
                 this.authForm.removeControl('confirm-password');
             } else {
                 this.authForm.addControl('phone', new FormControl('',
@@ -48,6 +50,11 @@ export class AuthComponent implements OnInit {
                         Validators.required,
                         FtValidators.EqualTo(this.authForm.controls['password'])
                     ]));
+                this.authForm.addControl('email', new FormControl('',
+                [
+                    Validators.required,
+                    Validators.email
+                ]));
             }
         });
         this.authForm.valueChanges.subscribe(p => this.onValueChange(p, this.authForm));
@@ -58,7 +65,14 @@ export class AuthComponent implements OnInit {
         this.busy = this.authService
             .attemptAuth(this.authType, credentials)
             .subscribe(
-            data => this.router.navigateByUrl('/index'),
+            data => {
+                const name = this.inviteService.get();
+                if (!name) {
+                    this.router.navigateByUrl('/index');
+                } else {
+                    this.router.navigateByUrl('/invite/' + name);
+                }
+            },
             err => {
                 this.errors.push(this.errorPipe.transform(err));
             });
@@ -120,5 +134,9 @@ export const ValidationMessages = {
     confirmPassword: {
         required: 'Password confirmation is required',
         equalTo: 'Password\'s doesn\'t match'
+    },
+    email: {
+        required: 'Email is required',
+        email: 'Email address not valid'
     }
 };

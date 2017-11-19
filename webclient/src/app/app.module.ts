@@ -1,3 +1,4 @@
+import { InviteModule } from './invite/invite.module';
 import { MdlModule, MdlDialogModule } from '@angular-mdl/core';
 import { MdlSelectModule } from '@angular-mdl/select';
 import { IndexModule } from './index/index.module';
@@ -31,7 +32,8 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     AuthModule,
     IndexModule,
     AppRoutingModule,
-    ToastModule.forRoot()
+    ToastModule.forRoot(),
+    InviteModule
   ],
   declarations: [
     AppComponent

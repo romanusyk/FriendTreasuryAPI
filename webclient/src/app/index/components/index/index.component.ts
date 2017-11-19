@@ -1,3 +1,5 @@
+import { InviteService } from './../../../shared/services/invite.service';
+import { CreateGroupComponent } from './../create-group/create-group.component';
 import { AuthService } from './../../../shared/services/auth.service';
 import { PaymentsFilters } from './../../../shared/models/payments-filters.model';
 import { MdlDialogService } from '@angular-mdl/core';
@@ -41,21 +43,16 @@ export class IndexComponent implements OnInit, OnDestroy {
         private authService: AuthService,
         private toastrManager: ToastsManager,
         private dialogService: MdlDialogService,
-        private router: Router
+        private router: Router,
+        private inviteService: InviteService
     ) {
     }
 
     ngOnInit(): void {
         this.filters = new PaymentsFilters();
         this.currentUser = this.userStorageService.get().user;
-        this.groupsBusy = this.groupService.getWithPayments(this.currentUser.id).subscribe(
-            (data) => this.groups = data,
-            err => {
-                console.log(err);
-                this.toastrManager.error('Error');
-            }
-        );
-        const userEnrichSubscription:Subscription = this.userService.enrich(this.currentUser).subscribe(
+        this.updateGroupsList();
+        const userEnrichSubscription: Subscription = this.userService.enrich(this.currentUser).subscribe(
             (data) => this.currentUser = data,
             err => {
                 console.log(err);
@@ -71,6 +68,23 @@ export class IndexComponent implements OnInit, OnDestroy {
         if (!!this.paymentsBusy) {
             this.paymentsBusy.unsubscribe();
         }
+    }
+
+    updateGroupsList() {
+        this.groupsBusy = this.groupService.getWithPayments(this.currentUser.id).subscribe(
+            (data) => {
+                this.groups = data;
+                const name = this.inviteService.get();
+                if (!!name) {
+                    this.currentGroup = data.find(group => group.name === name);
+                    this.inviteService.destroy();
+                }
+            },
+            err => {
+                console.log(err);
+                this.toastrManager.error('Error');
+            }
+        );
     }
 
     onGroupSelect(group: Group): void {
@@ -131,5 +145,20 @@ export class IndexComponent implements OnInit, OnDestroy {
 
     isCurrentGroupSelected(): boolean {
         return !!this.currentGroup;
+    }
+
+    generateInvite(): string {
+        if (!this.currentGroup) {
+            return '';
+        }
+        return document.location.origin + '/invite/' + this.currentGroup.name;
+    }
+
+    onGenerationgSuccess() {
+        this.toastrManager.success('Link copied to clipboard');
+    }
+
+    onGenerationError() {
+        this.toastrManager.error('Cannot copy link');
     }
 }

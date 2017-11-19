@@ -9,6 +9,9 @@
             <mdl-textfield label="UserName" floating-label autofocus type="text" formControlName="username" name="username"></mdl-textfield>
         </div>
         <div *ngIf="!isLogin()">
+            <mdl-textfield label="Email" floating-label autofocus type="email" formControlName="email" name="email"></mdl-textfield>
+        </div>
+        <div *ngIf="!isLogin()">
             <mdl-textfield label="Phone" floating-label type="number" formControlName="phone" name="phone"></mdl-textfield>
         </div>
         <div>

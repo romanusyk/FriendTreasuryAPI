@@ -25,8 +25,8 @@
       {{currentUser.username}} {{currentUser.debt}}
     </mdl-layout-title>
     <nav class="mdl-navigation">
-      <a class="mdl-navigation__link" href="">Create Group</a>
-      <a class="mdl-navigation__link" (click)="logout()"  href="">Logout</a>
+      <button class="mdl-navigation__link" (click)="createGroup.dialog.show()">Create Group</button>
+      <button class="mdl-navigation__link" (click)="logout()"  href="">Logout</button>
     </nav>
   </mdl-layout-drawer>
   <mdl-layout-content>
@@ -48,5 +48,11 @@
 </mdl-layout>
 <mdl-menu #groupExternalMenu="mdlMenu"  mdl-menu-position="bottom-right">
   <mdl-menu-item mdl-ripple>Invite User</mdl-menu-item>
-  <mdl-menu-item mdl-ripple mdl-menu-item-full-bleed-divider>Generate invite link</mdl-menu-item>
+  <mdl-menu-item mdl-ripple mdl-menu-item-full-bleed-divider
+  ngxClipboard
+  [cbContent]="generateInvite()"
+  (cbOnSuccess)="onGenerationgSuccess()"
+  (cbOnError)="onGenerationError()">
+  Generate invite link</mdl-menu-item>
 </mdl-menu>
+<ft-create-group #createGroup (complete)="updateGroupsList()"></ft-create-group>

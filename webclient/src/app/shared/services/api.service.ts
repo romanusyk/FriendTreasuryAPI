@@ -42,7 +42,7 @@ export class ApiService {
     return this.http.get(url,
       { headers: this.setHeaders() })
       .catch(this.formatErrors.bind(this))
-      .map((res: Response) => res.json());
+      .map(this.defaultMap);
   }
 
   put(path: string, body: Object = {}): Observable<any> {
@@ -51,7 +51,7 @@ export class ApiService {
       JSON.stringify(body),
       { headers: this.setHeaders() })
       .catch(this.formatErrors.bind(this))
-      .map((res: Response) => res.json());
+      .map(this.defaultMap);
   }
 
   patch(path: string, body: Object = {}): Observable<any> {
@@ -60,7 +60,7 @@ export class ApiService {
       JSON.stringify(body),
       { headers: this.setHeaders() })
       .catch(this.formatErrors.bind(this))
-      .map((res: Response) => res.json());
+      .map(this.defaultMap);
   }
 
   post(path: string, body: Object = {}): Observable<any> {
@@ -69,12 +69,7 @@ export class ApiService {
       JSON.stringify(body),
       { headers: this.setHeaders() })
       .catch(this.formatErrors.bind(this))
-      .map((res: Response) => {
-        if (res['_body']) {
-          return res.json();
-        }
-        return res;
-      });
+      .map(this.defaultMap);
   }
 
   delete(path): Observable<any> {
@@ -82,7 +77,7 @@ export class ApiService {
       `${this.config.endpoint}${path}`,
       { headers: this.setHeaders() })
       .catch(this.formatErrors.bind(this))
-      .map((res: Response) => res.json());
+      .map(this.defaultMap);
   }
 
 
@@ -96,5 +91,12 @@ export class ApiService {
       this.authService.logout();
     }
     return Observable.throw(error.json());
+  }
+
+  private defaultMap(res: Response) {
+    if (res['_body']) {
+      return res.json();
+    }
+    return res;
   }
 }
