@@ -1,3 +1,4 @@
+import { InviteService } from './services/invite.service';
 import { AuthService } from './services/auth.service';
 import { PaymentsService } from './services/payments.service';
 import { GroupService } from './services/group.service';
@@ -48,6 +49,7 @@ import { UserService } from './services/user.service';
         MainGuard,
         LoginGuard,
         ApiService,
+        InviteService
     ],
     exports: [
         Error404Component,

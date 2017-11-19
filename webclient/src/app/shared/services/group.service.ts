@@ -1,3 +1,4 @@
+import { Group } from './../models/group.model';
 import { Observable } from 'rxjs/Rx';
 import { ApiService } from './api.service';
 import { Injectable } from '@angular/core';
@@ -8,7 +9,6 @@ import 'rxjs/add/observable/forkJoin';
 
 import { PaymentsService } from './payments.service';
 import { PaymentsFilters } from '../models/payments-filters.model';
-import { Group } from '../models/group.model';
 import { Payment } from '../models/payment.model';
 import { PaymentDTO } from '../models/paymentDTO.model';
 
@@ -18,6 +18,10 @@ export class GroupService {
 
     getGroups(): Observable<any> {
         return this.apiService.get('groups/my');
+    }
+
+    create(group: Group): Observable<any> {
+        return this.apiService.post('groups' ,group);
     }
 
     getWithPayments(userId: number): Observable<any> {

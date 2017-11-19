@@ -1,3 +1,4 @@
+import { CreateGroupComponent } from './components/create-group/create-group.component';
 import { PaymentsFiltersComponent } from './components/payments-filters/payments-filters.component';
 import { MdlSelectModule } from '@angular-mdl/select';
 import { CreatePaymentComponent } from './components/create-payment/create-payment.component';
@@ -15,6 +16,7 @@ import { IndexComponent } from './components/index/index.component';
 import { MdlModule, MdlDialogModule, MdlButtonModule } from '@angular-mdl/core';
 import { BusyModule } from 'angular2-busy';
 import { SearchComponent } from './components/search/search/search.component';
+import { ClipboardModule } from 'ngx-clipboard';
 
 @NgModule({
     imports: [
@@ -26,7 +28,8 @@ import { SearchComponent } from './components/search/search/search.component';
         SharedModule,
         MdlDialogModule.forRoot(),
         BusyModule,
-        AvatarModule
+        AvatarModule,
+        ClipboardModule
     ],
     declarations: [
         GroupListComponent,
@@ -34,7 +37,8 @@ import { SearchComponent } from './components/search/search/search.component';
         CreatePaymentComponent,
         IndexComponent,
         PaymentsFiltersComponent,
-        SearchComponent
+        SearchComponent,
+        CreateGroupComponent
     ],
     exports: [
     ]

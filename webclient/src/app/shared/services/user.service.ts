@@ -1,3 +1,4 @@
+import { AuthService } from './auth.service';
 import { PaymentDTO } from './../models/paymentDTO.model';
 import { PaymentsService } from './payments.service';
 import { User } from './../models/user.model';
@@ -37,8 +38,13 @@ export class UserService {
     filters.user = user.id;
     return this.paymentService.get(filters)
       .map((data: Array<PaymentDTO>) => {
-        user.debt = data[0].amount;
+        if (data.length > 0) {
+          user.debt = data[0].amount;
+        } else {
+          user.debt = 0;
+        }
         return user;
       });
   }
+
 }
