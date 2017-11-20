@@ -5,7 +5,7 @@ import { CreatePaymentComponent } from './create-payment/create-payment.componen
 import { PaymentsListComponent } from './payments-list/payments-list.component';
 import { SharedModule } from './../shared/shared.module';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { GroupListComponent } from './group-list/group-list.component';
 import { NgModule } from '@angular/core';
@@ -43,7 +43,8 @@ import { AgmCoreModule } from '@agm/core';
         CreateGroupComponent
     ],
     exports: [
-    ]
+    ],
+    providers: [DatePipe]
 })
 export class MainModule {
 

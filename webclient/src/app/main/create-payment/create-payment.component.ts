@@ -3,7 +3,8 @@ import { User } from './../../shared/models/user.model';
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { MdlDialogComponent, MdlButtonComponent, IMdlDialogConfiguration } from '@angular-mdl/core';
 import { MdlDatePickerService } from '@angular-mdl/datepicker';
-import { Moment } from 'moment';
+import { DatePipe } from '@angular/common';
+import { DateHelper } from '../../shared/services/date.helper';
 @Component({
   moduleId: module.id,
   selector: 'ft-create-payment',
@@ -18,8 +19,7 @@ export class CreatePaymentComponent implements OnInit {
   @ViewChild('fillDataDialog') fillDataDialog: MdlDialogComponent;
   model: CreatePaymentModel;
   isAllowToShowMap: boolean;
-
-  constructor(private datePicker: MdlDatePickerService) { }
+  constructor(private datePicker: MdlDatePickerService, private datePipe: DatePipe) { }
   ngOnInit(): void {
     this.clearData();
     this.chooseUsersDialog.config = this.createModalConfig();
@@ -49,14 +49,18 @@ export class CreatePaymentComponent implements OnInit {
   }
 
   public pickADate($event: MouseEvent) {
-    this.datePicker.selectDate(this.model.date, { openFrom: $event }).subscribe((selectedDate: Date) => {
-      console.log(selectedDate);
-      // this.model.date = selectedDate ? moment(selectedDate) : null;
+    this.datePicker.selectDate(DateHelper.currentDate(), { openFrom: $event }).subscribe((selectedDate: Date) => {
+      this.model.date = this.transformDate(selectedDate);
     });
   }
 
   private clearData() {
     this.model = new CreatePaymentModel();
+    this.model.date = this.transformDate(DateHelper.currentDate());
+  }
+
+  private transformDate(date) {
+    return this.datePipe.transform(date,'yyyy-MMM-dd');
   }
 
   private createModalConfig(): IMdlDialogConfiguration {
