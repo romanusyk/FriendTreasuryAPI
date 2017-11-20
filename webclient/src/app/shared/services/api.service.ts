@@ -1,13 +1,12 @@
 import { AuthService } from './auth.service';
-import { ErrorPipe } from './../pipes/error.pipe';
 import { Error } from './../models/error.model';
 import { IAppConfig } from './../../config/iapp.config';
-import { APP_CONFIG } from './../../config/app.config';
 import { UserStorageService } from './user-storage.service';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Injectable, Inject } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { UrlParamsHelper } from './url-params.helper';
+import { ConfigManager } from '../../config/app.config';
 
 @Injectable()
 export class ApiService {
@@ -15,11 +14,10 @@ export class ApiService {
   public notAuthorize: Subject<any> = new Subject();
   constructor(
     private http: Http,
-    @Inject(APP_CONFIG) appConfig: IAppConfig,
     private userStorageService: UserStorageService,
     private authService: AuthService
   ) {
-    this.config = appConfig;
+    this.config = ConfigManager.config;
   }
 
   private setHeaders(): Headers {

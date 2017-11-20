@@ -1,30 +1,29 @@
-import { InviteService } from './../../../shared/services/invite.service';
-import { CreateGroupComponent } from './../create-group/create-group.component';
-import { AuthService } from './../../../shared/services/auth.service';
-import { PaymentsFilters } from './../../../shared/models/payments-filters.model';
+import { InviteService } from './../../shared/services/invite.service';
+import { CreateGroupComponent } from '../create-group/create-group.component';
+import { AuthService } from './../../shared/services/auth.service';
+import { PaymentsFilters } from './../../shared/models/payments-filters.model';
 import { MdlDialogService } from '@angular-mdl/core';
-import { User } from './../../../shared/models/user.model';
+import { User } from './../../shared/models/user.model';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
-import { CreatePaymentModel } from './../../../shared/models/create-payment.model';
-import { CreatePaymentComponent } from './../create-payment/create-payment.component';
-import { PaymentsService } from './../../../shared/services/payments.service';
-import { PaymentsListComponent } from './../payments-list/payments-list.component';
-import { GroupService } from './../../../shared/services/group.service';
+import { CreatePaymentModel } from './../../shared/models/create-payment.model';
+import { CreatePaymentComponent } from '../create-payment/create-payment.component';
+import { PaymentsService } from './../../shared/services/payments.service';
+import { PaymentsListComponent } from '../payments-list/payments-list.component';
+import { GroupService } from './../../shared/services/group.service';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { Group } from '../../../shared/models/group.model';
+import { Group } from '../../shared/models/group.model';
 import { Subscription } from 'rxjs/Rx';
 import { PaymentsFiltersComponent } from '../payments-filters/payments-filters.component';
 import { Router } from '@angular/router';
-import { UserService } from '../../../shared/services/user.service';
-import { UserStorageService } from '../../../shared/services/user-storage.service';
+import { UserService } from '../../shared/services/user.service';
+import { UserStorageService } from '../../shared/services/user-storage.service';
 import { Observable } from 'rxjs/Observable';
 @Component({
-    moduleId: module.id,
-    selector: 'ft-index',
-    templateUrl: 'index.component.html',
-    styleUrls: ['index.component.scss']
+    selector: 'ft-main-page',
+    templateUrl: 'main-page.component.html',
+    styleUrls: ['main-page.component.scss']
 })
-export class IndexComponent implements OnInit, OnDestroy {
+export class MainPageComponent implements OnInit, OnDestroy {
     groups: Array<Group> = new Array();
     currentGroup: Group;
     users: Array<User> = new Array();

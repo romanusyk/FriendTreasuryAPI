@@ -1,7 +1,6 @@
 import { InviteService } from './../shared/services/invite.service';
 import { AuthService } from './../shared/services/auth.service';
 import { FtValidators } from './../shared/validators/ft-validators';
-import { ErrorPipe } from './../shared/pipes/error.pipe';
 import { Error } from './../shared/models/error.model';
 import { Credentials, CredentialsType } from './../shared/models/credentials.model';
 import { ListErrorsComponent } from './../shared/components/list-errors/list-errors.component';
@@ -9,6 +8,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
+import { ErrorTransformingService } from '../shared/services/error-transforming.service';
 @Component({
     templateUrl: './auth.component.html',
     styleUrls: ['./auth.component.scss']
@@ -25,7 +25,7 @@ export class AuthComponent implements OnInit {
         private authService: AuthService,
         private fb: FormBuilder,
         private inviteService: InviteService,
-        private errorPipe: ErrorPipe) {
+        private errorTransforming: ErrorTransformingService) {
         this.authForm = this.fb.group({
             'username': ['', Validators.required],
             'password': ['', Validators.required]
@@ -74,7 +74,7 @@ export class AuthComponent implements OnInit {
                 }
             },
             err => {
-                this.errors.push(this.errorPipe.transform(err));
+                this.errors.push(this.errorTransforming.transformServerError(err));
             });
     }
 

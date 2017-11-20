@@ -2,7 +2,6 @@ import { InviteService } from './services/invite.service';
 import { AuthService } from './services/auth.service';
 import { PaymentsService } from './services/payments.service';
 import { GroupService } from './services/group.service';
-import { ErrorPipe } from './pipes/error.pipe';
 import { ToastServiceOptions } from './services/toast-service.options';
 import { HttpClientModule } from '@angular/common/http';
 import { ApiService } from './services/api.service';
@@ -17,16 +16,14 @@ import { HttpModule } from '@angular/http';
 import { ToastModule, ToastOptions } from 'ng2-toastr/ng2-toastr';
 import { MdlModule } from '@angular-mdl/core';
 import { MainGuard } from './guards/main.guard';
-import { AppConfig, APP_CONFIG } from '../config/app.config';
 import { LoginGuard } from './guards/login.guard';
 import { UserService } from './services/user.service';
+import { ErrorTransformingService } from './services/error-transforming.service';
 
 @NgModule({
     imports: [
         CommonModule,
-        FormsModule,
         RouterModule,
-        ReactiveFormsModule,
         HttpClientModule,
         HttpModule,
         MdlModule,
@@ -35,26 +32,23 @@ import { UserService } from './services/user.service';
     declarations: [
         Error404Component,
         ListErrorsComponent,
-        ErrorPipe
     ],
     providers: [
         UserStorageService,
-        { provide: APP_CONFIG, useValue: AppConfig },
         UserService,
         AuthService,
-        ErrorPipe,
         GroupService,
         PaymentsService,
         { provide: ToastOptions, useClass: ToastServiceOptions },
         MainGuard,
         LoginGuard,
         ApiService,
-        InviteService
+        InviteService,
+        ErrorTransformingService
     ],
     exports: [
         Error404Component,
-        ListErrorsComponent,
-        ErrorPipe
+        ListErrorsComponent
     ]
 })
 export class SharedModule {

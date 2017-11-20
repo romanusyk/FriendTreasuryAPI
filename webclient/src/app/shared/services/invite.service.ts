@@ -7,6 +7,7 @@ import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class InviteService {
+    private name = 'invite_name';
     constructor(private apiService: ApiService) { }
 
     joinGroup(name: string) {
@@ -14,14 +15,14 @@ export class InviteService {
     }
 
     save(name: string) {
-        localStorage.setItem('invite', name);
+        localStorage.setItem(this.name, name);
     }
 
     get() {
-        return localStorage.getItem('invite');
+        return localStorage.getItem(this.name);
     }
 
     destroy() {
-        localStorage.removeItem('invite');
+        localStorage.removeItem(this.name);
     }
 }
