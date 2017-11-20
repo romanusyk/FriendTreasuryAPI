@@ -1,5 +1,5 @@
 <button mdl-button mdl-ripple (click)="onStart()" title="Create payment">
-    <mdl-icon>add</mdl-icon> 
+    <mdl-icon>add</mdl-icon>
 </button>
 <mdl-dialog #chooseUsersDialog>
     <h3 class="mdl-dialog__title">Select Users</h3>
@@ -22,6 +22,14 @@
         required
         [(ngModel)]="model.amount">
     </mdl-textfield>
+    <button
+    mdl-button
+    (click)="pickADate($event)"
+    mdl-button-type="icon"
+    mdl-ripple>
+<mdl-icon>event</mdl-icon>
+</button>
+<span>{{ model.date?.format('LL') }}</span>
     <mdl-textfield label="Text..."
         [(ngModel)]="model.description"
         rows="3"
@@ -30,9 +38,17 @@
     </mdl-textfield>
     <mdl-checkbox [mdl-ripple]="true" [(ngModel)]="model.shallIPayForMyself">
         Shall i pay for my self
-      </mdl-checkbox>
+    </mdl-checkbox>
+    <mdl-checkbox [mdl-ripple]="true" [(ngModel)]="isAllowToShowMap">
+      Set location on map
+    </mdl-checkbox>
     <div class="mdl-dialog__actions">
         <button mdl-button mdl-button-type="raised" mdl-colored="primary" (click)="onComplete()" mdl-ripple>Save</button>
         <button mdl-button (click)="onCLose()" mdl-ripple>Cancel</button>
     </div>
+</mdl-dialog>
+
+<mdl-dialog #mapDialog>
+  <h3 class="mdl-dialog__title">Map</h3>
+
 </mdl-dialog>

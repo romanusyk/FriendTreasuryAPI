@@ -15,7 +15,8 @@ import { BusyModule } from 'angular2-busy';
 import { SearchComponent } from './search/search/search.component';
 import { ClipboardModule } from 'ngx-clipboard';
 import { MainPageComponent } from './main-page/main-page.component';
-
+import { MdlDatePickerModule } from '@angular-mdl/datepicker';
+import { AgmCoreModule } from '@agm/core';
 @NgModule({
     imports: [
         CommonModule,
@@ -27,7 +28,10 @@ import { MainPageComponent } from './main-page/main-page.component';
         MdlDialogModule.forRoot(),
         BusyModule,
         AvatarModule,
-        ClipboardModule
+        ClipboardModule,
+        MdlDatePickerModule,
+        AgmCoreModule.forRoot()
+
     ],
     declarations: [
         GroupListComponent,

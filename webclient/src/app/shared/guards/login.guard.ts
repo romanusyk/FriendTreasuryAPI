@@ -9,7 +9,7 @@ import { ConfigManager } from '../../config/app.config';
 export class LoginGuard implements CanActivate {
   private config: IAppConfig;
   constructor(private authService: AuthService, private router: Router) {
-    this.config = ConfigManager.config
+    this.config = ConfigManager.config;
   }
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
     if (!this.authService.isAuthorized()) {

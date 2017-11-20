@@ -2,63 +2,70 @@ import { CreatePaymentModel } from './../../shared/models/create-payment.model';
 import { User } from './../../shared/models/user.model';
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { MdlDialogComponent, MdlButtonComponent, IMdlDialogConfiguration } from '@angular-mdl/core';
-
+import { MdlDatePickerService } from '@angular-mdl/datepicker';
+import { Moment } from 'moment';
 @Component({
-    moduleId: module.id,
-    selector: 'ft-create-payment',
-    templateUrl: 'create-payment.component.html',
-    styleUrls: ['create-payment.component.scss']
+  moduleId: module.id,
+  selector: 'ft-create-payment',
+  templateUrl: 'create-payment.component.html',
+  styleUrls: ['create-payment.component.scss']
 })
 export class CreatePaymentComponent implements OnInit {
-    @Input() users: Array<User>;
-    @Output() complete: EventEmitter<CreatePaymentModel> = new EventEmitter();
+  @Input() users: Array<User>;
+  @Output() complete: EventEmitter<CreatePaymentModel> = new EventEmitter();
 
-    @ViewChild('chooseUsersDialog') chooseUsersDialog: MdlDialogComponent;
-    @ViewChild('fillDataDialog') fillDataDialog: MdlDialogComponent;
-    @ViewChild('createPaymentButton') createPaymentButton: MdlButtonComponent;
+  @ViewChild('chooseUsersDialog') chooseUsersDialog: MdlDialogComponent;
+  @ViewChild('fillDataDialog') fillDataDialog: MdlDialogComponent;
+  model: CreatePaymentModel;
+  isAllowToShowMap: boolean;
 
-    model: CreatePaymentModel;
-    constructor() {
-    }
-    ngOnInit(): void {
-        this.clearData();
-        this.chooseUsersDialog.config = this.createModalConfig();
-        this.fillDataDialog.config = this.createModalConfig();
-    }
+  constructor(private datePicker: MdlDatePickerService) { }
+  ngOnInit(): void {
+    this.clearData();
+    this.chooseUsersDialog.config = this.createModalConfig();
+    this.fillDataDialog.config = this.createModalConfig();
+    this.isAllowToShowMap = true;
+  }
 
-    onStart() {
-        this.clearData();
-        this.chooseUsersDialog.show();
-    }
+  onStart() {
+    this.clearData();
+    this.chooseUsersDialog.show();
+  }
 
-    onNext() {
-        this.chooseUsersDialog.close();
-        this.fillDataDialog.show();
-    }
+  onNext() {
+    this.chooseUsersDialog.close();
+    this.fillDataDialog.show();
+  }
 
-    onComplete() {
-        this.complete.emit(this.model);
-        this.fillDataDialog.close();
-    }
+  onComplete() {
+    this.complete.emit(this.model);
+    this.fillDataDialog.close();
+  }
 
-    onCLose() {
-        this.clearData();
-        this.chooseUsersDialog.close();
-        this.fillDataDialog.close();
-    }
+  onCLose() {
+    this.clearData();
+    this.chooseUsersDialog.close();
+    this.fillDataDialog.close();
+  }
 
-    private clearData() {
-        this.model = new CreatePaymentModel();
-    }
+  public pickADate($event: MouseEvent) {
+    this.datePicker.selectDate(this.model.date, { openFrom: $event }).subscribe((selectedDate: Date) => {
+      console.log(selectedDate);
+      // this.model.date = selectedDate ? moment(selectedDate) : null;
+    });
+  }
 
-    private createModalConfig(): IMdlDialogConfiguration {
-        return {
-            clickOutsideToClose: false,
-            isModal: true,
-            openFrom: this.createPaymentButton,
-            enterTransitionDuration: 400,
-            leaveTransitionDuration: 400
-        };
-    }
+  private clearData() {
+    this.model = new CreatePaymentModel();
+  }
+
+  private createModalConfig(): IMdlDialogConfiguration {
+    return {
+      clickOutsideToClose: false,
+      isModal: true,
+      enterTransitionDuration: 400,
+      leaveTransitionDuration: 400
+    };
+  }
 
 }
