@@ -3,6 +3,7 @@ package romanusyk.ft.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -42,18 +43,26 @@ public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFil
 
         User user = this.jwtUtil.getUserFromClaims(this.jwtUtil.getClamsFromToken(authToken));
 
-        if (user != null) {
-            String username = user.getUsername();
+        if (SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-                if (!this.jwtUtil.tokenIsExpired(authToken)) {
-                    UsernamePasswordAuthenticationToken authentication =
-                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                }
+            UserDetails userDetails;
+
+            // TODO: find better solution
+            if (user != null && !this.jwtUtil.tokenIsExpired(authToken)) {
+                userDetails = this.userDetailsService.loadUserByUsername(user.getUsername());
+            } else {
+                userDetails = new SecuredUser(
+                        0L,
+                        "No user",
+                        "no pass",
+                        AuthorityUtils.commaSeparatedStringToAuthorityList("no role")
+                );
             }
+
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
         chain.doFilter(request, response);
