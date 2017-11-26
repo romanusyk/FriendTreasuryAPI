@@ -1,4 +1,4 @@
-import { Group } from './../../../shared/models/group.model';
+import { Group } from './../../shared/models/group.model';
 import { Component, ViewChild, Input, EventEmitter, Output } from '@angular/core';
 
 @Component({

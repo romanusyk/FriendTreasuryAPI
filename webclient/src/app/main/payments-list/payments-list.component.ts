@@ -1,5 +1,5 @@
-import { PaymentDTO } from './../../../shared/models/paymentDTO.model';
-import { PagedCollection } from './../../../shared/models/paged-collection.model';
+import { PaymentDTO } from './../../shared/models/paymentDTO.model';
+import { PagedCollection } from './../../shared/models/paged-collection.model';
 import { Component, Output, EventEmitter } from '@angular/core';
 
 @Component({

@@ -1,0 +1,15 @@
+
+<input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control" #search [formControl]="searchControl">
+<agm-map 
+    [latitude]="config.latitude" 
+    [longitude]="config.longitude" 
+    [scrollwheel]="false"
+    (mapClick)="onMapClick($event)" 
+    [zoom]="config.zoom">
+    <agm-marker 
+        [latitude]="config.latitude"
+        [draggable]="!isReadOnly"
+        (dragEnd)="onMarkerDragEnd($event)"
+        [longitude]="config.longitude">
+    </agm-marker>
+</agm-map>

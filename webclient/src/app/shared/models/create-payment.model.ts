@@ -1,6 +1,6 @@
 export class CreatePaymentModel {
     amount: number;
-    date: Date;
+    date: string;
     description: string;
     group: number;
     latitude: number;

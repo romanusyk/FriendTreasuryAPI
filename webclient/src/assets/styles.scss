@@ -4,7 +4,7 @@
 
 @import '~@angular-mdl/popover/popover';
 @import '~@angular-mdl/select/select';
-
+@import '~@angular-mdl/datepicker/datepicker';
 body {
     font-size: 16px;
     font-family: 'Open Sans', sans-serif;
@@ -28,3 +28,7 @@ body {
 .mdl-layout__drawer-button{
     margin: 1px 12px;
 }
+
+.pac-container {
+    z-index: 100002;
+  }

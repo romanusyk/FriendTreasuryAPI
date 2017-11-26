@@ -1,0 +1,51 @@
+<mdl-dialog #chooseUsersDialog>
+    <h3 class="mdl-dialog__title">Select Users</h3>
+    <mdl-select [(ngModel)]="model.usersTo" [multiple]="true" placeholder="Select users">
+        <mdl-option mdl-ripple *ngFor="let u of users" [value]="u.id">{{u.username}}</mdl-option>
+    </mdl-select>
+    <div class="mdl-dialog__actions">
+        <button mdl-button mdl-button-type="raised" mdl-colored="primary" (click)="chooseUsersDialog.close();fillDataDialog.show()"
+            mdl-ripple>Next</button>
+        <button mdl-button (click)="onCancel()" mdl-ripple>Cancel</button>
+    </div>
+</mdl-dialog>
+
+<mdl-dialog #fillDataDialog>
+    <h3 class="mdl-dialog__title">Fill data</h3>
+    <mdl-textfield type="text" label="Enter amount" pattern="-?[0-9]*(\.[0-9]+)?" error-msg="Input is not a number!" required
+        [(ngModel)]="model.amount">
+    </mdl-textfield>
+    <button mdl-button (click)="pickADate($event)" mdl-button-type="icon" mdl-ripple>
+        <mdl-icon>event</mdl-icon>
+    </button>
+    <span>{{model.date}}</span>
+    <mdl-textfield label="Text..." [(ngModel)]="model.description" rows="3" maxrows="3" floating-label>
+    </mdl-textfield>
+    <mdl-checkbox [mdl-ripple]="true" [(ngModel)]="model.shallIPayForMyself">
+        Shall i pay for my self
+    </mdl-checkbox>
+    <mdl-checkbox [mdl-ripple]="true" [(ngModel)]="isAllowToShowMap">
+        Set location on map
+    </mdl-checkbox>
+
+    <div class="mdl-dialog__actions">
+        <button mdl-button (click)="onCancel()" mdl-ripple>Cancel</button>
+        <button mdl-button *ngIf="!isAllowToShowMap" mdl-button-type="raised" mdl-colored="primary" (click)="onComplete()" mdl-ripple>Save</button>
+        <button mdl-button *ngIf="isAllowToShowMap" (click)="fillDataDialog.close();mapDialog.show()" mdl-ripple>Next</button>
+        <button mdl-button (click)="fillDataDialog.close();chooseUsersDialog.show()" mdl-ripple>Prev</button>
+    </div>
+</mdl-dialog>
+
+<mdl-dialog #mapDialog>
+        <h3 class="mdl-dialog__title">Chose location on map</h3>
+        <ft-map
+        (markerChanged)="onLocationChanged($event)"
+        [isReadOnly]="false"
+        [config]="mapOptions">
+        </ft-map>
+        <div class="mdl-dialog__actions">
+                <button mdl-button (click)="onCancel()" mdl-ripple>Cancel</button>
+                <button mdl-button mdl-button-type="raised" mdl-colored="primary" (click)="onComplete()" mdl-ripple>Save</button>
+                <button mdl-button (click)="mapDialog.close();fillDataDialog.show()" mdl-ripple>Prev</button>
+            </div>
+</mdl-dialog>

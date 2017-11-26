@@ -1,12 +1,11 @@
 import { Subscription } from 'rxjs/Rx';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { MdlDialogComponent } from '@angular-mdl/core';
-import { Group } from './../../../shared/models/group.model';
-import { GroupService } from './../../../shared/services/group.service';
+import { Group } from './../../shared/models/group.model';
+import { GroupService } from './../../shared/services/group.service';
 import { Component, OnInit, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
 
 @Component({
-    moduleId: module.id,
     selector: 'ft-create-group',
     templateUrl: 'create-group.component.html',
     styleUrls: ['create-group.component.scss']

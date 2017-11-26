@@ -13,19 +13,18 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { ApiService } from './api.service';
 import { DateHelper } from './date.helper';
 import { IAppConfig } from '../../config/iapp.config';
-import { APP_CONFIG } from '../../config/app.config';
 import { Router } from '@angular/router';
+import { ConfigManager } from '../../config/app.config';
 
 @Injectable()
 export class AuthService {
     private config: IAppConfig;
     constructor(
-        @Inject(APP_CONFIG) appConfig: IAppConfig,
         private userStorageService: UserStorageService,
         private http: Http,
         private router: Router
     ) {
-        this.config = appConfig;
+        this.config = ConfigManager.config
     }
 
     isAuthorized(): boolean {
