@@ -1,3 +1,6 @@
+import { ConfigManager } from './../config/app.config';
+import { AgmCoreModule } from '@agm/core';
+import { MapComponent } from './components/map/map.component';
 import { InviteService } from './services/invite.service';
 import { AuthService } from './services/auth.service';
 import { PaymentsService } from './services/payments.service';
@@ -19,7 +22,7 @@ import { MainGuard } from './guards/main.guard';
 import { LoginGuard } from './guards/login.guard';
 import { UserService } from './services/user.service';
 import { ErrorTransformingService } from './services/error-transforming.service';
-
+const config = ConfigManager.config;
 @NgModule({
     imports: [
         CommonModule,
@@ -27,11 +30,17 @@ import { ErrorTransformingService } from './services/error-transforming.service'
         HttpClientModule,
         HttpModule,
         MdlModule,
-        ToastModule.forRoot()
+        ReactiveFormsModule,
+        ToastModule.forRoot(),
+        AgmCoreModule.forRoot({
+            libraries: ['places'],
+            apiKey: config.apiKeys.googleMaps
+        }),
     ],
     declarations: [
         Error404Component,
         ListErrorsComponent,
+        MapComponent
     ],
     providers: [
         UserStorageService,
@@ -48,7 +57,8 @@ import { ErrorTransformingService } from './services/error-transforming.service'
     ],
     exports: [
         Error404Component,
-        ListErrorsComponent
+        ListErrorsComponent,
+        MapComponent
     ]
 })
 export class SharedModule {

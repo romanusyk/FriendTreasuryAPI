@@ -1,7 +1,9 @@
+import { MarkerOptions } from './../../shared/models/maps.model';
+import { FormControl } from '@angular/forms';
 import { CreatePaymentModel } from './../../shared/models/create-payment.model';
 import { User } from './../../shared/models/user.model';
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-import { MdlDialogComponent, MdlButtonComponent, IMdlDialogConfiguration } from '@angular-mdl/core';
+import { MdlDialogComponent, MdlButtonComponent, IMdlDialogConfiguration, MdlTextFieldComponent } from '@angular-mdl/core';
 import { MdlDatePickerService } from '@angular-mdl/datepicker';
 import { DatePipe } from '@angular/common';
 import { DateHelper } from '../../shared/services/date.helper';
@@ -17,35 +19,49 @@ export class CreatePaymentComponent implements OnInit {
 
   @ViewChild('chooseUsersDialog') chooseUsersDialog: MdlDialogComponent;
   @ViewChild('fillDataDialog') fillDataDialog: MdlDialogComponent;
+  @ViewChild('mapDialog') mapDialog: MdlDialogComponent;
   model: CreatePaymentModel;
   isAllowToShowMap: boolean;
-  constructor(private datePicker: MdlDatePickerService, private datePipe: DatePipe) { }
-  ngOnInit(): void {
+  mapOptions = {
+    zoom: 4,
+    latitude: 39.8282,
+    longitude: -98.5795
+  };
+  constructor(private datePicker: MdlDatePickerService,
+    private datePipe: DatePipe) { }
+
+  public ngOnInit(): void {
     this.clearData();
     this.chooseUsersDialog.config = this.createModalConfig();
     this.fillDataDialog.config = this.createModalConfig();
-    this.isAllowToShowMap = true;
+    this.mapDialog.config = this.createModalConfig();
+    this.isAllowToShowMap = false;
   }
 
-  onStart() {
-    this.clearData();
+  public show() {
     this.chooseUsersDialog.show();
+    this.clearData();
   }
 
-  onNext() {
-    this.chooseUsersDialog.close();
+  public onComplete() {
+    if(!this.isAllowToShowMap){
+      this.model.latitude = null;
+      this.model.longitude = null;
+    }
+    // this.complete.emit(this.model);
     this.fillDataDialog.show();
   }
 
-  onComplete() {
-    this.complete.emit(this.model);
+  public onCancel() {
     this.fillDataDialog.close();
+    this.chooseUsersDialog.close();
+    this.mapDialog.close();
+    this.clearData();
   }
 
-  onCLose() {
-    this.clearData();
-    this.chooseUsersDialog.close();
-    this.fillDataDialog.close();
+  public onLocationChanged($event: MarkerOptions){
+    this.model.latitude = $event.latitude;
+    this.model.longitude = $event.longitude;
   }
 
   public pickADate($event: MouseEvent) {
@@ -60,7 +76,7 @@ export class CreatePaymentComponent implements OnInit {
   }
 
   private transformDate(date) {
-    return this.datePipe.transform(date,'yyyy-MMM-dd');
+    return this.datePipe.transform(date, 'yyyy-MMM-dd');
   }
 
   private createModalConfig(): IMdlDialogConfiguration {
@@ -71,5 +87,4 @@ export class CreatePaymentComponent implements OnInit {
       leaveTransitionDuration: 400
     };
   }
-
 }
