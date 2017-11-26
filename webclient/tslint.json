@@ -114,12 +114,6 @@
       "check-separator",
       "check-type"
     ],
-    "directive-selector": [
-      true,
-      "attribute",
-      "ft",
-      "camelCase"
-    ],
     "component-selector": [
       true,
       "element",

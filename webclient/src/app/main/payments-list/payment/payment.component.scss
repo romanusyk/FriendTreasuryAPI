@@ -1,0 +1,44 @@
+.payment {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    background-color: white;
+    padding: 10px; 
+    &__info {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        min-width: 100%;
+        &_main {
+            min-width: 70%;
+            display: flex;
+            flex-direction: column;
+        }
+        &_additional {
+            min-width: 30%;
+            display: flex;
+            align-items: flex-end;
+            flex-direction: row;
+        }
+    }
+
+    &__header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    
+    &__users{
+        margin-bottom: 10px;
+    }
+
+    &__more-toggle{
+        text-align: center;
+    }
+
+    &__description {
+        text-transform: capitalize;
+        font-size: 20px;
+        font-weight: 600;
+    }
+}

@@ -1,3 +1,4 @@
+import { AmountColorDirective } from './directives/amount-color.directive';
 import { ConfigManager } from './../config/app.config';
 import { AgmCoreModule } from '@agm/core';
 import { MapComponent } from './components/map/map.component';
@@ -40,7 +41,8 @@ const config = ConfigManager.config;
     declarations: [
         Error404Component,
         ListErrorsComponent,
-        MapComponent
+        MapComponent,
+        AmountColorDirective
     ],
     providers: [
         UserStorageService,
@@ -58,7 +60,8 @@ const config = ConfigManager.config;
     exports: [
         Error404Component,
         ListErrorsComponent,
-        MapComponent
+        MapComponent,
+        AmountColorDirective
     ]
 })
 export class SharedModule {

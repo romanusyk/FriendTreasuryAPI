@@ -1,3 +1,5 @@
+import { PaymentUserComponent } from './payments-list/payment-user/payment-user.component';
+import { PaymentComponent } from './payments-list/payment/payment.component';
 import { ConfigManager } from './../config/app.config';
 import { CreateGroupComponent } from './create-group/create-group.component';
 import { PaymentsFiltersComponent } from './payments-filters/payments-filters.component';
@@ -41,7 +43,9 @@ const config = ConfigManager.config;
         MainPageComponent,
         PaymentsFiltersComponent,
         SearchComponent,
-        CreateGroupComponent
+        CreateGroupComponent,
+        PaymentComponent,
+        PaymentUserComponent
     ],
     exports: [
     ],
