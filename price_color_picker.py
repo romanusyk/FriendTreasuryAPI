@@ -16,6 +16,8 @@ price = args.price
 
 print(args)
 
-color = tuple(map(int, [min_color[i] + (max_color[i] - min_color[i]) * np.clip((price - min_price) / (max_price - min_price), 0, 1) for i in range(3)]))
+# color = tuple(map(int, [min_color[i] + (max_color[i] - min_color[i]) * np.clip((price - min_price) / (max_price - min_price), 0, 1) for i in range(3)]))
+coeff = (price - min_price) / (max_price - min_price)
+color = (int(np.sin(coeff * np.pi / 2) * 255), int(np.cos(coeff * np.pi / 2) * 255), 0)
 
 print("".join([format(a, "02x") for a in color]))
