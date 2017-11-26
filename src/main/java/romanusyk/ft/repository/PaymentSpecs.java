@@ -2,7 +2,11 @@ package romanusyk.ft.repository;
 
 import org.springframework.data.jpa.domain.Specification;
 import static org.springframework.data.jpa.domain.Specifications.*;
+
+import romanusyk.ft.domain.Group;
 import romanusyk.ft.domain.Payment;
+
+import java.util.Set;
 
 /**
  * Created by Roman Usyk on 12.09.17.
@@ -21,15 +25,15 @@ public class PaymentSpecs {
                 criteriaBuilder.equal(root.get("userTo").get("id"), userToID);
     }
 
-    public static Specification<Payment> whereGroup(Integer groupID) {
+    public static Specification<Payment> whereGroup(Integer groupID, Set<Group> userGroups) {
         return (root, criteriaQuery, criteriaBuilder) -> groupID == null || groupID == 0 ?
-                criteriaBuilder.conjunction() :
+                root.get("group").in(userGroups) :
                 criteriaBuilder.equal(root.get("group").get("id"), groupID);
     }
 
     public static Specification<Payment> filterPayment(
-            Integer userFromID, Integer userToID, Integer groupID) {
-        return where(whereUserFrom(userFromID)).and(whereUserTo(userToID)).and(whereGroup(groupID));
+            Integer userFromID, Integer userToID, Integer groupID, Set<Group> userGroups) {
+        return where(whereUserFrom(userFromID)).and(whereUserTo(userToID)).and(whereGroup(groupID, userGroups));
     }
 
 }

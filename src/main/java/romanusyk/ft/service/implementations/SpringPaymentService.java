@@ -3,6 +3,7 @@ package romanusyk.ft.service.implementations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import romanusyk.ft.domain.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,9 +41,9 @@ public class SpringPaymentService implements PaymentService {
     private static final Logger logger = Logger.getLogger(SpringPaymentService.class);
 
     @Override
-    public Map<Group, List<Debt> > getPaymentSum(Integer user, Integer groupID) {
+    public Map<Group, List<Debt> > getPaymentSum(Integer user, Integer groupID, User client) {
 
-        List<Payment> payments = getPayments(null, null, groupID);
+        List<Payment> payments = getPayments(null, null, groupID, client);
 
         boolean dropGroup = groupID == null;
         DebtMapHolder holder = new DebtMapHolder(payments, dropGroup);
@@ -71,18 +72,25 @@ public class SpringPaymentService implements PaymentService {
     }
 
     @Override
-    public Page<Payment> getPaymentsPage(int page, int size, Integer userFromID, Integer userToID, Integer groupID) {
+    public Specification<Payment> getFilter(Integer userFrom, Integer userTo, Integer groupId, User client) {
+        client = userRepository.findOne(client.getId());
+        return PaymentSpecs.filterPayment(userFrom, userTo, groupId, client.getGroups());
+    }
+
+    @Override
+    public Page<Payment> getPaymentsPage(int page, int size,
+                                         Integer userFromID, Integer userToID, Integer groupID, User client) {
         validateKeys(userFromID, userToID, groupID);
         Pageable pageable = new PageRequest(
                 page,size
         );
-        return paymentRepository.findAll(PaymentSpecs.filterPayment(userFromID, userToID, groupID), pageable);
+        return paymentRepository.findAll(getFilter(userFromID, userToID, groupID, client), pageable);
     }
 
     @Override
-    public List<Payment> getPayments(Integer userFromID, Integer userToID, Integer groupID) {
+    public List<Payment> getPayments(Integer userFromID, Integer userToID, Integer groupID, User client) {
         validateKeys(userFromID, userToID, groupID);
-        return paymentRepository.findAll(PaymentSpecs.filterPayment(userFromID, userToID, groupID));
+        return paymentRepository.findAll(getFilter(userFromID, userToID, groupID, client));
     }
 
     @Override

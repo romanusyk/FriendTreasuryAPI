@@ -45,7 +45,8 @@ public class PaymentController {
             @RequestParam(required = false) Integer userTo,
             @RequestParam(required = false) Integer group
             ) {
-        Page<Payment> pageResult = paymentService.getPaymentsPage(page, size, userFrom, userTo, group);
+        User client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        Page<Payment> pageResult = paymentService.getPaymentsPage(page, size, userFrom, userTo, group, client);
         return pageResult;
     }
 
@@ -59,7 +60,8 @@ public class PaymentController {
             @RequestParam(required = false) Integer map
     ) {
         logger.debug("GET /getPaymentSum(" + user + ", " + group + ")");
-        Map <Group, List<Debt> > result = paymentService.getPaymentSum(user, group);
+        User client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        Map <Group, List<Debt> > result = paymentService.getPaymentSum(user, group, client);
         if (map != null && map == 1) {
             return result;
         }
