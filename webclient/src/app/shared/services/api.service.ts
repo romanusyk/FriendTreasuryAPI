@@ -85,7 +85,7 @@ export class ApiService {
         exception: 'ServerError'
       });
     }
-    if (error.status >= 400) {
+    if (error.status === 401) {
       this.authService.logout();
     }
     return Observable.throw(error.json());

@@ -18,91 +18,92 @@ import { ConfigManager } from '../../config/app.config';
 
 @Injectable()
 export class AuthService {
-    private config: IAppConfig;
-    constructor(
-        private userStorageService: UserStorageService,
-        private http: Http,
-        private router: Router
-    ) {
-        this.config = ConfigManager.config
-    }
+  private config: IAppConfig;
+  constructor(
+    private userStorageService: UserStorageService,
+    private http: Http,
+    private router: Router
+  ) {
+    this.config = ConfigManager.config;
+  }
 
-    isAuthorized(): boolean {
-        const user = this.userStorageService.get();
-        if (user != null && user.token != null && !this.isExpired(user.token.expireTime)) {
-            return true;
-        }
-        return false;
+  isAuthorized(): boolean {
+    const user = this.userStorageService.get();
+    if (user != null && user.token != null && !this.isExpired(user.token.expireTime)) {
+      return true;
     }
+    return false;
+  }
 
-    private isExpired(date: number): boolean {
-        return date <= DateHelper.currentUnixTime();
-    }
+  private isExpired(date: number): boolean {
+    return date <= DateHelper.currentUnixTime();
+  }
 
-    populate() {
-        const user = this.userStorageService.get();
-        if (user && user.token && !this.isExpired(user.token.expireTime)) {
-            this.setAuth(user);
-        } else {
-            this.logout();
-        }
+  populate() {
+    const user = this.userStorageService.get();
+    if (user && user.token && !this.isExpired(user.token.expireTime)) {
+      this.setAuth(user);
+    } else {
+      this.logout();
     }
+  }
 
-    setAuth(user: UserInfo): UserInfo {
-        this.userStorageService.save(user);
-        return user;
-    }
+  setAuth(user: UserInfo): UserInfo {
+    this.userStorageService.save(user);
+    return user;
+  }
 
-    logout() {
-        this.userStorageService.destroy();
-        this.router.navigateByUrl(this.config.routes.login);
-    }
+  logout() {
+    this.userStorageService.destroy();
+    this.router.navigateByUrl(this.config.routes.login);
+  }
 
-    attemptAuth(type: CredentialsType, credentials): Observable<UserInfo> {
-        if (type === CredentialsType.login) {
-            return this.login(credentials);
-        } else if (type === CredentialsType.register) {
-            return this.register(credentials);
-        }
+  attemptAuth(type: CredentialsType, credentials): Observable<UserInfo> {
+    if (type === CredentialsType.login) {
+      return this.login(credentials);
+    } else if (type === CredentialsType.register) {
+      return this.register(credentials);
     }
+  }
 
-    private login(credentials: Credentials): Observable<UserInfo> {
-        return this.http.post(`${this.config.endpoint}users/access`, credentials)
-            .map(data => data.json())
-            .map(
-            (data: UserLoginResponse) => {
-                const user: UserInfo = {
-                    token: {
-                        expireTime: data.expireTime,
-                        token: data.token
-                    },
-                    user: {
-                        username: credentials.username,
-                        id: data.userId,
-                        phone: ''
-                    }
-                };
-                return this.setAuth(user);
-            });
-    }
+  private login(credentials: Credentials): Observable<any> {
+    return this.http.post(`${this.config.endpoint}users/access`, credentials)
+      .map(data => data.json())
+      .map(
+      (data: UserLoginResponse) => {
+        const user: UserInfo = {
+          token: {
+            expireTime: data.expireTime,
+            token: data.token
+          },
+          user: {
+            username: credentials.username,
+            id: data.userId,
+            phone: ''
+          }
+        };
+        return this.setAuth(user);
+      })
+      .catch(err => Observable.throw(err['_body'] ? err.json() : err));
+  }
 
-    private register(credentials: Credentials): Observable<UserInfo> {
-        return this.http.post(`${this.config.endpoint}users`, credentials)
-            .map(data => data.json())
-            .map(
-            (data: UserLoginResponse) => {
-                const user: UserInfo = {
-                    token: {
-                        expireTime: data.expireTime,
-                        token: data.token
-                    },
-                    user: {
-                        username: credentials.username,
-                        id: data.userId,
-                        phone: ''
-                    }
-                };
-                return this.setAuth(user);
-            });
-    }
+  private register(credentials: Credentials): Observable<UserInfo> {
+    return this.http.post(`${this.config.endpoint}users`, credentials)
+      .map(data => data.json())
+      .map(
+      (data: UserLoginResponse) => {
+        const user: UserInfo = {
+          token: {
+            expireTime: data.expireTime,
+            token: data.token
+          },
+          user: {
+            username: credentials.username,
+            id: data.userId,
+            phone: ''
+          }
+        };
+        return this.setAuth(user);
+      });
+  }
 }
