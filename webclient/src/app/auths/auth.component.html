@@ -2,8 +2,8 @@
     <form role="form" [formGroup]="authForm" (ngSubmit)="submitForm()" class="auth-form">
         <h2 class="text-center">{{title}}</h2>
         <hr>
-        <button class="full-width" mdl-button mdl-ripple [routerLink]="['/login']" *ngIf="!isLogin()">Have an account?</button>
-        <button class="full-width" mdl-button mdl-ripple [routerLink]="['/register']" *ngIf="isLogin()">Need an account?</button>
+        <button type="button" class="full-width" mdl-button mdl-ripple [routerLink]="['/login']" *ngIf="!isLogin()">Have an account?</button>
+        <button type="button" class="full-width" mdl-button mdl-ripple [routerLink]="['/register']" *ngIf="isLogin()">Need an account?</button>
 
         <div>
             <mdl-textfield label="UserName" floating-label autofocus type="text" formControlName="username" name="username"></mdl-textfield>
@@ -28,7 +28,7 @@
                 Submit
             </button>
         </div>
-        
+
     </form>
 </div>
 <div [ngBusy]="busy">

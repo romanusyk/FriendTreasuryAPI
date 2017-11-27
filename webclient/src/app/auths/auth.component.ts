@@ -73,7 +73,7 @@ export class AuthComponent implements OnInit {
                     this.router.navigateByUrl('/invite/' + name);
                 }
             },
-            err => {
+            (err) => {
                 this.errors.push(this.errorTransforming.transformServerError(err));
             });
     }

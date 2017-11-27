@@ -4,13 +4,16 @@ import { ServerError } from '../models/server-error.model';
 @Injectable()
 export class ErrorTransformingService {
 
-  transformServerError(value: ServerError): Error {
-    const message = value.exception;
+  transformServerError(err: ServerError): Error {
+    let message = err.exception;
+    if (!message) {
+      message = 'ServerError';
+    }
     let lastIndex = message.lastIndexOf('.');
-    lastIndex = lastIndex === -1 ? 0 : lastIndex;
-    const exception = message.substring(lastIndex + 1);
+    lastIndex = lastIndex === -1 ? 0 : (lastIndex + 1);
+    const exception = message.substring(lastIndex);
     return new Error(ServerExeptions[exception]);
-}
+  }
 }
 
 export const ServerExeptions = {
