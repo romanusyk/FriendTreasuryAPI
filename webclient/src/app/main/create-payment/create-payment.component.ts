@@ -44,12 +44,12 @@ export class CreatePaymentComponent implements OnInit {
   }
 
   public onComplete() {
-    if(!this.isAllowToShowMap){
+    if (!this.isAllowToShowMap) {
       this.model.latitude = null;
       this.model.longitude = null;
     }
-    // this.complete.emit(this.model);
-    this.fillDataDialog.show();
+    this.complete.emit(this.model);
+    this.fillDataDialog.close();
   }
 
   public onCancel() {
@@ -59,7 +59,7 @@ export class CreatePaymentComponent implements OnInit {
     this.clearData();
   }
 
-  public onLocationChanged($event: MarkerOptions){
+  public onLocationChanged($event: MarkerOptions) {
     this.model.latitude = $event.latitude;
     this.model.longitude = $event.longitude;
   }

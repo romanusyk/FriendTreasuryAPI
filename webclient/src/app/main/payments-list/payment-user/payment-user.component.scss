@@ -1,0 +1,10 @@
+.payment-user {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-width: 150px;
+
+    &__amount {
+        line-height: 3;
+    }
+}
