@@ -3,7 +3,7 @@
         <div class="payment__info_main">
             <div class="payment__header">
                 <p class="payment__description">{{payment.description}}</p>
-                <p ft-amount-color=366 class="payment__amount">{{payment.amount}}</p>
+                <p [amountColor]="payment.amount" class="payment__amount">{{payment.amount}}</p>
             </div>
             <div class="payment__users">
                 <ft-payment-user [user]="payment.userFrom" [amount]="payment.amount"></ft-payment-user>

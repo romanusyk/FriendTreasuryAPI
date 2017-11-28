@@ -25,44 +25,44 @@ import { UserService } from './services/user.service';
 import { ErrorTransformingService } from './services/error-transforming.service';
 const config = ConfigManager.config;
 @NgModule({
-    imports: [
-        CommonModule,
-        RouterModule,
-        HttpClientModule,
-        HttpModule,
-        MdlModule,
-        ReactiveFormsModule,
-        ToastModule.forRoot(),
-        AgmCoreModule.forRoot({
-            libraries: ['places'],
-            apiKey: config.apiKeys.googleMaps
-        }),
-    ],
-    declarations: [
-        Error404Component,
-        ListErrorsComponent,
-        MapComponent,
-        AmountColorDirective
-    ],
-    providers: [
-        UserStorageService,
-        UserService,
-        AuthService,
-        GroupService,
-        PaymentsService,
-        { provide: ToastOptions, useClass: ToastServiceOptions },
-        MainGuard,
-        LoginGuard,
-        ApiService,
-        InviteService,
-        ErrorTransformingService
-    ],
-    exports: [
-        Error404Component,
-        ListErrorsComponent,
-        MapComponent,
-        AmountColorDirective
-    ]
+  imports: [
+    CommonModule,
+    RouterModule,
+    HttpClientModule,
+    HttpModule,
+    MdlModule,
+    ReactiveFormsModule,
+    ToastModule.forRoot(),
+    AgmCoreModule.forRoot({
+      libraries: ['places'],
+      apiKey: config.apiKeys.googleMaps
+    }),
+  ],
+  declarations: [
+    AmountColorDirective,
+    Error404Component,
+    ListErrorsComponent,
+    MapComponent,
+  ],
+  providers: [
+    UserStorageService,
+    UserService,
+    AuthService,
+    GroupService,
+    PaymentsService,
+    { provide: ToastOptions, useClass: ToastServiceOptions },
+    MainGuard,
+    LoginGuard,
+    ApiService,
+    InviteService,
+    ErrorTransformingService
+  ],
+  exports: [
+    AmountColorDirective,
+    Error404Component,
+    ListErrorsComponent,
+    MapComponent,
+  ]
 })
 export class SharedModule {
 }
