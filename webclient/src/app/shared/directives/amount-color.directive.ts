@@ -5,7 +5,7 @@ export class AmountColorDirective implements OnInit {
   @Input('amountColor') amountColor: number;
   private color: string;
   private minPrice = 0;
-  private maxPrice = 1000;
+  private maxPrice = 250;
   constructor(private el: ElementRef) { }
   ngOnInit(): void {
     const coeff = (this.amountColor - this.minPrice) / (this.maxPrice - this.minPrice);
