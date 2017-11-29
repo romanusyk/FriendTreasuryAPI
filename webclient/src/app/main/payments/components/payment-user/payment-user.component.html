@@ -1,4 +1,4 @@
-<div class="payment-user">
+<div class="payment-user" *ngIf="user">
     <ngx-avatar [title]="user.username" [name]="user.username"></ngx-avatar>
     <div [amountColor]="amount" class="payment-user__amount">{{amount}}</div>
 </div>

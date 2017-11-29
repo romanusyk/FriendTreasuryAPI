@@ -13,7 +13,7 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 import { ApiService } from './api.service';
 import { DateHelper } from './date.helper';
-import { PaymentsFilters } from '../models/payments-filters.model';
+import { PaymentFilters } from '../models/payments-filters.model';
 
 @Injectable()
 export class UserService {
@@ -33,7 +33,7 @@ export class UserService {
   }
 
   enrich(user: User) {
-    const filters = new PaymentsFilters();
+    const filters = new PaymentFilters();
     filters.sum = true;
     filters.user = user.id;
     return this.paymentService.get(filters)

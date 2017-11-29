@@ -1,11 +1,6 @@
-import { PaymentUserComponent } from './payments-list/payment-user/payment-user.component';
-import { PaymentComponent } from './payments-list/payment/payment.component';
 import { ConfigManager } from './../config/app.config';
 import { CreateGroupComponent } from './create-group/create-group.component';
-import { PaymentsFiltersComponent } from './payments-filters/payments-filters.component';
 import { MdlSelectModule } from '@angular-mdl/select';
-import { CreatePaymentComponent } from './create-payment/create-payment.component';
-import { PaymentsListComponent } from './payments-list/payments-list.component';
 import { SharedModule } from './../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
@@ -20,6 +15,7 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { MainPageComponent } from './main-page/main-page.component';
 import { MdlDatePickerModule } from '@angular-mdl/datepicker';
 import { AgmCoreModule } from '@agm/core';
+import { PaymentsModule } from './payments/payments.module';
 const config = ConfigManager.config;
 @NgModule({
     imports: [
@@ -28,24 +24,18 @@ const config = ConfigManager.config;
         ReactiveFormsModule,
         RouterModule,
         MdlModule,
-        MdlSelectModule,
         SharedModule,
         MdlDialogModule.forRoot(),
         BusyModule,
         AvatarModule,
         ClipboardModule,
-        MdlDatePickerModule
+        PaymentsModule
     ],
     declarations: [
         GroupListComponent,
-        PaymentsListComponent,
-        CreatePaymentComponent,
         MainPageComponent,
-        PaymentsFiltersComponent,
         SearchComponent,
         CreateGroupComponent,
-        PaymentComponent,
-        PaymentUserComponent
     ],
     exports: [
     ],

@@ -1,19 +1,19 @@
-import { PaymentsFilters } from './../../shared/models/payments-filters.model';
 import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
+import { PaymentFilters } from '../../../../shared/models/payments-filters.model';
 
 @Component({
-    selector: 'ft-payments-filters',
-    templateUrl: 'payments-filters.component.html',
-    styleUrls: ['payments-filters.component.scss']
+    selector: 'ft-payment-filters',
+    templateUrl: 'payment-filters.component.html',
+    styleUrls: ['payment-filters.component.scss']
 })
-export class PaymentsFiltersComponent implements OnInit {
-    public model: PaymentsFilters;
+export class PaymentFiltersComponent implements OnInit {
+    public model: PaymentFilters;
     public filters: string[];
-    @Output() change: EventEmitter<PaymentsFilters> = new EventEmitter();
+    @Output() change: EventEmitter<PaymentFilters> = new EventEmitter();
     @Input() group: number;
     @Input() user: number;
     ngOnInit(): void {
-        this.model = new PaymentsFilters();
+        this.model = new PaymentFilters();
         this.model.group = this.group;
         this.filters = this.getAllFilters();
     }
@@ -43,7 +43,6 @@ export class PaymentsFiltersComponent implements OnInit {
         } else {
             this.filters = this.getAllFilters();
         }
-        this.change.emit(this.model);
     }
 
     private getAllFilters() {

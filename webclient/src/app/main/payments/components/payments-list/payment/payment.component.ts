@@ -1,5 +1,5 @@
-import { PaymentDTO } from './../../../shared/models/paymentDTO.model';
 import { Component, Input } from '@angular/core';
+import { PaymentDTO } from '../../../../../shared/models/paymentDTO.model';
 
 @Component({
     moduleId: module.id,

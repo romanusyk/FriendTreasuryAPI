@@ -1,7 +1,7 @@
 import { InviteService } from './../../shared/services/invite.service';
 import { CreateGroupComponent } from '../create-group/create-group.component';
 import { AuthService } from './../../shared/services/auth.service';
-import { PaymentsFilters } from './../../shared/models/payments-filters.model';
+import { PaymentFilters } from './../../shared/models/payments-filters.model';
 import { MdlDialogService } from '@angular-mdl/core';
 import { User } from './../../shared/models/user.model';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
@@ -27,7 +27,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
     groups: Array<Group> = new Array();
     currentGroup: Group;
     users: Array<User> = new Array();
-    filters: PaymentsFilters;
+    filters: PaymentFilters;
     groupsBusy: Subscription;
     paymentsBusy: Subscription;
     currentUser: User;
@@ -48,7 +48,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.filters = new PaymentsFilters();
+        this.filters = new PaymentFilters();
         this.currentUser = this.userStorageService.get().user;
         this.updateGroupsList();
         const userEnrichSubscription: Subscription = this.userService.enrich(this.currentUser).subscribe(
@@ -99,7 +99,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
         );
     }
 
-    onFilterChange(filters: PaymentsFilters) {
+    onFilterChange(filters: PaymentFilters) {
         this.filters = filters;
         this.updatePayments();
     }

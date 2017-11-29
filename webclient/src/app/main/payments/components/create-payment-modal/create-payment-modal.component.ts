@@ -1,19 +1,19 @@
-import { MarkerOptions } from './../../shared/models/maps.model';
 import { FormControl } from '@angular/forms';
-import { CreatePaymentModel } from './../../shared/models/create-payment.model';
-import { User } from './../../shared/models/user.model';
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { MdlDialogComponent, MdlButtonComponent, IMdlDialogConfiguration, MdlTextFieldComponent } from '@angular-mdl/core';
 import { MdlDatePickerService } from '@angular-mdl/datepicker';
 import { DatePipe } from '@angular/common';
-import { DateHelper } from '../../shared/services/date.helper';
+import { CreatePaymentModel } from '../../../../shared/models/create-payment.model';
+import { User } from '../../../../shared/models/user.model';
+import { DateHelper } from '../../../../shared/services/date.helper';
+import { MarkerOptions } from '../../../../shared/models/maps.model';
 @Component({
   moduleId: module.id,
   selector: 'ft-create-payment',
   templateUrl: 'create-payment.component.html',
   styleUrls: ['create-payment.component.scss']
 })
-export class CreatePaymentComponent implements OnInit {
+export class CreatePaymentModalComponent implements OnInit {
   @Input() users: Array<User>;
   @Output() complete: EventEmitter<CreatePaymentModel> = new EventEmitter();
 

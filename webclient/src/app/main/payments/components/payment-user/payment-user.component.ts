@@ -1,5 +1,5 @@
-import { User } from './../../../shared/models/user.model';
 import { Component, Input } from '@angular/core';
+import { User } from '../../../../shared/models/user.model';
 
 @Component({
     selector: 'ft-payment-user',
