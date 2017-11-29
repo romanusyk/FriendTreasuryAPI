@@ -1,5 +1,8 @@
 import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
 import { PaymentFilters } from '../../../../shared/models/payments-filters.model';
+import { AppPreferencesService } from '../../../../shared/services/app-preferences.service';
+import { Preferences } from '../../../../shared/models/preferences.model';
+import { PaymentFiltersService } from '../../services/payment-filters.service';
 
 @Component({
     selector: 'ft-payment-filters',
@@ -8,20 +11,26 @@ import { PaymentFilters } from '../../../../shared/models/payments-filters.model
 })
 export class PaymentFiltersComponent implements OnInit {
     public model: PaymentFilters;
+    public preferences: Preferences;
+    public allowToProcessChanging: boolean;
     public filters: string[];
-    @Output() change: EventEmitter<PaymentFilters> = new EventEmitter();
-    @Input() group: number;
-    @Input() user: number;
+    constructor(appPreferencesService: AppPreferencesService, private filtersService: PaymentFiltersService){
+      this.preferences = appPreferencesService.preferences;
+    }
     ngOnInit(): void {
-        this.model = new PaymentFilters();
-        this.model.group = this.group;
+        this.allowToProcessChanging = true;
         this.filters = this.getAllFilters();
+        this.filtersService.onFiltersChanged.subscribe(
+          (data: PaymentFilters) => {
+
+          }
+        );
     }
 
     onChange(type: string, value?: any) {
         switch (type.toLowerCase()) {
             case 'user':
-                this.model.user = !!this.model.user ? 0 : this.user;
+                this.model.user = !!this.model.user ? 0 : this.currentUserId;
                 break;
             case 'user from':
                 this.model.from = !!value ? value : 0;
@@ -33,7 +42,7 @@ export class PaymentFiltersComponent implements OnInit {
                 this.model.sum = !this.model.sum;
                 break;
             case 'group':
-                this.model.group = this.model.group > -1 ? -1 : this.group;
+                this.model.group = this.model.group > -1 ? -1 : this.currentGroupId;
                 break;
             default:
                 break;

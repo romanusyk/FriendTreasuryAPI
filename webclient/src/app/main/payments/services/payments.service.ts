@@ -1,18 +1,16 @@
-import { PaymentsFilters } from './../models/payments-filters.model';
-import { CreatePaymentModel } from './../models/create-payment.model';
-import { PaymentDTO } from './../models/paymentDTO.model';
-import { PagedCollection } from './../models/paged-collection.model';
-import { Observable } from 'rxjs/Observable';
-import { ApiService } from './api.service';
 import { Injectable } from '@angular/core';
-import { UrlParamsHelper } from './url-params.helper';
+import { PaymentFilters } from '../../../shared/models/payments-filters.model';
+import { CreatePaymentModel } from '../../../shared/models/create-payment.model';
+import { Observable } from 'rxjs/Observable';
+import { ApiService } from '../../../shared/services/api.service';
+
 
 @Injectable()
 export class PaymentsService {
 
     constructor(private apiService: ApiService) { }
 
-    get(filters: PaymentsFilters): Observable<any> {
+    get(filters: PaymentFilters): Observable<any> {
         return this.apiService.get('payments' + filters.toUrl());
     }
 
