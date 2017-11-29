@@ -7,6 +7,9 @@ export class PaymentFilters {
     public user?: number;
     public page? = 0;
     public size? = 50;
+    constructor(init?: Partial<PaymentFilters>) {
+        Object.assign(this, init);
+    }
     public toUrl(): string {
         const helper = new UrlParamsHelper();
         if (!this.sum) {

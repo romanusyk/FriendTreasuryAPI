@@ -1,4 +1,4 @@
-import { AmountColorDirective } from './directives/amount-color.directive';
+import { AppPreferencesService } from './services/app-preferences.service';
 import { ConfigManager } from './../config/app.config';
 import { AgmCoreModule } from '@agm/core';
 import { MapComponent } from './components/map/map.component';
@@ -39,7 +39,6 @@ const config = ConfigManager.config;
     }),
   ],
   declarations: [
-    AmountColorDirective,
     Error404Component,
     ListErrorsComponent,
     MapComponent,
@@ -55,10 +54,10 @@ const config = ConfigManager.config;
     LoginGuard,
     ApiService,
     InviteService,
-    ErrorTransformingService
+    ErrorTransformingService,
+    AppPreferencesService
   ],
   exports: [
-    AmountColorDirective,
     Error404Component,
     ListErrorsComponent,
     MapComponent,

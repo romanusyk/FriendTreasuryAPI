@@ -1,8 +1,8 @@
 <mdl-dialog #chooseUsersDialog>
     <h3 class="mdl-dialog__title">Select Users</h3>
-    <mdl-select [(ngModel)]="model.usersTo" [multiple]="true" placeholder="Select users">
+    <!-- <mdl-select [(ngModel)]="model.usersTo" [multiple]="true" placeholder="Select users">
         <mdl-option mdl-ripple *ngFor="let u of users" [value]="u.id">{{u.username}}</mdl-option>
-    </mdl-select>
+    </mdl-select> -->
     <div class="mdl-dialog__actions">
         <button mdl-button mdl-button-type="raised" mdl-colored="primary" (click)="chooseUsersDialog.close();fillDataDialog.show()"
             mdl-ripple>Next</button>

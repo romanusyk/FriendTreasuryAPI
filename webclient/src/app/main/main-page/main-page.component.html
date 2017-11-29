@@ -7,8 +7,8 @@
       </mdl-layout-title>
       <mdl-layout-spacer></mdl-layout-spacer>
 
-      <ft-payments-filters *ngIf="isCurrentGroupSelected()" [user]="currentUser.id" [group]="currentGroup.id" (change)="onFilterChange($event)">
-      </ft-payments-filters>
+      <ft-payment-filters *ngIf="isCurrentGroupSelected()">
+      </ft-payment-filters>
       <mdl-layout-spacer></mdl-layout-spacer>
       <button mdl-button mdl-ripple *ngIf="isCurrentGroupSelected()" (click)="createPayment.show()" title="Create payment">
         <mdl-icon>add</mdl-icon>
@@ -37,11 +37,8 @@
         <ft-group-list [groups]="groups" (select)="onGroupSelect($event)"></ft-group-list>
       </div>
       <div class="mdl-cell mdl-cell--9-col">
-        <ft-payments-list
-        (userToClick)="onUserFilterChange($event,'user to')"
-        (userFromClick)="onUserFilterChange($event,'user from')">
+        <ft-payments-list>
         </ft-payments-list>
-        <div [ngBusy]="paymentsBusy"></div>
       </div>
     </div>
 
@@ -49,7 +46,7 @@
 </mdl-layout>
 <mdl-menu #groupExternalMenu="mdlMenu"  mdl-menu-position="bottom-right">
   <mdl-menu-item mdl-ripple>Invite User</mdl-menu-item>
-  <mdl-menu-item mdl-ripple mdl-menu-item-full-bleed-divider
+  <mdl-menu-item mdl-ripple
   ngxClipboard
   [cbContent]="generateInvite()"
   (cbOnSuccess)="onGenerationgSuccess()"
@@ -57,5 +54,5 @@
   Generate invite link</mdl-menu-item>
 </mdl-menu>
 <ft-create-group #createGroup (complete)="updateGroupsList()"></ft-create-group>
-<ft-create-payment #createPayment (complete)="onCreatePaymentComplete($event)" [users]="users">
-</ft-create-payment>
+<!-- <ft-create-payment-modal #createPayment (complete)="onCreatePaymentComplete($event)" [users]="users"> -->
+<!-- </ft-create-payment-modal> -->

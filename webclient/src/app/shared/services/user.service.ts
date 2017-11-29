@@ -1,6 +1,6 @@
+import { PaymentsService } from './payments.service';
 import { AuthService } from './auth.service';
 import { PaymentDTO } from './../models/paymentDTO.model';
-import { PaymentsService } from './payments.service';
 import { User } from './../models/user.model';
 import { Credentials, CredentialsType } from './../models/credentials.model';
 import { UserStorageService } from './user-storage.service';

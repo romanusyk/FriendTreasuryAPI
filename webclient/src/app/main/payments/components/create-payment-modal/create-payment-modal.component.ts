@@ -8,10 +8,9 @@ import { User } from '../../../../shared/models/user.model';
 import { DateHelper } from '../../../../shared/services/date.helper';
 import { MarkerOptions } from '../../../../shared/models/maps.model';
 @Component({
-  moduleId: module.id,
-  selector: 'ft-create-payment',
-  templateUrl: 'create-payment.component.html',
-  styleUrls: ['create-payment.component.scss']
+  selector: 'ft-create-payment-modal',
+  templateUrl: 'create-payment-modal.component.html',
+  styleUrls: ['create-payment-modal.component.scss']
 })
 export class CreatePaymentModalComponent implements OnInit {
   @Input() users: Array<User>;

@@ -1,3 +1,7 @@
+import { PaymentsService } from './../../shared/services/payments.service';
+import { AppPreferencesService } from './../../shared/services/app-preferences.service';
+import { PaymentFiltersService } from './../payments/services/payment-filters.service';
+import { PaymentsListComponent } from './../payments/components/payments-list/payments-list.component';
 import { InviteService } from './../../shared/services/invite.service';
 import { CreateGroupComponent } from '../create-group/create-group.component';
 import { AuthService } from './../../shared/services/auth.service';
@@ -6,14 +10,10 @@ import { MdlDialogService } from '@angular-mdl/core';
 import { User } from './../../shared/models/user.model';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { CreatePaymentModel } from './../../shared/models/create-payment.model';
-import { CreatePaymentComponent } from '../create-payment/create-payment.component';
-import { PaymentsService } from './../../shared/services/payments.service';
-import { PaymentsListComponent } from '../payments-list/payments-list.component';
 import { GroupService } from './../../shared/services/group.service';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Group } from '../../shared/models/group.model';
 import { Subscription } from 'rxjs/Rx';
-import { PaymentsFiltersComponent } from '../payments-filters/payments-filters.component';
 import { Router } from '@angular/router';
 import { UserService } from '../../shared/services/user.service';
 import { UserStorageService } from '../../shared/services/user-storage.service';
@@ -31,9 +31,6 @@ export class MainPageComponent implements OnInit, OnDestroy {
     groupsBusy: Subscription;
     paymentsBusy: Subscription;
     currentUser: User;
-    @ViewChild(PaymentsListComponent) paymentsComponent: PaymentsListComponent;
-    @ViewChild(PaymentsFiltersComponent) filtersComponent: PaymentsFiltersComponent;
-    @ViewChild(CreatePaymentComponent) createPaymentComponent: CreatePaymentComponent;
     constructor(
         private groupService: GroupService,
         private paymentService: PaymentsService,
@@ -43,7 +40,9 @@ export class MainPageComponent implements OnInit, OnDestroy {
         private toastrManager: ToastsManager,
         private dialogService: MdlDialogService,
         private router: Router,
-        private inviteService: InviteService
+        private inviteService: InviteService,
+        private filtersService: PaymentFiltersService,
+        private preferencesService: AppPreferencesService
     ) {
     }
 
@@ -88,8 +87,13 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
     onGroupSelect(group: Group): void {
         this.currentGroup = group;
-        this.filters.group = group.id;
-        this.updatePayments();
+        this.preferencesService.asign({
+            currentGroupId: group.id,
+            currentUserId: this.currentUser.id
+        });
+        this.filtersService.changeFilters(new PaymentFilters({
+            group: group.id
+        }));
         this.userService.getUsersInGroup(group.id).subscribe(
             (data) => this.users = data.filter(user => user.username !== this.currentUser.username),
             (err) => {
@@ -99,43 +103,18 @@ export class MainPageComponent implements OnInit, OnDestroy {
         );
     }
 
-    onFilterChange(filters: PaymentFilters) {
-        this.filters = filters;
-        this.updatePayments();
-    }
-
-    onUserFilterChange(id: number, type: string) {
-        this.filtersComponent.onChange(type, id);
-    }
-
     onCreatePaymentComplete(model: CreatePaymentModel) {
         model.group = this.currentGroup.id;
         model.shallIPayForMyself = model.shallIPayForMyself ? 1 : 0;
         this.paymentService.create(model).subscribe(
             (success) => {
+                this.filtersService.reload();
                 this.toastrManager.success('Payment Created');
-                this.updatePayments();
             },
             (err) => {
                 this.toastrManager.error('Payment error');
             }
         );
-    }
-
-    updatePayments() {
-        this.paymentsBusy = this.paymentService.get(this.filters).subscribe(
-            (data) => {
-                if (this.filters.sum) {
-                    this.paymentsComponent.payments = data;
-                } else {
-                    this.paymentsComponent.payments = data.content;
-                }
-
-            },
-            err => {
-                console.log(err);
-                this.toastrManager.error('Error');
-            });
     }
 
     logout() {

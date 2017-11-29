@@ -1,8 +1,8 @@
+import { ApiService } from './api.service';
+import { PaymentFilters } from './../models/payments-filters.model';
+import { CreatePaymentModel } from './../models/create-payment.model';
 import { Injectable } from '@angular/core';
-import { PaymentFilters } from '../../../shared/models/payments-filters.model';
-import { CreatePaymentModel } from '../../../shared/models/create-payment.model';
 import { Observable } from 'rxjs/Observable';
-import { ApiService } from '../../../shared/services/api.service';
 
 
 @Injectable()

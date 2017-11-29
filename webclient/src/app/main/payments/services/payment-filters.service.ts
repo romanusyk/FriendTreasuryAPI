@@ -13,4 +13,8 @@ export class PaymentFiltersService {
       this.filersChangedSubject.next(filters);
     }
   }
+
+  public reload() {
+    this.filersChangedSubject.next(this.filersChangedSubject.value);
+  }
 }

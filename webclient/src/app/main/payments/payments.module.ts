@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { CommonModule } from '@angular/common';
-import { PaymentsService } from './services/payments.service';
 import { AmountColorDirective } from './directives/amount-color.directive';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MdlModule } from '@angular-mdl/core';
@@ -17,6 +16,7 @@ import { PaymentComponent } from './components/payments-list/payment/payment.com
 import { DebtComponent } from './components/debts-list/debt/debt.component';
 import { DebtsListComponent } from './components/debts-list/debts-list.component';
 import { PaymentFiltersService } from './services/payment-filters.service';
+import { VirtualScrollModule } from 'angular2-virtual-scroll';
 
 @NgModule({
   imports: [
@@ -28,6 +28,7 @@ import { PaymentFiltersService } from './services/payment-filters.service';
     ReactiveFormsModule,
     RouterModule,
     SharedModule,
+    VirtualScrollModule,
     ToastModule.forRoot(),
   ],
   declarations: [
@@ -48,7 +49,6 @@ import { PaymentFiltersService } from './services/payment-filters.service';
     PaymentsListComponent
   ],
   providers: [
-    PaymentsService,
     PaymentFiltersService
   ]
 })
