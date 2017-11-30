@@ -20,6 +20,7 @@ export class PaymentFiltersComponent implements OnInit {
   public ngOnInit(): void {
     this.allowToProcessChanging = true;
     this.filters = this.getAllFilters();
+    this.model = new PaymentFilters();
     this.filtersService.onFiltersChanged.subscribe(
       (data: PaymentFilters) => {
         if (!data) {
