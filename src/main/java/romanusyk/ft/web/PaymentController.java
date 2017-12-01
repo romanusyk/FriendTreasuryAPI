@@ -18,6 +18,7 @@ import romanusyk.ft.service.interfaces.PaymentService;
 import java.lang.invoke.MethodHandles;
 import java.util.Map;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -81,6 +82,30 @@ public class PaymentController {
         }
         paymentDTO.setUserFrom(u.getId());
         paymentService.makeGroupPayment(paymentDTO);
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.PUT)
+    @PreAuthorize("@securityService.hasRole('user')")
+    public void updatePayment(
+            @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
+            @RequestBody Payment payment
+    ) {
+        User u = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        if (!Objects.equals(payment.getUserFrom().getId(), u.getId())) {
+            logger.debug(String.format("Rejected. User %d tried to pay from user %d.", u.getId(), payment.getUserFrom().getId()));
+            throw new UserAuthenticationException("User can update only his/her own payments.");
+        }
+        paymentService.updatePayment(payment);
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.DELETE)
+    @PreAuthorize("@securityService.hasRole('user')")
+    public void deletePayment(
+            @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
+            @RequestBody Integer paymentID
+    ) {
+        User u = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        paymentService.deletePayment(paymentID, u);
     }
 
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());

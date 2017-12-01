@@ -9,6 +9,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import romanusyk.ft.exception.EntityIdNotValidException;
+import romanusyk.ft.exception.EntityNotFoundException;
+import romanusyk.ft.exception.UserAuthenticationException;
 import romanusyk.ft.repository.GroupRepository;
 import romanusyk.ft.repository.PaymentRepository;
 import romanusyk.ft.repository.PaymentSpecs;
@@ -122,6 +124,30 @@ public class SpringPaymentService implements PaymentService {
             paymentRepository.save(payment);
         }
 
+    }
+
+    @Override
+    public void updatePayment(Payment payment) {
+        if (payment.getId() == null) {
+            throw new EntityIdNotValidException(Payment.class, payment.getId());
+        }
+        Payment existingPayment = paymentRepository.findOne(payment.getId());
+        if (existingPayment == null) {
+            throw new EntityNotFoundException(Payment.class, payment);
+        }
+        paymentRepository.save(payment);
+    }
+
+    @Override
+    public void deletePayment(Integer paymentID, User client) {
+        Payment payment = paymentRepository.findOne(paymentID);
+        if (payment == null) {
+            throw new EntityIdNotValidException(Payment.class, paymentID);
+        }
+        if (!Objects.equals(payment.getUserFrom().getId(), client.getId())) {
+            throw new UserAuthenticationException("User can delete only his/her own payments.");
+        }
+        paymentRepository.delete(payment);
     }
 
     private void validateKeys(Integer userFromID, Integer userToID, Integer groupID) {

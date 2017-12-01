@@ -14,6 +14,10 @@ public interface PaymentService {
 
     void makeGroupPayment(PaymentDTO paymentDTO);
 
+    void updatePayment(Payment payment);
+
+    void deletePayment(Integer paymentID, User client);
+
     Specification<Payment> getFilter(Integer userFrom, Integer userTo, Integer groupId, User client);
 
     Map<Group, List<Debt> > getPaymentSum(Integer user, Integer groupID, User client);
@@ -22,5 +26,4 @@ public interface PaymentService {
                                   Integer userFromID, Integer userToID, Integer groupID, User client);
 
     List<Payment> getPayments(Integer userFromID, Integer userToID, Integer groupID, User client);
-
 }

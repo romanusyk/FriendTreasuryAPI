@@ -1,6 +1,7 @@
 package romanusyk.ft.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Date;
@@ -24,17 +25,21 @@ public class Payment {
 
     @ManyToOne
     @JoinColumn(name = "user_from", nullable = false)
+    @NotNull
     private User userFrom;
 
     @ManyToOne
     @JoinColumn(name = "user_to", nullable = false)
+    @NotNull
     private User userTo;
 
     @ManyToOne
     @JoinColumn(name = "pgroup", nullable = false)
+    @NotNull
     private Group group;
 
     @Column(nullable = false)
+    @NotNull
     private BigDecimal amount;
 
     @Column
