@@ -10,7 +10,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'ft-payments',
-  templateUrl: 'payments-entry.component.html'
+  templateUrl: 'payments-entry.component.html',
+  styleUrls: ['./payments-entry.component.scss']
 })
 
 export class PaymentsEntryComponent implements OnInit, OnDestroy {
@@ -96,7 +97,7 @@ export class PaymentsEntryComponent implements OnInit, OnDestroy {
   }
 
   isAllowToShowPayments() {
-    return !(this.isAllowToShowEmptyMessage() && this.filters.sum);
+    return !(this.isAllowToShowEmptyMessage() || this.filters.sum);
   }
 
   isAllowToShowEmptyMessage() {
