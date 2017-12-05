@@ -6,10 +6,10 @@
                 <p [amountColor]="payment.amount" class="payment__amount">{{payment.amount}}</p>
             </div>
             <div class="payment__users">
-                <ft-payment-user [user]="payment.userFrom" [amount]="payment.amount"></ft-payment-user>
+                <ft-payment-user (click)="onFromClick.emit(payment.userFrom.id)" [user]="payment.userFrom" [amount]="payment.amount"></ft-payment-user>
             </div>
             <div class="payment__users">
-                <ft-payment-user [user]="payment.userTo" [amount]="0.00"></ft-payment-user>
+                <ft-payment-user (click)="onToClick.emit(payment.userTo.id)" [user]="payment.userTo" [amount]="0.00"></ft-payment-user>
             </div>
         </div>
         <div class="payment__info_additional">

@@ -37,8 +37,8 @@
         <ft-group-list [groups]="groups" (select)="onGroupSelect($event)"></ft-group-list>
       </div>
       <div class="mdl-cell mdl-cell--9-col">
-        <ft-payments-list>
-        </ft-payments-list>
+        <ft-payments *ngIf="isCurrentGroupSelected()">
+        </ft-payments>
       </div>
     </div>
 

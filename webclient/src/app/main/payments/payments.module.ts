@@ -1,3 +1,7 @@
+import { BusyModule } from 'angular2-busy';
+import { PaymentComponent } from './components/payment/payment.component';
+import { DebtComponent } from './components/debt/debt.component';
+import { PaymentsEntryComponent } from './components/payments-entry.component';
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { CommonModule } from '@angular/common';
@@ -11,10 +15,6 @@ import { ToastModule } from 'ng2-toastr';
 import { CreatePaymentModalComponent } from './components/create-payment-modal/create-payment-modal.component';
 import { PaymentUserComponent } from './components/payment-user/payment-user.component';
 import { PaymentFiltersComponent } from './components/payment-filters/payment-filters.component';
-import { PaymentsListComponent } from './components/payments-list/payments-list.component';
-import { PaymentComponent } from './components/payments-list/payment/payment.component';
-import { DebtComponent } from './components/debts-list/debt/debt.component';
-import { DebtsListComponent } from './components/debts-list/debts-list.component';
 import { PaymentFiltersService } from './services/payment-filters.service';
 import { VirtualScrollModule } from 'angular2-virtual-scroll';
 
@@ -35,18 +35,16 @@ import { VirtualScrollModule } from 'angular2-virtual-scroll';
     AmountColorDirective,
     CreatePaymentModalComponent,
     DebtComponent,
-    DebtsListComponent,
     PaymentComponent,
     PaymentFiltersComponent,
-    PaymentsListComponent,
-    PaymentUserComponent
+    PaymentUserComponent,
+    PaymentsEntryComponent
   ],
   exports: [
     AmountColorDirective,
     CreatePaymentModalComponent,
-    DebtsListComponent,
     PaymentFiltersComponent,
-    PaymentsListComponent
+    PaymentsEntryComponent
   ],
   providers: [
     PaymentFiltersService

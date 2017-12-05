@@ -1,8 +1,0 @@
-<div *ngIf="!!payments && payments.length > 0" class="payment-list" #scrollingBlock>
-
-    <virtual-scroll #scroll [items]="payments" (update)="scroll.viewPortItems = $event" (end)="onListChange($event)"
->
-        <ft-payment *ngFor="let item of scroll.viewPortItems" [payment]="item"> </ft-payment>
-        <mdl-progress *ngIf="isLoading" indeterminate="true"></mdl-progress>
-    </virtual-scroll>
-</div>

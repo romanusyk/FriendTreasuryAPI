@@ -1,5 +1,5 @@
+import { PaymentFilters } from './../../../shared/models/payments-filters.model';
 import { Injectable } from '@angular/core';
-import { PaymentFilters } from '../../../shared/models/payments-filters.model';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 
@@ -10,11 +10,16 @@ export class PaymentFiltersService {
 
   public changeFilters(filters: PaymentFilters) {
     if (!!filters) {
+      console.log(filters);
       this.filersChangedSubject.next(filters);
     }
   }
 
   public reload() {
     this.filersChangedSubject.next(this.filersChangedSubject.value);
+  }
+
+  public getCurrent(): PaymentFilters {
+    return this.filersChangedSubject.value ? this.filersChangedSubject.value : new PaymentFilters();
   }
 }
