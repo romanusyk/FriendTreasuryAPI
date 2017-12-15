@@ -31,9 +31,19 @@ public class PaymentSpecs {
                 criteriaBuilder.equal(root.get("group").get("id"), groupID);
     }
 
+    public static Specification<Payment> sortByTimestampDesc() {
+        return (root, criteriaQuery, criteriaBuilder) -> {
+            criteriaQuery.orderBy(criteriaBuilder.desc(root.get("timestamp")));
+            return criteriaBuilder.conjunction();
+        };
+    }
+
     public static Specification<Payment> filterPayment(
             Integer userFromID, Integer userToID, Integer groupID, Set<Group> userGroups) {
-        return where(whereUserFrom(userFromID)).and(whereUserTo(userToID)).and(whereGroup(groupID, userGroups));
+        return where(whereUserFrom(userFromID))
+                .and(whereUserTo(userToID))
+                .and(whereGroup(groupID, userGroups))
+                .and(sortByTimestampDesc());
     }
 
 }

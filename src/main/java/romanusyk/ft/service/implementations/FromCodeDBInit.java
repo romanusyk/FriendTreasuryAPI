@@ -77,8 +77,8 @@ public class FromCodeDBInit implements DBInit {
         groupRepository.save(universe);
 
         Payment payment1 = new Payment(roma, yura, guys, new BigDecimal(100), "Test", 33.33, 6.66);
-        Payment payment3 = new Payment(roma, yura, guys, new BigDecimal(300), "Test", 33.33, 6.66);
-        Payment payment2 = new Payment(yura, roma, guys, new BigDecimal(200), "Test", 33.33, 6.66);
+        Payment payment2 = new Payment(roma, yura, guys, new BigDecimal(300), "Test", 33.33, 6.66);
+        Payment payment3 = new Payment(yura, roma, guys, new BigDecimal(200), "Test", 33.33, 6.66);
 
         Payment payment4 = new Payment(roma, yura, universe, new BigDecimal(100), "Test", 33.33, 6.66);
         Payment payment5 = new Payment(roma, yura, universe, new BigDecimal(300), "Test", 33.33, 6.66);
