@@ -61,6 +61,9 @@ export class AuthComponent implements OnInit {
     }
     submitForm() {
         this.errors = new Array<Error>();
+        if(this.authForm.invalid){
+            // this.authForm.   
+        }
         const credentials = this.authForm.value;
         this.busy = this.authService
             .attemptAuth(this.authType, credentials)

@@ -1,25 +1,28 @@
 <mdl-dialog #chooseUsersDialog>
-    <h3 class="mdl-dialog__title">Select Users</h3>
-    <!-- <mdl-select [(ngModel)]="model.usersTo" [multiple]="true" placeholder="Select users">
-        <mdl-option mdl-ripple *ngFor="let u of users" [value]="u.id">{{u.username}}</mdl-option>
-    </mdl-select> -->
+    <h6 class="mdl-dialog__title">Select Users</h6>
+    <mdl-textfield type="text" label="input filter" [(ngModel)]="search"> </mdl-textfield>
+        <ul class="create-payment__users">
+            <li class="create-payment__user" [ngClass]="{'create-payment__user-selected' : isUserSelected(user.id)}" *ngFor="let user of users | searchBy : search : 'username'">
+                <mdl-checkbox (change)="onCheckboxChange($event,user.id)">{{user.username}}</mdl-checkbox>
+            </li>   
+        </ul>
     <div class="mdl-dialog__actions">
-        <button mdl-button mdl-button-type="raised" mdl-colored="primary" (click)="chooseUsersDialog.close();fillDataDialog.show()"
+        <button mdl-button mdl-button-type="raised" [disabled]="!model.usersTo || model.usersTo.length === 0" mdl-colored="primary" (click)="chooseUsersDialog.close();fillDataDialog.show()"
             mdl-ripple>Next</button>
         <button mdl-button (click)="onCancel()" mdl-ripple>Cancel</button>
     </div>
 </mdl-dialog>
 
 <mdl-dialog #fillDataDialog>
-    <h3 class="mdl-dialog__title">Fill data</h3>
-    <mdl-textfield type="text" label="Enter amount" pattern="-?[0-9]*(\.[0-9]+)?" error-msg="Input is not a number!" required
+    <h6 class="mdl-dialog__title">Fill data</h6>
+    <mdl-textfield type="text" label="Enter amount" pattern="[0-9]*(\.[0-9]+)?" error-msg="Input is not a number!"
         [(ngModel)]="model.amount">
     </mdl-textfield>
-    <button mdl-button (click)="pickADate($event)" mdl-button-type="icon" mdl-ripple>
+    <button mdl-button (click)="pickADate($event)" mdl-ripple>
         <mdl-icon>event</mdl-icon>
+        <span>{{model.date}}</span>
     </button>
-    <span>{{model.date}}</span>
-    <mdl-textfield label="Text..." [(ngModel)]="model.description" rows="3" maxrows="3" floating-label>
+    <mdl-textfield label="Description" [(ngModel)]="model.description" rows="3" maxrows="3" floating-label>
     </mdl-textfield>
     <mdl-checkbox [mdl-ripple]="true" [(ngModel)]="model.shallIPayForMyself">
         Shall i pay for my self
@@ -37,7 +40,7 @@
 </mdl-dialog>
 
 <mdl-dialog #mapDialog>
-        <h3 class="mdl-dialog__title">Chose location on map</h3>
+        <h6 class="mdl-dialog__title">Chose location on map</h6>
         <ft-map
         (markerChanged)="onLocationChanged($event)"
         [isReadOnly]="false"

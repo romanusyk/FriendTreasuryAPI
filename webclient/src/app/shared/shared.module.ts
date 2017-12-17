@@ -1,3 +1,4 @@
+import { SearchPipe } from './pipes/search.pipe';
 import { AppPreferencesService } from './services/app-preferences.service';
 import { ConfigManager } from './../config/app.config';
 import { AgmCoreModule } from '@agm/core';
@@ -42,6 +43,7 @@ const config = ConfigManager.config;
     Error404Component,
     ListErrorsComponent,
     MapComponent,
+    SearchPipe
   ],
   providers: [
     UserStorageService,
@@ -61,6 +63,7 @@ const config = ConfigManager.config;
     Error404Component,
     ListErrorsComponent,
     MapComponent,
+    SearchPipe
   ]
 })
 export class SharedModule {

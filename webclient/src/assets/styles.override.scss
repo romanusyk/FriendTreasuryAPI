@@ -1,0 +1,25 @@
+.mdl-dialog__title {
+    text-align: center;
+    font-size: 1.4rem;
+    padding: 14px 14px 0;
+}
+.mdl-textfield.ng-invalid.ng-dirty {
+    div > input{
+        border-color: #d50000;
+        box-shadow: none;
+    }
+    label.mdl-textfield__label {
+        color: #d50000;;
+    }
+}
+
+.mdl-textfield.ng-invalid.ng-dirty.is-focused{
+    div > input{
+        border-color: #d50000;
+        box-shadow: none;
+    }
+}
+
+.mdl-textfield__error {
+    visibility: visible;
+}

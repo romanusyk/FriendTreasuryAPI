@@ -1,7 +1,6 @@
 import { PaymentsService } from './../../shared/services/payments.service';
 import { AppPreferencesService } from './../../shared/services/app-preferences.service';
 import { PaymentFiltersService } from './../payments/services/payment-filters.service';
-import { PaymentsListComponent } from './../payments/components/payments-list/payments-list.component';
 import { InviteService } from './../../shared/services/invite.service';
 import { CreateGroupComponent } from '../create-group/create-group.component';
 import { AuthService } from './../../shared/services/auth.service';

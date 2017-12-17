@@ -1,3 +1,5 @@
+import { AppPreferencesService } from './../../../../shared/services/app-preferences.service';
+import { Preferences } from './../../../../shared/models/preferences.model';
 import { FormControl } from '@angular/forms';
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { MdlDialogComponent, MdlButtonComponent, IMdlDialogConfiguration, MdlTextFieldComponent } from '@angular-mdl/core';
@@ -15,31 +17,36 @@ import { MarkerOptions } from '../../../../shared/models/maps.model';
 export class CreatePaymentModalComponent implements OnInit {
   @Input() users: Array<User>;
   @Output() complete: EventEmitter<CreatePaymentModel> = new EventEmitter();
-
   @ViewChild('chooseUsersDialog') chooseUsersDialog: MdlDialogComponent;
   @ViewChild('fillDataDialog') fillDataDialog: MdlDialogComponent;
   @ViewChild('mapDialog') mapDialog: MdlDialogComponent;
   model: CreatePaymentModel;
+  search: string;
   isAllowToShowMap: boolean;
+  preferences: Preferences;
   mapOptions = {
     zoom: 4,
     latitude: 39.8282,
     longitude: -98.5795
   };
   constructor(private datePicker: MdlDatePickerService,
-    private datePipe: DatePipe) { }
+    preferencesService: AppPreferencesService,
+    private datePipe: DatePipe) {
+    this.preferences = preferencesService.preferences;
+  }
 
   public ngOnInit(): void {
     this.clearData();
     this.chooseUsersDialog.config = this.createModalConfig();
     this.fillDataDialog.config = this.createModalConfig();
     this.mapDialog.config = this.createModalConfig();
+    this.users = this.users.filter(user => user.id !== this.preferences.currentUserId);
     this.isAllowToShowMap = false;
   }
 
   public show() {
-    this.chooseUsersDialog.show();
     this.clearData();
+    this.chooseUsersDialog.show();
   }
 
   public onComplete() {
@@ -69,8 +76,22 @@ export class CreatePaymentModalComponent implements OnInit {
     });
   }
 
+  public onCheckboxChange($event: boolean, id: number) {
+    const index = this.model.usersTo.lastIndexOf(id);
+    if ($event && index === -1) {
+      this.model.usersTo.push(id);
+    } else if (index > -1) {
+      this.model.usersTo.splice(index, 1);
+    }
+  }
+
+  public isUserSelected(id: number) {
+    return this.model.usersTo.lastIndexOf(id) !== -1;
+  }
+
   private clearData() {
     this.model = new CreatePaymentModel();
+    this.model.usersTo = new Array(); 
     this.model.date = this.transformDate(DateHelper.currentDate());
   }
 
@@ -87,3 +108,5 @@ export class CreatePaymentModalComponent implements OnInit {
     };
   }
 }
+
+
