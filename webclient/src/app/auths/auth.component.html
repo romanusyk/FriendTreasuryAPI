@@ -20,6 +20,9 @@
         <div *ngIf="!isLogin()">
             <ft-textfield label="Confirm Password" floating-label autofocus type="password" formControlName="confirmPassword" name="confirmPassword" [errors]="errors.get('confirmPassword')"></ft-textfield>
         </div>
+        <div class="form__errors">
+          {{errors.get('*')}}
+        </div>
         <div>
             <button class="full-width" mdl-button mdl-button-type="raised" type="submit" mdl-colored="primary" [disabled]="(authForm.touched && !authForm.valid) || errors.isEmpty()"
                 mdl-ripple>
