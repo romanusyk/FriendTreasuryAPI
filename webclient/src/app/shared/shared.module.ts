@@ -12,7 +12,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { ApiService } from './services/api.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { ListErrorsComponent } from './components/list-errors/list-errors.component';
 import { UserStorageService } from './services/user-storage.service';
 import { Error404Component } from './components/error404/error404.component';
 import { NgModule } from '@angular/core';
@@ -41,7 +40,6 @@ const config = ConfigManager.config;
   ],
   declarations: [
     Error404Component,
-    ListErrorsComponent,
     MapComponent,
     SearchPipe
   ],
