@@ -1,0 +1,9 @@
+<input type="checkbox" class="mdl-checkbox__input" (focus)="onFocus()" (blur)="onBlur()" [disabled]="disabled" [attr.tabindex]="tabindex"
+  [ngModel]="value">
+<span class="mdl-checkbox__label">
+  <ng-content></ng-content>
+</span>
+<span class="mdl-checkbox__focus-helper"></span>
+<span class="mdl-checkbox__box-outline">
+  <span class="mdl-checkbox__tick-outline"></span>
+</span>
