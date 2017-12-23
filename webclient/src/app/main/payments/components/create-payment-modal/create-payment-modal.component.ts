@@ -2,7 +2,7 @@ import { AppPreferencesService } from './../../../../shared/services/app-prefere
 import { Preferences } from './../../../../shared/models/preferences.model';
 import { FormControl } from '@angular/forms';
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-import { MdlDialogComponent, MdlButtonComponent, IMdlDialogConfiguration, MdlTextFieldComponent } from '@angular-mdl/core';
+import { MdlDialogComponent, MdlButtonComponent, IMdlDialogConfiguration, MdlTextFieldComponent, MdlDialogService } from '@angular-mdl/core';
 import { MdlDatePickerService } from '@angular-mdl/datepicker';
 import { DatePipe } from '@angular/common';
 import { CreatePaymentModel } from '../../../../shared/models/create-payment.model';
@@ -31,7 +31,8 @@ export class CreatePaymentModalComponent implements OnInit {
   };
   constructor(private datePicker: MdlDatePickerService,
     preferencesService: AppPreferencesService,
-    private datePipe: DatePipe) {
+    private datePipe: DatePipe,
+  private mdlDialogService: MdlDialogService) {
     this.preferences = preferencesService.preferences;
   }
 
@@ -86,12 +87,13 @@ export class CreatePaymentModalComponent implements OnInit {
   }
 
   public isUserSelected(id: number) {
-    return this.model.usersTo.lastIndexOf(id) !== -1;
+    const index = this.model.usersTo.lastIndexOf(id);
+    return index > -1;
   }
 
   private clearData() {
     this.model = new CreatePaymentModel();
-    this.model.usersTo = new Array(); 
+    this.model.usersTo = new Array();
     this.model.date = this.transformDate(DateHelper.currentDate());
   }
 

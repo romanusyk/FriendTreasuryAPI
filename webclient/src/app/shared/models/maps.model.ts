@@ -6,4 +6,5 @@ export class MarkerOptions {
 
 export class MapOptions extends MarkerOptions {
     public zoom?: number;
+    public marker?: MarkerOptions;
 }

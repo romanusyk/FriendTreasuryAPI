@@ -59,7 +59,6 @@ const config = ConfigManager.config;
   ],
   exports: [
     Error404Component,
-    ListErrorsComponent,
     MapComponent,
     SearchPipe
   ]

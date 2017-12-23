@@ -1,3 +1,4 @@
+import { OverrideMDLModule } from './../../shared/override-mdl/override-mdl.module';
 import { BusyModule } from 'angular2-busy';
 import { PaymentComponent } from './components/payment/payment.component';
 import { DebtComponent } from './components/debt/debt.component';
@@ -30,6 +31,7 @@ import { VirtualScrollModule } from 'angular2-virtual-scroll';
     SharedModule,
     VirtualScrollModule,
     ToastModule.forRoot(),
+    OverrideMDLModule
   ],
   declarations: [
     AmountColorDirective,

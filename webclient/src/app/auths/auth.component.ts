@@ -3,7 +3,6 @@ import { AuthService } from './../shared/services/auth.service';
 import { FtValidators } from './../shared/validators/ft-validators';
 import { Error, ErrorsList } from './../shared/models/error.model';
 import { Credentials, CredentialsType } from './../shared/models/credentials.model';
-import { ListErrorsComponent } from './../shared/components/list-errors/list-errors.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,7 +13,6 @@ import { ErrorTransformingService } from '../shared/services/error-transforming.
   styleUrls: ['./auth.component.scss']
 })
 export class AuthComponent implements OnInit {
-  @ViewChild(ListErrorsComponent) listErrors: ListErrorsComponent;
   authType = CredentialsType.login;
   title: string;
   busy: Subscription;

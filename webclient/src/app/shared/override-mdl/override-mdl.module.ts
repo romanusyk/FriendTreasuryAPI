@@ -9,7 +9,7 @@ import { NgModule } from '@angular/core';
 @NgModule({
     imports: [MdlModule, FormsModule, CommonModule],
     exports: [FtTextFieldComponent, FtCheckBoxComponent],
-    declarations: [FtTextFieldComponent],
+    declarations: [FtTextFieldComponent, FtCheckBoxComponent],
     providers: [],
 })
 export class OverrideMDLModule { }

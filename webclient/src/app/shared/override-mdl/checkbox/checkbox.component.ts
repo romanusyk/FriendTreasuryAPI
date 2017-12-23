@@ -10,7 +10,7 @@ import { DISABLE_NATIVE_VALIDITY_CHECKING, MdlCheckboxComponent } from '@angular
       multi: true
     }],
     encapsulation: ViewEncapsulation.None,
-    templateUrl: './text-field.template.html',
+    templateUrl: './checkbox.template.component.html',
     host: {
       '(click)': 'onClick()',
       '[class.mdl-checkbox]': 'true',
@@ -18,6 +18,7 @@ import { DISABLE_NATIVE_VALIDITY_CHECKING, MdlCheckboxComponent } from '@angular
       '[class.is-checked]': 'value',
       '[class.is-disabled]': 'disabled'
     },
+    outputs: ['change']
 })
 export class FtCheckBoxComponent extends MdlCheckboxComponent implements OnInit {
     @Input() checked: boolean;
