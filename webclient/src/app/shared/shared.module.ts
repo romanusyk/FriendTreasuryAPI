@@ -1,3 +1,4 @@
+import { ResponsiveDetectorService } from './services/responsive-detector.service';
 import { SearchPipe } from './pipes/search.pipe';
 import { AppPreferencesService } from './services/app-preferences.service';
 import { ConfigManager } from './../config/app.config';
@@ -55,7 +56,8 @@ const config = ConfigManager.config;
     ApiService,
     InviteService,
     ErrorTransformingService,
-    AppPreferencesService
+    AppPreferencesService,
+    ResponsiveDetectorService
   ],
   exports: [
     Error404Component,

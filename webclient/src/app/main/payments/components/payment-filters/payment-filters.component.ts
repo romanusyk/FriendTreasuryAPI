@@ -1,3 +1,4 @@
+import { ResponsiveDetectorService } from './../../../../shared/services/responsive-detector.service';
 import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
 import { PaymentFilters } from '../../../../shared/models/payments-filters.model';
 import { AppPreferencesService } from '../../../../shared/services/app-preferences.service';
@@ -14,7 +15,9 @@ export class PaymentFiltersComponent implements OnInit {
   public preferences: Preferences;
   public allowToProcessChanging: boolean;
   public filters: string[];
-  constructor(appPreferencesService: AppPreferencesService, private filtersService: PaymentFiltersService) {
+  constructor(appPreferencesService: AppPreferencesService,
+    private filtersService: PaymentFiltersService,
+    private responsive: ResponsiveDetectorService) {
     this.preferences = appPreferencesService.preferences;
   }
   public ngOnInit(): void {
@@ -77,6 +80,13 @@ export class PaymentFiltersComponent implements OnInit {
       default:
         break;
     }
+  }
+
+  public optimizeName(name: string) {
+    if (this.responsive.isPhonePortraitMode()) {
+      return name.split(' ').map(c => `${c[0]}.`).join('');
+    }
+    return name;
   }
 
   private updateFilters() {

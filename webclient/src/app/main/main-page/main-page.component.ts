@@ -1,3 +1,4 @@
+import { ResponsiveDetectorService } from './../../shared/services/responsive-detector.service';
 import { PaymentsService } from './../../shared/services/payments.service';
 import { AppPreferencesService } from './../../shared/services/app-preferences.service';
 import { PaymentFiltersService } from './../payments/services/payment-filters.service';
@@ -41,6 +42,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
         private router: Router,
         private inviteService: InviteService,
         private filtersService: PaymentFiltersService,
+        public responsive: ResponsiveDetectorService,
         private preferencesService: AppPreferencesService
     ) {
     }

@@ -16,6 +16,7 @@ import { MainPageComponent } from './main-page/main-page.component';
 import { MdlDatePickerModule } from '@angular-mdl/datepicker';
 import { AgmCoreModule } from '@agm/core';
 import { PaymentsModule } from './payments/payments.module';
+import { OverrideMDLModule } from '../shared/override-mdl/override-mdl.module';
 const config = ConfigManager.config;
 @NgModule({
     imports: [
@@ -29,7 +30,8 @@ const config = ConfigManager.config;
         BusyModule,
         AvatarModule,
         ClipboardModule,
-        PaymentsModule
+        PaymentsModule,
+        OverrideMDLModule
     ],
     declarations: [
         GroupListComponent,

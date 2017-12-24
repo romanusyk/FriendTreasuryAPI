@@ -3,9 +3,9 @@
       *ngFor="let filter of filters" 
       mdl-button 
       mdl-ripple  
+      mdl-colored="accent"
       mdl-button-type="{{isActive(filter) ? 'raised' : ''}}"
-      mdl-colored="primary" 
       (click)="onChange(filter)">
-      {{filter}}
+      {{optimizeName(filter)}}
     </button>
 </nav>
