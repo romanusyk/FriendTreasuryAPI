@@ -6,23 +6,25 @@
         <button type="button" class="full-width" mdl-button mdl-ripple [routerLink]="['/register']" *ngIf="isLogin()">Need an account?</button>
 
         <div>
-            <mdl-textfield label="UserName" floating-label autofocus type="text" formControlName="username" name="username"></mdl-textfield>
+            <ft-textfield label="UserName" autofocus type="text" formControlName="username" name="username" [errors]="errors.get('username')"></ft-textfield>
         </div>
         <div *ngIf="!isLogin()">
-            <mdl-textfield label="Email" floating-label autofocus type="email" formControlName="email" name="email"></mdl-textfield>
+            <ft-textfield label="Email" floating-label autofocus type="email" formControlName="email" name="email" [errors]="errors.get('email')"></ft-textfield>
         </div>
         <div *ngIf="!isLogin()">
-            <mdl-textfield label="Phone" floating-label type="number" formControlName="phone" name="phone"></mdl-textfield>
+            <ft-textfield label="Phone" floating-label type="number" formControlName="phone" name="phone" [errors]="errors.get('phone')"></ft-textfield>
         </div>
         <div>
-            <mdl-textfield label="Password" floating-label autofocus type="password" formControlName="password" name="password"></mdl-textfield>
+            <ft-textfield label="Password" floating-label autofocus type="password" formControlName="password" name="password" [errors]="errors.get('password')"></ft-textfield>
         </div>
         <div *ngIf="!isLogin()">
-            <mdl-textfield label="Confirm Password" floating-label autofocus type="password" formControlName="confirmPassword" name="confirmPassword"></mdl-textfield>
+            <ft-textfield label="Confirm Password" floating-label autofocus type="password" formControlName="confirmPassword" name="confirmPassword" [errors]="errors.get('confirmPassword')"></ft-textfield>
         </div>
-        <ft-errors [errors]="errors"></ft-errors>
+        <div class="form__errors">
+          {{errors.get('*')}}
+        </div>
         <div>
-            <button class="full-width" mdl-button mdl-button-type="raised" type="submit" mdl-colored="primary" [disabled]="!authForm.valid || errors.length > 0"
+            <button class="full-width" mdl-button mdl-button-type="raised" type="submit" mdl-colored="primary" [disabled]="(authForm.touched && !authForm.valid) || !errors.isEmpty()"
                 mdl-ripple>
                 <mdl-icon>send</mdl-icon>
                 Submit

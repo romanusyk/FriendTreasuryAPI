@@ -1,12 +1,15 @@
 import { UrlParamsHelper, UrlParam } from './../services/url-params.helper';
-export class PaymentsFilters {
+export class PaymentFilters {
     public sum?: boolean;
     public group?: number;
     public from?: number;
     public to?: number;
     public user?: number;
     public page? = 0;
-    public size? = 50;
+    public size? = 5;
+    constructor(init?: Partial<PaymentFilters>) {
+        Object.assign(this, init);
+    }
     public toUrl(): string {
         const helper = new UrlParamsHelper();
         if (!this.sum) {

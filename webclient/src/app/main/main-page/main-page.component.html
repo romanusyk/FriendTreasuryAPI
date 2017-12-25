@@ -1,27 +1,44 @@
-<mdl-layout mdl-layout-fixed-header mdl-layout-header-seamed>
+<mdl-layout mdl-layout-fixed-header mdl-layout-header-seamed mdl-layout-fixed-drawer>
   <mdl-layout-header>
     <mdl-layout-header-row>
-      <ft-search></ft-search>
-      <mdl-layout-title *ngIf="isCurrentGroupSelected()">
-        {{users.length}} members
-      </mdl-layout-title>
+      
       <mdl-layout-spacer></mdl-layout-spacer>
 
-      <ft-payments-filters *ngIf="isCurrentGroupSelected()" [user]="currentUser.id" [group]="currentGroup.id" (change)="onFilterChange($event)">
-      </ft-payments-filters>
+      <ft-payment-filters *ngIf="isCurrentGroupSelected()">
+      </ft-payment-filters>
       <mdl-layout-spacer></mdl-layout-spacer>
-      <button mdl-button mdl-ripple *ngIf="isCurrentGroupSelected()" (click)="createPayment.show()" title="Create payment">
+      <button  mdl-button mdl-ripple mdl-button-type="icon" *ngIf="isCurrentGroupSelected() && !responsive.isPhonePortraitMode()" (click)="createPayment.show()" title="Create payment">
         <mdl-icon>add</mdl-icon>
       </button>
       <button *ngIf="isCurrentGroupSelected()" mdl-button #extermalMenuBtn="mdlButton" (click)="groupExternalMenu.toggle($event, extermalMenuBtn)" mdl-button-type="icon" mdl-ripple>
         <mdl-icon>more_vert</mdl-icon>
       </button>
-
+      <button mdl-button (click)="rightDrawer.show()" mdl-button-type="icon" mdl-ripple>
+          <mdl-icon>trending_flat</mdl-icon>
+        </button>
     </mdl-layout-header-row>
 
   </mdl-layout-header>
   <mdl-layout-drawer>
-    <mdl-layout-title *ngIf="currentUser">
+      <mdl-layout-title *ngIf="isCurrentGroupSelected()">
+          {{users.length}} members
+        </mdl-layout-title>
+      <ft-group-list [groups]="groups" (select)="onGroupSelect($event)"></ft-group-list>
+    
+
+  </mdl-layout-drawer>
+
+  <mdl-layout-content>
+    <div class="mdl-grid mdl-grid--no-spacing">
+      <div class="mdl-cell mdl-cell--12-col">
+        <ft-payments *ngIf="isCurrentGroupSelected()">
+        </ft-payments>
+    </div></div>
+
+  </mdl-layout-content>
+</mdl-layout>
+<ft-right-drawer #rightDrawer>
+    <mdl-layout-title>
       <ngx-avatar [name]="currentUser.username"></ngx-avatar>
       {{currentUser.username}} {{currentUser.debt}}
     </mdl-layout-title>
@@ -29,27 +46,12 @@
       <button class="mdl-navigation__link" (click)="createGroup.dialog.show()">Create Group</button>
       <button class="mdl-navigation__link" (click)="logout()"  href="">Logout</button>
     </nav>
-  </mdl-layout-drawer>
-  <mdl-layout-content>
-    <div class="mdl-grid mdl-grid--no-spacing">
-      <div class="mdl-cell mdl-cell--3-col">
-        <div [ngBusy]="groupsBusy"></div>
-        <ft-group-list [groups]="groups" (select)="onGroupSelect($event)"></ft-group-list>
-      </div>
-      <div class="mdl-cell mdl-cell--9-col">
-        <ft-payments-list
-        (userToClick)="onUserFilterChange($event,'user to')"
-        (userFromClick)="onUserFilterChange($event,'user from')">
-        </ft-payments-list>
-        <div [ngBusy]="paymentsBusy"></div>
-      </div>
-    </div>
-
-  </mdl-layout-content>
-</mdl-layout>
+  </ft-right-drawer>
 <mdl-menu #groupExternalMenu="mdlMenu"  mdl-menu-position="bottom-right">
-  <mdl-menu-item mdl-ripple>Invite User</mdl-menu-item>
-  <mdl-menu-item mdl-ripple mdl-menu-item-full-bleed-divider
+  <mdl-menu-item *ngIf="responsive.isPhonePortraitMode()" (click)="createPayment.show()">
+    Create payment
+  </mdl-menu-item>
+  <mdl-menu-item mdl-ripple
   ngxClipboard
   [cbContent]="generateInvite()"
   (cbOnSuccess)="onGenerationgSuccess()"
@@ -57,5 +59,5 @@
   Generate invite link</mdl-menu-item>
 </mdl-menu>
 <ft-create-group #createGroup (complete)="updateGroupsList()"></ft-create-group>
-<ft-create-payment #createPayment (complete)="onCreatePaymentComplete($event)" [users]="users">
-</ft-create-payment>
+<ft-create-payment-modal #createPayment (complete)="onCreatePaymentComplete($event)" [users]="users">
+</ft-create-payment-modal>

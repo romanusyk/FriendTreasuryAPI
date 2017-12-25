@@ -1,0 +1,22 @@
+@import "./variables.scss";
+.mdl-dialog__title {
+    text-align: center;
+    font-size: 1.4rem;
+    padding: 14px 14px 0;
+}
+.mdl-textfield.ng-invalid.ng-dirty {
+    label.mdl-textfield__label {
+        color: $color-danger;
+        &::after {
+          background-color: $color-danger;
+        }
+    }
+
+    span.mdl-textfield__error {
+      color: $color-danger;
+    }
+}
+
+.mdl-textfield__error {
+    visibility: visible;
+}

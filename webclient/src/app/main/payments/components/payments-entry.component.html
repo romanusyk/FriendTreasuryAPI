@@ -1,0 +1,13 @@
+<virtual-scroll *ngIf="isAllowToShowPayments()" #scroll [items]="payments" (update)="scroll.viewPortItems = $event"
+    (end)="onListChange($event)">
+    <ft-payment (onFromClick)="onFromClick($event)" (onToClick)="onToClick($event)" *ngFor="let item of scroll.viewPortItems" [payment]="item"> </ft-payment>
+    <mdl-progress *ngIf="isLoading" indeterminate="true"></mdl-progress>
+</virtual-scroll>
+
+<div class="debt-list" *ngIf="!isAllowToShowPayments()">
+    <ft-debt *ngFor="let debt of payments" [debt]="debt"></ft-debt>
+</div>
+
+<div class="payments__empty-message" *ngIf="isAllowToShowEmptyMessage()">
+    U curently have zero payments
+</div>

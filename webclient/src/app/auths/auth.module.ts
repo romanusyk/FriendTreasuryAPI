@@ -1,3 +1,4 @@
+import { OverrideMDLModule } from './../shared/override-mdl/override-mdl.module';
 import { AuthComponent } from './auth.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -15,7 +16,8 @@ import { BusyModule } from 'angular2-busy';
         SharedModule,
         ReactiveFormsModule,
         MdlModule,
-        BusyModule
+        BusyModule,
+        OverrideMDLModule
     ],
     declarations: [
         AuthComponent,

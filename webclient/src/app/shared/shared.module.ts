@@ -1,4 +1,6 @@
-import { AmountColorDirective } from './directives/amount-color.directive';
+import { ResponsiveDetectorService } from './services/responsive-detector.service';
+import { SearchPipe } from './pipes/search.pipe';
+import { AppPreferencesService } from './services/app-preferences.service';
 import { ConfigManager } from './../config/app.config';
 import { AgmCoreModule } from '@agm/core';
 import { MapComponent } from './components/map/map.component';
@@ -11,7 +13,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { ApiService } from './services/api.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { ListErrorsComponent } from './components/list-errors/list-errors.component';
 import { UserStorageService } from './services/user-storage.service';
 import { Error404Component } from './components/error404/error404.component';
 import { NgModule } from '@angular/core';
@@ -39,10 +40,9 @@ const config = ConfigManager.config;
     }),
   ],
   declarations: [
-    AmountColorDirective,
     Error404Component,
-    ListErrorsComponent,
     MapComponent,
+    SearchPipe
   ],
   providers: [
     UserStorageService,
@@ -55,13 +55,14 @@ const config = ConfigManager.config;
     LoginGuard,
     ApiService,
     InviteService,
-    ErrorTransformingService
+    ErrorTransformingService,
+    AppPreferencesService,
+    ResponsiveDetectorService
   ],
   exports: [
-    AmountColorDirective,
     Error404Component,
-    ListErrorsComponent,
     MapComponent,
+    SearchPipe
   ]
 })
 export class SharedModule {

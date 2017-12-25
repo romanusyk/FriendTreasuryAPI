@@ -1,0 +1,4 @@
+<div class="mdl-layout__drawer-right" [ngClass]="{'active': state}">
+    <ng-content></ng-content>
+</div>
+<div class="mdl-layout__obfuscator-right" [ngClass]="{'ob-active': state}" (click)="hide()"></div>

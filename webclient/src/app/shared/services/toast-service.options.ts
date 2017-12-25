@@ -6,4 +6,5 @@ import { ToastOptions } from 'ng2-toastr/src/toast-options';
 export class ToastServiceOptions extends  ToastOptions  {
     positionClass = 'toast-bottom-right';
     newestOnTop = true;
+    showCloseButton = true;
 }

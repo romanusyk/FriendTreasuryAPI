@@ -8,7 +8,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/forkJoin';
 
 import { PaymentsService } from './payments.service';
-import { PaymentsFilters } from '../models/payments-filters.model';
+import { PaymentFilters } from '../models/payments-filters.model';
 import { Payment } from '../models/payment.model';
 import { PaymentDTO } from '../models/paymentDTO.model';
 
@@ -25,7 +25,7 @@ export class GroupService {
     }
 
     getWithPayments(userId: number): Observable<any> {
-        const filters = new PaymentsFilters();
+        const filters = new PaymentFilters();
         filters.sum = true;
         filters.user = userId;
         filters.group = 0;

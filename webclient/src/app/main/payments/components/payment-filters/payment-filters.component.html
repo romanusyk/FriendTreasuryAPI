@@ -1,0 +1,11 @@
+<nav class="mdl-navigation">
+    <button
+      *ngFor="let filter of filters" 
+      mdl-button 
+      mdl-ripple  
+      mdl-colored="accent"
+      mdl-button-type="{{isActive(filter) ? 'raised' : ''}}"
+      (click)="onChange(filter)">
+      {{optimizeName(filter)}}
+    </button>
+</nav>

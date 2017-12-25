@@ -1,0 +1,13 @@
+<div class="debt">
+    <div class="debt__user">
+        <ngx-avatar [name]="debt.userFrom.username"></ngx-avatar>
+        <div class="debt__user-name">{{debt.userFrom.username}}</div>
+    </div>
+    <div class="debt__arrow"></div>
+    <div class="debt__amount">{{debt.amount}}</div>
+    <div class="debt__arrow"></div>
+    <div class="debt__user">
+        <ngx-avatar [name]="debt.userTo.username"></ngx-avatar>
+        <div class="debt__user-name">{{debt.userTo.username}}</div>
+    </div>
+</div>

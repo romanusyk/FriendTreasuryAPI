@@ -1,6 +1,6 @@
+import { PaymentsService } from './payments.service';
 import { AuthService } from './auth.service';
 import { PaymentDTO } from './../models/paymentDTO.model';
-import { PaymentsService } from './payments.service';
 import { User } from './../models/user.model';
 import { Credentials, CredentialsType } from './../models/credentials.model';
 import { UserStorageService } from './user-storage.service';
@@ -13,7 +13,7 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 import { ApiService } from './api.service';
 import { DateHelper } from './date.helper';
-import { PaymentsFilters } from '../models/payments-filters.model';
+import { PaymentFilters } from '../models/payments-filters.model';
 
 @Injectable()
 export class UserService {
@@ -33,7 +33,7 @@ export class UserService {
   }
 
   enrich(user: User) {
-    const filters = new PaymentsFilters();
+    const filters = new PaymentFilters();
     filters.sum = true;
     filters.user = user.id;
     return this.paymentService.get(filters)
