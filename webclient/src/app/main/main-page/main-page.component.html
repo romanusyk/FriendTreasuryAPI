@@ -1,7 +1,7 @@
 <mdl-layout mdl-layout-fixed-header mdl-layout-header-seamed mdl-layout-fixed-drawer>
   <mdl-layout-header>
     <mdl-layout-header-row>
-      
+
       <mdl-layout-spacer></mdl-layout-spacer>
 
       <ft-payment-filters *ngIf="isCurrentGroupSelected()">
@@ -24,7 +24,7 @@
           {{users.length}} members
         </mdl-layout-title>
       <ft-group-list [groups]="groups" (select)="onGroupSelect($event)"></ft-group-list>
-    
+
 
   </mdl-layout-drawer>
 
@@ -38,14 +38,7 @@
   </mdl-layout-content>
 </mdl-layout>
 <ft-right-drawer #rightDrawer>
-    <mdl-layout-title>
-      <ngx-avatar [name]="currentUser.username"></ngx-avatar>
-      {{currentUser.username}} {{currentUser.debt}}
-    </mdl-layout-title>
-    <nav class="mdl-navigation">
-      <button class="mdl-navigation__link" (click)="createGroup.dialog.show()">Create Group</button>
-      <button class="mdl-navigation__link" (click)="logout()"  href="">Logout</button>
-    </nav>
+      <ft-right-menu [user]="currentUser" (createGroupClick)="createGroup.dialog.show()" (logoutClick)="logout()"></ft-right-menu>
   </ft-right-drawer>
 <mdl-menu #groupExternalMenu="mdlMenu"  mdl-menu-position="bottom-right">
   <mdl-menu-item *ngIf="responsive.isPhonePortraitMode()" (click)="createPayment.show()">

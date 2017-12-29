@@ -17,6 +17,7 @@ import { MdlDatePickerModule } from '@angular-mdl/datepicker';
 import { AgmCoreModule } from '@agm/core';
 import { PaymentsModule } from './payments/payments.module';
 import { OverrideMDLModule } from '../shared/override-mdl/override-mdl.module';
+import { RightMenuComponent } from './right-menu/right-menu.component';
 const config = ConfigManager.config;
 @NgModule({
     imports: [
@@ -38,6 +39,7 @@ const config = ConfigManager.config;
         MainPageComponent,
         SearchComponent,
         CreateGroupComponent,
+        RightMenuComponent
     ],
     exports: [
     ],
