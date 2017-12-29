@@ -1,0 +1,15 @@
+.empty-message {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  font-size: 40px;
+  justify-content: center;
+  color: #a2c5b7;
+  &__icon {
+    align-self: center;
+  }
+
+  &__text {
+    align-self: center;
+  }
+}
