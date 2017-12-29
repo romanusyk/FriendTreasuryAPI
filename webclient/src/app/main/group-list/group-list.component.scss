@@ -1,3 +1,4 @@
+@import "../../../assets/variables.scss";
 :host(){
   font-size: 16px;
   font-weight: 400;
@@ -8,26 +9,46 @@
   margin: 0;
   max-height: calc(100vh - 50px);
   overflow-y: auto;
+
+  &__header {
+    background-color: $color-main;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+    padding-left: 10px;
+  }
+
+  &__name {
+    font-weight: 600;
+    margin-top: 5px;
+  }
+
+  &__count {
+
+  }
 }
 .group{
   display: flex;
   flex: 1 1 1;
   padding: 15px 15px; transition: background .6s;
   padding-left: 0;
+  background-color: #008e9c;
 
   &:hover{
-      background: rgba(0,0,0,0.1);
+      background: $color-main;
       cursor: pointer;
   }
 
   &_selected{
-      background-color: deepskyblue;
+      background-color: $color-main-dark;
   }
 
   &__name{
       display: flex;
       flex-direction: column;
       margin-left: 10px;
+      color: white;
   }
 
   &__title{

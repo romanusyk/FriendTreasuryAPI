@@ -20,3 +20,24 @@
 .mdl-textfield__error {
     visibility: visible;
 }
+
+.mdl-layout__drawer {
+  border: none;
+  box-shadow: none;
+}
+.mdl-layout__header {
+  background-color: $color-main;
+}
+
+.mdl-button--accent.mdl-button--accent{
+  color: white;
+}
+
+.mdl-button--accent.mdl-button--accent.mdl-button--raised{
+  background-color: $color-back;
+  color: $color-main;
+}
+
+.mdl-layout__drawer{
+  background-color: $color-main-dark;
+}

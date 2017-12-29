@@ -20,12 +20,7 @@
 
   </mdl-layout-header>
   <mdl-layout-drawer>
-      <mdl-layout-title *ngIf="isCurrentGroupSelected()">
-          {{users.length}} members
-        </mdl-layout-title>
       <ft-group-list [groups]="groups" (select)="onGroupSelect($event)"></ft-group-list>
-
-
   </mdl-layout-drawer>
 
   <mdl-layout-content>
