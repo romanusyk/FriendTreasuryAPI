@@ -21,124 +21,131 @@ import { UserStorageService } from '../../shared/services/user-storage.service';
 import { Observable } from 'rxjs/Observable';
 import { Preferences } from '../../shared/models/preferences.model';
 @Component({
-    selector: 'ft-main-page',
-    templateUrl: 'main-page.component.html',
-    styleUrls: ['main-page.component.scss']
+  selector: 'ft-main-page',
+  templateUrl: 'main-page.component.html',
+  styleUrls: ['main-page.component.scss']
 })
 export class MainPageComponent implements OnInit, OnDestroy {
-    groups: Array<Group> = new Array();
-    subscription: SubscriptionList;
-    preferences: Preferences;
-    constructor(
-        private groupService: GroupService,
-        private paymentService: PaymentsService,
-        private userService: UserService,
-        private userStorageService: UserStorageService,
-        private authService: AuthService,
-        private toastrManager: ToastsManager,
-        private dialogService: MdlDialogService,
-        private router: Router,
-        private inviteService: InviteService,
-        private filtersService: PaymentFiltersService,
-        public responsive: ResponsiveDetectorService,
-        private preferencesService: AppPreferencesService
-    ) {
-      const subscription = this.preferencesService.preferencesChanged.subscribe(data => this.preferences = data);
-      this.subscription = new SubscriptionList();
-      this.subscription.add(subscription);
-    }
+  groups: Array<Group> = new Array();
+  subscription: SubscriptionList;
+  preferences: Preferences;
+  user: User;
+  constructor(
+    private groupService: GroupService,
+    private paymentService: PaymentsService,
+    private userService: UserService,
+    private userStorageService: UserStorageService,
+    private authService: AuthService,
+    private toastrManager: ToastsManager,
+    private dialogService: MdlDialogService,
+    private router: Router,
+    private inviteService: InviteService,
+    private filtersService: PaymentFiltersService,
+    public responsive: ResponsiveDetectorService,
+    private preferencesService: AppPreferencesService
+  ) {
+    const subscription = this.preferencesService.preferencesChanged.subscribe(data => {
+      this.preferences = data;
+      if (data.currentUser != null) {
+        this.user = data.currentUser;
+      }
+    });
+    this.subscription = new SubscriptionList();
+    this.subscription.add(subscription);
+  }
 
-    ngOnInit(): void {
-        this.preferencesService.asign({currentUser: this.userStorageService.get().user});
+  ngOnInit(): void {
+    this.user = this.userStorageService.get().user;
+    this.preferencesService.asign({ currentUser: this.user });
+    this.updateCurrentUserProfile();
+    this.updateGroupsList();
+  }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+  updateCurrentUserProfile() {
+    const userEnrichSubscription: Subscription = this.userService.enrich(this.user).subscribe(
+      (data) => this.preferencesService.asign({ currentUser: data }),
+      err => {
+        console.log(err);
+        this.toastrManager.error('Error');
+      },
+      () => userEnrichSubscription.unsubscribe()
+    );
+  }
+
+  updateGroupsList() {
+    this.subscription.add(this.groupService.getWithPayments(this.user.id).subscribe(
+      (data) => {
+        this.groups = data;
+        const name = this.inviteService.get();
+        if (!!name) {
+          this.preferencesService.asign({
+            currentGroup: data.find(group => group.name === name)
+          });
+          this.inviteService.destroy();
+        }
+      },
+      err => {
+        console.log(err);
+        this.toastrManager.error('Error');
+      }
+    ));
+  }
+
+  onGroupSelect(group: Group): void {
+    this.preferencesService.asign({
+      currentGroup: group,
+    });
+    this.filtersService.changeFilters(new PaymentFilters({
+      group: group.id
+    }));
+    this.userService.getUsersInGroup(group.id).subscribe(
+      (data) => this.preferencesService.asign({ currentGroup: Object.assign(this.preferences.currentGroup, { users: data }) }),
+      (err) => {
+        console.log(err);
+        this.toastrManager.error('Error');
+      }
+    );
+  }
+
+  onCreatePaymentComplete(model: CreatePaymentModel) {
+    model.group = this.preferences.currentGroup.id;
+    model.shallIPayForMyself = model.shallIPayForMyself ? 1 : 0;
+    this.paymentService.create(model).subscribe(
+      (success) => {
+        this.filtersService.reload();
         this.updateGroupsList();
         this.updateCurrentUserProfile();
-    }
-    ngOnDestroy(): void {
-        this.subscription.unsubscribe();
-    }
-
-    updateCurrentUserProfile() {
-      const userEnrichSubscription: Subscription = this.userService.enrich(this.preferences.currentUser).subscribe(
-        (data) => this.preferencesService.asign({currentUser: data}),
-        err => {
-            console.log(err);
-            this.toastrManager.error('Error');
-        },
-        () => userEnrichSubscription.unsubscribe()
+        this.toastrManager.success('Payment Created');
+      },
+      (err) => {
+        this.toastrManager.error('Payment error');
+      }
     );
-    }
+  }
 
-    updateGroupsList() {
-        this.subscription.add(this.groupService.getWithPayments(this.preferences.currentGroup.id).subscribe(
-            (data) => {
-                this.groups = data;
-                const name = this.inviteService.get();
-                if (!!name) {
-                    this.preferencesService.asign({
-                      currentGroup: data.find(group => group.name === name)
-                    });
-                    this.inviteService.destroy();
-                }
-            },
-            err => {
-                console.log(err);
-                this.toastrManager.error('Error');
-            }
-        ));
-    }
+  logout() {
+    this.authService.logout();
+  }
 
-    onGroupSelect(group: Group): void {
-        this.preferencesService.asign({
-            currentGroup: group,
-        });
-        this.filtersService.changeFilters(new PaymentFilters({
-            group: group.id
-        }));
-        this.userService.getUsersInGroup(group.id).subscribe(
-            (data) => this.preferencesService.asign({currentGroup: Object.assign(this.preferences.currentGroup, {users: data})}),
-            (err) => {
-                console.log(err);
-                this.toastrManager.error('Error');
-            }
-        );
-    }
+  isCurrentGroupSelected(): boolean {
+    return !!this.preferences.currentGroup;
+  }
 
-    onCreatePaymentComplete(model: CreatePaymentModel) {
-        model.group = this.preferences.currentGroup.id;
-        model.shallIPayForMyself = model.shallIPayForMyself ? 1 : 0;
-        this.paymentService.create(model).subscribe(
-            (success) => {
-                this.filtersService.reload();
-                this.updateGroupsList();
-                this.updateCurrentUserProfile();
-                this.toastrManager.success('Payment Created');
-            },
-            (err) => {
-                this.toastrManager.error('Payment error');
-            }
-        );
+  generateInvite(): string {
+    if (!this.preferences.currentGroup) {
+      return '';
     }
+    return this.inviteService.generate(this.preferences.currentGroup.name);
+  }
 
-    logout() {
-        this.authService.logout();
-    }
+  onGenerationgSuccess() {
+    this.toastrManager.success('Link copied to clipboard');
+  }
 
-    isCurrentGroupSelected(): boolean {
-        return !!this.preferences.currentGroup;
-    }
-
-    generateInvite(): string {
-        if (!this.preferences.currentGroup) {
-            return '';
-        }
-        return this.inviteService.generate(this.preferences.currentGroup.name);
-    }
-
-    onGenerationgSuccess() {
-        this.toastrManager.success('Link copied to clipboard');
-    }
-
-    onGenerationError() {
-        this.toastrManager.error('Cannot copy link');
-    }
+  onGenerationError() {
+    this.toastrManager.error('Cannot copy link');
+  }
 }

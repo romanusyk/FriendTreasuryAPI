@@ -18,7 +18,7 @@ export class PaymentFiltersComponent implements OnInit {
   constructor(appPreferencesService: AppPreferencesService,
     private filtersService: PaymentFiltersService,
     private responsive: ResponsiveDetectorService) {
-    this.preferences = appPreferencesService.preferences;
+    appPreferencesService.preferencesChanged.subscribe(data => this.preferences = data);
   }
   public ngOnInit(): void {
     this.allowToProcessChanging = true;

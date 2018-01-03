@@ -33,7 +33,9 @@ export class CreatePaymentModalComponent implements OnInit {
     private datePipe: DatePipe,
     private mdlDialogService: MdlDialogService) {
     preferencesService.preferencesChanged.subscribe(data => {
-      this.users = data.currentGroup.users.filter(user => user.id !== data.currentUser.id);
+      if (!!data.currentGroup && !!data.currentGroup.users) {
+        this.users = data.currentGroup.users.filter(user => user.id !== data.currentUser.id);
+      }
     });
   }
 

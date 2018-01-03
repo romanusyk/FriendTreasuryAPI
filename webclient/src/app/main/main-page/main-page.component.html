@@ -1,3 +1,4 @@
+<!-- <div [ngBusy]="subscription.subscription"></div> -->
 <mdl-layout mdl-layout-fixed-header mdl-layout-header-seamed mdl-layout-fixed-drawer>
   <mdl-layout-header>
     <mdl-layout-header-row>
@@ -33,7 +34,7 @@
   </mdl-layout-content>
 </mdl-layout>
 <ft-right-drawer #rightDrawer>
-      <ft-right-menu [user]="preferences.currentUser" (createGroupClick)="createGroup.dialog.show()" (logoutClick)="logout()"></ft-right-menu>
+      <ft-right-menu [user]="user" (createGroupClick)="createGroup.dialog.show()" (logoutClick)="logout()"></ft-right-menu>
   </ft-right-drawer>
 <mdl-menu #groupExternalMenu="mdlMenu"  mdl-menu-position="bottom-right">
   <mdl-menu-item *ngIf="responsive.isPhonePortraitMode()" (click)="createPayment.show()">
