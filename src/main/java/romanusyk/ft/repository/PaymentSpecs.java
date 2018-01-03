@@ -27,7 +27,7 @@ public class PaymentSpecs {
 
     public static Specification<Payment> whereGroup(Integer groupID, Set<Group> userGroups) {
         return (root, criteriaQuery, criteriaBuilder) -> groupID == null || groupID == 0 ?
-                root.get("group").in(userGroups) :
+                userGroups.isEmpty() ? criteriaBuilder.conjunction() : root.get("group").in(userGroups) :
                 criteriaBuilder.equal(root.get("group").get("id"), groupID);
     }
 
