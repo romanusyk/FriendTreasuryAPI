@@ -1,8 +1,8 @@
+import { MdlDialogService, IMdlDialogConfiguration, MdlDialogComponent } from '@angular-mdl/core';
 import { AppPreferencesService } from './../../../../shared/services/app-preferences.service';
 import { Preferences } from './../../../../shared/models/preferences.model';
 import { FormControl } from '@angular/forms';
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-import { MdlDialogComponent, MdlButtonComponent, IMdlDialogConfiguration, MdlTextFieldComponent, MdlDialogService } from '@angular-mdl/core';
 import { MdlDatePickerService } from '@angular-mdl/datepicker';
 import { DatePipe } from '@angular/common';
 import { CreatePaymentModel } from '../../../../shared/models/create-payment.model';
@@ -15,15 +15,14 @@ import { MarkerOptions } from '../../../../shared/models/maps.model';
   styleUrls: ['create-payment-modal.component.scss']
 })
 export class CreatePaymentModalComponent implements OnInit {
-  @Input() users: Array<User>;
   @Output() complete: EventEmitter<CreatePaymentModel> = new EventEmitter();
   @ViewChild('chooseUsersDialog') chooseUsersDialog: MdlDialogComponent;
   @ViewChild('fillDataDialog') fillDataDialog: MdlDialogComponent;
   @ViewChild('mapDialog') mapDialog: MdlDialogComponent;
+  users: Array<User>;
   model: CreatePaymentModel;
   search: string;
   isAllowToShowMap: boolean;
-  preferences: Preferences;
   mapOptions = {
     zoom: 4,
     latitude: 39.8282,
@@ -32,8 +31,10 @@ export class CreatePaymentModalComponent implements OnInit {
   constructor(private datePicker: MdlDatePickerService,
     preferencesService: AppPreferencesService,
     private datePipe: DatePipe,
-  private mdlDialogService: MdlDialogService) {
-    this.preferences = preferencesService.preferences;
+    private mdlDialogService: MdlDialogService) {
+    preferencesService.preferencesChanged.subscribe(data => {
+      this.users = data.currentGroup.users.filter(user => user.id !== data.currentUser.id);
+    });
   }
 
   public ngOnInit(): void {
@@ -41,7 +42,7 @@ export class CreatePaymentModalComponent implements OnInit {
     this.chooseUsersDialog.config = this.createModalConfig();
     this.fillDataDialog.config = this.createModalConfig();
     this.mapDialog.config = this.createModalConfig();
-    this.users = this.users.filter(user => user.id !== this.preferences.currentUserId);
+    this.users = this.users;
     this.isAllowToShowMap = false;
   }
 
@@ -57,6 +58,7 @@ export class CreatePaymentModalComponent implements OnInit {
     }
     this.complete.emit(this.model);
     this.fillDataDialog.close();
+    this.clearData();
   }
 
   public onCancel() {

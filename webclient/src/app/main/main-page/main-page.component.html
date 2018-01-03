@@ -33,7 +33,7 @@
   </mdl-layout-content>
 </mdl-layout>
 <ft-right-drawer #rightDrawer>
-      <ft-right-menu [user]="currentUser" (createGroupClick)="createGroup.dialog.show()" (logoutClick)="logout()"></ft-right-menu>
+      <ft-right-menu [user]="preferences.currentUser" (createGroupClick)="createGroup.dialog.show()" (logoutClick)="logout()"></ft-right-menu>
   </ft-right-drawer>
 <mdl-menu #groupExternalMenu="mdlMenu"  mdl-menu-position="bottom-right">
   <mdl-menu-item *ngIf="responsive.isPhonePortraitMode()" (click)="createPayment.show()">
@@ -47,5 +47,5 @@
   Generate invite link</mdl-menu-item>
 </mdl-menu>
 <ft-create-group #createGroup (complete)="updateGroupsList()"></ft-create-group>
-<ft-create-payment-modal #createPayment (complete)="onCreatePaymentComplete($event)" [users]="users">
+<ft-create-payment-modal #createPayment (complete)="onCreatePaymentComplete($event)">
 </ft-create-payment-modal>

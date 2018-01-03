@@ -10,7 +10,6 @@ import { NgModule } from '@angular/core';
 import { AvatarModule } from 'ngx-avatar';
 import { MdlModule, MdlDialogModule, MdlButtonModule } from '@angular-mdl/core';
 import { BusyModule } from 'angular2-busy';
-import { SearchComponent } from './search/search/search.component';
 import { ClipboardModule } from 'ngx-clipboard';
 import { MainPageComponent } from './main-page/main-page.component';
 import { MdlDatePickerModule } from '@angular-mdl/datepicker';
@@ -37,7 +36,6 @@ const config = ConfigManager.config;
     declarations: [
         GroupListComponent,
         MainPageComponent,
-        SearchComponent,
         CreateGroupComponent,
         RightMenuComponent
     ],

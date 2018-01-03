@@ -43,7 +43,7 @@ export class PaymentFiltersComponent implements OnInit {
     this.allowToProcessChanging = false;
     switch (type.toLowerCase()) {
       case 'user':
-        this.model.user = !!this.model.user ? 0 : this.preferences.currentUserId;
+        this.model.user = !!this.model.user ? 0 : this.preferences.currentUser.id;
         break;
       case 'user from':
         this.model.from = 0;
@@ -55,7 +55,7 @@ export class PaymentFiltersComponent implements OnInit {
         this.model.sum = !this.model.sum;
         break;
       case 'group':
-        this.model.group = this.model.group > -1 ? -1 : this.preferences.currentGroupId;
+        this.model.group = this.model.group > -1 ? -1 : this.preferences.currentGroup.id;
         break;
       default:
         break;

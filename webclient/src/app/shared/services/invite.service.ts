@@ -1,3 +1,4 @@
+import { ConfigManager } from './../../config/app.config';
 import { ApiService } from './api.service';
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
@@ -24,5 +25,10 @@ export class InviteService {
 
     destroy() {
         localStorage.removeItem(this.name);
+    }
+
+    generate(name: string) {
+      const config =  ConfigManager.config;
+      return config.frontEndUrl + '/' + config.routes.invite + '/' + name;
     }
 }

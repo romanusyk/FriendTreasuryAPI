@@ -1,3 +1,4 @@
+import { SubscriptionList } from './../../shared/models/subscription.model';
 import { ResponsiveDetectorService } from './../../shared/services/responsive-detector.service';
 import { PaymentsService } from './../../shared/services/payments.service';
 import { AppPreferencesService } from './../../shared/services/app-preferences.service';
@@ -18,6 +19,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../../shared/services/user.service';
 import { UserStorageService } from '../../shared/services/user-storage.service';
 import { Observable } from 'rxjs/Observable';
+import { Preferences } from '../../shared/models/preferences.model';
 @Component({
     selector: 'ft-main-page',
     templateUrl: 'main-page.component.html',
@@ -25,12 +27,8 @@ import { Observable } from 'rxjs/Observable';
 })
 export class MainPageComponent implements OnInit, OnDestroy {
     groups: Array<Group> = new Array();
-    currentGroup: Group;
-    users: Array<User> = new Array();
-    filters: PaymentFilters;
-    groupsBusy: Subscription;
-    paymentsBusy: Subscription;
-    currentUser: User;
+    subscription: SubscriptionList;
+    preferences: Preferences;
     constructor(
         private groupService: GroupService,
         private paymentService: PaymentsService,
@@ -45,37 +43,40 @@ export class MainPageComponent implements OnInit, OnDestroy {
         public responsive: ResponsiveDetectorService,
         private preferencesService: AppPreferencesService
     ) {
+      const subscription = this.preferencesService.preferencesChanged.subscribe(data => this.preferences = data);
+      this.subscription = new SubscriptionList();
+      this.subscription.add(subscription);
     }
 
     ngOnInit(): void {
-        this.filters = new PaymentFilters();
-        this.currentUser = this.userStorageService.get().user;
+        this.preferencesService.asign({currentUser: this.userStorageService.get().user});
         this.updateGroupsList();
-        const userEnrichSubscription: Subscription = this.userService.enrich(this.currentUser).subscribe(
-            (data) => this.currentUser = data,
-            err => {
-                console.log(err);
-                this.toastrManager.error('Error');
-            },
-            () => userEnrichSubscription.unsubscribe()
-        );
+        this.updateCurrentUserProfile();
     }
     ngOnDestroy(): void {
-        if (!!this.groupsBusy) {
-            this.groupsBusy.unsubscribe();
-        }
-        if (!!this.paymentsBusy) {
-            this.paymentsBusy.unsubscribe();
-        }
+        this.subscription.unsubscribe();
+    }
+
+    updateCurrentUserProfile() {
+      const userEnrichSubscription: Subscription = this.userService.enrich(this.preferences.currentUser).subscribe(
+        (data) => this.preferencesService.asign({currentUser: data}),
+        err => {
+            console.log(err);
+            this.toastrManager.error('Error');
+        },
+        () => userEnrichSubscription.unsubscribe()
+    );
     }
 
     updateGroupsList() {
-        this.groupsBusy = this.groupService.getWithPayments(this.currentUser.id).subscribe(
+        this.subscription.add(this.groupService.getWithPayments(this.preferences.currentGroup.id).subscribe(
             (data) => {
                 this.groups = data;
                 const name = this.inviteService.get();
                 if (!!name) {
-                    this.currentGroup = data.find(group => group.name === name);
+                    this.preferencesService.asign({
+                      currentGroup: data.find(group => group.name === name)
+                    });
                     this.inviteService.destroy();
                 }
             },
@@ -83,20 +84,18 @@ export class MainPageComponent implements OnInit, OnDestroy {
                 console.log(err);
                 this.toastrManager.error('Error');
             }
-        );
+        ));
     }
 
     onGroupSelect(group: Group): void {
-        this.currentGroup = group;
         this.preferencesService.asign({
-            currentGroupId: group.id,
-            currentUserId: this.currentUser.id
+            currentGroup: group,
         });
         this.filtersService.changeFilters(new PaymentFilters({
             group: group.id
         }));
         this.userService.getUsersInGroup(group.id).subscribe(
-            (data) => this.users = data.filter(user => user.username !== this.currentUser.username),
+            (data) => this.preferencesService.asign({currentGroup: Object.assign(this.preferences.currentGroup, {users: data})}),
             (err) => {
                 console.log(err);
                 this.toastrManager.error('Error');
@@ -105,11 +104,13 @@ export class MainPageComponent implements OnInit, OnDestroy {
     }
 
     onCreatePaymentComplete(model: CreatePaymentModel) {
-        model.group = this.currentGroup.id;
+        model.group = this.preferences.currentGroup.id;
         model.shallIPayForMyself = model.shallIPayForMyself ? 1 : 0;
         this.paymentService.create(model).subscribe(
             (success) => {
                 this.filtersService.reload();
+                this.updateGroupsList();
+                this.updateCurrentUserProfile();
                 this.toastrManager.success('Payment Created');
             },
             (err) => {
@@ -123,14 +124,14 @@ export class MainPageComponent implements OnInit, OnDestroy {
     }
 
     isCurrentGroupSelected(): boolean {
-        return !!this.currentGroup;
+        return !!this.preferences.currentGroup;
     }
 
     generateInvite(): string {
-        if (!this.currentGroup) {
+        if (!this.preferences.currentGroup) {
             return '';
         }
-        return document.location.origin + '/invite/' + this.currentGroup.name;
+        return this.inviteService.generate(this.preferences.currentGroup.name);
     }
 
     onGenerationgSuccess() {
