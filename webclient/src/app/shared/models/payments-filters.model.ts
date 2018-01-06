@@ -6,7 +6,7 @@ export class PaymentFilters {
     public to?: number;
     public user?: number;
     public page? = 0;
-    public size? = 5;
+    public size? = 10;
     constructor(init?: Partial<PaymentFilters>) {
         Object.assign(this, init);
     }

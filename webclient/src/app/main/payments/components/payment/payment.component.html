@@ -7,16 +7,13 @@
             </div>
             <div class="payment__users">
                 <ft-payment-user (click)="onFromClick.emit(payment.userFrom.id)" [user]="payment.userFrom" [amount]="payment.amount"></ft-payment-user>
-            </div>
-            <div class="payment__users">
+                <span class="payment__arrow">&#10230;</span>
                 <ft-payment-user (click)="onToClick.emit(payment.userTo.id)" [user]="payment.userTo" [amount]="0.00"></ft-payment-user>
             </div>
+           
         </div>
         <div class="payment__info_additional">
             <div class="payment__date">{{payment.timestamp | date}}</div>
         </div>
-    </div>
-    <div class="payment__more-toggle">
-        More
     </div>
 </div>
