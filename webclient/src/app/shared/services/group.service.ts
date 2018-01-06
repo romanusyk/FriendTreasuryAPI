@@ -21,7 +21,11 @@ export class GroupService {
     }
 
     create(group: Group): Observable<any> {
-        return this.apiService.post('groups' ,group);
+        return this.apiService.post('groups', group);
+    }
+
+    edit(group: Group): Observable<any> {
+        return this.apiService.put('group', group);
     }
 
     getWithPayments(userId: number): Observable<any> {
@@ -32,9 +36,7 @@ export class GroupService {
         return Observable.forkJoin(
             this.getGroups(),
             this.paymentsService.get(filters)
-        ).map(
-            (data: Array<any>) => this.enrich(data[0], data[1])
-        );
+        ).map((data: Array<any>) => this.enrich(data[0], data[1]));
     }
 
     private enrich(groups: Array<Group>, payments: Array<PaymentDTO>): Array<Group> {

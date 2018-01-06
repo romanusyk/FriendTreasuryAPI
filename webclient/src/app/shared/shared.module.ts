@@ -25,6 +25,7 @@ import { LoginGuard } from './guards/login.guard';
 import { UserService } from './services/user.service';
 import { ErrorTransformingService } from './services/error-transforming.service';
 import { EmptyMessageComponent } from './components/empty-message/empty-message.component';
+import { BusyComponent } from './components/busy/busy.component';
 const config = ConfigManager.config;
 @NgModule({
   imports: [
@@ -44,7 +45,8 @@ const config = ConfigManager.config;
     Error404Component,
     MapComponent,
     SearchPipe,
-    EmptyMessageComponent
+    EmptyMessageComponent,
+    BusyComponent
   ],
   providers: [
     UserStorageService,
@@ -59,13 +61,15 @@ const config = ConfigManager.config;
     InviteService,
     ErrorTransformingService,
     AppPreferencesService,
-    ResponsiveDetectorService
+    ResponsiveDetectorService,
+    BusyComponent
   ],
   exports: [
     Error404Component,
     MapComponent,
     SearchPipe,
-    EmptyMessageComponent
+    EmptyMessageComponent,
+    BusyComponent
   ]
 })
 export class SharedModule {

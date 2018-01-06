@@ -16,8 +16,8 @@
        [disabled]="disabled"
        [required]="required"
        [autofocus]="autofocus"
-       [readonly]="readonly"
-       ></textarea>
+       [readonly]="readonly">
+    </textarea>
     <input
        *ngIf="!rows"
        #input
@@ -40,11 +40,10 @@
        [autofocus]="autofocus"
        [readonly]="readonly"
        [attr.tabindex]="tabindex"
-       [maxlength]="maxlength"
-       >
+       [maxlength]="maxlength">
     <label class="mdl-textfield__label" [attr.for]="id">{{label}}</label>
-    <span class="mdl-textfield__error">{{errors}}</span>
-  </div>
+    <span class="mdl-textfield__error" *ngIf="!this.inputEl && !isValid">{{errors}}</span>
+</div>
   <div *ngIf="icon">
      <button mdl-button mdl-button-type="icon" (click)="setFocus()">
         <mdl-icon>{{icon}}</mdl-icon>

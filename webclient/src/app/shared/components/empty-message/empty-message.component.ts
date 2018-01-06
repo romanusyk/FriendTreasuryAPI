@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'ft-empty-message',
@@ -7,6 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 
 export class EmptyMessageComponent {
-  @Input() iconClass: string;
-  @Input() text: string;
+  @Input() icon: string;
+  @Input() actionText: string;
+  @Output() action: EventEmitter<any> = new EventEmitter();
 }

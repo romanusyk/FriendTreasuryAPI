@@ -4,10 +4,9 @@ import { PaymentsService } from './../../shared/services/payments.service';
 import { AppPreferencesService } from './../../shared/services/app-preferences.service';
 import { PaymentFiltersService } from './../payments/services/payment-filters.service';
 import { InviteService } from './../../shared/services/invite.service';
-import { CreateGroupComponent } from '../create-group/create-group.component';
 import { AuthService } from './../../shared/services/auth.service';
 import { PaymentFilters } from './../../shared/models/payments-filters.model';
-import { MdlDialogService } from '@angular-mdl/core';
+import { MdlDialogService, MdlLayoutDrawerComponent } from '@angular-mdl/core';
 import { User } from './../../shared/models/user.model';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { CreatePaymentModel } from './../../shared/models/create-payment.model';
@@ -20,6 +19,8 @@ import { UserService } from '../../shared/services/user.service';
 import { UserStorageService } from '../../shared/services/user-storage.service';
 import { Observable } from 'rxjs/Observable';
 import { Preferences } from '../../shared/models/preferences.model';
+import { BusyComponent } from '../../shared/components/busy/busy.component';
+import { RightDrawerComponent } from '../../shared/override-mdl/right-drawer/right-drawer.component';
 @Component({
   selector: 'ft-main-page',
   templateUrl: 'main-page.component.html',
@@ -30,6 +31,10 @@ export class MainPageComponent implements OnInit, OnDestroy {
   subscription: SubscriptionList;
   preferences: Preferences;
   user: User;
+  // View Childs
+  @ViewChild('loading') loading: BusyComponent;
+  @ViewChild('rightDrawer') rightDrawer: RightDrawerComponent;
+  @ViewChild('leftDrawer') leftDrawer: MdlLayoutDrawerComponent;
   constructor(
     private groupService: GroupService,
     private paymentService: PaymentsService,
@@ -50,6 +55,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
         this.user = data.currentUser;
       }
     });
+    this.preferencesService.init(this);
     this.subscription = new SubscriptionList();
     this.subscription.add(subscription);
   }

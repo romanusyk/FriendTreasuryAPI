@@ -1,4 +1,3 @@
-import { BusyModule } from 'angular2-busy';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from './../shared/shared.module';
 import { NgModule } from '@angular/core';
@@ -8,7 +7,6 @@ import { InviteComponent } from './invite.component';
     imports: [
         SharedModule,
         RouterModule,
-        BusyModule
     ],
     declarations: [
         InviteComponent,

@@ -72,7 +72,6 @@ export class MapComponent implements OnInit {
         this.config.longitude = position.coords.longitude;
         this.config.marker = {latitude : this.config.latitude, longitude: this.config.longitude};
         this.config.zoom = 12;
-        console.log(this.config);
       });
     }
   }

@@ -8,7 +8,6 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
 export class RightDrawerComponent {
     private _state = false;
-    public className = '';
 
     public get state() {
         return this._state;
@@ -20,7 +19,5 @@ export class RightDrawerComponent {
 
     public show() {
         this._state = true;
-        this.className = 'active'
-        console.log(this.state)
     }
 }

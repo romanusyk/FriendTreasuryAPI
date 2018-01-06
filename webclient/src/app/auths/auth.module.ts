@@ -6,7 +6,6 @@ import { SharedModule } from './../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { MdlModule } from '@angular-mdl/core';
-import { BusyModule } from 'angular2-busy';
 
 @NgModule({
     imports: [
@@ -16,7 +15,6 @@ import { BusyModule } from 'angular2-busy';
         SharedModule,
         ReactiveFormsModule,
         MdlModule,
-        BusyModule,
         OverrideMDLModule
     ],
     declarations: [

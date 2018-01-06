@@ -8,6 +8,6 @@
     <ft-debt *ngFor="let debt of payments" [debt]="debt"></ft-debt>
 </div>
 
-<div class="payments__empty-message" *ngIf="isAllowToShowEmptyMessage()">
-    U curently have zero payments
-</div>
+<ft-empty-message [icon]="'user'" *ngIf="isAllowToShowEmptyMessage()">
+    Please, chose group from list to show payments
+</ft-empty-message>

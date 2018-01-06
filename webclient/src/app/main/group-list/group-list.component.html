@@ -18,4 +18,7 @@
             </span>
         </div>
     </li>
+    <ft-empty-message *ngIf="!(groups && groups.length > 0)" icon="user" actionText="Create group" (action)="createGroupClick.emit()">
+        You don't have groups, please click button bellow to create one
+    </ft-empty-message>
 </ul>
