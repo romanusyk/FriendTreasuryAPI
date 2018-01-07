@@ -4,8 +4,10 @@
       mdl-button 
       mdl-ripple  
       mdl-colored="accent"
-      mdl-button-type="{{isActive(filter) ? 'raised' : ''}}"
+      mdl-button-type="{{getButtonType(filter)}}"
+      [title]="filter"
       (click)="onChange(filter)">
-      {{optimizeName(filter)}}
+      <i class="fa fa-{{getIcon(filter)}}"></i>
+      <span *ngIf="!responsive.isPhonePortraitMode()">{{filter}}</span>
     </button>
 </nav>

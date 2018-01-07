@@ -7,6 +7,7 @@ import { PaymentFilters } from './../../../shared/models/payments-filters.model'
 import { DebtModel } from './../../../shared/models/debt.model';
 import { PaymentDTO } from './../../../shared/models/paymentDTO.model';
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { AppPreferencesService } from '../../../shared/services/app-preferences.service';
 
 @Component({
   selector: 'ft-payments',
@@ -22,7 +23,9 @@ export class PaymentsEntryComponent implements OnInit, OnDestroy {
   public totalItems: number;
   public payments: Array<DebtModel | PaymentDTO>;
   public subscription: Subscription;
-  constructor(private filtersService: PaymentFiltersService, private paymentService: PaymentsService) {
+  constructor(private filtersService: PaymentFiltersService,
+    private paymentService: PaymentsService,
+    private preferencesService: AppPreferencesService) {
   }
 
   ngOnInit() {
@@ -79,6 +82,9 @@ export class PaymentsEntryComponent implements OnInit, OnDestroy {
 
   updateData() {
     this.isLoading = true;
+    if (this.filters.page === 0) {
+      this.preferencesService.loading.show();
+    }
     const subscription = this.paymentService.get(this.filters).subscribe(
       (data) => {
         if (!this.filters.sum) {
@@ -87,9 +93,13 @@ export class PaymentsEntryComponent implements OnInit, OnDestroy {
         } else {
           this.payments = data;
         }
+        this.preferencesService.loading.hide();
+        this.isLoading = false;
+        subscription.unsubscribe();
       },
-      (err) => console.log(err),
-      () => {
+      (err) => {
+        console.log(err);
+        this.preferencesService.loading.hide();
         this.isLoading = false;
         subscription.unsubscribe();
       }

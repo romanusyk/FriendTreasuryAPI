@@ -9,6 +9,7 @@
     </div>
   </div>
   <div class="empty-message__action" *ngIf="!!actionText">
-    <button (click)="action.emit($event)" mdl-button mdl-button-type="raised" mdl-colored="accent" mdl-ripple  >{{actionText}}</button>
+    <button (click)="action.emit($event)" mdl-button mdl-button-type="raised" mdl-colored="accent" mdl-ripple>
+      <mdl-icon *ngIf="buttonIcon">{{buttonIcon}}</mdl-icon> {{actionText}}</button>
   </div>
 </div>

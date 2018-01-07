@@ -15,9 +15,16 @@ export class PaymentFiltersComponent implements OnInit {
   public preferences: Preferences;
   public allowToProcessChanging: boolean;
   public filters: string[];
+  public filterIcons = {
+    sum: 'cart-arrow-down',
+    group: 'users',
+    userfrom: 'arrow-up',
+    userto: 'arrow-down',
+    user: 'user-circle'
+  };
   constructor(appPreferencesService: AppPreferencesService,
     private filtersService: PaymentFiltersService,
-    private responsive: ResponsiveDetectorService) {
+    public responsive: ResponsiveDetectorService) {
     appPreferencesService.preferencesChanged.subscribe(data => this.preferences = data);
   }
   public ngOnInit(): void {
@@ -82,11 +89,12 @@ export class PaymentFiltersComponent implements OnInit {
     }
   }
 
-  public optimizeName(name: string) {
-    if (this.responsive.isPhonePortraitMode()) {
-      return name.split(' ').map(c => `${c[0]}.`).join('');
-    }
-    return name;
+  public getIcon(filter: string) {
+    return this.filterIcons[filter.replace(' ', '')];
+  }
+
+  public getButtonType(filter) {
+    return this.isActive(filter) ? 'raised' : '';
   }
 
   private updateFilters() {
@@ -104,13 +112,12 @@ export class PaymentFiltersComponent implements OnInit {
   private getSumFilters() {
     return CommonFilters.concat(SumFilters);
   }
-
-
 }
 
 
-export const CommonFilters = ['sum', 'group'];
+const CommonFilters = ['sum', 'group'];
 
-export const SumFilters = ['user'];
+const SumFilters = ['user'];
 
-export const AllFilters = ['user from', 'user to'];
+const AllFilters = ['user from', 'user to'];
+

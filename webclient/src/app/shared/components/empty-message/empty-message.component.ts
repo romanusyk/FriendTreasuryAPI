@@ -8,6 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 export class EmptyMessageComponent {
   @Input() icon: string;
+  @Input('button-icon') buttonIcon: string;
   @Input() actionText: string;
   @Output() action: EventEmitter<any> = new EventEmitter();
 }

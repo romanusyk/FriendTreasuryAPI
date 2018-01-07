@@ -84,6 +84,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   updateGroupsList() {
+    this.loading.show();
     this.subscription.add(this.groupService.getWithPayments(this.user.id).subscribe(
       (data) => {
         this.groups = data;
@@ -94,10 +95,12 @@ export class MainPageComponent implements OnInit, OnDestroy {
           });
           this.inviteService.destroy();
         }
+        this.loading.hide();
       },
       err => {
         console.log(err);
         this.toastrManager.error('Error');
+        this.loading.hide();
       }
     ));
   }
@@ -112,12 +115,15 @@ export class MainPageComponent implements OnInit, OnDestroy {
       group: group.id
     }));
     this.userService.getUsersInGroup(group.id).subscribe(
-      (data) => this.preferencesService.asign({ currentGroup: Object.assign(this.preferences.currentGroup, { users: data }) }),
+      (data) => {
+        this.preferencesService.asign({ currentGroup: Object.assign(this.preferences.currentGroup, { users: data }) });
+        this.loading.hide();
+      },
       (err) => {
         console.log(err);
         this.toastrManager.error('Error');
-      },
-      () => this.loading.hide()
+        this.loading.hide();
+      }
     );
   }
 
