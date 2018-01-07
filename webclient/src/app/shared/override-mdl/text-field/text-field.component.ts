@@ -26,7 +26,7 @@ export class FtTextFieldComponent extends MdlTextFieldComponent {
             const input = (<HTMLInputElement>this.inputEl.nativeElement);
             return input.validity.valid ;
         }
-        return true;
+        return false;
     }
     constructor(
         renderer: Renderer2,

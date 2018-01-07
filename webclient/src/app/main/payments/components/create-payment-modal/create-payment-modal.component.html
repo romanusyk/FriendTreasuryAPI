@@ -1,5 +1,5 @@
 <mdl-dialog #chooseUsersDialog>
-    <h6 class="mdl-dialog__title">Select Users</h6>
+    <!-- <h6 class="mdl-dialog__title">Select Users</h6>
     <mdl-textfield type="text" label="input filter" [(ngModel)]="search"> </mdl-textfield>
         <ul class="create-payment__users">
             <li class="create-payment__user" [ngClass]="{'create-payment__user-selected' : isUserSelected(user.id)}" *ngFor="let user of users | searchBy : search : 'username'">
@@ -10,11 +10,11 @@
         <button mdl-button mdl-button-type="raised" [disabled]="!model.usersTo || model.usersTo.length === 0" mdl-colored="primary" (click)="chooseUsersDialog.close();fillDataDialog.show()"
             mdl-ripple>Next</button>
         <button mdl-button (click)="onCancel()" mdl-ripple>Cancel</button>
-    </div>
+    </div> -->
 </mdl-dialog>
 
 <mdl-dialog #fillDataDialog>
-    <h6 class="mdl-dialog__title">Fill data</h6>
+    <!-- <h6 class="mdl-dialog__title">Fill data</h6>
     <ft-textfield type="text" label="Enter amount" pattern="[0-9]*(\.[0-9]+)?" error-msg="Input is not a number!"
         [(ngModel)]="model.amount">
     </ft-textfield>
@@ -36,11 +36,11 @@
         <button mdl-button *ngIf="!isAllowToShowMap" mdl-button-type="raised" mdl-colored="primary" (click)="onComplete()" mdl-ripple>Save</button>
         <button mdl-button *ngIf="isAllowToShowMap" (click)="fillDataDialog.close();mapDialog.show()" mdl-ripple>Next</button>
         <button mdl-button (click)="fillDataDialog.close();chooseUsersDialog.show()" mdl-ripple>Prev</button>
-    </div>
+    </div> -->
 </mdl-dialog>
 
 <mdl-dialog #mapDialog>
-        <h6 class="mdl-dialog__title">Chose location on map</h6>
+        <!-- <h6 class="mdl-dialog__title">Chose location on map</h6>
         <ft-map
         (markerChanged)="onLocationChanged($event)"
         [isReadOnly]="false"
@@ -50,5 +50,5 @@
                 <button mdl-button (click)="onCancel()" mdl-ripple>Cancel</button>
                 <button mdl-button mdl-button-type="raised" mdl-colored="primary" (click)="onComplete()" mdl-ripple>Save</button>
                 <button mdl-button (click)="mapDialog.close();fillDataDialog.show()" mdl-ripple>Prev</button>
-            </div>
+            </div> -->
 </mdl-dialog>
