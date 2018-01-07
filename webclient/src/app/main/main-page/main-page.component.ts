@@ -1,3 +1,4 @@
+import { ManageGroupComponent } from './../manage-group/manage-group.component';
 import { SubscriptionList } from './../../shared/models/subscription.model';
 import { ResponsiveDetectorService } from './../../shared/services/responsive-detector.service';
 import { PaymentsService } from './../../shared/services/payments.service';
@@ -6,7 +7,7 @@ import { PaymentFiltersService } from './../payments/services/payment-filters.se
 import { InviteService } from './../../shared/services/invite.service';
 import { AuthService } from './../../shared/services/auth.service';
 import { PaymentFilters } from './../../shared/models/payments-filters.model';
-import { MdlDialogService, MdlLayoutDrawerComponent } from '@angular-mdl/core';
+import { MdlDialogService, MdlLayoutDrawerComponent, MdlLayoutComponent } from '@angular-mdl/core';
 import { User } from './../../shared/models/user.model';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { CreatePaymentModel } from './../../shared/models/create-payment.model';
@@ -34,7 +35,8 @@ export class MainPageComponent implements OnInit, OnDestroy {
   // View Childs
   @ViewChild('loading') loading: BusyComponent;
   @ViewChild('rightDrawer') rightDrawer: RightDrawerComponent;
-  @ViewChild('leftDrawer') leftDrawer: MdlLayoutDrawerComponent;
+  @ViewChild('layout') layout: MdlLayoutComponent;
+  @ViewChild(ManageGroupComponent) manageGroup: ManageGroupComponent;
   constructor(
     private groupService: GroupService,
     private paymentService: PaymentsService,
@@ -101,6 +103,8 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   onGroupSelect(group: Group): void {
+    this.layout.closeDrawer();
+    this.loading.show();
     this.preferencesService.asign({
       currentGroup: group,
     });
@@ -112,7 +116,8 @@ export class MainPageComponent implements OnInit, OnDestroy {
       (err) => {
         console.log(err);
         this.toastrManager.error('Error');
-      }
+      },
+      () => this.loading.hide()
     );
   }
 
@@ -153,5 +158,22 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   onGenerationError() {
     this.toastrManager.error('Cannot copy link');
+  }
+
+  onEditGroupClick($event) {
+    this.manageGroup.show(this.preferences.currentGroup);
+  }
+
+  onCreateGroupClick($event) {
+    this.layout.closeDrawer();
+    this.rightDrawer.hide();
+    this.manageGroup.show();
+  }
+
+  onManageGroupComplete(group: Group) {
+    this.updateGroupsList();
+    if (!!this.preferences.currentGroup) {
+      this.preferencesService.asign({ currentGroup: group });
+    }
   }
 }

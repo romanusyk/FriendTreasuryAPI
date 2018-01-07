@@ -1,5 +1,5 @@
 <ft-busy #loading></ft-busy>
-<mdl-layout mdl-layout-fixed-header mdl-layout-header-seamed mdl-layout-fixed-drawer>
+<mdl-layout mdl-layout-fixed-header mdl-layout-header-seamed mdl-layout-fixed-drawer #layout="mdlLayout">
   <mdl-layout-header>
     <mdl-layout-header-row>
 
@@ -23,7 +23,7 @@
 
   </mdl-layout-header>
   <mdl-layout-drawer #leftDrawer>
-    <ft-group-list [groups]="groups" (select)="onGroupSelect($event)" (createGroupClick)="createGroup.show()"></ft-group-list>
+    <ft-group-list [groups]="groups" (select)="onGroupSelect($event);" (createGroupClick)="onCreateGroupClick()"></ft-group-list>
   </mdl-layout-drawer>
 
   <mdl-layout-content>
@@ -37,9 +37,12 @@
   </mdl-layout-content>
 </mdl-layout>
 <ft-right-drawer #rightDrawer>
-  <ft-right-menu [user]="user" (createGroupClick)="createGroup.show()" (logoutClick)="logout()"></ft-right-menu>
+  <ft-right-menu [user]="user" (createGroupClick)="onCreateGroupClick()" (logoutClick)="logout()"></ft-right-menu>
 </ft-right-drawer>
 <mdl-menu #groupExternalMenu="mdlMenu" mdl-menu-position="bottom-right">
+    <mdl-menu-item (click)="onEditGroupClick($event)">
+      Edit group
+    </mdl-menu-item>
   <mdl-menu-item *ngIf="responsive.isPhonePortraitMode()" (click)="createPayment.show()">
     Create payment
   </mdl-menu-item>
@@ -47,6 +50,6 @@
     Generate invite link
   </mdl-menu-item>
 </mdl-menu>
-<ft-manage-group #createGroup (complete)="updateGroupsList()"></ft-manage-group>
+<ft-manage-group #createGroup (complete)="onManageGroupComplete($event)"></ft-manage-group>
 <ft-create-payment-modal #createPayment (complete)="onCreatePaymentComplete($event)">
 </ft-create-payment-modal>

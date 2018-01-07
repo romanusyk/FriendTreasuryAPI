@@ -24,9 +24,9 @@ export class ManageGroupComponent {
 
     public onSave() {
         this.preferencesService.loading.show();
-        const subscription = this.groupService.create(this.model).subscribe(
+        const subscription = (this.isEdit ? this.groupService.edit(this.model) : this.groupService.create(this.model)).subscribe(
             (data) => {
-                this.complete.emit();
+                this.complete.emit(this.model);
                 this.preferencesService.loading.hide();
                 this.close();
                 subscription.unsubscribe();
@@ -47,12 +47,12 @@ export class ManageGroupComponent {
     }
 
     public show(group?: Group) {
+        this.model = new Group();
         if (!!group) {
             this.isEdit = true;
-            this.model = group;
+            this.model = Object.assign(this.model,group)
         } else {
             this.isEdit = false;
-            this.model = new Group();
         }
         const subscription = this.dialogService.showDialogTemplate(this.dialogTemplate, {
 

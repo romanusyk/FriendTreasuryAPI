@@ -25,7 +25,7 @@ export class GroupService {
     }
 
     edit(group: Group): Observable<any> {
-        return this.apiService.put('group', group);
+        return this.apiService.patch('groups', group);
     }
 
     getWithPayments(userId: number): Observable<any> {
