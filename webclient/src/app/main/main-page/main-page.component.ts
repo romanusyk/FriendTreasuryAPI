@@ -172,7 +172,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
     this.manageGroup.show(this.preferences.currentGroup);
   }
 
-  onCreateGroupClick($event) {
+  onCreateGroupClick() {
     this.layout.closeDrawer();
     this.rightDrawer.hide();
     this.manageGroup.show();
