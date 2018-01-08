@@ -1,23 +1,26 @@
+import { SubscriptionList } from './../shared/models/subscription.model';
 import { InviteService } from './../shared/services/invite.service';
 import { AuthService } from './../shared/services/auth.service';
 import { FtValidators } from './../shared/validators/ft-validators';
 import { Error, ErrorsList } from './../shared/models/error.model';
 import { Credentials, CredentialsType } from './../shared/models/credentials.model';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { ErrorTransformingService } from '../shared/services/error-transforming.service';
+import { BusyComponent } from '../shared/components/busy/busy.component';
 @Component({
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss']
 })
-export class AuthComponent implements OnInit {
+export class AuthComponent implements OnInit, OnDestroy {
   authType = CredentialsType.login;
   title: string;
-  busy: Subscription;
+  subscription: SubscriptionList;
   errors = new ErrorsList();
   authForm: FormGroup;
+  @ViewChild(BusyComponent) loading: BusyComponent;
   constructor(private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
@@ -28,6 +31,7 @@ export class AuthComponent implements OnInit {
       'username': ['', Validators.required],
       'password': ['', Validators.required]
     });
+    this.subscription = new SubscriptionList();
   }
   ngOnInit() {
     this.route.url.subscribe(data => {
@@ -57,10 +61,15 @@ export class AuthComponent implements OnInit {
     });
     this.authForm.valueChanges.subscribe(p => this.onValueChange(p, this.authForm));
   }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
   submitForm() {
     this.errors.clear();
     const credentials = this.authForm.value;
-    this.busy = this.authService
+    this.loading.show();
+    this.subscription.add(this.authService
       .attemptAuth(this.authType, credentials)
       .subscribe(
       data => {
@@ -70,10 +79,14 @@ export class AuthComponent implements OnInit {
         } else {
           this.router.navigateByUrl('/invite/' + name);
         }
+        this.loading.hide();
+
       },
       (err) => {
         this.errors.push('*', this.errorTransforming.transformServerError(err));
-      });
+        this.loading.hide();
+
+      }));
   }
 
   onValueChange(data: any, form: FormGroup) {

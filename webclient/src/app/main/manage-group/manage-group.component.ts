@@ -1,5 +1,5 @@
 import { Subscription } from 'rxjs/Rx';
-import { MdlDialogComponent, MdlDialogService, MdlDialogReference } from '@angular-mdl/core';
+import { MdlDialogComponent, MdlDialogService, MdlDialogReference, IMdlDialogConfiguration } from '@angular-mdl/core';
 import { Group } from './../../shared/models/group.model';
 import { GroupService } from './../../shared/services/group.service';
 import { Component, Output, EventEmitter, ViewChild, TemplateRef } from '@angular/core';
@@ -54,11 +54,19 @@ export class ManageGroupComponent {
         } else {
             this.isEdit = false;
         }
-        const subscription = this.dialogService.showDialogTemplate(this.dialogTemplate, {
-
-        }).subscribe(data => {
+        const subscription = this.dialogService.showDialogTemplate(this.dialogTemplate, this.createModalConfig())
+        .subscribe(data => {
             this.dialog = data;
             subscription.unsubscribe();
         });
     }
+
+    private createModalConfig(): IMdlDialogConfiguration {
+        return {
+          clickOutsideToClose: false,
+          isModal: true,
+          enterTransitionDuration: 400,
+          leaveTransitionDuration: 400
+        };
+      }
 }

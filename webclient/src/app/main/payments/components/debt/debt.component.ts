@@ -1,5 +1,6 @@
 import { DebtModel } from './../../../../shared/models/debt.model';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { User } from '../../../../shared/models/user.model';
 
 @Component({
   selector: 'ft-debt',
@@ -7,7 +8,12 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./debt.component.scss']
 })
 
-export class DebtComponent {
+export class DebtComponent implements OnInit {
   @Input() debt: DebtModel;
+
+  public ngOnInit() {
+    if (this.debt && !this.debt.userTo) {
+      this.debt.userTo = { username: 'All' };
+    }
+  }
 }
- 

@@ -1,7 +1,7 @@
 import { Token } from './token.model';
 
 export class User {
-  id: number;
+  id?: number;
   phone?: string;
   username: string;
   debt?: number;

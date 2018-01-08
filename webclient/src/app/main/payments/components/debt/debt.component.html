@@ -1,13 +1,13 @@
-<div class="debt">
-    <div class="debt__user">
+<div class="debt" mdl-shadow="2">
+    <div class="debt__user" [title]="debt.userFrom.username">
         <ngx-avatar [name]="debt.userFrom.username"></ngx-avatar>
         <div class="debt__user-name">{{debt.userFrom.username}}</div>
     </div>
-    <div class="debt__arrow"></div>
-    <div class="debt__amount">{{debt.amount}}</div>
-    <div class="debt__arrow"></div>
+    <div class="debt__arrow">&#10230;</div>
+    <div class="debt__amount" [amountColor]="debt.amount">{{debt.amount}}</div>
+    <div class="debt__arrow">&#10230;</div>
     <div class="debt__user">
-        <ngx-avatar [name]="debt.userTo.username"></ngx-avatar>
-        <div class="debt__user-name">{{debt.userTo.username}}</div>
+        <ngx-avatar [name]="!!debt.userTo.username ? debt.userTo.username : 'all'"></ngx-avatar>
+        <div class="debt__user-name">{{!!debt.userTo.username ? debt.userTo.username : 'all'}}</div>
     </div>
 </div>
