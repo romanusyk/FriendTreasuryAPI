@@ -1,4 +1,6 @@
+import { User } from './user.model';
+import { Group } from './group.model';
 export class Preferences {
-  public currentGroupId: number;
-  public currentUserId: number;
+  public currentGroup?: Group;
+  public currentUser?: User;
 }

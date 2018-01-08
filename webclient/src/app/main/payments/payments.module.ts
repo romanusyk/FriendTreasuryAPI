@@ -1,5 +1,4 @@
 import { OverrideMDLModule } from './../../shared/override-mdl/override-mdl.module';
-import { BusyModule } from 'angular2-busy';
 import { PaymentComponent } from './components/payment/payment.component';
 import { DebtComponent } from './components/debt/debt.component';
 import { PaymentsEntryComponent } from './components/payments-entry.component';

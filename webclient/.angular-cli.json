@@ -24,8 +24,7 @@
         "assets/icon-font.scss",
         "assets/mixins.scss",
         "../node_modules/font-awesome/css/font-awesome.css",
-        "../node_modules/ng2-toastr/bundles/ng2-toastr.min.css",
-        "../node_modules/angular2-busy/build/style/busy.css"
+        "../node_modules/ng2-toastr/bundles/ng2-toastr.min.css"
       ],
       "scripts": [
       ],

@@ -17,10 +17,17 @@ import { MdlTextFieldComponent, DISABLE_NATIVE_VALIDITY_CHECKING } from '@angula
         '[class.mdl-textfield--expandable]': 'icon',
         '[class.mdl-textfield--floating-label]': 'isFloatingLabel',
         '[class.has-placeholder]': 'placeholder'
-      },
+    },
 })
 export class FtTextFieldComponent extends MdlTextFieldComponent {
     @Input() errors: string;
+    public get isValid() {
+        if (!!this.inputEl && !!this.inputEl.nativeElement && !!this.inputEl.nativeElement.validity) {
+            const input = (<HTMLInputElement>this.inputEl.nativeElement);
+            return input.validity.valid ;
+        }
+        return false;
+    }
     constructor(
         renderer: Renderer2,
         elmRef: ElementRef,

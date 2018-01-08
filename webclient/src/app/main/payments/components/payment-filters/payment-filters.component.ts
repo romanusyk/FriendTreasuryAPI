@@ -15,10 +15,17 @@ export class PaymentFiltersComponent implements OnInit {
   public preferences: Preferences;
   public allowToProcessChanging: boolean;
   public filters: string[];
+  public filterIcons = {
+    sum: 'cart-arrow-down',
+    group: 'users',
+    userfrom: 'arrow-up',
+    userto: 'arrow-down',
+    user: 'user-circle'
+  };
   constructor(appPreferencesService: AppPreferencesService,
     private filtersService: PaymentFiltersService,
-    private responsive: ResponsiveDetectorService) {
-    this.preferences = appPreferencesService.preferences;
+    public responsive: ResponsiveDetectorService) {
+    appPreferencesService.preferencesChanged.subscribe(data => this.preferences = data);
   }
   public ngOnInit(): void {
     this.allowToProcessChanging = true;
@@ -43,7 +50,7 @@ export class PaymentFiltersComponent implements OnInit {
     this.allowToProcessChanging = false;
     switch (type.toLowerCase()) {
       case 'user':
-        this.model.user = !!this.model.user ? 0 : this.preferences.currentUserId;
+        this.model.user = !!this.model.user ? 0 : this.preferences.currentUser.id;
         break;
       case 'user from':
         this.model.from = 0;
@@ -55,7 +62,7 @@ export class PaymentFiltersComponent implements OnInit {
         this.model.sum = !this.model.sum;
         break;
       case 'group':
-        this.model.group = this.model.group > -1 ? -1 : this.preferences.currentGroupId;
+        this.model.group = this.model.group > -1 ? -1 : this.preferences.currentGroup.id;
         break;
       default:
         break;
@@ -82,11 +89,12 @@ export class PaymentFiltersComponent implements OnInit {
     }
   }
 
-  public optimizeName(name: string) {
-    if (this.responsive.isPhonePortraitMode()) {
-      return name.split(' ').map(c => `${c[0]}.`).join('');
-    }
-    return name;
+  public getIcon(filter: string) {
+    return this.filterIcons[filter.replace(' ', '')];
+  }
+
+  public getButtonType(filter) {
+    return this.isActive(filter) ? 'raised' : '';
   }
 
   private updateFilters() {
@@ -104,13 +112,12 @@ export class PaymentFiltersComponent implements OnInit {
   private getSumFilters() {
     return CommonFilters.concat(SumFilters);
   }
-
-
 }
 
 
-export const CommonFilters = ['sum', 'group'];
+const CommonFilters = ['sum', 'group'];
 
-export const SumFilters = ['user'];
+const SumFilters = ['user'];
 
-export const AllFilters = ['user from', 'user to'];
+const AllFilters = ['user from', 'user to'];
+

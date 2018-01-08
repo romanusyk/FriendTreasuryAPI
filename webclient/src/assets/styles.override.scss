@@ -4,40 +4,53 @@
     font-size: 1.4rem;
     padding: 14px 14px 0;
 }
-.mdl-textfield.ng-invalid.ng-dirty {
+
+.mdl-textfield.ng-invalid {
+    .mdl-textfield__input {
+        border-color: $color-danger;
+    }
     label.mdl-textfield__label {
         color: $color-danger;
         &::after {
-          background-color: $color-danger;
+            background-color: $color-danger;
         }
     }
-
     span.mdl-textfield__error {
-      color: $color-danger;
+        visibility: visible;
     }
-}
-
-.mdl-textfield__error {
-    visibility: visible;
+    &.ng-pristine {
+        .mdl-textfield__input {
+            border-color: $color-input-valid;
+        }
+        label.mdl-textfield__label {
+            color: $color-input-valid;
+            &::after {
+                background-color: $color-input-valid;
+            }
+        }
+        span.mdl-textfield__error {
+            visibility: hidden;
+        }
+    }
 }
 
 .mdl-layout__drawer {
-  border: none;
-  box-shadow: none;
+    border: none;
+    box-shadow: none;
+    background-color: $color-main-dark;
+    &-button {
+        color: white;
+    }
 }
+
 .mdl-layout__header {
-  background-color: $color-main;
+    background-color: $color-main;
 }
 
-.mdl-button--accent.mdl-button--accent{
-  color: white;
-}
-
-.mdl-button--accent.mdl-button--accent.mdl-button--raised{
-  background-color: $color-back;
-  color: $color-main;
-}
-
-.mdl-layout__drawer{
-  background-color: $color-main-dark;
+.mdl-button--accent.mdl-button--accent {
+    color: white;
+    &.mdl-button--raised {
+        background-color: $color-back;
+        color: $color-main;
+    }
 }

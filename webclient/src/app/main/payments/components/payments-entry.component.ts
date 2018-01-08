@@ -1,3 +1,5 @@
+import { SubscriptionList } from './../../../shared/models/subscription.model';
+import { Preferences } from './../../../shared/models/preferences.model';
 import { PagedCollection } from './../../../shared/models/paged-collection.model';
 import { ChangeEvent } from 'angular2-virtual-scroll';
 import { PaymentsService } from './../../../shared/services/payments.service';
@@ -7,6 +9,7 @@ import { PaymentFilters } from './../../../shared/models/payments-filters.model'
 import { DebtModel } from './../../../shared/models/debt.model';
 import { PaymentDTO } from './../../../shared/models/paymentDTO.model';
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { AppPreferencesService } from '../../../shared/services/app-preferences.service';
 
 @Component({
   selector: 'ft-payments',
@@ -21,15 +24,19 @@ export class PaymentsEntryComponent implements OnInit, OnDestroy {
   public isLoading: boolean;
   public totalItems: number;
   public payments: Array<DebtModel | PaymentDTO>;
-  public subscription: Subscription;
-  constructor(private filtersService: PaymentFiltersService, private paymentService: PaymentsService) {
+  public preferences: Preferences;
+  public subscription: SubscriptionList;
+  constructor(private filtersService: PaymentFiltersService,
+    private paymentService: PaymentsService,
+    private preferencesService: AppPreferencesService) {
+    this.subscription = new SubscriptionList();
   }
 
   ngOnInit() {
     this.allowToProcessChanging = true;
     this.filters = new PaymentFilters();
     this.payments = new Array();
-    this.subscription = this.filtersService.onFiltersChanged.subscribe(
+    this.subscription.add(this.filtersService.onFiltersChanged.subscribe(
       (data: PaymentFilters) => {
         if (!data) {
           return;
@@ -41,12 +48,14 @@ export class PaymentsEntryComponent implements OnInit, OnDestroy {
           this.allowToProcessChanging = true;
         }
       }
-    );
+    ));
+
+    this.subscription.add(this.preferencesService.preferencesChanged.subscribe(data => {
+      this.preferences = data;
+    }));
   }
   ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    this.subscription.unsubscribe();
   }
   onToClick(id: number) {
     this.filters.to = id;
@@ -79,6 +88,9 @@ export class PaymentsEntryComponent implements OnInit, OnDestroy {
 
   updateData() {
     this.isLoading = true;
+    if (this.filters.page === 0) {
+      this.preferencesService.loading.show();
+    }
     const subscription = this.paymentService.get(this.filters).subscribe(
       (data) => {
         if (!this.filters.sum) {
@@ -87,9 +99,13 @@ export class PaymentsEntryComponent implements OnInit, OnDestroy {
         } else {
           this.payments = data;
         }
+        this.preferencesService.loading.hide();
+        this.isLoading = false;
+        subscription.unsubscribe();
       },
-      (err) => console.log(err),
-      () => {
+      (err) => {
+        console.log(err);
+        this.preferencesService.loading.hide();
         this.isLoading = false;
         subscription.unsubscribe();
       }
@@ -102,6 +118,26 @@ export class PaymentsEntryComponent implements OnInit, OnDestroy {
 
   isAllowToShowEmptyMessage() {
     return !(this.payments && this.payments.length > 0);
+  }
+
+  getEmptyMessage() {
+    if (!(this.preferences && this.preferences.currentGroup)) {
+      return 'Please, chose group from list to show payments';
+    } else {
+      return 'You currently have no payments, please click button below to create one';
+    }
+  }
+
+  getActionText() {
+    if (this.preferences && this.preferences.currentGroup) {
+      return 'create payment';
+    } else {
+      return '';
+    }
+  }
+
+  onCreatePaymentCLick() {
+    this.preferencesService.showCreatePaymentDialog();
   }
 
 }

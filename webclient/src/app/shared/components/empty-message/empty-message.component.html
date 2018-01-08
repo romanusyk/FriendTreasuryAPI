@@ -1,4 +1,15 @@
 <div class="empty-message">
-  <div class="empty-message__icon"><i class="fa fa-{{iconClass}}"></i></div>
-  <div class="empty-message__text">{{text}}</div>
+  <div class="empty-message__info">
+    <div class="empty-message__icon">
+      <i class="fa fa-{{icon}}"></i>
+    </div>
+    <div class="empty-message__text">
+      <ng-content>
+      </ng-content>
+    </div>
+  </div>
+  <div class="empty-message__action" *ngIf="!!actionText">
+    <button (click)="action.emit($event)" mdl-button mdl-button-type="raised" mdl-colored="accent" mdl-ripple>
+      <mdl-icon *ngIf="buttonIcon">{{buttonIcon}}</mdl-icon> {{actionText}}</button>
+  </div>
 </div>

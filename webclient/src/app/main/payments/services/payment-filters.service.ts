@@ -10,7 +10,6 @@ export class PaymentFiltersService {
 
   public changeFilters(filters: PaymentFilters) {
     if (!!filters) {
-      console.log(filters);
       this.filersChangedSubject.next(filters);
     }
   }
