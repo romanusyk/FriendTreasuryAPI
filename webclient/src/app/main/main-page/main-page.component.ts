@@ -22,6 +22,7 @@ import { Observable } from 'rxjs/Observable';
 import { Preferences } from '../../shared/models/preferences.model';
 import { BusyComponent } from '../../shared/components/busy/busy.component';
 import { RightDrawerComponent } from '../../shared/override-mdl/right-drawer/right-drawer.component';
+import { CreatePaymentModalComponent } from '../payments/components/create-payment-modal/create-payment-modal.component';
 @Component({
   selector: 'ft-main-page',
   templateUrl: 'main-page.component.html',
@@ -36,6 +37,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   @ViewChild('loading') loading: BusyComponent;
   @ViewChild('rightDrawer') rightDrawer: RightDrawerComponent;
   @ViewChild('layout') layout: MdlLayoutComponent;
+  @ViewChild('createPayment') createPaymentModal: CreatePaymentModalComponent;
   @ViewChild(ManageGroupComponent) manageGroup: ManageGroupComponent;
   constructor(
     private groupService: GroupService,

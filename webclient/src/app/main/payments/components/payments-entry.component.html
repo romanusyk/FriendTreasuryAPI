@@ -8,6 +8,6 @@
     <ft-debt *ngFor="let debt of payments" [debt]="debt"></ft-debt>
 </div>
 
-<ft-empty-message icon="credit-card" *ngIf="isAllowToShowEmptyMessage()">
-    Please, chose group from list to show payments
+<ft-empty-message icon="credit-card" *ngIf="isAllowToShowEmptyMessage()" [actionText]="getActionText()" button-icon="shopping_cart" (action)="onCreatePaymentCLick()">
+    {{getEmptyMessage()}}
 </ft-empty-message>

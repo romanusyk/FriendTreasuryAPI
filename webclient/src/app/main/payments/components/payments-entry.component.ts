@@ -1,3 +1,5 @@
+import { SubscriptionList } from './../../../shared/models/subscription.model';
+import { Preferences } from './../../../shared/models/preferences.model';
 import { PagedCollection } from './../../../shared/models/paged-collection.model';
 import { ChangeEvent } from 'angular2-virtual-scroll';
 import { PaymentsService } from './../../../shared/services/payments.service';
@@ -22,17 +24,19 @@ export class PaymentsEntryComponent implements OnInit, OnDestroy {
   public isLoading: boolean;
   public totalItems: number;
   public payments: Array<DebtModel | PaymentDTO>;
-  public subscription: Subscription;
+  public preferences: Preferences;
+  public subscription: SubscriptionList;
   constructor(private filtersService: PaymentFiltersService,
     private paymentService: PaymentsService,
     private preferencesService: AppPreferencesService) {
+    this.subscription = new SubscriptionList();
   }
 
   ngOnInit() {
     this.allowToProcessChanging = true;
     this.filters = new PaymentFilters();
     this.payments = new Array();
-    this.subscription = this.filtersService.onFiltersChanged.subscribe(
+    this.subscription.add(this.filtersService.onFiltersChanged.subscribe(
       (data: PaymentFilters) => {
         if (!data) {
           return;
@@ -44,12 +48,14 @@ export class PaymentsEntryComponent implements OnInit, OnDestroy {
           this.allowToProcessChanging = true;
         }
       }
-    );
+    ));
+
+    this.subscription.add(this.preferencesService.preferencesChanged.subscribe(data => {
+      this.preferences = data;
+    }));
   }
   ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    this.subscription.unsubscribe();
   }
   onToClick(id: number) {
     this.filters.to = id;
@@ -112,6 +118,26 @@ export class PaymentsEntryComponent implements OnInit, OnDestroy {
 
   isAllowToShowEmptyMessage() {
     return !(this.payments && this.payments.length > 0);
+  }
+
+  getEmptyMessage() {
+    if (!(this.preferences && this.preferences.currentGroup)) {
+      return 'Please, chose group from list to show payments';
+    } else {
+      return 'You currently have no payments, please click button below to create one';
+    }
+  }
+
+  getActionText() {
+    if (this.preferences && this.preferences.currentGroup) {
+      return 'create payment';
+    } else {
+      return '';
+    }
+  }
+
+  onCreatePaymentCLick() {
+    this.preferencesService.showCreatePaymentDialog();
   }
 
 }

@@ -1,5 +1,5 @@
-<mdl-dialog #chooseUsersDialog>
-    <!-- <h6 class="mdl-dialog__title">Select Users</h6>
+<ng-template #chooseUsersDialog>
+    <h6 class="mdl-dialog__title">Select Users</h6>
     <mdl-textfield type="text" label="input filter" [(ngModel)]="search"> </mdl-textfield>
         <ul class="create-payment__users">
             <li class="create-payment__user" [ngClass]="{'create-payment__user-selected' : isUserSelected(user.id)}" *ngFor="let user of users | searchBy : search : 'username'">
@@ -7,15 +7,15 @@
             </li>   
         </ul>
     <div class="mdl-dialog__actions">
-        <button mdl-button mdl-button-type="raised" [disabled]="!model.usersTo || model.usersTo.length === 0" mdl-colored="primary" (click)="chooseUsersDialog.close();fillDataDialog.show()"
+        <button mdl-button mdl-button-type="raised" [disabled]="!model.usersTo || model.usersTo.length === 0" mdl-colored="primary" (click)="onChooseUserNext()"
             mdl-ripple>Next</button>
         <button mdl-button (click)="onCancel()" mdl-ripple>Cancel</button>
-    </div> -->
-</mdl-dialog>
+    </div>
+</ng-template>
 
-<mdl-dialog #fillDataDialog>
-    <!-- <h6 class="mdl-dialog__title">Fill data</h6>
-    <ft-textfield type="text" label="Enter amount" pattern="[0-9]*(\.[0-9]+)?" error-msg="Input is not a number!"
+<ng-template #fillDataDialog>
+    <h6 class="mdl-dialog__title">Fill data</h6>
+    <ft-textfield #amount type="text" label="Enter amount" required pattern="[0-9]*(\.[0-9]+)?" errors="Input is not a number" floating-label
         [(ngModel)]="model.amount">
     </ft-textfield>
     <button mdl-button (click)="pickADate($event)" mdl-ripple>
@@ -24,7 +24,7 @@
     </button>
     <ft-textfield label="Description" [(ngModel)]="model.description" rows="3" maxrows="3" floating-label>
     </ft-textfield>
-    <mdl-checkbox [mdl-ripple]="true" [(ngModel)]="model.shallIPayForMyself">
+    <mdl-checkbox [mdl-ripple]="true" [(ngModel)]="model.shallIPayForMyself" *ngIf="!isOneUser">
         Shall i pay for my self
     </mdl-checkbox>
     <mdl-checkbox [mdl-ripple]="true" [(ngModel)]="isAllowToShowMap">
@@ -33,14 +33,14 @@
 
     <div class="mdl-dialog__actions">
         <button mdl-button (click)="onCancel()" mdl-ripple>Cancel</button>
-        <button mdl-button *ngIf="!isAllowToShowMap" mdl-button-type="raised" mdl-colored="primary" (click)="onComplete()" mdl-ripple>Save</button>
-        <button mdl-button *ngIf="isAllowToShowMap" (click)="fillDataDialog.close();mapDialog.show()" mdl-ripple>Next</button>
-        <button mdl-button (click)="fillDataDialog.close();chooseUsersDialog.show()" mdl-ripple>Prev</button>
-    </div> -->
-</mdl-dialog>
+        <button mdl-button *ngIf="!isAllowToShowMap" mdl-button-type="raised" mdl-colored="primary" (click)="onComplete()" [disabled]="!amount.isValid" mdl-ripple>Save</button>
+        <button mdl-button *ngIf="isAllowToShowMap" (click)="onFillDataDialogNextClick()" mdl-ripple [disabled]="!amount.isValid">Next</button>
+        <button mdl-button (click)="onFillDataDialogPrevClick()" *ngIf="!isOneUser" mdl-ripple>Prev</button>
+    </div>
+</ng-template>
 
-<mdl-dialog #mapDialog>
-        <!-- <h6 class="mdl-dialog__title">Chose location on map</h6>
+<ng-template #mapDialog>
+        <h6 class="mdl-dialog__title">Chose location on map</h6>
         <ft-map
         (markerChanged)="onLocationChanged($event)"
         [isReadOnly]="false"
@@ -49,6 +49,6 @@
         <div class="mdl-dialog__actions">
                 <button mdl-button (click)="onCancel()" mdl-ripple>Cancel</button>
                 <button mdl-button mdl-button-type="raised" mdl-colored="primary" (click)="onComplete()" mdl-ripple>Save</button>
-                <button mdl-button (click)="mapDialog.close();fillDataDialog.show()" mdl-ripple>Prev</button>
-            </div> -->
-</mdl-dialog>
+                <button mdl-button (click)="onMapDialogPrevClick()" mdl-ripple>Prev</button>
+            </div>
+</ng-template>

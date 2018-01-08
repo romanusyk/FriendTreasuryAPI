@@ -26,6 +26,7 @@ import { UserService } from './services/user.service';
 import { ErrorTransformingService } from './services/error-transforming.service';
 import { EmptyMessageComponent } from './components/empty-message/empty-message.component';
 import { BusyComponent } from './components/busy/busy.component';
+import { OverrideMDLModule } from './override-mdl/override-mdl.module';
 const config = ConfigManager.config;
 @NgModule({
   imports: [
@@ -40,6 +41,7 @@ const config = ConfigManager.config;
       libraries: ['places'],
       apiKey: config.apiKeys.googleMaps
     }),
+    OverrideMDLModule
   ],
   declarations: [
     Error404Component,

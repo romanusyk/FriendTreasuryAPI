@@ -5,6 +5,7 @@ import { Component, Input, OnInit, ViewChild, NgZone, EventEmitter, Output, Elem
 import { MapsAPILoader } from '@agm/core';
 import { } from 'googlemaps';
 import { AgmMarker } from '@agm/core/directives/marker';
+import { FtTextFieldComponent } from '../../override-mdl/text-field/text-field.component';
 @Component({
   moduleId: module.id,
   selector: 'ft-map',
@@ -17,8 +18,7 @@ export class MapComponent implements OnInit {
 
   @Output() markerChanged: EventEmitter<MarkerOptions> = new EventEmitter();
 
-  @ViewChild('search') searchInput: ElementRef;
-  searchControl: FormControl;
+  @ViewChild('search') searchInput: FtTextFieldComponent;
   @ViewChild('marker') marker: AgmMarker;
 
   constructor(
@@ -30,10 +30,9 @@ export class MapComponent implements OnInit {
       this.config = {};
     }
     if (!this.isReadOnly) {
-      this.searchControl = new FormControl();
       this.setCurrentPosition();
       this.mapsAPILoader.load().then(() => {
-        const autocomplete = new google.maps.places.Autocomplete(this.searchInput.nativeElement);
+        const autocomplete = new google.maps.places.Autocomplete(this.searchInput.inputEl.nativeElement);
         autocomplete.addListener('place_changed', () => {
           this.ngZone.run(() => {
             const place: google.maps.places.PlaceResult = autocomplete.getPlace();

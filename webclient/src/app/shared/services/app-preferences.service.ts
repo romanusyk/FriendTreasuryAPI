@@ -16,6 +16,10 @@ export class AppPreferencesService {
     return this._preferences;
   }
 
+  public showCreatePaymentDialog() {
+    this._mainComponent.createPaymentModal.show();
+  }
+
   constructor() {
     this._preferences = new Preferences();
   }
