@@ -1,5 +1,7 @@
 <ft-busy #loading></ft-busy>
-<mdl-layout mdl-layout-fixed-header mdl-layout-header-seamed mdl-layout-fixed-drawer #layout="mdlLayout">
+<ft-group-list [groups]="groups" (select)="onGroupSelect($event);" (createGroupClick)="onCreateGroupClick()"></ft-group-list>
+
+<!-- <mdl-layout mdl-layout-fixed-header mdl-layout-header-seamed mdl-layout-fixed-drawer #layout="mdlLayout">
   <mdl-layout-header>
     <mdl-layout-header-row>
 
@@ -52,4 +54,4 @@
 </mdl-menu>
 <ft-manage-group #createGroup (complete)="onManageGroupComplete($event)"></ft-manage-group>
 <ft-create-payment-modal #createPayment (complete)="onCreatePaymentComplete($event)">
-</ft-create-payment-modal>
+</ft-create-payment-modal> -->
