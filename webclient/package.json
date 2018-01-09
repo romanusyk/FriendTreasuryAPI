@@ -4,11 +4,13 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "build:prod:publish": "ng build -prod -ec -dop -op /var/www/html -bh /",
-    "test": "ng test",
-    "lint": "ng lint"
+    "start": "webpack-dev-server --port=4200",
+    "build": "webpack",
+    "build:prod:publish": "ng build -ec -dop -op /var/www/html -bh /",
+    "test": "karma start ./karma.conf.js",
+    "lint": "ng lint",
+    "pree2e": "webdriver-manager update --standalone false --gecko false --quiet",
+    "e2e": "protractor ./protractor.conf.js"
   },
   "private": true,
   "dependencies": {
@@ -56,6 +58,26 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "ts-node": "~3.2.0",
     "tslint": "~5.3.2",
-    "typescript": "~2.3.3"
+    "typescript": "~2.3.3",
+    "webpack-dev-server": "~2.5.1",
+    "webpack": "~3.4.1",
+    "autoprefixer": "^6.5.3",
+    "css-loader": "^0.28.1",
+    "cssnano": "^3.10.0",
+    "exports-loader": "^0.6.3",
+    "file-loader": "^0.10.0",
+    "html-webpack-plugin": "^2.29.0",
+    "less-loader": "^4.0.5",
+    "postcss-loader": "^1.3.3",
+    "postcss-url": "^5.1.2",
+    "raw-loader": "^0.5.1",
+    "sass-loader": "^6.0.3",
+    "script-loader": "^0.7.0",
+    "source-map-loader": "^0.2.0",
+    "istanbul-instrumenter-loader": "^2.0.0",
+    "style-loader": "^0.13.1",
+    "stylus-loader": "^3.0.1",
+    "url-loader": "^0.5.7",
+    "circular-dependency-plugin": "^3.0.0"
   }
 }

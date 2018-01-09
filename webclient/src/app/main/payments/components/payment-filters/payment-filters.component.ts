@@ -1,4 +1,4 @@
-import { ResponsiveDetectorService } from './../../../../shared/services/responsive-detector.service';
+// import { ResponsiveDetectorService } from './../../../../shared/services/responsive-detector.service';
 import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
 import { PaymentFilters } from '../../../../shared/models/payments-filters.model';
 import { AppPreferencesService } from '../../../../shared/services/app-preferences.service';
@@ -23,8 +23,7 @@ export class PaymentFiltersComponent implements OnInit {
     user: 'user-circle'
   };
   constructor(appPreferencesService: AppPreferencesService,
-    private filtersService: PaymentFiltersService,
-    public responsive: ResponsiveDetectorService) {
+    private filtersService: PaymentFiltersService) {
     appPreferencesService.preferencesChanged.subscribe(data => this.preferences = data);
   }
   public ngOnInit(): void {

@@ -1,4 +1,4 @@
-import { ResponsiveDetectorService } from './services/responsive-detector.service';
+// import { ResponsiveDetectorService } from './services/responsive-detector.service';
 import { SearchPipe } from './pipes/search.pipe';
 import { AppPreferencesService } from './services/app-preferences.service';
 import { ConfigManager } from './../config/app.config';
@@ -63,7 +63,7 @@ const config = ConfigManager.config;
     InviteService,
     ErrorTransformingService,
     AppPreferencesService,
-    ResponsiveDetectorService,
+    // ResponsiveDetectorService,
     BusyComponent
   ],
   exports: [
