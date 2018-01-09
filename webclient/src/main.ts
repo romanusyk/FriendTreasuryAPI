@@ -11,5 +11,5 @@ try {
   platformBrowserDynamic().bootstrapModule(AppModule);
 
 } catch (ex) {
-  document.write(ex);
+  document.write("dadwdwawddwadwadwawd");
 }
