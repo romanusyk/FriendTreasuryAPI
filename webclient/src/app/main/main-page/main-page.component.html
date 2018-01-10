@@ -6,8 +6,8 @@
 
       <mdl-layout-spacer></mdl-layout-spacer>
 
-      <ft-payment-filters>
-      </ft-payment-filters>
+      <!-- <ft-payment-filters *ngIf="isCurrentGroupSelected()">
+      </ft-payment-filters> -->
       <mdl-layout-spacer></mdl-layout-spacer>
       <!-- <button mdl-button mdl-ripple mdl-button-type="icon" *ngIf="isCurrentGroupSelected() && !responsive.isPhonePortraitMode()"
         (click)="createPayment.show()" title="Create payment">
@@ -40,17 +40,17 @@
 <ft-right-drawer #rightDrawer>
   <ft-right-menu [user]="user" (createGroupClick)="onCreateGroupClick()" (logoutClick)="logout()"></ft-right-menu>
 </ft-right-drawer>
-<!-- <mdl-menu #groupExternalMenu="mdlMenu" mdl-menu-position="bottom-right">
+<mdl-menu #groupExternalMenu="mdlMenu" mdl-menu-position="bottom-right">
     <mdl-menu-item (click)="onEditGroupClick($event)">
       Edit group
     </mdl-menu-item>
-  <mdl-menu-item *ngIf="responsive.isPhonePortraitMode()" (click)="createPayment.show()">
+  <!-- <mdl-menu-item *ngIf="responsive.isPhonePortraitMode()" (click)="createPayment.show()">
     Create payment
-  </mdl-menu-item>
+  </mdl-menu-item> -->
   <mdl-menu-item mdl-ripple ngxClipboard [cbContent]="generateInvite()" (cbOnSuccess)="onGenerationgSuccess()" (cbOnError)="onGenerationError()">
     Generate invite link
   </mdl-menu-item>
-</mdl-menu> -->
+</mdl-menu>
 <ft-manage-group #createGroup (complete)="onManageGroupComplete($event)"></ft-manage-group>
 <ft-create-payment-modal #createPayment (complete)="onCreatePaymentComplete($event)">
 </ft-create-payment-modal>
