@@ -9,10 +9,10 @@
       <!-- <ft-payment-filters *ngIf="isCurrentGroupSelected()">
       </ft-payment-filters> -->
       <mdl-layout-spacer></mdl-layout-spacer>
-      <!-- <button mdl-button mdl-ripple mdl-button-type="icon" *ngIf="isCurrentGroupSelected() && !responsive.isPhonePortraitMode()"
+      <button mdl-button mdl-ripple mdl-button-type="icon" *ngIf="isCurrentGroupSelected()"
         (click)="createPayment.show()" title="Create payment">
         <mdl-icon>add</mdl-icon>
-      </button>-->
+      </button>
       <button *ngIf="isCurrentGroupSelected()" mdl-button #extermalMenuBtn="mdlButton" (click)="groupExternalMenu.toggle($event, extermalMenuBtn)"
         mdl-button-type="icon" mdl-ripple>
         <mdl-icon>more_vert</mdl-icon>
