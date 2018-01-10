@@ -2,7 +2,7 @@
 
 <mdl-layout mdl-layout-fixed-header mdl-layout-header-seamed #layout="mdlLayout">
   <mdl-layout-header>
-    <!-- <mdl-layout-header-row>
+    <mdl-layout-header-row>
 
       <mdl-layout-spacer></mdl-layout-spacer>
 
@@ -20,7 +20,7 @@
       <button mdl-button (click)="rightDrawer.show()" mdl-button-type="icon" mdl-ripple>
         <mdl-icon>keyboard_tab</mdl-icon>
       </button>
-    </mdl-layout-header-row> -->
+    </mdl-layout-header-row>
 
   </mdl-layout-header>
   <!-- <mdl-layout-drawer #leftDrawer>
@@ -32,22 +32,21 @@
       <div class="mdl-cell mdl-cell--12-col">
         <ft-payments>
         </ft-payments>
-        testdwadawdwdawdw awddawdwa
       </div>
     </div>
 
   </mdl-layout-content>
 </mdl-layout>
-<!-- <ft-right-drawer #rightDrawer>
+<ft-right-drawer #rightDrawer>
   <ft-right-menu [user]="user" (createGroupClick)="onCreateGroupClick()" (logoutClick)="logout()"></ft-right-menu>
-</ft-right-drawer> -->
+</ft-right-drawer>
 <mdl-menu #groupExternalMenu="mdlMenu" mdl-menu-position="bottom-right">
     <mdl-menu-item (click)="onEditGroupClick($event)">
       Edit group
     </mdl-menu-item>
-  <!-- <mdl-menu-item *ngIf="responsive.isPhonePortraitMode()" (click)="createPayment.show()">
+  <mdl-menu-item *ngIf="responsive.isPhonePortraitMode()" (click)="createPayment.show()">
     Create payment
-  </mdl-menu-item> -->
+  </mdl-menu-item>
   <mdl-menu-item mdl-ripple ngxClipboard [cbContent]="generateInvite()" (cbOnSuccess)="onGenerationgSuccess()" (cbOnError)="onGenerationError()">
     Generate invite link
   </mdl-menu-item>
