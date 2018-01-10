@@ -17,9 +17,9 @@
         mdl-button-type="icon" mdl-ripple>
         <mdl-icon>more_vert</mdl-icon>
       </button>
-      <button mdl-button (click)="rightDrawer.show()" mdl-button-type="icon" mdl-ripple>
+      <!-- <button mdl-button (click)="rightDrawer.show()" mdl-button-type="icon" mdl-ripple>
         <mdl-icon>keyboard_tab</mdl-icon>
-      </button>
+      </button> -->
     </mdl-layout-header-row>
 
   </mdl-layout-header>
@@ -37,9 +37,9 @@
 
   </mdl-layout-content>
 </mdl-layout>
-<ft-right-drawer #rightDrawer>
+<!-- <ft-right-drawer #rightDrawer>
   <ft-right-menu [user]="user" (createGroupClick)="onCreateGroupClick()" (logoutClick)="logout()"></ft-right-menu>
-</ft-right-drawer>
+</ft-right-drawer> -->
 <mdl-menu #groupExternalMenu="mdlMenu" mdl-menu-position="bottom-right">
     <mdl-menu-item (click)="onEditGroupClick($event)">
       Edit group
