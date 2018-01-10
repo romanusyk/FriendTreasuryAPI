@@ -9,7 +9,7 @@
       <ft-payment-filters *ngIf="isCurrentGroupSelected()">
       </ft-payment-filters>
       <mdl-layout-spacer></mdl-layout-spacer>
-      <button mdl-button mdl-ripple mdl-button-type="icon" *ngIf="isCurrentGroupSelected()"
+      <button mdl-button mdl-ripple mdl-button-type="icon" *ngIf="isCurrentGroupSelected() && !responsive.isPhonePortraitMode()"
         (click)="createPayment.show()" title="Create payment">
         <mdl-icon>add</mdl-icon>
       </button>
@@ -44,9 +44,9 @@
     <mdl-menu-item (click)="onEditGroupClick($event)">
       Edit group
     </mdl-menu-item>
-  <!-- <mdl-menu-item *ngIf="responsive.isPhonePortraitMode()" (click)="createPayment.show()">
+  <mdl-menu-item *ngIf="responsive.isPhonePortraitMode()" (click)="createPayment.show()">
     Create payment
-  </mdl-menu-item> -->
+  </mdl-menu-item>
   <mdl-menu-item mdl-ripple ngxClipboard [cbContent]="generateInvite()" (cbOnSuccess)="onGenerationgSuccess()" (cbOnError)="onGenerationError()">
     Generate invite link
   </mdl-menu-item>

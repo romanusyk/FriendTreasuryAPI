@@ -6,11 +6,11 @@ export class ResponsiveDetectorService {
     private landscapeOrientation = 'landscape';
 
     isPhonePortraitMode(): boolean {
-        return window.screen.width <= 414 && this.isPortraiteMode();
+        return window.screen.width <= 414;
     }
 
     isPhoneLandscapeMode(): boolean {
-        return window.screen.width <= 736 && this.isLandscapeMode();
+        return window.screen.width <= 736;
     }
 
     isLandscapeMode(): boolean {
