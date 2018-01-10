@@ -6,8 +6,8 @@
 
       <mdl-layout-spacer></mdl-layout-spacer>
 
-      <!-- <ft-payment-filters *ngIf="isCurrentGroupSelected()">
-      </ft-payment-filters> -->
+      <ft-payment-filters *ngIf="isCurrentGroupSelected()">
+      </ft-payment-filters>
       <mdl-layout-spacer></mdl-layout-spacer>
       <button mdl-button mdl-ripple mdl-button-type="icon" *ngIf="isCurrentGroupSelected()"
         (click)="createPayment.show()" title="Create payment">
