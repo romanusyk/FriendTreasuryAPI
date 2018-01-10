@@ -23,15 +23,16 @@
     </mdl-layout-header-row> -->
 
   </mdl-layout-header>
-  <mdl-layout-drawer #leftDrawer>
+  <!-- <mdl-layout-drawer #leftDrawer>
     <ft-group-list [groups]="groups" (select)="onGroupSelect($event);" (createGroupClick)="onCreateGroupClick()"></ft-group-list>
-  </mdl-layout-drawer>
+  </mdl-layout-drawer> -->
 
   <mdl-layout-content>
     <div class="mdl-grid mdl-grid--no-spacing">
       <div class="mdl-cell mdl-cell--12-col">
         <ft-payments>
         </ft-payments>
+        testdwadawdwdawdw awddawdwa
       </div>
     </div>
 
@@ -44,9 +45,9 @@
     <mdl-menu-item (click)="onEditGroupClick($event)">
       Edit group
     </mdl-menu-item>
-  <mdl-menu-item *ngIf="responsive.isPhonePortraitMode()" (click)="createPayment.show()">
+  <!-- <mdl-menu-item *ngIf="responsive.isPhonePortraitMode()" (click)="createPayment.show()">
     Create payment
-  </mdl-menu-item>
+  </mdl-menu-item> -->
   <mdl-menu-item mdl-ripple ngxClipboard [cbContent]="generateInvite()" (cbOnSuccess)="onGenerationgSuccess()" (cbOnError)="onGenerationError()">
     Generate invite link
   </mdl-menu-item>
