@@ -12,11 +12,11 @@
       <!-- <button mdl-button mdl-ripple mdl-button-type="icon" *ngIf="isCurrentGroupSelected() && !responsive.isPhonePortraitMode()"
         (click)="createPayment.show()" title="Create payment">
         <mdl-icon>add</mdl-icon>
-      </button>
+      </button>-->
       <button *ngIf="isCurrentGroupSelected()" mdl-button #extermalMenuBtn="mdlButton" (click)="groupExternalMenu.toggle($event, extermalMenuBtn)"
         mdl-button-type="icon" mdl-ripple>
         <mdl-icon>more_vert</mdl-icon>
-      </button> -->
+      </button>
       <button mdl-button (click)="rightDrawer.show()" mdl-button-type="icon" mdl-ripple>
         <mdl-icon>keyboard_tab</mdl-icon>
       </button>
