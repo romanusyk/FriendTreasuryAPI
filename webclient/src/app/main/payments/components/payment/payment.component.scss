@@ -49,6 +49,7 @@
         text-transform: capitalize;
         font-size: 14px;
         font-weight: 600;
+        color: #555d68;
         @include ellipsisText;
     }
 
@@ -58,7 +59,6 @@
     }
 
     &__date{
-        font-size: 14px;
-        font-style: italic;
+        font-size: 12px;
     }
 }

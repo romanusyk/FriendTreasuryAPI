@@ -1,5 +1,4 @@
 import { ConfigManager } from './../config/app.config';
-import { MdlSelectModule } from '@angular-mdl/select';
 import { SharedModule } from './../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
