@@ -7,9 +7,4 @@ import { environment } from './environments/environment';
 if (environment.production) {
   enableProdMode();
 }
-try {
-  platformBrowserDynamic().bootstrapModule(AppModule);
-
-} catch (ex) {
-  document.write("dadwdwawddwadwadwawd");
-}
+platformBrowserDynamic().bootstrapModule(AppModule);

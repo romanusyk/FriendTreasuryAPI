@@ -25,7 +25,7 @@ import { ErrorTransformingService } from './services/error-transforming.service'
 import { EmptyMessageComponent } from './components/empty-message/empty-message.component';
 import { BusyComponent } from './components/busy/busy.component';
 import { OverrideMDLModule } from './override-mdl/override-mdl.module';
-import { ToastrModule } from 'ngx-toastr';
+import { ToastrModule, ToastNoAnimationModule, ToastNoAnimation } from 'ngx-toastr';
 const config = ConfigManager.config;
 @NgModule({
   imports: [
@@ -40,10 +40,12 @@ const config = ConfigManager.config;
       apiKey: config.apiKeys.googleMaps
     }),
     OverrideMDLModule,
+    ToastNoAnimationModule,
     ToastrModule.forRoot({
       newestOnTop: true,
       closeButton: true,
-      positionClass: 'toast-bottom-right'
+      positionClass: 'toast-bottom-right',
+      toastComponent: ToastNoAnimation,
     })
   ],
   declarations: [
