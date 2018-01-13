@@ -8,7 +8,6 @@ import { InviteService } from './services/invite.service';
 import { AuthService } from './services/auth.service';
 import { PaymentsService } from './services/payments.service';
 import { GroupService } from './services/group.service';
-import { ToastServiceOptions } from './services/toast-service.options';
 import { HttpClientModule } from '@angular/common/http';
 import { ApiService } from './services/api.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -18,7 +17,6 @@ import { Error404Component } from './components/error404/error404.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpModule } from '@angular/http';
-import { ToastModule, ToastOptions } from 'ng2-toastr/ng2-toastr';
 import { MdlModule } from '@angular-mdl/core';
 import { MainGuard } from './guards/main.guard';
 import { LoginGuard } from './guards/login.guard';
@@ -27,6 +25,7 @@ import { ErrorTransformingService } from './services/error-transforming.service'
 import { EmptyMessageComponent } from './components/empty-message/empty-message.component';
 import { BusyComponent } from './components/busy/busy.component';
 import { OverrideMDLModule } from './override-mdl/override-mdl.module';
+import { ToastrModule } from 'ngx-toastr';
 const config = ConfigManager.config;
 @NgModule({
   imports: [
@@ -36,19 +35,23 @@ const config = ConfigManager.config;
     HttpModule,
     MdlModule,
     ReactiveFormsModule,
-    ToastModule.forRoot(),
     AgmCoreModule.forRoot({
       libraries: ['places'],
       apiKey: config.apiKeys.googleMaps
     }),
-    OverrideMDLModule
+    OverrideMDLModule,
+    ToastrModule.forRoot({
+      newestOnTop: true,
+      closeButton: true,
+      positionClass: 'toast-bottom-right'
+    })
   ],
   declarations: [
     Error404Component,
     MapComponent,
     SearchPipe,
     EmptyMessageComponent,
-    BusyComponent
+    BusyComponent,
   ],
   providers: [
     UserStorageService,
@@ -56,7 +59,6 @@ const config = ConfigManager.config;
     AuthService,
     GroupService,
     PaymentsService,
-    { provide: ToastOptions, useClass: ToastServiceOptions },
     MainGuard,
     LoginGuard,
     ApiService,

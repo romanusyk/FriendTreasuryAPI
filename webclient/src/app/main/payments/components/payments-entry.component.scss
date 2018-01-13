@@ -1,5 +1,6 @@
+@import "../../../../assets/variables.scss";
 virtual-scroll {
-    background-color: #EAFFFF;
+    background-color: $color-payments-background;
     display: block;
     width: 100%;
     height: calc(100vh - 50px);

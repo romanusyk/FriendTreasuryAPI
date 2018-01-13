@@ -9,7 +9,7 @@ import { AuthService } from './../../shared/services/auth.service';
 import { PaymentFilters } from './../../shared/models/payments-filters.model';
 import { MdlDialogService, MdlLayoutDrawerComponent, MdlLayoutComponent } from '@angular-mdl/core';
 import { User } from './../../shared/models/user.model';
-import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { ToastrService } from 'ngx-toastr';
 import { CreatePaymentModel } from './../../shared/models/create-payment.model';
 import { GroupService } from './../../shared/services/group.service';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
@@ -45,7 +45,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private userStorageService: UserStorageService,
     private authService: AuthService,
-    private toastrManager: ToastsManager,
+    private toastrManager: ToastrService,
     private dialogService: MdlDialogService,
     private router: Router,
     private inviteService: InviteService,

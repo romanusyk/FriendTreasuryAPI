@@ -37,20 +37,20 @@
 .mdl-layout__drawer {
     border: none;
     box-shadow: none;
-    background-color: $color-main-dark;
+    background-color: $color-groups-background;
     &-button {
         color: white;
     }
 }
 
 .mdl-layout__header {
-    background-color: $color-main;
+    background-color: $color-header;;
 }
 
 .mdl-button--accent.mdl-button--accent {
     color: white;
     &.mdl-button--raised {
-        background-color: $color-back;
-        color: $color-main;
+        background-color: $color-payments-background;
+        color: $color-header;
     }
 }

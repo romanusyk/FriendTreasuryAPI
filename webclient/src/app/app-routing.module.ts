@@ -7,7 +7,7 @@ import { LoginGuard } from './shared/guards/login.guard';
 import { MainPageComponent } from './main/main-page/main-page.component';
 
 const routes: Routes = [
-  { path: 'index', component: MainPageComponent, canActivate: [MainGuard] },
+  { path: '', component: MainPageComponent, canActivate: [MainGuard] },
   { path: 'invite/:name', component: InviteComponent },
   { path: 'login', component: AuthComponent, canActivate: [LoginGuard] },
   { path: 'register', component: AuthComponent, canActivate: [LoginGuard] },

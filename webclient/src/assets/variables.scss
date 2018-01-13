@@ -1,14 +1,31 @@
 @import "~@angular-mdl/core/scss/color-definitions";
 
+//MDL
 $color-primary: $palette-blue-500;
 $color-primary-dark: $palette-blue-700;
 $color-accent: $palette-amber-A200;
 $color-primary-contrast: $color-dark-contrast;
 $color-accent-contrast: $color-dark-contrast;
-$color-danger: #d50000;
+//Inputs
 $color-input-valid: rgb(33,150,243);
-$color-main: #00bacc;
+$color-danger: #fb0204;
+//
+$color-main: #2e87c1;
 $color-back: #E4FFFF;
 $color-accent1: #006C99;
 $color-accent2: #00B8A2;
-$color-main-dark: #26777f;
+$color-main-dark: #2f363e;
+//Groups list
+$color-positive-balance: #39b449;
+$color-negative-balance: $color-danger;
+$color-zero-balance: yellow;
+$color-groups-background: $color-main-dark;
+$color-groups-text: white;
+//Header
+$color-header: $color-main;
+//Payments
+$color-payments-background: #E4FFFF;
+//Empty
+$color-empty-message-text: #00E8FF;
+
+
