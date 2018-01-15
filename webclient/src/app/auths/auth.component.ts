@@ -1,3 +1,4 @@
+import { IAppConfig } from './../config/iapp.config';
 import { SubscriptionList } from './../shared/models/subscription.model';
 import { InviteService } from './../shared/services/invite.service';
 import { AuthService } from './../shared/services/auth.service';
@@ -10,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { ErrorTransformingService } from '../shared/services/error-transforming.service';
 import { BusyComponent } from '../shared/components/busy/busy.component';
+import { ConfigManager } from '../config/app.config';
 @Component({
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss']
@@ -17,11 +19,13 @@ import { BusyComponent } from '../shared/components/busy/busy.component';
 export class AuthComponent implements OnInit, OnDestroy {
   authType = CredentialsType.login;
   title: string;
+  config: IAppConfig;
   subscription: SubscriptionList;
   errors = new ErrorsList();
   authForm: FormGroup;
   @ViewChild(BusyComponent) loading: BusyComponent;
-  constructor(private route: ActivatedRoute,
+  constructor(
+    private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
     private fb: FormBuilder,
@@ -32,6 +36,7 @@ export class AuthComponent implements OnInit, OnDestroy {
       'password': ['', Validators.required]
     });
     this.subscription = new SubscriptionList();
+    this.config = ConfigManager.config;
   }
   ngOnInit() {
     this.route.url.subscribe(data => {
@@ -42,18 +47,15 @@ export class AuthComponent implements OnInit, OnDestroy {
         this.authForm.removeControl('email');
         this.authForm.removeControl('confirm-password');
       } else {
-        this.authForm.addControl('phone', new FormControl('',
-          [
+        this.authForm.addControl('phone', new FormControl('', [
             Validators.required,
             FtValidators.Length(8, 12)
           ]));
-        this.authForm.addControl('confirmPassword', new FormControl('',
-          [
+        this.authForm.addControl('confirmPassword', new FormControl('', [
             Validators.required,
             FtValidators.EqualTo(this.authForm.controls['password'])
           ]));
-        this.authForm.addControl('email', new FormControl('',
-          [
+        this.authForm.addControl('email', new FormControl('', [
             Validators.required,
             Validators.email
           ]));
@@ -65,7 +67,7 @@ export class AuthComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  submitForm() {
+  public submitForm() {
     this.errors.clear();
     const credentials = this.authForm.value;
     this.loading.show();
@@ -75,9 +77,9 @@ export class AuthComponent implements OnInit, OnDestroy {
       data => {
         const name = this.inviteService.get();
         if (!name) {
-          this.router.navigateByUrl('/index');
+          this.router.navigateByUrl(this.config.routes.main);
         } else {
-          this.router.navigateByUrl('/invite/' + name);
+          this.router.navigateByUrl(this.config.routes.invite + name);
         }
         this.loading.hide();
 
@@ -85,11 +87,10 @@ export class AuthComponent implements OnInit, OnDestroy {
       (err) => {
         this.errors.push('*', this.errorTransforming.transformServerError(err));
         this.loading.hide();
-
       }));
   }
 
-  onValueChange(data: any, form: FormGroup) {
+  public onValueChange(data: any, form: FormGroup) {
     this.errors.clear();
     for (const key in form.controls) {
       const control = form.get(key);
@@ -104,7 +105,7 @@ export class AuthComponent implements OnInit, OnDestroy {
     }
   }
 
-  isLogin(): Boolean {
+  public isLogin(): Boolean {
     return this.authType === CredentialsType.login;
   }
 

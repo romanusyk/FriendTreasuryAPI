@@ -25,7 +25,7 @@
           {{errors.get('*')}}
         </div>
         <div>
-            <button class="full-width" mdl-button mdl-button-type="raised" type="submit" mdl-colored="primary" [disabled]="(authForm.touched && !authForm.valid) || !errors.isEmpty()"
+            <button class="full-width" mdl-button mdl-button-type="raised" type="submit" mdl-colored="primary" [disabled]="(authForm.touched && !authForm.valid) || (!errors.isEmpty() && !errors.get('*')) "
                 mdl-ripple>
                 <mdl-icon>send</mdl-icon>
                 Submit
