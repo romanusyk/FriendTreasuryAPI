@@ -129,6 +129,12 @@ public class DebtsOptimizer implements Optimizer {
                 }
             }
             if (hasCycle) {
+
+                // Remain only "circle"
+                while (!Objects.equals(way.get(0), way.get(way.size() - 1))) {
+                    way.remove(0);
+                }
+
                 Iterator<Integer> it = way.iterator();
                 BigDecimal minValue = new BigDecimal(1e+9);
                 Integer s = it.next();
