@@ -18,7 +18,6 @@ import java.util.Date;
         @Index(columnList = "user_to", name = "to_index"),
         @Index(columnList = "pgroup", name = "pgroup_index")
 })
-@DynamicUpdate
 public class Payment {
 
     @Id
@@ -28,21 +27,17 @@ public class Payment {
 
     @ManyToOne
     @JoinColumn(name = "user_from", nullable = false)
-    @NotNull
     private User userFrom;
 
     @ManyToOne
     @JoinColumn(name = "user_to", nullable = false)
-    @NotNull
     private User userTo;
 
     @ManyToOne
     @JoinColumn(name = "pgroup", nullable = false)
-    @NotNull
     private Group group;
 
     @Column(nullable = false)
-    @NotNull
     private BigDecimal amount;
 
     @Column
@@ -94,9 +89,9 @@ public class Payment {
         return String.format(
                 "{id: %d, key: (%s: %s -> %s), amount: %s, time: %d}",
                 id,
-                group.getTitle(),
-                userFrom.getUsername(),
-                userTo.getUsername(),
+                group == null ? "null" : group.getTitle(),
+                userFrom == null ? "null" : userFrom.getUsername(),
+                userTo == null ? "null" : userTo.getUsername(),
                 df.format(amount),
                 timestamp
         );

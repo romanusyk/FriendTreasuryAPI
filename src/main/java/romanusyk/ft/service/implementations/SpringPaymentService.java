@@ -127,7 +127,7 @@ public class SpringPaymentService implements PaymentService {
     }
 
     @Override
-    public void updatePayment(Payment payment, User client) {
+    public Payment updatePayment(Payment payment, User client) {
         if (payment.getId() == null) {
             throw new EntityIdNotValidException(Payment.class, payment.getId());
         }
@@ -149,7 +149,17 @@ public class SpringPaymentService implements PaymentService {
             throw new EntityIdNotValidException("user_from, user_to and group_id cannot be changed." +
                     " Please, remove this payment and create a correct one.");
         }
-        paymentRepository.save(payment);
+        // Mapping fields
+        // TODO: use mapper or smth like that
+        if (payment.getAmount() != null) {
+            existingPayment.setAmount(payment.getAmount());
+        }
+        if (payment.getDescription() != null) {
+            existingPayment.setDescription(payment.getDescription());
+        }
+
+        paymentRepository.save(existingPayment);
+        return existingPayment;
     }
 
     @Override

@@ -86,13 +86,14 @@ public class PaymentController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.PUT)
+    @ResponseBody
     @PreAuthorize("@securityService.hasRole('user')")
-    public void updatePayment(
+    public Payment updatePayment(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
             @RequestBody Payment payment
     ) {
         User u = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
-        paymentService.updatePayment(payment, u);
+        return paymentService.updatePayment(payment, u);
     }
 
     @RequestMapping(value = "", method = RequestMethod.DELETE)
