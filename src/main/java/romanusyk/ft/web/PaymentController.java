@@ -102,7 +102,7 @@ public class PaymentController {
     @PreAuthorize("@securityService.hasRole('user')")
     public void deletePayment(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
-            @RequestBody Integer paymentID
+            @RequestParam Integer paymentID
     ) {
         User u = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
         paymentService.deletePayment(paymentID, u);
