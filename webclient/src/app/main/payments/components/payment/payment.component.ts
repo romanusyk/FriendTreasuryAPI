@@ -9,6 +9,10 @@ import { PaymentDTO } from '../../../../shared/models/paymentDTO.model';
 })
 export class PaymentComponent {
     @Input() payment: PaymentDTO;
+    @Input() isReadonly: boolean;
     @Output() onToClick: EventEmitter<number> = new EventEmitter<number>();
     @Output() onFromClick: EventEmitter<number> = new EventEmitter<number>();
+    @Output() editClick: EventEmitter<PaymentDTO> = new EventEmitter<PaymentDTO>();
+    @Output() showOnMapClick: EventEmitter<PaymentDTO> = new EventEmitter<PaymentDTO>();
+    @Output() deleteClick: EventEmitter<number> = new EventEmitter<number>();
 }

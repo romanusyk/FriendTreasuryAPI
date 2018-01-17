@@ -140,4 +140,21 @@ export class PaymentsEntryComponent implements OnInit, OnDestroy {
     this.preferencesService.showCreatePaymentDialog();
   }
 
+  onDeletePayment(id: number) {
+    console.log(id);
+
+    this.preferencesService.loading.show();
+    this.paymentService.delete(id).subscribe(() => {
+      this.preferencesService.loading.hide();
+      this.updateData();
+    },
+    (err) => {
+      this.preferencesService.loading.hide();
+      console.log(err);
+    });
+  }
+
+  isPaymentReadonly(payment: PaymentDTO) {
+    return payment.userFrom.id !== this.preferences.currentUser.id;
+  }
 }
