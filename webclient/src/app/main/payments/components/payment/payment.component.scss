@@ -1,10 +1,12 @@
 @import '../../../../../assets/mixins.scss';
+@import '../../../../../assets/variables.scss';
+
 .payment {
     display: flex;
     flex-direction: column;
     margin: 10px;
     background-color: white;
-    padding: 10px; 
+    padding: 10px;
     &__info {
         display: flex;
         flex-direction: row;
@@ -29,7 +31,7 @@
         flex-direction: row;
         justify-content: space-between;
     }
-    
+
     &__users{
         margin-bottom: 10px;
         display: flex;
@@ -49,7 +51,7 @@
         text-transform: capitalize;
         font-size: 14px;
         font-weight: 600;
-        color: #555d68;
+        color: $color-payments-description-text;
         @include ellipsisText;
     }
 

@@ -1,9 +1,10 @@
+@import '../../../assets/variables.scss';
 .right-menu {
-  background-color: rgb(240, 255, 255);
+  background-color: $color-right-drawer-menu-background;
   height: 100vh;
   &__title {
     padding: 5px;
-    background-color: rgb(38, 119, 127);
+    background-color: $color-right-drawer-user-info-background;
   }
 
   &__avatar {
@@ -17,11 +18,11 @@
   }
 
   &__name {
-    color: white;
+    color: $color-right-drawer-user-name-text;
   }
 
   &__debt {
-    color: rgb(0, 255, 42);
+    color: $color-right-drawer-user-name-debt;
     font-weight: 700;
   }
 
@@ -35,7 +36,7 @@
       cursor: pointer;
     }
     &-item:hover{
-      background-color: rgb(211, 248, 248);
+      background-color: $color-right-drawer-menu-item-hover;
     }
   }
 }
