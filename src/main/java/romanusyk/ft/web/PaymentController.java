@@ -15,6 +15,7 @@ import romanusyk.ft.security.JwtUtil;
 import romanusyk.ft.service.interfaces.Optimizer;
 import romanusyk.ft.service.interfaces.PaymentService;
 
+import javax.validation.Valid;
 import java.lang.invoke.MethodHandles;
 import java.util.Map;
 import java.util.List;
@@ -73,7 +74,7 @@ public class PaymentController {
     @PreAuthorize("@securityService.hasRole('user')")
     public void makeGroupPayment(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
-            @RequestBody PaymentDTO paymentDTO
+            @RequestBody @Valid PaymentDTO paymentDTO
     ) {
         User u = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
         if (paymentDTO.getUserFrom() != null) {
@@ -91,11 +92,7 @@ public class PaymentController {
             @RequestBody Payment payment
     ) {
         User u = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
-        if (!Objects.equals(payment.getUserFrom().getId(), u.getId())) {
-            logger.debug(String.format("Rejected. User %d tried to pay from user %d.", u.getId(), payment.getUserFrom().getId()));
-            throw new UserAuthenticationException("User can update only his/her own payments.");
-        }
-        paymentService.updatePayment(payment);
+        paymentService.updatePayment(payment, u);
     }
 
     @RequestMapping(value = "", method = RequestMethod.DELETE)

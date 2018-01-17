@@ -14,7 +14,7 @@ public interface PaymentService {
 
     void makeGroupPayment(PaymentDTO paymentDTO);
 
-    void updatePayment(Payment payment);
+    void updatePayment(Payment payment, User client);
 
     void deletePayment(Integer paymentID, User client);
 
