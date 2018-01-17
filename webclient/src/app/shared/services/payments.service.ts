@@ -1,3 +1,4 @@
+import { Payment } from './../models/payment.model';
 import { ApiService } from './api.service';
 import { PaymentFilters } from './../models/payments-filters.model';
 import { CreatePaymentModel } from './../models/create-payment.model';
@@ -16,5 +17,13 @@ export class PaymentsService {
 
     create(model: CreatePaymentModel): Observable<any> {
         return this.apiService.post('payments', model);
+    }
+
+    delete(id: number): Observable<any> {
+      return this.apiService.delete(`payments?paymentId=${id}`);
+    }
+
+    edit(payment: Payment): Observable<any> {
+      return this.apiService.put(`payments`, payment);
     }
 }
