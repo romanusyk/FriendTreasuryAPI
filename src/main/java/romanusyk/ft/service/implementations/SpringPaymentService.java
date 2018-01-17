@@ -127,13 +127,27 @@ public class SpringPaymentService implements PaymentService {
     }
 
     @Override
-    public void updatePayment(Payment payment) {
+    public void updatePayment(Payment payment, User client) {
         if (payment.getId() == null) {
             throw new EntityIdNotValidException(Payment.class, payment.getId());
         }
         Payment existingPayment = paymentRepository.findOne(payment.getId());
         if (existingPayment == null) {
             throw new EntityNotFoundException(Payment.class, payment);
+        }
+        if (!Objects.equals(existingPayment.getUserFrom().getId(), client.getId())) {
+            logger.debug(String.format(
+                    "Rejected. User %d tried to pay from user %d.",
+                    client.getId(),
+                    existingPayment.getUserFrom().getId()
+            ));
+            throw new UserAuthenticationException("User can update only his/her own payments.");
+        }
+        if (payment.getUserFrom() != null
+                || payment.getUserTo() != null
+                || payment.getGroup() != null) {
+            throw new EntityIdNotValidException("user_from, user_to and group_id cannot be changed." +
+                    " Please, remove this payment and create a correct one.");
         }
         paymentRepository.save(payment);
     }

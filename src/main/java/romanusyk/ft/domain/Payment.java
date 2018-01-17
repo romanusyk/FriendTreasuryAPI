@@ -1,5 +1,7 @@
 package romanusyk.ft.domain;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -16,6 +18,7 @@ import java.util.Date;
         @Index(columnList = "user_to", name = "to_index"),
         @Index(columnList = "pgroup", name = "pgroup_index")
 })
+@DynamicUpdate
 public class Payment {
 
     @Id

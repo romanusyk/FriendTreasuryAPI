@@ -89,14 +89,10 @@ public class PaymentController {
     @PreAuthorize("@securityService.hasRole('user')")
     public void updatePayment(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
-            @RequestBody @Valid Payment payment
+            @RequestBody Payment payment
     ) {
         User u = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
-        if (!Objects.equals(payment.getUserFrom().getId(), u.getId())) {
-            logger.debug(String.format("Rejected. User %d tried to pay from user %d.", u.getId(), payment.getUserFrom().getId()));
-            throw new UserAuthenticationException("User can update only his/her own payments.");
-        }
-        paymentService.updatePayment(payment);
+        paymentService.updatePayment(payment, u);
     }
 
     @RequestMapping(value = "", method = RequestMethod.DELETE)
