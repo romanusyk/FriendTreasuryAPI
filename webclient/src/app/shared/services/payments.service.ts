@@ -20,7 +20,7 @@ export class PaymentsService {
     }
 
     delete(id: number): Observable<any> {
-      return this.apiService.delete(`payments?paymentId=${id}`);
+      return this.apiService.delete(`payments?paymentID=${id}`);
     }
 
     edit(payment: Payment): Observable<any> {

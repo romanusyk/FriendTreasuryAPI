@@ -2,6 +2,7 @@
     (end)="onListChange($event)">
     <ft-payment
       (deleteClick)="onDeletePayment($event)"
+      (editClick)="onEditPayment($event)"
       (onFromClick)="onFromClick($event)"
       (onToClick)="onToClick($event)"
       *ngFor="let item of scroll.viewPortItems"

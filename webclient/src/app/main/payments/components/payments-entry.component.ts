@@ -8,8 +8,10 @@ import { Subscription } from 'rxjs/Rx';
 import { PaymentFilters } from './../../../shared/models/payments-filters.model';
 import { DebtModel } from './../../../shared/models/debt.model';
 import { PaymentDTO } from './../../../shared/models/paymentDTO.model';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, InjectionToken } from '@angular/core';
 import { AppPreferencesService } from '../../../shared/services/app-preferences.service';
+import { MdlDialogService } from '@angular-mdl/core';
+import { EditPaymentComponent } from './edit-payment/edit-payment.component';
 
 @Component({
   selector: 'ft-payments',
@@ -28,6 +30,7 @@ export class PaymentsEntryComponent implements OnInit, OnDestroy {
   public subscription: SubscriptionList;
   constructor(private filtersService: PaymentFiltersService,
     private paymentService: PaymentsService,
+    private dialogService: MdlDialogService,
     private preferencesService: AppPreferencesService) {
     this.subscription = new SubscriptionList();
   }
@@ -141,20 +144,33 @@ export class PaymentsEntryComponent implements OnInit, OnDestroy {
   }
 
   onDeletePayment(id: number) {
-    console.log(id);
-
-    this.preferencesService.loading.show();
-    this.paymentService.delete(id).subscribe(() => {
-      this.preferencesService.loading.hide();
-      this.updateData();
-    },
-    (err) => {
-      this.preferencesService.loading.hide();
-      console.log(err);
+    this.dialogService.confirm('Delete payment?').subscribe(() => {
+      this.preferencesService.loading.show();
+      this.paymentService.delete(id).subscribe(() => {
+        this.preferencesService.loading.hide();
+        this.updateData();
+      },
+        (err) => {
+          this.preferencesService.loading.hide();
+          console.log(err);
+        });
     });
+  }
+
+  onEditPayment(payment: PaymentDTO) {
+    this.dialogService.showCustomDialog({
+      component: EditPaymentComponent,
+      providers: [
+        PaymentFiltersService,
+        PaymentsService,
+        { provide: CUSTOM_MODAL_DATA, useValue: payment }
+      ]
+    }).subscribe();
   }
 
   isPaymentReadonly(payment: PaymentDTO) {
     return payment.userFrom.id !== this.preferences.currentUser.id;
   }
 }
+
+export const CUSTOM_MODAL_DATA = new InjectionToken<any>('data');

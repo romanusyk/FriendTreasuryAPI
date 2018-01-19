@@ -16,6 +16,7 @@ import { PaymentUserComponent } from './components/payment-user/payment-user.com
 import { PaymentFiltersComponent } from './components/payment-filters/payment-filters.component';
 import { PaymentFiltersService } from './services/payment-filters.service';
 import { VirtualScrollModule } from 'angular2-virtual-scroll';
+import { EditPaymentComponent } from './components/edit-payment/edit-payment.component';
 
 @NgModule({
   imports: [
@@ -37,7 +38,8 @@ import { VirtualScrollModule } from 'angular2-virtual-scroll';
     PaymentComponent,
     PaymentFiltersComponent,
     PaymentUserComponent,
-    PaymentsEntryComponent
+    PaymentsEntryComponent,
+    EditPaymentComponent
   ],
   exports: [
     AmountColorDirective,
@@ -47,6 +49,9 @@ import { VirtualScrollModule } from 'angular2-virtual-scroll';
   ],
   providers: [
     PaymentFiltersService
+  ],
+  entryComponents: [
+    EditPaymentComponent
   ]
 })
 export class PaymentsModule { }

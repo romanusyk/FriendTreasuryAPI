@@ -1,0 +1,46 @@
+import { CUSTOM_MODAL_DATA } from './../payments-entry.component';
+import { PaymentFiltersService } from './../../services/payment-filters.service';
+import { MdlDialogReference } from '@angular-mdl/core';
+import { PaymentsService } from './../../../../shared/services/payments.service';
+import { Component, OnInit, Input, Inject, ViewChild } from '@angular/core';
+import { AppPreferencesService } from '../../../../shared/services/app-preferences.service';
+import { PaymentDTO } from '../../../../shared/models/paymentDTO.model';
+import { BusyComponent } from '../../../../shared/components/busy/busy.component';
+
+@Component({
+  selector: 'ft-edit-payment',
+  templateUrl: './edit-payment.component.html',
+  styleUrls: ['./edit-payment.component.scss']
+})
+
+export class EditPaymentComponent {
+  @ViewChild('loading') loading: BusyComponent;
+  payment;
+  constructor(
+    private paymentService: PaymentsService,
+    private paymentFiltersService: PaymentFiltersService,
+    private dialog: MdlDialogReference
+    // @Inject(CUSTOM_MODAL_DATA) public payment: any
+  ) {
+  }
+
+  public onEditClick() {
+    this.loading.show();
+    this.paymentService.edit(this.payment).subscribe(
+      () => {
+        this.paymentFiltersService.reload();
+        this.loading.hide();
+        this.dialog.hide();
+      },
+      () => {
+        this.loading.hide();
+        this.dialog.hide();
+      }
+    );
+  }
+
+  public onCancel() {
+    this.dialog.hide();
+  }
+
+}

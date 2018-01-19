@@ -14,11 +14,11 @@
         </div>
         <div class="payment__info_additional">
             <div class="payment__edit-buttons" *ngIf="!isReadonly">
-              <button mdl-button mdl-button-type="raised" mdl-colored="accent" mdl-ripple (onclick)="editClick.emit(payment)">Edit</button>
-              <button mdl-button mdl-button-type="raised" mdl-colored="accent" mdl-ripple (onclick)="deleteClick.emit(payment.id)">Delete</button>
+              <button mdl-button mdl-button-type="raised" mdl-colored="accent" mdl-ripple (click)="editClick.emit(payment)">Edit</button>
+              <button mdl-button mdl-button-type="raised" mdl-colored="accent" mdl-ripple (click)="deleteClick.emit(payment.id)">Delete</button>
             </div>
             <div class="paymet__map" *ngIf="payment.latitude || payment.longitude">
-                <button mdl-button mdl-button-type="raised" mdl-colored="accent" mdl-ripple (onclick)="showOnMapClick.emit(payment)">Show on Map</button>
+                <button mdl-button mdl-button-type="raised" mdl-colored="accent" mdl-ripple (click)="showOnMapClick.emit(payment)">Show on Map</button>
             </div>
             <div class="payment__date">{{payment.timestamp | date}}</div>
         </div>

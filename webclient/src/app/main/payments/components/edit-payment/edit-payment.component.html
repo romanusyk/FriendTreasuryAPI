@@ -1,0 +1,14 @@
+<div class="edit-payment">
+  <ft-busy #loading></ft-busy>
+  <h3 class="mdl-dialog__title">Edit payment</h3>
+  <div class="mdl-dialog__content">
+      <ft-textfield #amount type="number" label="Enter amount" required errors="Amount is required" floating-label [(ngModel)]="payment.amount">
+      </ft-textfield>
+      <ft-textfield label="Description" [(ngModel)]="payment.description" rows="3" maxrows="3" floating-label>
+      </ft-textfield>
+  </div>
+  <div class="mdl-dialog__actions">
+    <button mdl-button (click)="onEditClick()" mdl-button-type="raised" mdl-colored="primary" mdl-ripple>Edit</button>
+    <button mdl-button (click)="onCancelClick()" mdl-button-type="raised" mdl-ripple>Cancel</button>
+  </div>
+</div>

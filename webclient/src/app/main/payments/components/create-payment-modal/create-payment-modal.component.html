@@ -4,7 +4,7 @@
         <ul class="create-payment__users">
             <li class="create-payment__user" [ngClass]="{'create-payment__user-selected' : isUserSelected(user.id)}" *ngFor="let user of users | searchBy : search : 'username'">
                 <ft-checkbox [checked]="isUserSelected(user.id)" (change)="onCheckboxChange($event,user.id)">{{user.username}}</ft-checkbox>
-            </li>   
+            </li>
         </ul>
     <div class="mdl-dialog__actions">
         <button mdl-button mdl-button-type="raised" [disabled]="!model.usersTo || model.usersTo.length === 0" mdl-colored="primary" (click)="onChooseUserNext()"
@@ -15,7 +15,7 @@
 
 <ng-template #fillDataDialog>
     <h6 class="mdl-dialog__title">Fill data</h6>
-    <ft-textfield #amount type="text" label="Enter amount" required pattern="[0-9]*(\.[0-9]+)?" errors="Input is not a number" floating-label
+    <ft-textfield #amount type="number" label="Enter amount" required pattern="[0-9]*(\.[0-9]+)?" errors="Input is not a number" floating-label
         [(ngModel)]="model.amount">
     </ft-textfield>
     <button mdl-button (click)="pickADate($event)" mdl-ripple>
