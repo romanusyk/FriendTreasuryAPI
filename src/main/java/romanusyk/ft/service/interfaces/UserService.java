@@ -2,6 +2,7 @@ package romanusyk.ft.service.interfaces;
 
 import romanusyk.ft.domain.User;
 import org.springframework.transaction.annotation.Transactional;
+import romanusyk.ft.domain.UserStatistics;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -28,5 +29,7 @@ public interface UserService {
     void removeUserFromGroup(Integer userID, String groupName);
 
     void checkIfExists(User user);
+
+    UserStatistics getUserStatistics(User client);
 
 }

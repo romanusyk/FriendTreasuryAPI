@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import romanusyk.ft.domain.Group;
 import romanusyk.ft.domain.User;
+import romanusyk.ft.domain.UserStatistics;
 import romanusyk.ft.exception.EntityAlreadyExistsException;
 import romanusyk.ft.exception.NotValidPasswordException;
 import romanusyk.ft.exception.EntityNotFoundException;
@@ -74,6 +75,15 @@ public class UserController {
             throw new EntityNotFoundException(User.class, fakeUser);
         }
         return user;
+    }
+
+    @RequestMapping(value = "/statistics", method = RequestMethod.GET)
+    @ResponseBody
+    public UserStatistics getUserStatistics(
+            @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization
+    ) {
+        User client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        return userService.getUserStatistics(client);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)

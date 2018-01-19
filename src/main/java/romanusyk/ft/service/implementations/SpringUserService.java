@@ -7,17 +7,20 @@ import romanusyk.ft.domain.Group;
 import romanusyk.ft.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import romanusyk.ft.domain.UserStatistics;
 import romanusyk.ft.exception.EntityAlreadyExistsException;
 import romanusyk.ft.exception.EntityIdNotValidException;
 import romanusyk.ft.exception.EntityNotFoundException;
 import romanusyk.ft.exception.EntityNotValidException;
 import romanusyk.ft.repository.GroupRepository;
+import romanusyk.ft.repository.PaymentRepository;
 import romanusyk.ft.repository.UserExampleBuilder;
 import romanusyk.ft.repository.UserRepository;
 import romanusyk.ft.service.MD5Encrypter;
 import romanusyk.ft.service.interfaces.UserService;
 
 import java.lang.invoke.MethodHandles;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -32,6 +35,9 @@ public class SpringUserService implements UserService {
 
     @Autowired
     GroupRepository groupRepository;
+
+    @Autowired
+    PaymentRepository paymentRepository;
 
     @Override
     public User getUserByID(Integer id) {
@@ -165,6 +171,19 @@ public class SpringUserService implements UserService {
                     group.toString()
             ));
         }
+    }
+
+    @Override
+    public UserStatistics getUserStatistics(User client) {
+        User u = userRepository.findOne(client.getId());
+        BigDecimal userOutcome = paymentRepository.getUserOutcome(u);
+        BigDecimal userIncome = paymentRepository.getUserIncome(u);
+        return new UserStatistics(
+                u.getUsername(),
+                u.getId(),
+                userIncome.subtract(userOutcome),
+                u.getGroups().size()
+        );
     }
 
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());

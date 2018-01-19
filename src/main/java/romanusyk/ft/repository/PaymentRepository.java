@@ -22,4 +22,10 @@ public interface PaymentRepository extends CrudRepository<Payment, Integer> {
 
     List<Payment> findAll(Specification<Payment> specification);
 
+    @Query("select sum(p.amount) from Payment p where p.userFrom = ?1")
+    BigDecimal getUserOutcome(User user);
+
+    @Query("select sum(p.amount) from Payment p where p.userTo = ?1")
+    BigDecimal getUserIncome(User user);
+
 }
