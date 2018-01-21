@@ -27,7 +27,7 @@ export class ApiService {
     };
     const user = this.userStorageService.get();
     if (user) {
-      headersConfig['X-Auth-Token'] = `${user.token.token}`;
+      headersConfig['X-Auth-Token'] = `${user.token}`;
     }
     return new Headers(headersConfig);
   }

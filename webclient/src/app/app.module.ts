@@ -1,3 +1,4 @@
+import { ServerErrorInterceptor } from './shared/interseptors/server-error.interseptor';
 import { InviteModule } from './invite/invite.module';
 import { MdlModule, MdlDialogModule } from '@angular-mdl/core';
 import { RouterModule } from '@angular/router';
@@ -11,6 +12,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MainModule } from './main/main.module';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @NgModule({
   imports: [
@@ -29,8 +31,11 @@ import { MainModule } from './main/main.module';
   declarations: [
     AppComponent
   ],
-  providers: [
-  ],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: ServerErrorInterceptor,
+    multi: true,
+  }],
   bootstrap: [AppComponent]
 })
 

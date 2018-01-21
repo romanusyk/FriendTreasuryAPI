@@ -15,7 +15,7 @@ import { GroupService } from './../../shared/services/group.service';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Group } from '../../shared/models/group.model';
 import { Subscription } from 'rxjs/Rx';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from '../../shared/services/user.service';
 import { UserStorageService } from '../../shared/services/user-storage.service';
 import { Observable } from 'rxjs/Observable';
@@ -51,6 +51,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
     private inviteService: InviteService,
     private filtersService: PaymentFiltersService,
     public responsive: ResponsiveDetectorService,
+    private route: ActivatedRoute,
     private preferencesService: AppPreferencesService
   ) {
     const subscription = this.preferencesService.preferencesChanged.subscribe(data => {
@@ -65,10 +66,14 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.user = this.userStorageService.get().user;
+    // this.user = this.userStorageService.get().user;
     this.preferencesService.asign({ currentUser: this.user });
     this.updateCurrentUserProfile();
     this.updateGroupsList();
+    this.route.url.subscribe((data) => {
+      console.log(data)
+      console.log(this.route.snapshot.data)
+    });
   }
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
@@ -108,25 +113,26 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   onGroupSelect(group: Group): void {
+    this.router.navigateByUrl(`home/${group.id}`)
     this.layout.closeDrawer();
     this.loading.show();
-    this.preferencesService.asign({
-      currentGroup: group,
-    });
-    this.filtersService.changeFilters(new PaymentFilters({
-      group: group.id
-    }));
-    this.userService.getUsersInGroup(group.id).subscribe(
-      (data) => {
-        this.preferencesService.asign({ currentGroup: Object.assign(this.preferences.currentGroup, { users: data }) });
-        this.loading.hide();
-      },
-      (err) => {
-        console.log(err);
-        this.toastrManager.error('Error');
-        this.loading.hide();
-      }
-    );
+    // this.preferencesService.asign({
+    //   currentGroup: group,
+    // });
+    // this.filtersService.changeFilters(new PaymentFilters({
+    //   group: group.id
+    // }));
+    // this.userService.getUsersInGroup(group.id).subscribe(
+    //   (data) => {
+    //     this.preferencesService.asign({ currentGroup: Object.assign(this.preferences.currentGroup, { users: data }) });
+    //     this.loading.hide();
+    //   },
+    //   (err) => {
+    //     console.log(err);
+    //     this.toastrManager.error('Error');
+    //     this.loading.hide();
+    //   }
+    // );
   }
 
   onCreatePaymentComplete(model: CreatePaymentModel) {

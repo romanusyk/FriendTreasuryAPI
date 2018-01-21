@@ -1,7 +1,8 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "project": {
-    "name": "ft"
+    "name": "ft",
+    "ejected": true
   },
   "apps": [
     {

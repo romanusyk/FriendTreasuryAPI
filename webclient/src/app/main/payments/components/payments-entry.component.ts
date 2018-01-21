@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { SubscriptionList } from './../../../shared/models/subscription.model';
 import { Preferences } from './../../../shared/models/preferences.model';
 import { PagedCollection } from './../../../shared/models/paged-collection.model';
@@ -8,10 +9,11 @@ import { Subscription } from 'rxjs/Rx';
 import { PaymentFilters } from './../../../shared/models/payments-filters.model';
 import { DebtModel } from './../../../shared/models/debt.model';
 import { PaymentDTO } from './../../../shared/models/paymentDTO.model';
-import { Component, OnInit, OnDestroy, InjectionToken } from '@angular/core';
+import { Component, OnInit, OnDestroy, InjectionToken, Inject } from '@angular/core';
 import { AppPreferencesService } from '../../../shared/services/app-preferences.service';
 import { MdlDialogService } from '@angular-mdl/core';
 import { EditPaymentComponent } from './edit-payment/edit-payment.component';
+import { CUSTOM_MODAL_DATA } from '../injection.token';
 
 @Component({
   selector: 'ft-payments',
@@ -31,6 +33,7 @@ export class PaymentsEntryComponent implements OnInit, OnDestroy {
   constructor(private filtersService: PaymentFiltersService,
     private paymentService: PaymentsService,
     private dialogService: MdlDialogService,
+    private route: ActivatedRoute,
     private preferencesService: AppPreferencesService) {
     this.subscription = new SubscriptionList();
   }
@@ -52,6 +55,27 @@ export class PaymentsEntryComponent implements OnInit, OnDestroy {
         }
       }
     ));
+
+    this.subscription.add(this.route.params.subscribe(data => {
+      console.log(data);
+      // this.preferencesService.asign({
+      //   currentGroup: group,
+      // });
+      // this.filtersService.changeFilters(new PaymentFilters({
+      //   group: group.id
+      // }));
+      // this.userService.getUsersInGroup(group.id).subscribe(
+      //   (data) => {
+      //     this.preferencesService.asign({ currentGroup: Object.assign(this.preferences.currentGroup, { users: data }) });
+      //     this.loading.hide();
+      //   },
+      //   (err) => {
+      //     console.log(err);
+      //     this.toastrManager.error('Error');
+      //     this.loading.hide();
+      //   }
+      // );
+    }));
 
     this.subscription.add(this.preferencesService.preferencesChanged.subscribe(data => {
       this.preferences = data;
@@ -144,7 +168,7 @@ export class PaymentsEntryComponent implements OnInit, OnDestroy {
   }
 
   onDeletePayment(id: number) {
-    this.dialogService.confirm('Delete payment?').subscribe(() => {
+    this.dialogService.confirm('Delete payment?', 'No', 'Yes  ').subscribe(() => {
       this.preferencesService.loading.show();
       this.paymentService.delete(id).subscribe(() => {
         this.preferencesService.loading.hide();
@@ -161,8 +185,6 @@ export class PaymentsEntryComponent implements OnInit, OnDestroy {
     this.dialogService.showCustomDialog({
       component: EditPaymentComponent,
       providers: [
-        PaymentFiltersService,
-        PaymentsService,
         { provide: CUSTOM_MODAL_DATA, useValue: payment }
       ]
     }).subscribe();
@@ -172,5 +194,3 @@ export class PaymentsEntryComponent implements OnInit, OnDestroy {
     return payment.userFrom.id !== this.preferences.currentUser.id;
   }
 }
-
-export const CUSTOM_MODAL_DATA = new InjectionToken<any>('data');

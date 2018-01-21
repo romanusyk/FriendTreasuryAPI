@@ -2,7 +2,7 @@ import { OverrideMDLModule } from './../../shared/override-mdl/override-mdl.modu
 import { PaymentComponent } from './components/payment/payment.component';
 import { DebtComponent } from './components/debt/debt.component';
 import { PaymentsEntryComponent } from './components/payments-entry.component';
-import { NgModule } from '@angular/core';
+import { NgModule, InjectionToken } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { CommonModule } from '@angular/common';
 import { AmountColorDirective } from './directives/amount-color.directive';
