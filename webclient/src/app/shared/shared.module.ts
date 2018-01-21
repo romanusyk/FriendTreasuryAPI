@@ -67,8 +67,7 @@ const config = ConfigManager.config;
     InviteService,
     ErrorTransformingService,
     AppPreferencesService,
-    ResponsiveDetectorService,
-    BusyComponent
+    ResponsiveDetectorService
   ],
   exports: [
     Error404Component,

@@ -19,8 +19,12 @@ export class AuthInterceptor implements HttpInterceptor {
             return Observable.throw('');
         }
         const token = this.userStorageService.get();
-        request.headers.append('X-Auth-Token', token.token);
-        return next.handle(request).catch(this.handleError);
+        const cloned = request.clone({
+            setHeaders: {
+                'X-Auth-Token' : token.token
+            }
+        });
+        return next.handle(cloned).catch(this.handleError);
     }
 
     private handleError(err: HttpErrorResponse): Observable<HttpEvent<any>> {

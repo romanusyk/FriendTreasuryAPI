@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build:prod:publish": "ng build -prod -ec -dop -op /var/www/html -bh /",
+    "build:prod:publish": "webpack -prod -ec -dop -bh /",
     "build": "webpack",
     "start": "webpack-dev-server --port=8080",
     "test": "karma start ./karma.conf.js"

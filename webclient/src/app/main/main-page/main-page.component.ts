@@ -63,6 +63,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
     this.preferencesService.init(this);
     this.subscription = new SubscriptionList();
     this.subscription.add(subscription);
+    this.user = new User();
   }
 
   ngOnInit(): void {

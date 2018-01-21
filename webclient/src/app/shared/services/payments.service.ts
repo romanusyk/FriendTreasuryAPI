@@ -12,18 +12,18 @@ export class PaymentsService {
     constructor(private apiService: ApiService) { }
 
     get(filters: PaymentFilters): Observable<any> {
-        return this.apiService.get('payments' + filters.toUrl());
+        return this.apiService.get('/payments' + filters.toUrl());
     }
 
     create(model: CreatePaymentModel): Observable<any> {
-        return this.apiService.post('payments', model);
+        return this.apiService.post('/payments', model);
     }
 
     delete(id: number): Observable<any> {
-      return this.apiService.delete(`payments?paymentID=${id}`);
+      return this.apiService.delete(`/payments?paymentID=${id}`);
     }
 
     edit(payment: Payment): Observable<any> {
-      return this.apiService.put(`payments`, payment);
+      return this.apiService.put(`/payments`, payment);
     }
 }

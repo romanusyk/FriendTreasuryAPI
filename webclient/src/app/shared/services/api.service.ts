@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { AuthService } from './auth.service';
 import { Error } from './../models/error.model';
 import { IAppConfig } from './../../config/iapp.config';
@@ -13,7 +14,7 @@ export class ApiService {
   private config: IAppConfig;
   public notAuthorize: Subject<any> = new Subject();
   constructor(
-    private http: Http,
+    private http: HttpClient,
     private userStorageService: UserStorageService,
     private authService: AuthService
   ) {
@@ -37,8 +38,7 @@ export class ApiService {
     if (!!params) {
       url += params.toString();
     }
-    return this.http.get(url,
-      { headers: this.setHeaders() })
+    return this.http.get(url)
       .catch(this.formatErrors.bind(this))
       .map(this.defaultMap);
   }
@@ -46,8 +46,7 @@ export class ApiService {
   put(path: string, body: Object = {}): Observable<any> {
     return this.http.put(
       `${this.config.endpoint}${path}`,
-      JSON.stringify(body),
-      { headers: this.setHeaders() })
+      JSON.stringify(body))
       .catch(this.formatErrors.bind(this))
       .map(this.defaultMap);
   }
@@ -55,8 +54,7 @@ export class ApiService {
   patch(path: string, body: Object = {}): Observable<any> {
     return this.http.patch(
       `${this.config.endpoint}${path}`,
-      JSON.stringify(body),
-      { headers: this.setHeaders() })
+      JSON.stringify(body))
       .catch(this.formatErrors.bind(this))
       .map(this.defaultMap);
   }
@@ -64,16 +62,14 @@ export class ApiService {
   post(path: string, body: Object = {}): Observable<any> {
     return this.http.post(
       `${this.config.endpoint}${path}`,
-      JSON.stringify(body),
-      { headers: this.setHeaders() })
+      JSON.stringify(body))
       .catch(this.formatErrors.bind(this))
       .map(this.defaultMap);
   }
 
   delete(path): Observable<any> {
     return this.http.delete(
-      `${this.config.endpoint}${path}`,
-      { headers: this.setHeaders() })
+      `${this.config.endpoint}${path}`)
       .catch(this.formatErrors.bind(this))
       .map(this.defaultMap);
   }
