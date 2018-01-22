@@ -13,12 +13,12 @@ export class AuthInterceptor implements HttpInterceptor {
     constructor(private authService: AuthDataService, private userStorageService: UserStorageService) {
         this.handleError = this.handleError.bind(this);
     }
-    intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         if (!this.authService.isAuthorized()) {
             this.authService.logout();
             return Observable.throw('');
         }
-        const token = this.userStorageService.auth-data.service;
+        const token = this.userStorageService.get();
         const cloned = request.clone({
             setHeaders: {
                 'X-Auth-Token' : token.token

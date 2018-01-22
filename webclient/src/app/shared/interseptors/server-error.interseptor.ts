@@ -12,7 +12,7 @@ export class ServerErrorInterceptor implements HttpInterceptor {
         this.handleError = this.handleError.bind(this);
     }
 
-    intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).catch(this.handleError);
     }
 

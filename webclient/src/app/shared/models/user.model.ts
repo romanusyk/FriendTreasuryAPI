@@ -1,5 +1,3 @@
-import { Token } from './token.model';
-
 export class User {
   id?: number;
   phone?: string;
@@ -7,7 +5,8 @@ export class User {
   debt?: number;
 }
 
-export class UserInfo {
-  user: User;
-  token: Token;
+export class UserLoginResponse {
+  token: string;
+  expireTime: number;
+  userId: number;
 }

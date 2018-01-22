@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class UserStorageService {
     private token = 'token';
-    public auth-data.service: Token {
+    public get(): Token {
         if (window.localStorage[this.token]) {
             return JSON.parse(window.localStorage[this.token]);
         }

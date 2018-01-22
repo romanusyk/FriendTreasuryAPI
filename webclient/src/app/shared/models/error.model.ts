@@ -2,6 +2,9 @@ export class Error {
   public messages: string[];
   public key: string;
 }
+export class Errors {
+  errors: { [key: string]: string } = {};
+}
 
 export class ErrorsList {
   private errors: Error[];

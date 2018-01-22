@@ -1,9 +1,8 @@
-import { AuthDataService } from './../services/auth.service';
+import { AuthDataService } from './../services/auth-data.service';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { IAppConfig } from '../../config/iapp.config';
-import { Inject, Injectable } from '@angular/core';
-import { UserService } from '../services/user.service';
+import { Injectable } from '@angular/core';
 import { ConfigManager } from '../../config/app.config';
 @Injectable()
 export class LoginGuard implements CanActivate {
@@ -11,7 +10,7 @@ export class LoginGuard implements CanActivate {
   constructor(private authService: AuthDataService, private router: Router) {
     this.config = ConfigManager.config;
   }
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
+  public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
     if (!this.authService.isAuthorized()) {
       return true;
     }
