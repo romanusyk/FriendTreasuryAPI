@@ -1,7 +1,7 @@
 import { InviteService } from './../shared/services/invite.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AuthService } from './../shared/services/auth.service';
+import { AuthDataService } from './../shared/services/auth.service';
 import { Subscription } from 'rxjs/Rx';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { IAppConfig } from '../config/iapp.config';
@@ -16,7 +16,7 @@ export class InviteComponent implements OnInit, OnDestroy {
     private config: IAppConfig;
     @ViewChild(BusyComponent) loading: BusyComponent;
     constructor(private inviteService: InviteService,
-        private authService: AuthService,
+        private authService: AuthDataService,
         private router: Router,
         private route: ActivatedRoute,
         private toastr: ToastrService) {

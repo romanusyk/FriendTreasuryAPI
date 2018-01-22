@@ -1,4 +1,4 @@
-import { AuthService } from './../services/auth.service';
+import { AuthDataService } from './../services/auth.service';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 import { IAppConfig } from '../../config/iapp.config';
@@ -7,7 +7,7 @@ import { ConfigManager } from '../../config/app.config';
 @Injectable()
 export class MainGuard implements CanActivate {
   private config: IAppConfig;
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthDataService, private router: Router) {
     this.config = ConfigManager.config;
   }
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {

@@ -4,9 +4,13 @@ export class Group {
     title: string;
     amount?: number;
     name?: string;
-    users?: User[]
-    constructor(id?, title?) {
-        this.id = id;
-        this.title = title;
+    users?: User[];
+    constructor(group?: Group, amount?: number) {
+        if (!!group) {
+            Object.assign(this, group);
+        }
+        if (!!amount) {
+            this.amount = amount;
+        }
     }
 }

@@ -5,11 +5,10 @@ import { ConfigManager } from './../config/app.config';
 import { AgmCoreModule } from '@agm/core';
 import { MapComponent } from './components/map/map.component';
 import { InviteService } from './services/invite.service';
-import { AuthService } from './services/auth.service';
+import { AuthDataService } from './services/auth.service';
 import { PaymentsService } from './services/payments.service';
 import { GroupService } from './services/group.service';
 import { HttpClientModule } from '@angular/common/http';
-import { ApiService } from './services/api.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { UserStorageService } from './services/user-storage.service';
@@ -58,12 +57,11 @@ const config = ConfigManager.config;
   providers: [
     UserStorageService,
     UserService,
-    AuthService,
+    AuthDataService,
     GroupService,
     PaymentsService,
     MainGuard,
     LoginGuard,
-    ApiService,
     InviteService,
     ErrorTransformingService,
     AppPreferencesService,

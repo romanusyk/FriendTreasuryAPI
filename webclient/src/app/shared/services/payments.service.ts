@@ -1,29 +1,30 @@
-import { Payment } from './../models/payment.model';
-import { ApiService } from './api.service';
-import { PaymentFilters } from './../models/payments-filters.model';
-import { CreatePaymentModel } from './../models/create-payment.model';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+
+import { CreatePaymentModel } from './../models/create-payment.model';
+import { PaymentFilters } from './../models/payments-filters.model';
+import { Payment } from './../models/payment.model';
 
 
 @Injectable()
 export class PaymentsService {
 
-    constructor(private apiService: ApiService) { }
+    constructor(private http: HttpClient) { }
 
-    get(filters: PaymentFilters): Observable<any> {
-        return this.apiService.get('/payments' + filters.toUrl());
+    public get(filters: PaymentFilters): Observable<any> {
+        return this.http.get('api/payments' + filters.toUrl());
     }
 
-    create(model: CreatePaymentModel): Observable<any> {
-        return this.apiService.post('/payments', model);
+    public create(model: CreatePaymentModel): Observable<any> {
+        return this.http.post('api/payments', model);
     }
 
-    delete(id: number): Observable<any> {
-      return this.apiService.delete(`/payments?paymentID=${id}`);
+    public delete(id: number): Observable<any> {
+        return this.http.delete(`api/payments?paymentID=${id}`);
     }
 
-    edit(payment: Payment): Observable<any> {
-      return this.apiService.put(`/payments`, payment);
+    public edit(payment: Payment): Observable<any> {
+        return this.http.put(`api/payments`, payment);
     }
 }

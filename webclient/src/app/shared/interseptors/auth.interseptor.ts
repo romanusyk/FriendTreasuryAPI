@@ -1,5 +1,5 @@
 import { UserStorageService } from './../services/user-storage.service';
-import { AuthService } from './../services/auth.service';
+import { AuthDataService } from './../services/auth.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse } from '@angular/common/http';
@@ -10,7 +10,7 @@ import { HttpEventType } from '@angular/common/http/src/response';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-    constructor(private authService: AuthService, private userStorageService: UserStorageService) {
+    constructor(private authService: AuthDataService, private userStorageService: UserStorageService) {
         this.handleError = this.handleError.bind(this);
     }
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -18,7 +18,7 @@ export class AuthInterceptor implements HttpInterceptor {
             this.authService.logout();
             return Observable.throw('');
         }
-        const token = this.userStorageService.get();
+        const token = this.userStorageService.auth-data.service;
         const cloned = request.clone({
             setHeaders: {
                 'X-Auth-Token' : token.token

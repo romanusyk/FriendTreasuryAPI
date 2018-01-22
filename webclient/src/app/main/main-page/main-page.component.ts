@@ -5,7 +5,7 @@ import { PaymentsService } from './../../shared/services/payments.service';
 import { AppPreferencesService } from './../../shared/services/app-preferences.service';
 import { PaymentFiltersService } from './../payments/services/payment-filters.service';
 import { InviteService } from './../../shared/services/invite.service';
-import { AuthService } from './../../shared/services/auth.service';
+import { AuthDataService } from './../../shared/services/auth.service';
 import { PaymentFilters } from './../../shared/models/payments-filters.model';
 import { MdlDialogService, MdlLayoutDrawerComponent, MdlLayoutComponent } from '@angular-mdl/core';
 import { User } from './../../shared/models/user.model';
@@ -44,7 +44,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
     private paymentService: PaymentsService,
     private userService: UserService,
     private userStorageService: UserStorageService,
-    private authService: AuthService,
+    private authService: AuthDataService,
     private toastrManager: ToastrService,
     private dialogService: MdlDialogService,
     private router: Router,
@@ -67,7 +67,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // this.user = this.userStorageService.get().user;
+    // this.user = this.userStorageService.auth-data.service.user;
     this.preferencesService.asign({ currentUser: this.user });
     this.updateCurrentUserProfile();
     this.updateGroupsList();
@@ -96,7 +96,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
     this.subscription.add(this.groupService.getWithPayments(this.user.id).subscribe(
       (data) => {
         this.groups = data;
-        const name = this.inviteService.get();
+        const name = this.inviteService.auth-data.service;
         if (!!name) {
           this.preferencesService.asign({
             currentGroup: data.find(group => group.name === name)

@@ -1,6 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Group } from './../models/group.model';
 import { Observable } from 'rxjs/Rx';
-import { ApiService } from './api.service';
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/map';
@@ -14,38 +14,26 @@ import { PaymentDTO } from '../models/paymentDTO.model';
 
 @Injectable()
 export class GroupService {
-    constructor(private apiService: ApiService, private paymentsService: PaymentsService) { }
+    constructor(private http: HttpClient, private paymentsService: PaymentsService) { }
 
-    getGroups(): Observable<any> {
-        return this.apiService.get('groups/my');
+    public getGroups(): Observable<any> {
+        return this.http.get('api/groups/my');
     }
 
-    create(group: Group): Observable<any> {
-        return this.apiService.post('groups', group);
+    public create(group: Group): Observable<any> {
+        return this.http.post('api/groups', group);
     }
 
-    edit(group: Group): Observable<any> {
-        return this.apiService.patch('groups', group);
+    public edit(group: Group): Observable<any> {
+        return this.http.patch('api/groups', group);
     }
 
-    getWithPayments(userId: number): Observable<any> {
+    public getWithPayments(userId: number): Observable<any> {
         const filters = new PaymentFilters();
         filters.sum = true;
         filters.user = userId;
         filters.group = 0;
-        return Observable.forkJoin(
-            this.getGroups(),
-            this.paymentsService.get(filters)
-        ).map((data: Array<any>) => this.enrich(data[0], data[1]));
-    }
-
-    private enrich(groups: Array<Group>, payments: Array<PaymentDTO>): Array<Group> {
-        payments.forEach((payment: PaymentDTO) => {
-            if (!!payment && !!payment.group) {
-                const group = groups.find((item: Group) => payment.group.id === item.id);
-                group.amount = payment.amount;
-            }
-        });
-        return groups;
+        return this.paymentsService.get(filters)
+            .map((payment: Payment) => new Group(payment.group, payment.amount));
     }
 }

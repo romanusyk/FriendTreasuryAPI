@@ -1,8 +1,8 @@
 export class DateHelper {
-  static currentUnixTime() {
+  public static currentUnixTime() {
     return Math.floor(Date.now() / 1000);
   }
-  static currentDate(){
+  public static currentDate() {
     return new Date(Date.now());
   }
 }

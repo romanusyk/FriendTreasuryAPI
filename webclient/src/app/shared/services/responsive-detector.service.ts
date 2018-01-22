@@ -5,19 +5,19 @@ export class ResponsiveDetectorService {
     private portraitOrientation = 'portrait';
     private landscapeOrientation = 'landscape';
 
-    isPhonePortraitMode(): boolean {
+    public isPhonePortraitMode(): boolean {
         return window.screen.width <= 414;
     }
 
-    isPhoneLandscapeMode(): boolean {
+    public isPhoneLandscapeMode(): boolean {
         return window.screen.width <= 736;
     }
 
-    isLandscapeMode(): boolean {
+    public isLandscapeMode(): boolean {
         return this.getOrientationType().includes(this.landscapeOrientation);
     }
 
-    isPortraiteMode(): boolean {
+    public isPortraiteMode(): boolean {
         return this.getOrientationType().includes(this.portraitOrientation);
     }
 
