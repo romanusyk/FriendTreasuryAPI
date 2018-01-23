@@ -1,3 +1,4 @@
+import { AppResolver } from './app.resolver';
 import { InviteComponent } from './invite/invite.component';
 import { AuthComponent } from './auths/auth.component';
 import { NgModule } from '@angular/core';
@@ -13,16 +14,12 @@ const routes: Routes = [
   {
     path: 'home',
     component: MainPageComponent,
+    resolve: [AppResolver],
     canActivate: [MainGuard],
     children: [
       { path: ':group', component: PaymentsEntryComponent },
     ]
   },
-  // {
-  //   path: 'home/:group',
-  //   component: MainPageComponent,
-  //   canActivate: [MainGuard],
-  // },
   { path: 'invite', redirectTo: '404', pathMatch: 'full' },
   { path: 'invite/:name', component: InviteComponent },
   { path: 'login', component: AuthComponent, canActivate: [LoginGuard] },

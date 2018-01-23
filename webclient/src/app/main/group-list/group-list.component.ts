@@ -9,14 +9,11 @@ import { AppPreferencesService } from '../../shared/services/app-preferences.ser
     styleUrls: ['group-list.component.scss']
 })
 export class GroupListComponent {
-
-    @Input() groups: Array<Group> = new Array();
-    @Output() select: EventEmitter<Group> = new EventEmitter();
+    public groups: Array<Group> = new Array();
     @Output() createGroupClick: EventEmitter<any> = new EventEmitter();
     public currentGroup: Group;
 
     onSelect(group: Group): void {
         this.currentGroup = group;
-        this.select.emit(group);
     }
 }

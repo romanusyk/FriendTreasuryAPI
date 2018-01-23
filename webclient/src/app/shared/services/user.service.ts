@@ -1,4 +1,4 @@
-import { User } from './../models/user.model';
+import { User, UserStatistics } from './../models/user.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
@@ -15,7 +15,7 @@ export class UserService {
     return this.http.get('api/users/me');
   }
 
-  getUserStatistics(): Observable<any> {
-    return this.http.get('api/users/statistics');
+  getUserStatistics(): Observable<UserStatistics> {
+    return this.http.get<UserStatistics>('api/users/statistics');
   }
 }

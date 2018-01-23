@@ -10,3 +10,10 @@ export class UserLoginResponse {
   expireTime: number;
   userId: number;
 }
+
+export class UserStatistics {
+  debt: number;
+  groupCount: number;
+  id: number;
+  username: string;
+}

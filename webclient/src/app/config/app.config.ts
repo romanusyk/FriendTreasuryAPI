@@ -3,7 +3,7 @@ import { IAppConfig } from './iapp.config';
 export const AppConfig: IAppConfig = {
   routes: {
     login: 'login',
-    main: '',
+    main: 'home',
     notFound: '404',
     serverError: '500',
     invite: 'invite'
