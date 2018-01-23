@@ -7,8 +7,7 @@ import { MainPageComponent } from '../../main/main-page/main-page.component';
 export class AppPreferencesService {
   private _preferences: Preferences;
   private _mainComponent: MainPageComponent;
-  private _subject: Subject<Preferences> = new Subject();
-  public preferencesChanged: Observable<Preferences> = this._subject.asObservable();
+
   public get loading() {
     return this._mainComponent.loading;
   }
@@ -26,7 +25,6 @@ export class AppPreferencesService {
 
   public asign(preferences: Preferences) {
     Object.assign(this.preferences, preferences);
-    this._subject.next(this._preferences);
   }
 
   public init(component: MainPageComponent) {
