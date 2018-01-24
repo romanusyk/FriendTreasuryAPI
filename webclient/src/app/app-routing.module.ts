@@ -6,8 +6,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { MainGuard } from './shared/guards/main.guard';
 import { LoginGuard } from './shared/guards/login.guard';
 import { MainPageComponent } from './main/main-page/main-page.component';
-import { PaymentsEntryComponent } from './main/payments/components/payments-entry.component';
 import { Error404Component } from './shared/components/error404/error404.component';
+import { PaymentsListComponent } from './main/payments/components/payments-list/payments-list.component';
+import { DebtsListComponent } from './main/payments/components/debts-list/debts-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -17,7 +18,9 @@ const routes: Routes = [
     resolve: [AppResolver],
     canActivate: [MainGuard],
     children: [
-      { path: ':group', component: PaymentsEntryComponent },
+      { path: ':group', redirectTo: ':group/payments', pathMatch: 'full' },
+      { path: ':group/payments', component: PaymentsListComponent },
+      { path: ':group/debts', component: DebtsListComponent }
     ]
   },
   { path: 'invite', redirectTo: '404', pathMatch: 'full' },

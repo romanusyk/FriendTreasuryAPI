@@ -6,19 +6,19 @@
                 <p [amountColor]="payment.amount" class="payment__amount">{{payment.amount}}</p>
             </div>
             <div class="payment__users">
-                <ft-payment-user (click)="onFromClick.emit(payment.userFrom.id)" [user]="payment.userFrom" [amount]="payment.amount"></ft-payment-user>
+                <ft-payment-user (click)="onFromClick(payment.id)" [user]="payment.userFrom" [amount]="payment.amount"></ft-payment-user>
                 <span class="payment__arrow">&#10230;</span>
-                <ft-payment-user (click)="onToClick.emit(payment.userTo.id)" [user]="payment.userTo" [amount]="0.00"></ft-payment-user>
+                <ft-payment-user (click)="onToClick(payment.id)" [user]="payment.userTo" [amount]="0.00"></ft-payment-user>
             </div>
 
         </div>
         <div class="payment__info_additional">
             <div class="payment__edit-buttons" *ngIf="!isReadonly">
-              <button mdl-button mdl-button-type="raised" mdl-colored="accent" mdl-ripple (click)="editClick.emit(payment)">Edit</button>
-              <button mdl-button mdl-button-type="raised" mdl-colored="accent" mdl-ripple (click)="deleteClick.emit(payment.id)">Delete</button>
+              <button mdl-button mdl-button-type="raised" mdl-colored="accent" mdl-ripple (click)="onEditClick(payment)">Edit</button>
+              <button mdl-button mdl-button-type="raised" mdl-colored="accent" mdl-ripple (click)="onDeleteClick(payment.id)">Delete</button>
             </div>
             <div class="paymet__map" *ngIf="payment.latitude || payment.longitude">
-                <button mdl-button mdl-button-type="raised" mdl-colored="accent" mdl-ripple (click)="showOnMapClick.emit(payment)">Show on Map</button>
+                <button mdl-button mdl-button-type="raised" mdl-colored="accent" mdl-ripple (click)="onShowOnMapClick(payment)">Show on Map</button>
             </div>
             <div class="payment__date">{{payment.timestamp | date}}</div>
         </div>

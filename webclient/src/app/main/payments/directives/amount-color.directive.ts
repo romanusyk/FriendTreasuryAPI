@@ -1,11 +1,14 @@
-import { Directive, Input, ElementRef, HostBinding, OnInit } from '@angular/core';
+import { Directive, Input, ElementRef, OnInit } from '@angular/core';
 
 @Directive({ selector: '[amountColor]' })
 export class AmountColorDirective implements OnInit {
-  @Input('amountColor') amountColor: number;
   private minPrice = 0;
   private maxPrice = 300;
+
+  @Input('amountColor') amountColor: number;
+
   constructor(private el: ElementRef) { }
+
   ngOnInit(): void {
     let coeff = (this.amountColor - this.minPrice) / (this.maxPrice - this.minPrice);
     coeff = coeff > 1. ? 1. : coeff;

@@ -1,9 +1,9 @@
+import { Payment } from './../../../../shared/models/payment.model';
 import { PaymentFiltersService } from './../../services/payment-filters.service';
 import { MdlDialogReference } from '@angular-mdl/core';
 import { PaymentsService } from './../../../../shared/services/payments.service';
 import { Component, OnInit, Input, Inject, ViewChild } from '@angular/core';
 import { AppPreferencesService } from '../../../../shared/services/app-preferences.service';
-import { PaymentDTO } from '../../../../shared/models/paymentDTO.model';
 import { BusyComponent } from '../../../../shared/components/busy/busy.component';
 import { CUSTOM_MODAL_DATA } from '../../injection.token';
 
@@ -19,9 +19,7 @@ export class EditPaymentComponent {
     private paymentService: PaymentsService,
     private paymentFiltersService: PaymentFiltersService,
     private dialog: MdlDialogReference,
-    @Inject(CUSTOM_MODAL_DATA) public payment: any
-  ) {
-  }
+    @Inject(CUSTOM_MODAL_DATA) public payment: Payment) {}
 
   public onEditClick() {
     this.loading.show();
@@ -41,5 +39,4 @@ export class EditPaymentComponent {
   public onCancelClick() {
     this.dialog.hide();
   }
-
 }

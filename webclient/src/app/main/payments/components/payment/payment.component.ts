@@ -1,18 +1,38 @@
+import { Payment } from './../../../../shared/models/payment.model';
 import { Component, Input, EventEmitter, Output } from '@angular/core';
-import { PaymentDTO } from '../../../../shared/models/paymentDTO.model';
 
 @Component({
-    moduleId: module.id,
-    selector: 'ft-payment',
-    templateUrl: 'payment.component.html',
-    styleUrls: ['payment.component.scss']
+  moduleId: module.id,
+  selector: 'ft-payment',
+  templateUrl: 'payment.component.html',
+  styleUrls: ['payment.component.scss']
 })
 export class PaymentComponent {
-    @Input() payment: PaymentDTO;
-    @Input() isReadonly: boolean;
-    @Output() onToClick: EventEmitter<number> = new EventEmitter<number>();
-    @Output() onFromClick: EventEmitter<number> = new EventEmitter<number>();
-    @Output() editClick: EventEmitter<PaymentDTO> = new EventEmitter<PaymentDTO>();
-    @Output() showOnMapClick: EventEmitter<PaymentDTO> = new EventEmitter<PaymentDTO>();
-    @Output() deleteClick: EventEmitter<number> = new EventEmitter<number>();
+  @Input() payment: Payment;
+  @Input() isReadonly: boolean;
+  @Output() toClick: EventEmitter<number> = new EventEmitter<number>();
+  @Output() fromClick: EventEmitter<number> = new EventEmitter<number>();
+  @Output() editClick: EventEmitter<Payment> = new EventEmitter<Payment>();
+  @Output() showOnMapClick: EventEmitter<Payment> = new EventEmitter<Payment>();
+  @Output() deleteClick: EventEmitter<number> = new EventEmitter<number>();
+
+  public onToClick($event: number) {
+    this.toClick.emit($event);
+  }
+
+  public onFromClick($event: number) {
+    this.fromClick.emit($event);
+  }
+
+  public onEditClick($event: Payment) {
+    this.editClick.emit($event);
+  }
+
+  public onDeleteClick($event: number) {
+    this.deleteClick.emit($event);
+  }
+
+  public onShowOnMapClick($event: Payment) {
+    this.showOnMapClick.emit($event);
+  }
 }
