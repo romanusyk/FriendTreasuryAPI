@@ -30,37 +30,43 @@ export class PaymentFiltersService {
   public changeFilters(filter: PaymentFiltersType) {
     const filters = this.service.getCurrent();
     const preferences = this.appPreferencesService.preferences;
-    let allowReload = true;
     switch (filter) {
       case PaymentFiltersType.User:
-        filters.user = !!filters.user ? 0 : preferences.currentUser.id;
+        this.service.changeFilters({
+          user: !!filters.user ? 0 : preferences.currentUser.id,
+          page: 0
+        });
         break;
       case PaymentFiltersType.UserFrom:
         if (!!filters.from) {
-          filters.from = 0;
-        } else {
-          allowReload = false;
+          this.service.changeFilters({
+            from: 0,
+            page: 0
+          });
         }
         break;
       case PaymentFiltersType.UserTo:
         if (!!filters.to) {
-          filters.to = 0;
-        } else {
-          allowReload = false;
+          this.service.changeFilters({
+            to: 0,
+            page: 0
+          });
         }
         break;
       case PaymentFiltersType.Sum:
-        filters.sum = !filters.sum;
+        this.service.changeFilters({
+          sum: !filters.sum,
+          page: 0
+        });
         break;
       case PaymentFiltersType.Group:
-        filters.group = filters.group > -1 ? -1 : preferences.currentGroup.id;
+        this.service.changeFilters({
+          group: filters.group > -1 ? -1 : preferences.currentGroup.id,
+          page: 0
+        });
         break;
       default:
         break;
-    }
-    if (allowReload) {
-      filters.page = 0;
-      this.service.reload();
     }
   }
 
