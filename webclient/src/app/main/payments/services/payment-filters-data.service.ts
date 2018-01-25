@@ -4,21 +4,23 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
-export class PaymentFiltersService {
-  private filersChangedSubject: BehaviorSubject<PaymentFilters> = new BehaviorSubject(null);
+export class PaymentFiltersDataService {
+  private filters: PaymentFilters;
+  private filersChangedSubject: BehaviorSubject<PaymentFilters> = new BehaviorSubject(this.filters);
   public onFiltersChanged: Observable<PaymentFilters> = this.filersChangedSubject.asObservable();
 
-  public changeFilters(filters: PaymentFilters) {
+  public changeFilters(filters: Partial<PaymentFilters>) {
     if (!!filters) {
-      this.filersChangedSubject.next(filters);
+      Object.assign(this.filters, filters);
+      this.filersChangedSubject.next(this.filters);
     }
   }
 
   public reload() {
-    this.filersChangedSubject.next(this.filersChangedSubject.value);
+    this.filersChangedSubject.next(this.filters);
   }
 
   public getCurrent(): PaymentFilters {
-    return this.filersChangedSubject.value ? this.filersChangedSubject.value : new PaymentFilters();
+    return this.filters;
   }
 }
