@@ -2,13 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { CreatePaymentModel } from './../models/create-payment.model';
 import { PaymentFilters } from './../models/payments-filters.model';
 import { Payment } from './../models/payment.model';
 
 
 @Injectable()
-export class PaymentsService {
+export class PaymentsDataService {
 
     constructor(private http: HttpClient) { }
 

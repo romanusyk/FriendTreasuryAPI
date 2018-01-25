@@ -6,7 +6,7 @@ import { AgmCoreModule } from '@agm/core';
 import { MapComponent } from './components/map/map.component';
 import { InviteService } from './services/invite.service';
 import { AuthDataService } from './services/auth.service';
-import { PaymentsService } from './services/payments.service';
+import { PaymentsDataService } from './services/payments.service';
 import { GroupService } from './services/group.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -59,7 +59,7 @@ const config = ConfigManager.config;
     UserService,
     AuthDataService,
     GroupService,
-    PaymentsService,
+    PaymentsDataService,
     MainGuard,
     LoginGuard,
     InviteService,

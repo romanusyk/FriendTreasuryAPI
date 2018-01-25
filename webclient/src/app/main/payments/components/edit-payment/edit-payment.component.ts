@@ -1,7 +1,7 @@
 import { Payment } from './../../../../shared/models/payment.model';
 import { PaymentFiltersService } from './../../services/payment-filters.service';
 import { MdlDialogReference } from '@angular-mdl/core';
-import { PaymentsService } from './../../../../shared/services/payments.service';
+import { PaymentsDataService } from './../../../../shared/services/payments.service';
 import { Component, OnInit, Input, Inject, ViewChild } from '@angular/core';
 import { AppPreferencesService } from '../../../../shared/services/app-preferences.service';
 import { BusyComponent } from '../../../../shared/components/busy/busy.component';
@@ -16,7 +16,7 @@ import { CUSTOM_MODAL_DATA } from '../../injection.token';
 export class EditPaymentComponent {
   @ViewChild('loading') loading: BusyComponent;
   constructor(
-    private paymentService: PaymentsService,
+    private paymentService: PaymentsDataService,
     private paymentFiltersService: PaymentFiltersService,
     private dialog: MdlDialogReference,
     @Inject(CUSTOM_MODAL_DATA) public payment: Payment) {}

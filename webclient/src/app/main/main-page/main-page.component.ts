@@ -1,7 +1,7 @@
 import { ManageGroupComponent } from './../manage-group/manage-group.component';
 import { SubscriptionList } from './../../shared/models/subscription.model';
 import { ResponsiveDetectorService } from './../../shared/services/responsive-detector.service';
-import { PaymentsService } from './../../shared/services/payments.service';
+import { PaymentsDataService } from './../../shared/services/payments.service';
 import { AppPreferencesService } from './../../shared/services/app-preferences.service';
 import { PaymentFiltersService } from './../payments/services/payment-filters.service';
 import { InviteService } from './../../shared/services/invite.service';
@@ -41,7 +41,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   @ViewChild(ManageGroupComponent) manageGroup: ManageGroupComponent;
   constructor(
     private groupService: GroupService,
-    private paymentService: PaymentsService,
+    private paymentService: PaymentsDataService,
     private userService: UserService,
     private userStorageService: UserStorageService,
     private authService: AuthDataService,

@@ -1,0 +1,16 @@
+@import "../../../../../assets/variables.scss";
+virtual-scroll {
+    background-color: $color-payments-background;
+    display: block;
+    width: 100%;
+    height: calc(100vh - 50px);
+  }
+
+  .mdl-progress {
+      width: 100%;
+      margin: 5px;
+  }
+:host(){
+    height: calc(100vh - 50px);
+    display: block;
+}
