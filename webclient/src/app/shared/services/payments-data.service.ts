@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 
+import { Observable } from 'rxjs/Observable';
 import { PaymentFilters } from './../models/payments-filters.model';
-import { Payment } from './../models/payment.model';
+import { Payment, CreatePaymentModel } from './../models/payment.model';
 
 
 @Injectable()
@@ -12,6 +12,7 @@ export class PaymentsDataService {
     constructor(private http: HttpClient) { }
 
     public get(filters: PaymentFilters): Observable<any> {
+
         return this.http.get('api/payments' + filters.toUrl());
     }
 

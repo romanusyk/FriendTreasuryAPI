@@ -22,3 +22,7 @@ export class CreatePaymentModel {
     userFrom: number;
     usersTo: number[];
 }
+
+export class EditPaymentModel extends Payment{
+  isEdited?: boolean;
+}

@@ -3,7 +3,7 @@ import { SubscriptionList } from './../../../shared/models/subscription.model';
 import { Preferences } from './../../../shared/models/preferences.model';
 import { PagedCollection } from './../../../shared/models/paged-collection.model';
 import { ChangeEvent } from 'angular2-virtual-scroll';
-import { PaymentsService } from './../../../shared/services/payments.service';
+import { PaymentsDataService } from './../../../shared/services/payments.service';
 import { PaymentFiltersService } from './../services/payment-filters.service';
 import { Subscription } from 'rxjs/Rx';
 import { PaymentFilters } from './../../../shared/models/payments-filters.model';
@@ -31,7 +31,7 @@ export class PaymentsEntryComponent implements OnInit, OnDestroy {
   public preferences: Preferences;
   public subscription: SubscriptionList;
   constructor(private filtersService: PaymentFiltersService,
-    private paymentService: PaymentsService,
+    private paymentService: PaymentsDataService,
     private dialogService: MdlDialogService,
     private route: ActivatedRoute,
     private preferencesService: AppPreferencesService) {

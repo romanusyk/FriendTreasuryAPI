@@ -3,7 +3,7 @@ import { PaymentFiltersDataService } from './../../services/payment-filters-data
 import { ChangeEvent } from 'angular2-virtual-scroll';
 import { AppPreferencesService } from './../../../../shared/services/app-preferences.service';
 import { ActivatedRoute } from '@angular/router';
-import { MdlDialogService } from '@angular-mdl/core';
+import { MdlDialogService, MdlDialogReference } from '@angular-mdl/core';
 import { PaymentFiltersService } from './../payment-filters/payment-filters.service';
 import { PaymentsDataService } from './../../../../shared/services/payments-data.service';
 import { Preferences } from './../../../../shared/models/preferences.model';
@@ -11,7 +11,7 @@ import { PaymentFilters } from './../../../../shared/models/payments-filters.mod
 import { CUSTOM_MODAL_DATA } from './../../../../shared/injection.token';
 import { SubscriptionList } from './../../../../shared/models/subscription.model';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Payment } from '../../../../shared/models/payment.model';
+import { Payment, EditPaymentModel } from '../../../../shared/models/payment.model';
 import { BusyComponent } from '../../../../shared/components/busy/busy.component';
 
 @Component({
@@ -126,12 +126,19 @@ export class PaymentsListComponent implements OnInit {
   }
 
   onEditPayment(payment: Payment) {
+    const editPaymentModel: EditPaymentModel = Object.assign({}, payment);
     this.dialogService.showCustomDialog({
       component: EditPaymentComponent,
       providers: [
-        { provide: CUSTOM_MODAL_DATA, useValue: Object.assign({}, payment) }
+        { provide: CUSTOM_MODAL_DATA, useValue: editPaymentModel }
       ]
-    }).subscribe();
+    })
+    .flatMap((data: MdlDialogReference) => data.onHide())
+    .subscribe(() => {
+      if (editPaymentModel.isEdited) {
+        Object.assign(payment, editPaymentModel);
+      }
+    });
   }
 
   isPaymentReadonly(payment: Payment) {
