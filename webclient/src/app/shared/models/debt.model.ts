@@ -1,7 +1,7 @@
 import { Group } from './group.model';
 import { User } from './user.model';
 
-export class DebtModel {
+export class Debt {
     amount: number;
     description: string;
     group: Group;

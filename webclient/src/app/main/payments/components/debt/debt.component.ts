@@ -1,4 +1,4 @@
-import { DebtModel } from './../../../../shared/models/debt.model';
+import { Debt } from './../../../../shared/models/debt.model';
 import { Component, Input, OnInit } from '@angular/core';
 import { User } from '../../../../shared/models/user.model';
 
@@ -9,7 +9,7 @@ import { User } from '../../../../shared/models/user.model';
 })
 
 export class DebtComponent implements OnInit {
-  @Input() debt: DebtModel;
+  @Input() debt: Debt;
 
   public ngOnInit() {
     if (this.debt && !this.debt.userTo) {

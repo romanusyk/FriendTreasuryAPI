@@ -13,34 +13,24 @@ import { SubscriptionList } from './../../../../shared/models/subscription.model
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Payment, EditPaymentModel } from '../../../../shared/models/payment.model';
 import { BusyComponent } from '../../../../shared/components/busy/busy.component';
+import { BasePaymentsListComponent } from '../payments-base.component';
 
 @Component({
   selector: 'ft-payments',
   templateUrl: 'payments-list.component.html',
   styleUrls: ['./payment-list.component.scss']
 })
-export class PaymentsListComponent implements OnInit {
+export class PaymentsListComponent extends BasePaymentsListComponent {
   public scrollItems: Array<Payment>;
   public isLoading: boolean;
   public totalItems: number;
-  public payments: Array<Payment>;
-  public subscription: SubscriptionList;
-  public preferences: Preferences;
-  public filters: PaymentFilters;
 
-  @ViewChild(BusyComponent) loading;
-  constructor(private filtersDataService: PaymentFiltersDataService,
+  constructor(
     private paymentService: PaymentsDataService,
     private dialogService: MdlDialogService,
-    private route: ActivatedRoute,
-    private preferencesService: AppPreferencesService) {
-    this.subscription = new SubscriptionList();
-  }
-
-  ngOnInit() {
-    this.preferences = this.preferencesService.preferences;
-    this.filters = this.filtersDataService.getCurrent();
-    this.subscription.add(this.filtersDataService.onFiltersChanged.subscribe(this.reload.bind(this)));
+    filtersDataService: PaymentFiltersDataService,
+    preferencesService: AppPreferencesService) {
+    super(filtersDataService, preferencesService);
   }
 
   onListChange(event: ChangeEvent) {
@@ -51,12 +41,6 @@ export class PaymentsListComponent implements OnInit {
     this.updateData();
   }
 
-  public reload() {
-    this.payments = [];
-    this.totalItems = 0;
-    this.updateData();
-  }
-
   updateData() {
     this.isLoading = true;
     if (this.filters.page === 0) {
@@ -64,12 +48,8 @@ export class PaymentsListComponent implements OnInit {
     }
     const subscription = this.paymentService.get(this.filters).subscribe(
       (data) => {
-        if (!this.filters.sum) {
-          this.payments = this.payments.concat(data.content);
-          this.totalItems = data.totalElements;
-        } else {
-          this.payments = data;
-        }
+        this.payments = this.payments.concat(data.content);
+        this.totalItems = data.totalElements;
         this.loading.hide();
         this.isLoading = false;
         subscription.unsubscribe();
@@ -81,34 +61,6 @@ export class PaymentsListComponent implements OnInit {
         subscription.unsubscribe();
       }
     );
-  }
-
-  isAllowToShowPayments() {
-    return !(this.isAllowToShowEmptyMessage() || this.filters.sum);
-  }
-
-  isAllowToShowEmptyMessage() {
-    return !(this.payments && this.payments.length > 0);
-  }
-
-  getEmptyMessage() {
-    if (!(this.preferences && this.preferences.currentGroup)) {
-      return 'Please, chose group from list to show payments';
-    } else {
-      return 'You currently have no payments, please click button below to create one';
-    }
-  }
-
-  getActionText() {
-    if (this.preferences && this.preferences.currentGroup) {
-      return 'create payment';
-    } else {
-      return '';
-    }
-  }
-
-  onCreatePaymentCLick() {
-    this.preferencesService.showCreatePaymentDialog();
   }
 
   onDeletePayment(id: number) {
@@ -133,12 +85,12 @@ export class PaymentsListComponent implements OnInit {
         { provide: CUSTOM_MODAL_DATA, useValue: editPaymentModel }
       ]
     })
-    .flatMap((data: MdlDialogReference) => data.onHide())
-    .subscribe(() => {
-      if (editPaymentModel.isEdited) {
-        Object.assign(payment, editPaymentModel);
-      }
-    });
+      .flatMap((data: MdlDialogReference) => data.onHide())
+      .subscribe(() => {
+        if (editPaymentModel.isEdited) {
+          Object.assign(payment, editPaymentModel);
+        }
+      });
   }
 
   isPaymentReadonly(payment: Payment) {
