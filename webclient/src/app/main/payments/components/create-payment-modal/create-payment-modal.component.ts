@@ -5,10 +5,10 @@ import { FormControl } from '@angular/forms';
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter, TemplateRef } from '@angular/core';
 import { MdlDatePickerService } from '@angular-mdl/datepicker';
 import { DatePipe } from '@angular/common';
-import { CreatePaymentModel } from '../../../../shared/models/create-payment.model';
 import { User } from '../../../../shared/models/user.model';
 import { DateHelper } from '../../../../shared/services/date.helper';
 import { MarkerOptions } from '../../../../shared/models/maps.model';
+import { CreatePaymentModel } from '../../../../shared/models/payment.model';
 @Component({
   selector: 'ft-create-payment-modal',
   templateUrl: 'create-payment-modal.component.html',
@@ -19,29 +19,21 @@ export class CreatePaymentModalComponent implements OnInit {
   @ViewChild('chooseUsersDialog') public chooseUsersDialogTemplate: TemplateRef<any>;
   @ViewChild('fillDataDialog') public fillDataDialogTemplate: TemplateRef<any>;
   @ViewChild('mapDialog') public mapDialogTemplate: TemplateRef<any>;
-  users: Array<User>;
   model: CreatePaymentModel;
   search: string;
   isAllowToShowMap: boolean;
-  isOneUser: boolean;
   mapOptions = {
     zoom: 4,
     latitude: 39.8282,
     longitude: -98.5795
   };
-  public dialog: MdlDialogReference;
+  dialog: MdlDialogReference;
   preferences: Preferences;
   constructor(private datePicker: MdlDatePickerService,
     preferencesService: AppPreferencesService,
     private datePipe: DatePipe,
     private mdlDialogService: MdlDialogService) {
-    preferencesService.preferencesChanged.subscribe(data => {
-      this.preferences = data;
-      if (!!data.currentGroup && !!data.currentGroup.users) {
-        this.users = data.currentGroup.users.filter(user => user.id !== data.currentUser.id);
-        this.isOneUser = this.users.length === 0;
-      }
-    });
+    this.preferences = preferencesService.preferences;
   }
 
   public ngOnInit(): void {
@@ -51,7 +43,7 @@ export class CreatePaymentModalComponent implements OnInit {
 
   public show() {
     this.clearData();
-    if(this.isOneUser) {
+    if (this.isOneUser()) {
       this.model.usersTo = [this.preferences.currentUser.id];
       this.showDialog(this.fillDataDialogTemplate);
     } else {
@@ -144,6 +136,13 @@ export class CreatePaymentModalComponent implements OnInit {
       this.dialog = data;
       subscription.unsubscribe();
     });
+  }
+
+  private isOneUser(): boolean {
+    return this.preferences.currentGroup
+      && this.preferences.currentGroup
+      && this.preferences.currentGroup.users
+      && this.preferences.currentGroup.users.length === 1;
   }
 }
 
