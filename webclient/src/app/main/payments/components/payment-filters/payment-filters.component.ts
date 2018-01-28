@@ -1,13 +1,14 @@
+import { Component, OnInit } from '@angular/core';
+
 import { ResponsiveDetectorService } from './../../../../shared/services/responsive-detector.service';
-import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
-import { PaymentFilters } from '../../../../shared/models/payments-filters.model';
-import { PaymentFiltersService } from './payment-filters.service';
 import { PaymentFiltersType } from './payment-filters.enum';
+import { PaymentFiltersService } from './payment-filters.service';
 
 @Component({
   selector: 'ft-payment-filters',
   templateUrl: 'payment-filters.component.html',
-  styleUrls: ['payment-filters.component.scss']
+  styleUrls: ['payment-filters.component.scss'],
+  providers: [PaymentFiltersService]
 })
 export class PaymentFiltersComponent implements OnInit {
   public filterIcons = {

@@ -1,9 +1,8 @@
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { ErrorsList } from './../shared/models/error.model';
 import { Injectable } from '@angular/core';
 import { CredentialsType } from '../shared/models/credentials.model';
 import { FtValidators } from '../shared/validators/ft-validators';
-import { FormBuilder } from '@angular/forms/src/form_builder';
 
 @Injectable()
 export class AuthService {

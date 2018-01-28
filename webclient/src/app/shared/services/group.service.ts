@@ -7,10 +7,9 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/forkJoin';
 
-import { PaymentsDataService } from './payments.service';
 import { PaymentFilters } from '../models/payments-filters.model';
 import { Payment } from '../models/payment.model';
-import { PaymentDTO } from '../models/paymentDTO.model';
+import { PaymentsDataService } from './payments-data.service';
 
 @Injectable()
 export class GroupService {

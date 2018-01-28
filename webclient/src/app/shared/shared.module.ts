@@ -5,8 +5,6 @@ import { ConfigManager } from './../config/app.config';
 import { AgmCoreModule } from '@agm/core';
 import { MapComponent } from './components/map/map.component';
 import { InviteService } from './services/invite.service';
-import { AuthDataService } from './services/auth.service';
-import { PaymentsDataService } from './services/payments.service';
 import { GroupService } from './services/group.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -25,6 +23,8 @@ import { EmptyMessageComponent } from './components/empty-message/empty-message.
 import { BusyComponent } from './components/busy/busy.component';
 import { OverrideMDLModule } from './override-mdl/override-mdl.module';
 import { ToastrModule, ToastNoAnimationModule, ToastNoAnimation } from 'ngx-toastr';
+import { AuthDataService } from './services/auth-data.service';
+import { PaymentsDataService } from './services/payments-data.service';
 const config = ConfigManager.config;
 @NgModule({
   imports: [

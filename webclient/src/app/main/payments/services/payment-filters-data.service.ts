@@ -1,7 +1,8 @@
-import { PaymentFilters } from './../../../shared/models/payments-filters.model';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
+
+import { PaymentFilters } from './../../../shared/models/payments-filters.model';
 
 @Injectable()
 export class PaymentFiltersDataService {

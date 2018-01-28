@@ -1,10 +1,10 @@
 import { UserStorageService } from './../services/user-storage.service';
-import { AuthDataService } from './../services/auth.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { HttpEventType } from '@angular/common/http/src/response';
+import { AuthDataService } from '../services/auth-data.service';
 
 
 @Injectable()

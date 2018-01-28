@@ -1,12 +1,18 @@
-import { Subject, Observable } from 'rxjs/Rx';
-import { Preferences } from './../models/preferences.model';
 import { Injectable } from '@angular/core';
+
 import { MainPageComponent } from '../../main/main-page/main-page.component';
+import { UserStatistics } from '../models/user.model';
+import { Preferences } from './../models/preferences.model';
+import { UserService } from './user.service';
 
 @Injectable()
 export class AppPreferencesService {
   private _preferences: Preferences;
   private _mainComponent: MainPageComponent;
+
+  constructor(private userService: UserService) {
+    this._preferences = new Preferences();
+  }
 
   public get loading() {
     return this._mainComponent.loading;
@@ -15,12 +21,13 @@ export class AppPreferencesService {
     return this._preferences;
   }
 
-  public showCreatePaymentDialog() {
-    this._mainComponent.createPaymentModal.show();
+  public refreshStatistics() {
+    this.userService.getUserStatistics()
+      .subscribe((data: UserStatistics) => this._preferences.currentUser = data);
   }
 
-  constructor() {
-    this._preferences = new Preferences();
+  public showCreatePaymentDialog() {
+    this._mainComponent.createPaymentModal.show();
   }
 
   public asign(preferences: Preferences) {

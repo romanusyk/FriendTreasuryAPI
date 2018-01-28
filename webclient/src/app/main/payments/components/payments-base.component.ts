@@ -16,8 +16,9 @@ export abstract class BasePaymentsListComponent implements OnInit, OnDestroy {
   public filters: PaymentFilters;
 
   @ViewChild(BusyComponent) loading;
-  constructor(private filtersDataService: PaymentFiltersDataService,
-    private preferencesService: AppPreferencesService) {
+  constructor(
+    protected filtersDataService: PaymentFiltersDataService,
+    protected preferencesService: AppPreferencesService) {
     this.subscription = new SubscriptionList();
   }
 
