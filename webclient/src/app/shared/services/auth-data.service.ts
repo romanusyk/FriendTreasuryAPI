@@ -7,29 +7,18 @@ import { DateHelper } from './date.helper';
 import { Token } from './../models/token.model';
 import { CredentialsType, Credentials } from './../models/credentials.model';
 import { ConfigManager } from './../../config/app.config';
-import { UserStorageService } from './user-storage.service';
 import { IAppConfig } from './../../config/iapp.config';
+import { TokenStorageService } from './token-storage.service';
 
 @Injectable()
 export class AuthDataService {
-  private config: IAppConfig;
+  config: IAppConfig;
   constructor(
-    private userStorageService: UserStorageService,
-    private http: HttpClient,
-    private router: Router) {
+    private userStorageService: TokenStorageService,
+    private http: HttpClient) {
     this.config = ConfigManager.config;
   }
 
-  public isAuthorized(): boolean {
-    const token = this.userStorageService.get();
-    return (!!token && !this.isExpired(token.expireTime));
-  }
-
-
-  public logout() {
-    this.userStorageService.destroy();
-    this.router.navigateByUrl(this.config.routes.login);
-  }
 
   public attemptAuth(type: CredentialsType, credentials): Observable<Token> {
     if (type === CredentialsType.login) {
@@ -52,8 +41,5 @@ export class AuthDataService {
   private setAuth(token: Token): Token {
     this.userStorageService.save(token);
     return token;
-  }
-  private isExpired(date: number): boolean {
-    return date <= DateHelper.currentUnixTime();
   }
 }

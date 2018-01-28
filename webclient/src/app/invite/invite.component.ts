@@ -6,7 +6,7 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { IAppConfig } from '../config/iapp.config';
 import { ConfigManager } from '../config/app.config';
 import { BusyComponent } from '../shared/components/busy/busy.component';
-import { AuthDataService } from '../shared/services/auth-data.service';
+import { TokenService } from '../shared/services/token.service';
 
 @Component({
     templateUrl: 'invite.component.html'
@@ -16,7 +16,7 @@ export class InviteComponent implements OnInit, OnDestroy {
     private config: IAppConfig;
     @ViewChild(BusyComponent) loading: BusyComponent;
     constructor(private inviteService: InviteService,
-        private authService: AuthDataService,
+        private tokenService: TokenService,
         private router: Router,
         private route: ActivatedRoute,
         private toastr: ToastrService) {
@@ -30,7 +30,7 @@ export class InviteComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         const name = this.route.snapshot.params['name'];
         this.loading.show();
-        if (this.authService.isAuthorized()) {
+        if (this.tokenService.isAuthorized()) {
             this.subscription = this.inviteService.joinGroup(name).subscribe(
                 (data) => {
                     this.toastr.success('Joined');

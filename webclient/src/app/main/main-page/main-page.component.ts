@@ -8,9 +8,7 @@ import { Group } from '../../shared/models/group.model';
 import { CreatePaymentModel } from '../../shared/models/payment.model';
 import { Preferences } from '../../shared/models/preferences.model';
 import { RightDrawerComponent } from '../../shared/override-mdl/right-drawer/right-drawer.component';
-import { AuthDataService } from '../../shared/services/auth-data.service';
 import { PaymentsDataService } from '../../shared/services/payments-data.service';
-import { UserStorageService } from '../../shared/services/user-storage.service';
 import { UserService } from '../../shared/services/user.service';
 import { CreatePaymentModalComponent } from '../payments/components/create-payment-modal/create-payment-modal.component';
 import { PaymentFiltersDataService } from '../payments/services/payment-filters-data.service';
@@ -21,6 +19,7 @@ import { GroupService } from './../../shared/services/group.service';
 import { InviteService } from './../../shared/services/invite.service';
 import { ResponsiveDetectorService } from './../../shared/services/responsive-detector.service';
 import { ManageGroupComponent } from './../manage-group/manage-group.component';
+import { TokenService } from '../../shared/services/token.service';
 
 @Component({
   selector: 'ft-main-page',
@@ -31,7 +30,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   groups: Array<Group> = new Array();
   subscription: SubscriptionList;
   preferences: Preferences;
-  user: User;
+  user: User = new User();
   // View Childs
   @ViewChild('loading') loading: BusyComponent;
   @ViewChild('rightDrawer') rightDrawer: RightDrawerComponent;
@@ -42,8 +41,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
     private groupService: GroupService,
     private paymentService: PaymentsDataService,
     private userService: UserService,
-    private userStorageService: UserStorageService,
-    private authService: AuthDataService,
+    private tokenService: TokenService,
     private toastrManager: ToastrService,
     private dialogService: MdlDialogService,
     private router: Router,
@@ -59,10 +57,11 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.user = this.preferences.currentUser;
     this.updateGroupsList();
     this.route.url.subscribe((data) => {
-      console.log(data)
-      console.log(this.route.snapshot.data)
+      console.log(data);
+      console.log(this.route.snapshot.data);
     });
   }
   ngOnDestroy(): void {
@@ -107,7 +106,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    this.authService.logout();
+    this.tokenService.logout();
   }
 
   isCurrentGroupSelected(): boolean {

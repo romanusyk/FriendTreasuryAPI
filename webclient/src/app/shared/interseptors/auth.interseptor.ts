@@ -1,24 +1,23 @@
-import { UserStorageService } from './../services/user-storage.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { HttpEventType } from '@angular/common/http/src/response';
-import { AuthDataService } from '../services/auth-data.service';
+import { TokenStorageService } from '../services/token-storage.service';
+import { TokenService } from '../services/token.service';
 
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-    constructor(private authService: AuthDataService, private userStorageService: UserStorageService) {
+    constructor(private tokenService: TokenService, private storage: TokenStorageService) {
         this.handleError = this.handleError.bind(this);
     }
     public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        if (!this.authService.isAuthorized()) {
-            this.authService.logout();
-            return Observable.throw('');
+        if (!this.tokenService.isAuthorized()) {
+            return next.handle(request).catch(this.handleError);
         }
-        const token = this.userStorageService.get();
+        const token = this.storage.get();
         const cloned = request.clone({
             setHeaders: {
                 'X-Auth-Token' : token.token
@@ -30,7 +29,7 @@ export class AuthInterceptor implements HttpInterceptor {
     private handleError(err: HttpErrorResponse): Observable<HttpEvent<any>> {
         const { status, url } = err;
         if (status === 401) {
-            this.authService.logout();
+            this.tokenService.logout();
         }
         return Observable.throw(err);
     }

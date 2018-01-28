@@ -9,7 +9,7 @@ import { AppPreferencesService } from '../../shared/services/app-preferences.ser
     styleUrls: ['group-list.component.scss']
 })
 export class GroupListComponent {
-    public groups: Array<Group> = new Array();
+    @Input() public groups: Array<Group> = [];
     @Output() createGroupClick: EventEmitter<any> = new EventEmitter();
     public currentGroup: Group;
 

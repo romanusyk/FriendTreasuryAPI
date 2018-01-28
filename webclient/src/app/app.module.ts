@@ -14,6 +14,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MainModule } from './main/main.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './shared/interseptors/auth.interseptor';
+import { AppResolver } from './app.resolver';
 
 @NgModule({
   imports: [
@@ -42,7 +43,8 @@ import { AuthInterceptor } from './shared/interseptors/auth.interseptor';
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true,
-    }
+    },
+    AppResolver
   ],
   bootstrap: [AppComponent]
 })

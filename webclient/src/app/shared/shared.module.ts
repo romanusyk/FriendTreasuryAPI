@@ -9,7 +9,6 @@ import { GroupService } from './services/group.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { UserStorageService } from './services/user-storage.service';
 import { Error404Component } from './components/error404/error404.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -25,6 +24,8 @@ import { OverrideMDLModule } from './override-mdl/override-mdl.module';
 import { ToastrModule, ToastNoAnimationModule, ToastNoAnimation } from 'ngx-toastr';
 import { AuthDataService } from './services/auth-data.service';
 import { PaymentsDataService } from './services/payments-data.service';
+import { TokenStorageService } from './services/token-storage.service';
+import { TokenService } from './services/token.service';
 const config = ConfigManager.config;
 @NgModule({
   imports: [
@@ -55,7 +56,8 @@ const config = ConfigManager.config;
     BusyComponent,
   ],
   providers: [
-    UserStorageService,
+    TokenStorageService,
+    TokenService,
     UserService,
     AuthDataService,
     GroupService,

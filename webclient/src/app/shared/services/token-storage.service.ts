@@ -1,10 +1,13 @@
 import { Token } from './../models/token.model';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { DateHelper } from './date.helper';
 
 
 @Injectable()
-export class UserStorageService {
+export class TokenStorageService {
     private token = 'token';
+
     public get(): Token {
         if (window.localStorage[this.token]) {
             return JSON.parse(window.localStorage[this.token]);
