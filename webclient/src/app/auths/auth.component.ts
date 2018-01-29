@@ -1,24 +1,24 @@
 import { AuthService } from './auth.service';
 import { IAppConfig } from './../config/iapp.config';
-import { SubscriptionList } from './../shared/models/subscription.model';
-import { InviteService } from './../shared/services/invite.service';
-import { AuthDataService } from './../shared/services/auth-data.service';
-import { Error, ErrorsList } from './../shared/models/error.model';
-import { Credentials, CredentialsType } from './../shared/models/credentials.model';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { ErrorTransformingService } from '../shared/services/error-transforming.service';
-import { BusyComponent } from '../shared/components/busy/busy.component';
 import { ConfigManager } from '../config/app.config';
+import { CredentialsType } from '../core/auth/credentials.model';
+import { BusyComponent } from '../shared/busy/busy.component';
+import { ErrorsList } from '../core/erros/error.model';
+import { SubscriptionList } from '../shared/subscription.model';
+import { AuthDataService } from '../core/auth/auth-data.service';
+import { InviteService } from '../core/invite/invite.service';
+import { ErrorTransformingService } from '../core/erros/error-transforming.service';
 @Component({
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss'],
   providers: [AuthService]
 })
 export class AuthComponent implements OnInit, OnDestroy {
-  authType = CredentialsType.login;
+  authType = CredentialsType.Login;
   title: string;
   config: IAppConfig;
   subscription: SubscriptionList;
@@ -79,7 +79,7 @@ export class AuthComponent implements OnInit, OnDestroy {
 
 
   public isLogin(): Boolean {
-    return this.authType === CredentialsType.login;
+    return this.authType === CredentialsType.Login;
   }
 
   private updateTitle(): void {

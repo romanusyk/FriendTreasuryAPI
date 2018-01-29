@@ -1,6 +1,5 @@
-import { Group } from './../../shared/models/group.model';
 import { Component, ViewChild, Input, EventEmitter, Output, OnInit } from '@angular/core';
-import { AppPreferencesService } from '../../shared/services/app-preferences.service';
+import { Group } from '../../core/groups/group.model';
 
 @Component({
     moduleId: module.id,

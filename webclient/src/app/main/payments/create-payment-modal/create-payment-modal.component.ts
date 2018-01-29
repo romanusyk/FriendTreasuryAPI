@@ -1,14 +1,13 @@
 import { MdlDialogService, IMdlDialogConfiguration, MdlDialogComponent, MdlDialogReference } from '@angular-mdl/core';
-import { AppPreferencesService } from './../../../../shared/services/app-preferences.service';
-import { Preferences } from './../../../../shared/models/preferences.model';
 import { FormControl } from '@angular/forms';
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter, TemplateRef } from '@angular/core';
 import { MdlDatePickerService } from '@angular-mdl/datepicker';
 import { DatePipe } from '@angular/common';
-import { User } from '../../../../shared/models/user.model';
-import { DateHelper } from '../../../../shared/services/date.helper';
-import { MarkerOptions } from '../../../../shared/models/maps.model';
-import { CreatePaymentModel } from '../../../../shared/models/payment.model';
+import { CreatePaymentModel } from '../../../core/payments/payment.model';
+import { Preferences } from '../../../core/preferences/preferences.model';
+import { AppPreferencesService } from '../../../core/preferences/app-preferences.service';
+import { MarkerOptions } from '../../../shared/map/maps.model';
+import { DateHelper } from '../../../core/date.helper';
 @Component({
   selector: 'ft-create-payment-modal',
   templateUrl: 'create-payment-modal.component.html',

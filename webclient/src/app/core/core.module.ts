@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http/src/module';
 import { AuthDataService } from './auth/auth-data.service';
 import { TokenService } from './auth/token.service';
 import { TokenStorageService } from './auth/token-storage.service';
@@ -17,8 +16,9 @@ import { ResponsiveDetectorService } from './responsive-detector.service';
 import { AppResolver } from './app.resolver';
 import { ServerErrorInterceptor } from './interseptors/server-error.interseptor';
 import { AuthInterceptor } from './interseptors/auth.interseptor';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { RouterModule } from '@angular/router/src/router_module';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { PaymentFiltersDataService } from './payment-filters/payment-filters-data.service';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
@@ -40,6 +40,7 @@ import { RouterModule } from '@angular/router/src/router_module';
     PaymentsDataService,
     AppPreferencesService,
     UsersService,
+    PaymentFiltersDataService,
     ResponsiveDetectorService,
     {
       provide: HTTP_INTERCEPTORS,

@@ -8,8 +8,8 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/forkJoin';
 
 import { PaymentsDataService } from '../payments/payments-data.service';
-import { PaymentFilters } from '../payments/payments-filters.model';
 import { Payment } from '../payments/payment.model';
+import { PaymentFilters } from '../payment-filters/payments-filters.model';
 
 
 @Injectable()

@@ -1,8 +1,7 @@
-import { AppPreferencesService } from './../../../../shared/services/app-preferences.service';
-import { PaymentFiltersDataService } from './../../services/payment-filters-data.service';
-import { PaymentFilters } from './../../../../shared/models/payments-filters.model';
 import { Injectable } from '@angular/core';
 import { PaymentFiltersType } from './payment-filters.enum';
+import { PaymentFiltersDataService } from '../../../core/payment-filters/payment-filters-data.service';
+import { AppPreferencesService } from '../../../core/preferences/app-preferences.service';
 
 @Injectable()
 export class PaymentFiltersService {

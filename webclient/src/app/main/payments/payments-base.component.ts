@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Debt } from '../../../shared/models/debt.model';
-import { BusyComponent } from '../../../shared/components/busy/busy.component';
-import { Payment } from '../../../shared/models/payment.model';
-import { Preferences } from '../../../shared/models/preferences.model';
-import { PaymentFilters } from '../../../shared/models/payments-filters.model';
-import { SubscriptionList } from '../../../shared/models/subscription.model';
-import { PaymentFiltersDataService } from '../services/payment-filters-data.service';
-import { AppPreferencesService } from '../../../shared/services/app-preferences.service';
 import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
+import { Payment } from '../../core/payments/payment.model';
+import { Debt } from '../../core/payments/debt.model';
+import { SubscriptionList } from '../../shared/subscription.model';
+import { Preferences } from '../../core/preferences/preferences.model';
+import { PaymentFilters } from '../../core/payment-filters/payments-filters.model';
+import { BusyComponent } from '../../shared/busy/busy.component';
+import { PaymentFiltersDataService } from '../../core/payment-filters/payment-filters-data.service';
+import { AppPreferencesService } from '../../core/preferences/app-preferences.service';
 
 export abstract class BasePaymentsListComponent implements OnInit, OnDestroy {
   public payments: Array<Payment | Debt>;

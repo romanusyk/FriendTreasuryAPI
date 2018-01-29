@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { BasePaymentsListComponent } from '../payments-base.component';
-import { PaymentFiltersDataService } from '../../services/payment-filters-data.service';
-import { PaymentsDataService } from '../../../../shared/services/payments-data.service';
-import { AppPreferencesService } from '../../../../shared/services/app-preferences.service';
+import { PaymentsDataService } from '../../../core/payments/payments-data.service';
+import { PaymentFiltersDataService } from '../../../core/payment-filters/payment-filters-data.service';
+import { AppPreferencesService } from '../../../core/preferences/app-preferences.service';
 
 @Component({
   selector: 'ft-debts',

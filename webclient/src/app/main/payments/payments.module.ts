@@ -9,16 +9,15 @@ import { AvatarModule } from 'ngx-avatar';
 
 import { SharedModule } from '../../shared/shared.module';
 import { OverrideMDLModule } from './../../shared/override-mdl/override-mdl.module';
-import { CreatePaymentModalComponent } from './components/create-payment-modal/create-payment-modal.component';
-import { DebtComponent } from './components/debt/debt.component';
-import { DebtsListComponent } from './components/debts-list/debts-list.component';
-import { EditPaymentComponent } from './components/edit-payment/edit-payment.component';
-import { PaymentFiltersComponent } from './components/payment-filters/payment-filters.component';
-import { PaymentUserComponent } from './components/payment-user/payment-user.component';
-import { PaymentComponent } from './components/payment/payment.component';
-import { PaymentsListComponent } from './components/payments-list/payments-list.component';
-import { AmountColorDirective } from './directives/amount-color.directive';
-import { PaymentFiltersDataService } from './services/payment-filters-data.service';
+import { CreatePaymentModalComponent } from './create-payment-modal/create-payment-modal.component';
+import { DebtComponent } from './debt/debt.component';
+import { DebtsListComponent } from './debts-list/debts-list.component';
+import { EditPaymentComponent } from './edit-payment/edit-payment.component';
+import { PaymentFiltersComponent } from './payment-filters/payment-filters.component';
+import { PaymentUserComponent } from './payment-user/payment-user.component';
+import { PaymentComponent } from './payment/payment.component';
+import { PaymentsListComponent } from './payments-list/payments-list.component';
+import { AmountColorDirective } from './amount-color-directive/amount-color.directive';
 
 @NgModule({
   imports: [
@@ -50,9 +49,6 @@ import { PaymentFiltersDataService } from './services/payment-filters-data.servi
     PaymentFiltersComponent,
     PaymentsListComponent,
     DebtsListComponent
-  ],
-  providers: [
-    PaymentFiltersDataService
   ],
   entryComponents: [
     EditPaymentComponent

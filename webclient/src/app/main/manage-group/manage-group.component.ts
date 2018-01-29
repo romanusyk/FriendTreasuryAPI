@@ -1,9 +1,10 @@
 import { Subscription } from 'rxjs/Rx';
 import { MdlDialogComponent, MdlDialogService, MdlDialogReference, IMdlDialogConfiguration } from '@angular-mdl/core';
-import { Group } from './../../shared/models/group.model';
-import { GroupService } from './../../shared/services/group.service';
 import { Component, Output, EventEmitter, ViewChild, TemplateRef } from '@angular/core';
-import { AppPreferencesService } from '../../shared/services/app-preferences.service';
+import { Group } from '../../core/groups/group.model';
+import { AppPreferencesService } from '../../core/preferences/app-preferences.service';
+import { GroupsService } from '../../core/groups/groups.service';
+
 
 @Component({
     selector: 'ft-manage-group',
@@ -17,7 +18,7 @@ export class ManageGroupComponent {
     public dialog: MdlDialogReference;
     public error: string;
     private isEdit: boolean;
-    constructor(private groupService: GroupService,
+    constructor(private groupService: GroupsService,
         private dialogService: MdlDialogService,
         private preferencesService: AppPreferencesService) {
     }
@@ -50,7 +51,7 @@ export class ManageGroupComponent {
         this.model = new Group();
         if (!!group) {
             this.isEdit = true;
-            this.model = Object.assign(this.model,group)
+            this.model = Object.assign(this.model,group);
         } else {
             this.isEdit = false;
         }

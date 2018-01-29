@@ -1,14 +1,14 @@
-import { AppResolver } from './app.resolver';
 import { InviteComponent } from './invite/invite.component';
 import { AuthComponent } from './auths/auth.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MainGuard } from './shared/guards/main.guard';
-import { LoginGuard } from './shared/guards/login.guard';
 import { MainPageComponent } from './main/main-page/main-page.component';
-import { Error404Component } from './shared/components/error404/error404.component';
-import { PaymentsListComponent } from './main/payments/components/payments-list/payments-list.component';
-import { DebtsListComponent } from './main/payments/components/debts-list/debts-list.component';
+import { AppResolver } from './core/app.resolver';
+import { MainGuard } from './core/guards/main.guard';
+import { PaymentsListComponent } from './main/payments/payments-list/payments-list.component';
+import { DebtsListComponent } from './main/payments/debts-list/debts-list.component';
+import { LoginGuard } from './core/guards/login.guard';
+import { Error404Component } from './shared/error404/error404.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },

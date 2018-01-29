@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ResponsiveDetectorService } from './../../../../shared/services/responsive-detector.service';
 import { PaymentFiltersType } from './payment-filters.enum';
 import { PaymentFiltersService } from './payment-filters.service';
+import { ResponsiveDetectorService } from '../../../core/responsive-detector.service';
 
 @Component({
   selector: 'ft-payment-filters',

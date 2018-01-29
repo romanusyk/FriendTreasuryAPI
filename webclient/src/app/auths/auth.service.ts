@@ -1,8 +1,8 @@
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { ErrorsList } from './../shared/models/error.model';
 import { Injectable } from '@angular/core';
-import { CredentialsType } from '../shared/models/credentials.model';
-import { FtValidators } from '../shared/validators/ft-validators';
+import { ErrorsList } from '../core/erros/error.model';
+import { CredentialsType } from '../core/auth/credentials.model';
+import { FtValidators } from '../core/validators/ft-validators';
 
 @Injectable()
 export class AuthService {
@@ -27,11 +27,11 @@ export class AuthService {
   public getCredentialsType(data: string): CredentialsType {
     switch (data) {
       case 'login':
-        return CredentialsType.login;
+        return CredentialsType.Login;
       case 'register':
-        return CredentialsType.register;
+        return CredentialsType.Register;
       default:
-        return CredentialsType.login;
+        return CredentialsType.Login;
     }
   }
 

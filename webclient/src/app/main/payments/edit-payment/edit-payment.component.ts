@@ -1,9 +1,9 @@
 import { Component, ViewChild, Inject } from '@angular/core';
-import { BusyComponent } from '../../../../shared/components/busy/busy.component';
-import { PaymentsDataService } from '../../../../shared/services/payments-data.service';
 import { MdlDialogReference } from '@angular-mdl/core';
-import { CUSTOM_MODAL_DATA } from '../../../../shared/injection.token';
-import { Payment, EditPaymentModel } from '../../../../shared/models/payment.model';
+import { BusyComponent } from '../../../shared/busy/busy.component';
+import { PaymentsDataService } from '../../../core/payments/payments-data.service';
+import { CUSTOM_MODAL_DATA } from '../../../core/injection.token';
+import { EditPaymentModel } from '../../../core/payments/payment.model';
 
 @Component({
   selector: 'ft-edit-payment',

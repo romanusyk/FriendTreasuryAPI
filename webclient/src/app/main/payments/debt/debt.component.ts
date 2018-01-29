@@ -1,6 +1,5 @@
-import { Debt } from './../../../../shared/models/debt.model';
 import { Component, Input, OnInit } from '@angular/core';
-import { User } from '../../../../shared/models/user.model';
+import { Debt } from '../../../core/payments/debt.model';
 
 @Component({
   selector: 'ft-debt',

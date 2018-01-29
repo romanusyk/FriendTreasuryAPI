@@ -1,11 +1,11 @@
-@import '../../../../../assets/mixins.scss';
+@import '../../../../assets/mixins.scss';
 
 .debt {
     display: flex;
     justify-content: space-around;
     padding: 15px 15%;
     margin: 0 5px;
-    @include phonePortraitMode{ 
+    @include phonePortraitMode{
         padding: 15px 5px;
     };
     &__user{

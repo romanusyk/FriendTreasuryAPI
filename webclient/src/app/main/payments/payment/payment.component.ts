@@ -1,5 +1,5 @@
-import { Payment } from './../../../../shared/models/payment.model';
 import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { Payment } from '../../../core/payments/payment.model';
 
 @Component({
   moduleId: module.id,

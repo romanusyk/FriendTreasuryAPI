@@ -1,12 +1,12 @@
-import { InviteService } from './../shared/services/invite.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { IAppConfig } from '../config/iapp.config';
 import { ConfigManager } from '../config/app.config';
-import { BusyComponent } from '../shared/components/busy/busy.component';
-import { TokenService } from '../shared/services/token.service';
+import { BusyComponent } from '../shared/busy/busy.component';
+import { InviteService } from '../core/invite/invite.service';
+import { TokenService } from '../core/auth/token.service';
 
 @Component({
     templateUrl: 'invite.component.html'

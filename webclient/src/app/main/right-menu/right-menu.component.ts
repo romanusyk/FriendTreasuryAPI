@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { User } from '../../shared/models/user.model';
+import { User } from '../../core/users/user.model';
 
 @Component({
   selector: 'ft-right-menu',
