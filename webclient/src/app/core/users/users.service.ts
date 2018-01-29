@@ -1,10 +1,10 @@
-import { User, UserStatistics } from './../models/user.model';
+import { User, UserStatistics } from './user.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 
 @Injectable()
-export class UserService {
+export class UsersService {
   constructor(private http: HttpClient) { }
 
   getUsersInGroup(groupId: number): Observable<any> {

@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 
 import { MainPageComponent } from '../../main/main-page/main-page.component';
-import { UserStatistics } from '../models/user.model';
-import { Preferences } from './../models/preferences.model';
-import { UserService } from './user.service';
+import { Preferences } from './preferences.model';
 import { Observable } from 'rxjs/Observable';
+import { UsersService } from '../users/users.service';
+import { UserStatistics } from '../users/user.model';
 
 @Injectable()
 export class AppPreferencesService {
   private _preferences: Preferences;
   private _mainComponent: MainPageComponent;
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UsersService) {
     this._preferences = new Preferences();
   }
 

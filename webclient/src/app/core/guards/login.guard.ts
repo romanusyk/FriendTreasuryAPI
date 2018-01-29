@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { IAppConfig } from '../../config/iapp.config';
 import { Injectable } from '@angular/core';
 import { ConfigManager } from '../../config/app.config';
-import { TokenService } from '../services/token.service';
+import { TokenService } from '../auth/token.service';
 @Injectable()
 export class LoginGuard implements CanActivate {
   private config: IAppConfig;

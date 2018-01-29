@@ -1,5 +1,6 @@
-import { Group } from './group.model';
-import { User } from './user.model';
+import { Group } from '../groups/group.model';
+import { User } from '../users/user.model';
+
 
 export class Debt {
     amount: number;

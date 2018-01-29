@@ -1,7 +1,7 @@
-import { Token } from './../models/token.model';
+import { Token } from './token.model';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { DateHelper } from './date.helper';
+import { DateHelper } from '../date.helper';
 import { IAppConfig } from '../../config/iapp.config';
 import { ConfigManager } from '../../config/app.config';
 import { TokenStorageService } from './token-storage.service';

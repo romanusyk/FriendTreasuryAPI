@@ -7,6 +7,6 @@ export class Credentials {
 }
 
 export enum CredentialsType {
-    login,
-    register
+    Login,
+    Register
 }

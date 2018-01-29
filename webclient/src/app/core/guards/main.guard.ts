@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Rx';
 import { IAppConfig } from '../../config/iapp.config';
 import { Inject, Injectable } from '@angular/core';
 import { ConfigManager } from '../../config/app.config';
-import { TokenService } from '../services/token.service';
+import { TokenService } from '../auth/token.service';
 @Injectable()
 export class MainGuard implements CanActivate {
   constructor(private tokenService: TokenService) {}

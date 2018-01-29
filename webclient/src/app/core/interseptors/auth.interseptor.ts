@@ -3,8 +3,8 @@ import { Observable } from 'rxjs/Observable';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { HttpEventType } from '@angular/common/http/src/response';
-import { TokenStorageService } from '../services/token-storage.service';
-import { TokenService } from '../services/token.service';
+import { TokenStorageService } from '../auth/token-storage.service';
+import { TokenService } from '../auth/token.service';
 
 
 @Injectable()
@@ -27,7 +27,7 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     private handleError(err: HttpErrorResponse): Observable<HttpEvent<any>> {
-        const { status, url } = err;
+        const { status } = err;
         if (status === 401) {
             this.tokenService.logout();
         }

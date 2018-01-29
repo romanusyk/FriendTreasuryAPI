@@ -1,6 +1,6 @@
-import { Error } from './../models/error.model';
+import { Error } from './error.model';
 import { Injectable } from '@angular/core';
-import { ServerError } from '../models/server-error.model';
+import { ServerError } from './server-error.model';
 @Injectable()
 export class ErrorTransformingService {
 

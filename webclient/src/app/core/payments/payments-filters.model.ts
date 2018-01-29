@@ -1,4 +1,4 @@
-import { UrlParamsHelper, UrlParam } from './../services/url-params.helper';
+import { UrlParamsHelper, UrlParam } from '../url-params.helper';
 export class PaymentFilters {
     public sum?: boolean;
     public group?: number;

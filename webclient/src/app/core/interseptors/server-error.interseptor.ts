@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { ConfigManager } from '../../config/app.config';
 
 
 @Injectable()
@@ -17,10 +18,10 @@ export class ServerErrorInterceptor implements HttpInterceptor {
     }
 
     private handleError(err: HttpErrorResponse): Observable<HttpEvent<any>> {
-        const { status, url } = err;
+        const { status } = err;
 
         if (status === 500) {
-            this.router.navigate(['/500'], { replaceUrl: true });
+            this.router.navigate([ConfigManager.config.routes.serverError], { replaceUrl: true });
         }
 
         return Observable.throw(err);

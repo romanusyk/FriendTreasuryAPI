@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Group } from './../models/group.model';
+import { Group } from './group.model';
 import { Observable } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
@@ -7,12 +7,13 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/forkJoin';
 
-import { PaymentFilters } from '../models/payments-filters.model';
-import { Payment } from '../models/payment.model';
-import { PaymentsDataService } from './payments-data.service';
+import { PaymentsDataService } from '../payments/payments-data.service';
+import { PaymentFilters } from '../payments/payments-filters.model';
+import { Payment } from '../payments/payment.model';
+
 
 @Injectable()
-export class GroupService {
+export class GroupsService {
     constructor(private http: HttpClient, private paymentsService: PaymentsDataService) { }
 
     public getGroups(): Observable<any> {

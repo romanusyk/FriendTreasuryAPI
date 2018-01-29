@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
-import { PaymentFilters } from './../models/payments-filters.model';
-import { Payment, CreatePaymentModel } from './../models/payment.model';
+import { PaymentFilters } from './payments-filters.model';
+import { CreatePaymentModel, Payment } from './payment.model';
 
 
 @Injectable()
