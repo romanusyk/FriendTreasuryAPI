@@ -59,10 +59,6 @@ export class MainPageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.user = this.preferences.currentUser;
     // this.updateGroupsList();
-    this.route.url.subscribe((data) => {
-      console.log(data);
-      console.log(this.route.snapshot.data);
-    });
   }
   ngOnDestroy(): void {
     this.subscription.unsubscribe();

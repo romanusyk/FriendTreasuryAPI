@@ -7,7 +7,6 @@ export class Group {
     name?: string;
     users?: User[];
     constructor(group?: Group, amount?: number) {
-        console.log(group);
         if (!!group) {
             Object.assign(this, group);
         }

@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
-import { MainPageComponent } from '../../main/main-page/main-page.component';
-import { Preferences } from './preferences.model';
-import { Observable } from 'rxjs/Observable';
-import { UsersService } from '../users/users.service';
-import { UserStatistics } from '../users/user.model';
+import {MainPageComponent} from '../../main/main-page/main-page.component';
+import {Preferences} from './preferences.model';
+import {Observable} from 'rxjs/Observable';
+import {UsersService} from '../users/users.service';
+import {UserStatistics} from '../users/user.model';
 
 // TODO: remove after implementing ngrx (REDUX)
 @Injectable()
@@ -41,7 +41,7 @@ export class AppPreferencesService {
     this._mainComponent.createPaymentModal.show();
   }
 
-  public showCreateGroupDialog(){
+  public showCreateGroupDialog() {
     this._mainComponent.manageGroup.show();
   }
 

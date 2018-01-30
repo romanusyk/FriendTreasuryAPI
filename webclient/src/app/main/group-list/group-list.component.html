@@ -20,7 +20,7 @@
         </span>
       </div>
     </li>
-    <ft-empty-message *ngIf="!(groups && groups.length > 0)" icon="user" actionText="Create group" button-icon="group_add">
+    <ft-empty-message *ngIf="isAllowToShowEmptyMessage()" icon="user" actionText="Create group" button-icon="group_add" (action)="showCreateGroupModal()">
       You don't have groups, please click button bellow to create one
     </ft-empty-message>
   </ul>

@@ -20,11 +20,10 @@ export abstract class BasePaymentsListComponent implements OnInit, OnDestroy {
     protected filtersDataService: PaymentFiltersDataService,
     protected preferencesService: AppPreferencesService) {
     this.subscription = new SubscriptionList();
+    this.updateData = this.updateData.bind(this);
   }
 
   ngOnInit() {
-    console.log('onInit');
-
     this.preferences = this.preferencesService.preferences;
     this.filters = this.filtersDataService.getCurrent();
     this.subscription.add(this.filtersDataService.onFiltersChanged.subscribe(this.reload.bind(this)));

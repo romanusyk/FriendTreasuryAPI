@@ -6,7 +6,7 @@ import { PaymentFilters } from './payments-filters.model';
 
 @Injectable()
 export class PaymentFiltersDataService {
-  private filters: PaymentFilters;
+  private filters: PaymentFilters = new PaymentFilters();
   private filersChangedSubject: BehaviorSubject<PaymentFilters> = new BehaviorSubject(this.filters);
   public onFiltersChanged: Observable<PaymentFilters> = this.filersChangedSubject.asObservable();
 
@@ -14,7 +14,6 @@ export class PaymentFiltersDataService {
     if (!!filters) {
       Object.assign(this.filters, filters);
       this.filersChangedSubject.next(this.filters);
-      // TODO: Add redirect
     }
   }
 
