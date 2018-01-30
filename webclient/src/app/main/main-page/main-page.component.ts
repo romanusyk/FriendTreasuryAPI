@@ -58,7 +58,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.user = this.preferences.currentUser;
-    this.updateGroupsList();
+    // this.updateGroupsList();
     this.route.url.subscribe((data) => {
       console.log(data);
       console.log(this.route.snapshot.data);
@@ -70,7 +70,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   updateGroupsList() {
     this.loading.show();
-    this.subscription.add(this.groupService.getWithPayments(this.user.id).subscribe(
+    const subscription = this.groupService.getWithPayments(this.user.id).subscribe(
       (data) => {
         this.groups = data;
         const name = this.inviteService.get();
@@ -81,13 +81,14 @@ export class MainPageComponent implements OnInit, OnDestroy {
           this.inviteService.destroy();
         }
         this.loading.hide();
+        subscription.unsubscribe();
       },
       err => {
         console.log(err);
-        this.toastrManager.error('Error');
         this.loading.hide();
+        subscription.unsubscribe();
       }
-    ));
+    );
   }
 
   onCreatePaymentComplete(model: CreatePaymentModel) {

@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { UsersService } from '../users/users.service';
 import { UserStatistics } from '../users/user.model';
 
+// TODO: remove after implementing ngrx (REDUX)
 @Injectable()
 export class AppPreferencesService {
   private _preferences: Preferences;
@@ -18,6 +19,15 @@ export class AppPreferencesService {
   public get loading() {
     return this._mainComponent.loading;
   }
+
+  public get rightDrawer() {
+    return this._mainComponent.rightDrawer;
+  }
+
+  public get leftDrawer() {
+    return this._mainComponent.layout;
+  }
+
   public get preferences() {
     return this._preferences;
   }
@@ -31,6 +41,10 @@ export class AppPreferencesService {
     this._mainComponent.createPaymentModal.show();
   }
 
+  public showCreateGroupDialog(){
+    this._mainComponent.manageGroup.show();
+  }
+
   public asign(preferences: Preferences) {
     Object.assign(this.preferences, preferences);
   }
@@ -39,11 +53,4 @@ export class AppPreferencesService {
     this._mainComponent = component;
   }
 
-  public action(object: string, action: string) {
-    try {
-      this._mainComponent[object][action]();
-    } catch (ex) {
-      console.log(ex);
-    }
-  }
 }

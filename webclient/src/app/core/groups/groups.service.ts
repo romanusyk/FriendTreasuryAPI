@@ -10,6 +10,7 @@ import 'rxjs/add/observable/forkJoin';
 import { PaymentsDataService } from '../payments/payments-data.service';
 import { Payment } from '../payments/payment.model';
 import { PaymentFilters } from '../payment-filters/payments-filters.model';
+import { filter } from 'rxjs/operators/filter';
 
 
 @Injectable()
@@ -34,6 +35,6 @@ export class GroupsService {
         filters.user = userId;
         filters.group = 0;
         return this.paymentsService.get(filters)
-            .map((payment: Payment) => new Group(payment.group, payment.amount));
+            .map((payments: Payment[]) => payments.map((payment: Payment) => new Group(payment.group, payment.amount)));
     }
 }
