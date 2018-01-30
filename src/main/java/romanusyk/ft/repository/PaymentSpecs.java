@@ -33,7 +33,10 @@ public class PaymentSpecs {
 
     public static Specification<Payment> sortByTimestampDesc() {
         return (root, criteriaQuery, criteriaBuilder) -> {
-            criteriaQuery.orderBy(criteriaBuilder.desc(root.get("timestamp")));
+            criteriaQuery.orderBy(
+                    criteriaBuilder.desc(root.get("timestamp")),
+                    criteriaBuilder.desc(root.get("id"))
+            );
             return criteriaBuilder.conjunction();
         };
     }
