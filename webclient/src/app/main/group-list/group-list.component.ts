@@ -45,6 +45,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy() {
+    console.log('onDestroy')
     this.subscription.unsubscribe();
   }
 
@@ -97,9 +98,6 @@ export class GroupListComponent implements OnInit, OnDestroy {
       // If filter by group is disabled
       if (groupId === 'all') {
         this.currentGroup = null;
-        this.preferencesService.asign({
-          currentGroup: new Group()
-        });
         return true;
       }
       this.currentGroup = this.groups.find((group: Group) => group.id === +groupId);
@@ -108,6 +106,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
         currentGroup: this.currentGroup
       });
       this.paymentFiltersService.changeFilters({group: +groupId});
+      this.preferencesService.leftDrawer.closeDrawer();
       return true;
     }
     return false;

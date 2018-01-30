@@ -1,24 +1,25 @@
-import { MdlDialogService, MdlLayoutComponent } from '@angular-mdl/core';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { Group } from '../../core/groups/group.model';
-import { SubscriptionList } from '../../shared/subscription.model';
-import { Preferences } from '../../core/preferences/preferences.model';
-import { User } from '../../core/users/user.model';
-import { BusyComponent } from '../../shared/busy/busy.component';
-import { RightDrawerComponent } from '../../shared/override-mdl/right-drawer/right-drawer.component';
-import { ManageGroupComponent } from '../manage-group/manage-group.component';
-import { CreatePaymentModalComponent } from '../payments/create-payment-modal/create-payment-modal.component';
-import { GroupsService } from '../../core/groups/groups.service';
-import { PaymentsDataService } from '../../core/payments/payments-data.service';
-import { UsersService } from '../../core/users/users.service';
-import { TokenService } from '../../core/auth/token.service';
-import { InviteService } from '../../core/invite/invite.service';
-import { PaymentFiltersDataService } from '../../core/payment-filters/payment-filters-data.service';
-import { ResponsiveDetectorService } from '../../core/responsive-detector.service';
-import { AppPreferencesService } from '../../core/preferences/app-preferences.service';
-import { CreatePaymentModel } from '../../core/payments/payment.model';
+import {MdlDialogService, MdlLayoutComponent} from '@angular-mdl/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ToastrService} from 'ngx-toastr';
+import {Group} from '../../core/groups/group.model';
+import {SubscriptionList} from '../../shared/subscription.model';
+import {Preferences} from '../../core/preferences/preferences.model';
+import {User} from '../../core/users/user.model';
+import {BusyComponent} from '../../shared/busy/busy.component';
+import {RightDrawerComponent} from '../../shared/override-mdl/right-drawer/right-drawer.component';
+import {ManageGroupComponent} from '../manage-group/manage-group.component';
+import {CreatePaymentModalComponent} from '../payments/create-payment-modal/create-payment-modal.component';
+import {GroupsService} from '../../core/groups/groups.service';
+import {PaymentsDataService} from '../../core/payments/payments-data.service';
+import {UsersService} from '../../core/users/users.service';
+import {TokenService} from '../../core/auth/token.service';
+import {InviteService} from '../../core/invite/invite.service';
+import {PaymentFiltersDataService} from '../../core/payment-filters/payment-filters-data.service';
+import {ResponsiveDetectorService} from '../../core/responsive-detector.service';
+import {AppPreferencesService} from '../../core/preferences/app-preferences.service';
+import {CreatePaymentModel} from '../../core/payments/payment.model';
+import {PaymentFilters} from '../../core/payment-filters/payments-filters.model';
 
 
 @Component({
@@ -37,20 +38,19 @@ export class MainPageComponent implements OnInit, OnDestroy {
   @ViewChild('layout') layout: MdlLayoutComponent;
   @ViewChild('createPayment') createPaymentModal: CreatePaymentModalComponent;
   @ViewChild(ManageGroupComponent) manageGroup: ManageGroupComponent;
-  constructor(
-    private groupService: GroupsService,
-    private paymentService: PaymentsDataService,
-    private userService: UsersService,
-    private tokenService: TokenService,
-    private toastrManager: ToastrService,
-    private dialogService: MdlDialogService,
-    private router: Router,
-    private inviteService: InviteService,
-    private filtersService: PaymentFiltersDataService,
-    public responsive: ResponsiveDetectorService,
-    private route: ActivatedRoute,
-    private preferencesService: AppPreferencesService
-  ) {
+
+  constructor(private groupService: GroupsService,
+              private paymentService: PaymentsDataService,
+              private userService: UsersService,
+              private tokenService: TokenService,
+              private toastrManager: ToastrService,
+              private dialogService: MdlDialogService,
+              private router: Router,
+              private inviteService: InviteService,
+              private filtersService: PaymentFiltersDataService,
+              public responsive: ResponsiveDetectorService,
+              private route: ActivatedRoute,
+              private preferencesService: AppPreferencesService) {
     this.preferences = this.preferencesService.preferences;
     this.preferencesService.init(this);
     this.subscription = new SubscriptionList();
@@ -58,8 +58,20 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.user = this.preferences.currentUser;
-    // this.updateGroupsList();
+    this.filtersService.onFiltersChanged.subscribe((data: PaymentFilters) => {
+      console.log(data);
+      if (data.sum && data.group === -1) {
+        this.router.navigate(['home', 'all', 'debts']);
+      } else if (data.sum && data.group && data.group !== -1) {
+        this.router.navigate(['home', data.group, 'debts']);
+      } else if (data.group && data.group !== -1) {
+        this.router.navigate(['home', data.group, 'payments']);
+      } else if (data.group === -1) {
+        this.router.navigate(['home', 'all', 'payments']);
+      }
+    });
   }
+
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
@@ -138,7 +150,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   onManageGroupComplete(group: Group) {
     this.updateGroupsList();
     if (!!this.preferences.currentGroup) {
-      this.preferencesService.asign({ currentGroup: group });
+      this.preferencesService.asign({currentGroup: group});
     }
   }
 }

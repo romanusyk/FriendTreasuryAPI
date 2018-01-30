@@ -9,7 +9,7 @@ import { AppPreferencesService } from '../../../core/preferences/app-preferences
   templateUrl: 'debts-list.component.html',
   styleUrls: ['./debts-list.component.scss']
 })
-export class DebtsListComponent extends BasePaymentsListComponent {
+export class DebtsListComponent extends BasePaymentsListComponent{
 
   constructor(
     private paymentService: PaymentsDataService,
