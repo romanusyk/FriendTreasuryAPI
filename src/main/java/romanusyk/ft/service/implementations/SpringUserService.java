@@ -177,11 +177,17 @@ public class SpringUserService implements UserService {
     public UserStatistics getUserStatistics(User client) {
         User u = userRepository.findOne(client.getId());
         BigDecimal userOutcome = paymentRepository.getUserOutcome(u);
+        if (userOutcome == null) {
+            userOutcome = new BigDecimal(0);
+        }
         BigDecimal userIncome = paymentRepository.getUserIncome(u);
+        if (userIncome == null) {
+            userIncome = new BigDecimal(0);
+        }
         return new UserStatistics(
                 u.getUsername(),
                 u.getId(),
-                userIncome.subtract(userOutcome),
+                userOutcome.subtract(userIncome),
                 u.getGroups().size()
         );
     }
