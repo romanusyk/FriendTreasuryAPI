@@ -3,7 +3,6 @@ import {Group} from '../../core/groups/group.model';
 import {OnDestroy} from '@angular/core/src/metadata/lifecycle_hooks';
 import {GroupsService} from '../../core/groups/groups.service';
 import {Router, ActivatedRoute} from '@angular/router';
-import {Subscription} from 'rxjs/Subscription';
 import {SubscriptionList} from '../../shared/subscription.model';
 import {Preferences} from '../../core/preferences/preferences.model';
 import {BusyComponent} from '../../shared/busy/busy.component';
@@ -42,10 +41,10 @@ export class GroupListComponent implements OnInit, OnDestroy {
       this.updateGroupsList();
     }
     this.subscription.add(this.route.url.subscribe(this.updateCurrentGroup.bind(this)));
+    this.subscription.add(this.preferencesService.updateGroupList.subscribe(this.updateCurrentGroup.bind(this)));
   }
 
   public ngOnDestroy() {
-    console.log('onDestroy')
     this.subscription.unsubscribe();
   }
 
@@ -100,12 +99,18 @@ export class GroupListComponent implements OnInit, OnDestroy {
         this.currentGroup = null;
         return true;
       }
-      this.currentGroup = this.groups.find((group: Group) => group.id === +groupId);
-      this.usersService.getUsersInGroup(+groupId).subscribe((users: User[]) => this.currentGroup.users = users);
+      const numberGroupId = +groupId;
+      // If navigating by filters
+      if (!this.currentGroup && (this.preferences.currentGroup && this.preferences.currentGroup.id === numberGroupId)) {
+        this.currentGroup = this.preferences.currentGroup;
+        return true;
+      }
+      this.currentGroup = this.groups.find((group: Group) => group.id === numberGroupId);
+      this.usersService.getUsersInGroup(numberGroupId).subscribe((users: User[]) => this.currentGroup.users = users);
       this.preferencesService.asign({
         currentGroup: this.currentGroup
       });
-      this.paymentFiltersService.changeFilters({group: +groupId});
+      this.paymentFiltersService.changeFilters({group: numberGroupId});
       this.preferencesService.leftDrawer.closeDrawer();
       return true;
     }

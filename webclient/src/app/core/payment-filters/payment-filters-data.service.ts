@@ -14,6 +14,7 @@ export class PaymentFiltersDataService {
     if (!!filters) {
       Object.assign(this.filters, filters);
       this.filersChangedSubject.next(this.filters);
+      console.log(filters)
     }
   }
 

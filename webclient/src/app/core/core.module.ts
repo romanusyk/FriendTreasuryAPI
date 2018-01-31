@@ -19,6 +19,7 @@ import { AuthInterceptor } from './interseptors/auth.interseptor';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { PaymentFiltersDataService } from './payment-filters/payment-filters-data.service';
 import { RouterModule } from '@angular/router';
+import {NavigationService} from './navigation/navigation.service';
 
 @NgModule({
   imports: [
@@ -41,6 +42,7 @@ import { RouterModule } from '@angular/router';
     AppPreferencesService,
     UsersService,
     PaymentFiltersDataService,
+    NavigationService,
     ResponsiveDetectorService,
     {
       provide: HTTP_INTERCEPTORS,

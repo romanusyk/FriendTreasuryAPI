@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Debt } from '../../../core/payments/debt.model';
+import {log} from 'util';
 
 @Component({
   selector: 'ft-debt',

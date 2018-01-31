@@ -20,6 +20,7 @@ import {ResponsiveDetectorService} from '../../core/responsive-detector.service'
 import {AppPreferencesService} from '../../core/preferences/app-preferences.service';
 import {CreatePaymentModel} from '../../core/payments/payment.model';
 import {PaymentFilters} from '../../core/payment-filters/payments-filters.model';
+import {NavigationService} from '../../core/navigation/navigation.service';
 
 
 @Component({
@@ -45,11 +46,10 @@ export class MainPageComponent implements OnInit, OnDestroy {
               private tokenService: TokenService,
               private toastrManager: ToastrService,
               private dialogService: MdlDialogService,
-              private router: Router,
               private inviteService: InviteService,
               private filtersService: PaymentFiltersDataService,
+              private navigationService: NavigationService,
               public responsive: ResponsiveDetectorService,
-              private route: ActivatedRoute,
               private preferencesService: AppPreferencesService) {
     this.preferences = this.preferencesService.preferences;
     this.preferencesService.init(this);
@@ -58,54 +58,25 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.user = this.preferences.currentUser;
-    this.filtersService.onFiltersChanged.subscribe((data: PaymentFilters) => {
-      console.log(data);
-      if (data.sum && data.group === -1) {
-        this.router.navigate(['home', 'all', 'debts']);
-      } else if (data.sum && data.group && data.group !== -1) {
-        this.router.navigate(['home', data.group, 'debts']);
-      } else if (data.group && data.group !== -1) {
-        this.router.navigate(['home', data.group, 'payments']);
-      } else if (data.group === -1) {
-        this.router.navigate(['home', 'all', 'payments']);
-      }
-    });
+    this.subscription.add(this.filtersService.onFiltersChanged.subscribe(this.navigateByFilters.bind(this)));
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
 
-  updateGroupsList() {
-    this.loading.show();
-    const subscription = this.groupService.getWithPayments(this.user.id).subscribe(
-      (data) => {
-        this.groups = data;
-        const name = this.inviteService.get();
-        if (!!name) {
-          this.preferencesService.asign({
-            currentGroup: data.find(group => group.name === name)
-          });
-          this.inviteService.destroy();
-        }
-        this.loading.hide();
-        subscription.unsubscribe();
-      },
-      err => {
-        console.log(err);
-        this.loading.hide();
-        subscription.unsubscribe();
-      }
-    );
+  navigateByFilters(filters: PaymentFilters) {
+    this.navigationService.navigateByFilters(filters);
   }
+
 
   onCreatePaymentComplete(model: CreatePaymentModel) {
     model.group = this.preferences.currentGroup.id;
     model.shallIPayForMyself = model.shallIPayForMyself ? 1 : 0;
     this.paymentService.create(model).subscribe(
       (success) => {
-        this.filtersService.reload();
-        this.updateGroupsList();
+        this.preferencesService.refreshStatistics().subscribe();
+        this.preferencesService.updateGroupList.emit();
         this.toastrManager.success('Payment Created');
       },
       (err) => {
@@ -148,7 +119,6 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   onManageGroupComplete(group: Group) {
-    this.updateGroupsList();
     if (!!this.preferences.currentGroup) {
       this.preferencesService.asign({currentGroup: group});
     }

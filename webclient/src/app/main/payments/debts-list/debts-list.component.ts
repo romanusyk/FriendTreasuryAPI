@@ -22,7 +22,7 @@ export class DebtsListComponent extends BasePaymentsListComponent{
     this.loading.show();
     const subscription = this.paymentService.get(this.filters).subscribe(
       (data) => {
-        this.payments = this.payments.concat(data.content);
+        this.payments = data;
         this.loading.hide();
         subscription.unsubscribe();
       },

@@ -10,7 +10,7 @@ virtual-scroll {
       width: 100%;
       margin: 5px;
   }
-:host(){
+:host {
     height: calc(100vh - 50px);
     display: block;
 }

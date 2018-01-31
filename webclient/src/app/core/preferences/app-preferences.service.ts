@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 
 import {MainPageComponent} from '../../main/main-page/main-page.component';
 import {Preferences} from './preferences.model';
@@ -11,6 +11,7 @@ import {UserStatistics} from '../users/user.model';
 export class AppPreferencesService {
   private _preferences: Preferences;
   private _mainComponent: MainPageComponent;
+  private _updateGroupList: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private userService: UsersService) {
     this._preferences = new Preferences();
@@ -18,6 +19,10 @@ export class AppPreferencesService {
 
   public get loading() {
     return this._mainComponent.loading;
+  }
+
+  public get updateGroupList(){
+    return this._updateGroupList;
   }
 
   public get rightDrawer() {

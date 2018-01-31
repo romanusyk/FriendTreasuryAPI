@@ -42,12 +42,7 @@ export class CreatePaymentModalComponent implements OnInit {
 
   public show() {
     this.clearData();
-    if (this.isOneUser()) {
-      this.model.usersTo = [this.preferences.currentUser.id];
-      this.showDialog(this.fillDataDialogTemplate);
-    } else {
-      this.showDialog(this.chooseUsersDialogTemplate);
-    }
+    this.showDialog(this.chooseUsersDialogTemplate);
   }
 
   public onComplete() {
@@ -135,13 +130,6 @@ export class CreatePaymentModalComponent implements OnInit {
       this.dialog = data;
       subscription.unsubscribe();
     });
-  }
-
-  private isOneUser(): boolean {
-    return this.preferences.currentGroup
-      && this.preferences.currentGroup
-      && this.preferences.currentGroup.users
-      && this.preferences.currentGroup.users.length === 1;
   }
 }
 
