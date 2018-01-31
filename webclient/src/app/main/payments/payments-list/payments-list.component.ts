@@ -11,6 +11,7 @@ import {AppPreferencesService} from '../../../core/preferences/app-preferences.s
 import {PaymentFiltersDataService} from '../../../core/payment-filters/payment-filters-data.service';
 import {CUSTOM_MODAL_DATA} from '../../../core/injection.token';
 import 'rxjs/add/operator/mergeMap';
+import {MapOptions} from '../../../shared/map/maps.model';
 
 @Component({
   selector: 'ft-payments',
@@ -108,6 +109,18 @@ export class PaymentsListComponent extends BasePaymentsListComponent {
     this.filtersDataService.changeFilters({
       from: this.filters.from === id ? 0 : id,
       page: 0
+    });
+  }
+
+  onShowOnMapClick(payment: Payment) {
+    this.preferencesService.mapModal.show({
+      latitude: payment.latitude,
+      longitude: payment.longitude,
+      zoom: 15,
+      marker: {
+        latitude: payment.latitude,
+        longitude: payment.longitude
+      }
     });
   }
 }

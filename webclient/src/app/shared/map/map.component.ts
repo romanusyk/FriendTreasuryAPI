@@ -1,11 +1,12 @@
-import { MdlTextFieldComponent } from '@angular-mdl/core';
-import { FormControl } from '@angular/forms';
-import { Component, Input, OnInit, ViewChild, NgZone, EventEmitter, Output, ElementRef } from '@angular/core';
-import { MapsAPILoader } from '@agm/core';
-import { } from 'googlemaps';
-import { AgmMarker } from '@agm/core/directives/marker';
-import { MapOptions, MarkerOptions } from './maps.model';
-import { FtTextFieldComponent } from '../override-mdl/text-field/text-field.component';
+import {MdlTextFieldComponent} from '@angular-mdl/core';
+import {FormControl} from '@angular/forms';
+import {Component, Input, OnInit, ViewChild, NgZone, EventEmitter, Output, ElementRef} from '@angular/core';
+import {MapsAPILoader} from '@agm/core';
+import {} from 'googlemaps';
+import {AgmMarker} from '@agm/core/directives/marker';
+import {MapOptions, MarkerOptions} from './maps.model';
+import {FtTextFieldComponent} from '../override-mdl/text-field/text-field.component';
+
 @Component({
   moduleId: module.id,
   selector: 'ft-map',
@@ -21,17 +22,22 @@ export class MapComponent implements OnInit {
   @ViewChild('search') searchInput: FtTextFieldComponent;
   @ViewChild('marker') marker: AgmMarker;
 
-  constructor(
-    private mapsAPILoader: MapsAPILoader,
-    private ngZone: NgZone) { }
+  private geocoder;
+
+  constructor(private mapsAPILoader: MapsAPILoader,
+              private ngZone: NgZone) {
+  }
 
   ngOnInit(): void {
+    console.log('init');
+    console.log(this.config);
     if (!this.config) {
       this.config = {};
     }
     if (!this.isReadOnly) {
       this.setCurrentPosition();
       this.mapsAPILoader.load().then(() => {
+        this.geocoder  = new google.maps.Geocoder();
         const autocomplete = new google.maps.places.Autocomplete(this.searchInput.inputEl.nativeElement);
         autocomplete.addListener('place_changed', () => {
           this.ngZone.run(() => {
@@ -39,9 +45,8 @@ export class MapComponent implements OnInit {
             if (place.geometry === undefined || place.geometry === null) {
               return;
             }
-            this.config.latitude = place.geometry.location.lat();
-            this.config.longitude = place.geometry.location.lng();
-            this.config.marker = {latitude : this.config.latitude, longitude: this.config.longitude};
+            console.log(place);
+            this.setMarkerCoords(place.geometry.location.lat(), place.geometry.location.lng());
             this.config.zoom = 12;
           });
         });
@@ -50,10 +55,20 @@ export class MapComponent implements OnInit {
   }
 
   public onMapClick($event) {
-    this.config.marker = {latitude : $event.coords.lat, longitude: $event.coords.lng};
+    if (this.isReadOnly) {
+      return;
+    }
+    this.config.marker = {latitude: $event.coords.lat, longitude: $event.coords.lng};
     this.markerChanged.emit({
       latitude: $event.coords.lat,
       longitude: $event.coords.lng
+    });
+    this.geocoder.geocode({
+      location: $event.coords
+    }, (result, status) => {
+      if (status === google.maps.GeocoderStatus.OK) {
+        console.log(result);
+      }
     });
   }
 
@@ -62,16 +77,28 @@ export class MapComponent implements OnInit {
       latitude: $event.lat,
       longitude: $event.lng
     });
+    this.geocoder.geocode({
+      location: $event.coords
+    }, (result, status) => {
+      if (status === google.maps.GeocoderStatus.OK) {
+        console.log(result);
+      }
+    });
   }
 
   private setCurrentPosition() {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
-        this.config.latitude = position.coords.latitude;
-        this.config.longitude = position.coords.longitude;
-        this.config.marker = {latitude : this.config.latitude, longitude: this.config.longitude};
+        this.setMarkerCoords(position.coords.latitude, position.coords.longitude);
         this.config.zoom = 12;
       });
     }
+  }
+
+  private setMarkerCoords(latitude: number, longitude: number) {
+    this.config.latitude = latitude;
+    this.config.longitude = longitude;
+    this.config.marker = {latitude: latitude, longitude: longitude};
+    this.markerChanged.emit(this.config.marker);
   }
 }

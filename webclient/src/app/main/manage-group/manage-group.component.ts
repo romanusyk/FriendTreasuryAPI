@@ -4,6 +4,7 @@ import { Component, Output, EventEmitter, ViewChild, TemplateRef } from '@angula
 import { Group } from '../../core/groups/group.model';
 import { AppPreferencesService } from '../../core/preferences/app-preferences.service';
 import { GroupsService } from '../../core/groups/groups.service';
+import {DEFAULT_DIALOG_CONFIG} from '../../shared/dialog.config';
 
 
 @Component({
@@ -55,19 +56,10 @@ export class ManageGroupComponent {
         } else {
             this.isEdit = false;
         }
-        const subscription = this.dialogService.showDialogTemplate(this.dialogTemplate, this.createModalConfig())
+        const subscription = this.dialogService.showDialogTemplate(this.dialogTemplate, DEFAULT_DIALOG_CONFIG)
         .subscribe(data => {
             this.dialog = data;
             subscription.unsubscribe();
         });
     }
-
-    private createModalConfig(): IMdlDialogConfiguration {
-        return {
-          clickOutsideToClose: false,
-          isModal: true,
-          enterTransitionDuration: 400,
-          leaveTransitionDuration: 400
-        };
-      }
 }

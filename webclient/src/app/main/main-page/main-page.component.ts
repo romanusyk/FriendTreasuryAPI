@@ -21,6 +21,7 @@ import {AppPreferencesService} from '../../core/preferences/app-preferences.serv
 import {CreatePaymentModel} from '../../core/payments/payment.model';
 import {PaymentFilters} from '../../core/payment-filters/payments-filters.model';
 import {NavigationService} from '../../core/navigation/navigation.service';
+import {MapModalComponent} from '../payments/map-modal/map-modal.component';
 
 
 @Component({
@@ -35,6 +36,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   user: User = new User();
   // View Childs
   @ViewChild('loading') loading: BusyComponent;
+  @ViewChild('map') map: MapModalComponent;
   @ViewChild('rightDrawer') rightDrawer: RightDrawerComponent;
   @ViewChild('layout') layout: MdlLayoutComponent;
   @ViewChild('createPayment') createPaymentModal: CreatePaymentModalComponent;

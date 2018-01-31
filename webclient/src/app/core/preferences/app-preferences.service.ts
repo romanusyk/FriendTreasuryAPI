@@ -21,7 +21,7 @@ export class AppPreferencesService {
     return this._mainComponent.loading;
   }
 
-  public get updateGroupList(){
+  public get updateGroupList() {
     return this._updateGroupList;
   }
 
@@ -31,6 +31,10 @@ export class AppPreferencesService {
 
   public get leftDrawer() {
     return this._mainComponent.layout;
+  }
+
+  public get mapModal() {
+    return this._mainComponent.map;
   }
 
   public get preferences() {

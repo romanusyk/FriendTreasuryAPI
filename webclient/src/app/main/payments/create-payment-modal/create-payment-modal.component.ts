@@ -8,6 +8,7 @@ import { Preferences } from '../../../core/preferences/preferences.model';
 import { AppPreferencesService } from '../../../core/preferences/app-preferences.service';
 import { MarkerOptions } from '../../../shared/map/maps.model';
 import { DateHelper } from '../../../core/date.helper';
+import {DEFAULT_DIALOG_CONFIG} from '../../../shared/dialog.config';
 @Component({
   selector: 'ft-create-payment-modal',
   templateUrl: 'create-payment-modal.component.html',
@@ -113,20 +114,11 @@ export class CreatePaymentModalComponent implements OnInit {
     return this.datePipe.transform(date, 'yyyy-MMM-dd');
   }
 
-  private createModalConfig(): IMdlDialogConfiguration {
-    return {
-      clickOutsideToClose: false,
-      isModal: true,
-      enterTransitionDuration: 400,
-      leaveTransitionDuration: 400
-    };
-  }
-
   private showDialog(dialog: TemplateRef<any>) {
     if (this.dialog) {
       this.dialog.hide();
     }
-    const subscription = this.mdlDialogService.showDialogTemplate(dialog, this.createModalConfig()).subscribe(data => {
+    const subscription = this.mdlDialogService.showDialogTemplate(dialog, DEFAULT_DIALOG_CONFIG).subscribe(data => {
       this.dialog = data;
       subscription.unsubscribe();
     });

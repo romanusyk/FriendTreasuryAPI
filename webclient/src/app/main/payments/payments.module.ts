@@ -18,6 +18,7 @@ import { PaymentUserComponent } from './payment-user/payment-user.component';
 import { PaymentComponent } from './payment/payment.component';
 import { PaymentsListComponent } from './payments-list/payments-list.component';
 import { AmountColorDirective } from './amount-color-directive/amount-color.directive';
+import { MapModalComponent } from './map-modal/map-modal.component';
 
 @NgModule({
   imports: [
@@ -41,14 +42,16 @@ import { AmountColorDirective } from './amount-color-directive/amount-color.dire
     PaymentUserComponent,
     EditPaymentComponent,
     PaymentsListComponent,
-    DebtsListComponent
+    DebtsListComponent,
+    MapModalComponent
   ],
   exports: [
     AmountColorDirective,
     CreatePaymentModalComponent,
     PaymentFiltersComponent,
     PaymentsListComponent,
-    DebtsListComponent
+    DebtsListComponent,
+    MapModalComponent
   ],
   entryComponents: [
     EditPaymentComponent
