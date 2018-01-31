@@ -81,8 +81,8 @@ export class PaymentFiltersService {
       return [
         PaymentFiltersType.Group,
         PaymentFiltersType.Sum,
-        PaymentFiltersType.UserTo,
-        PaymentFiltersType.UserFrom
+        PaymentFiltersType.UserFrom,
+        PaymentFiltersType.UserTo
       ];
     }
   }

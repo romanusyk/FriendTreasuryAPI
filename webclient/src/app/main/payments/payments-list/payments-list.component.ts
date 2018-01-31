@@ -1,15 +1,16 @@
-import { EditPaymentComponent } from './../edit-payment/edit-payment.component';
-import { ChangeEvent } from 'angular2-virtual-scroll';
-import { ActivatedRoute } from '@angular/router';
-import { MdlDialogService, MdlDialogReference } from '@angular-mdl/core';
-import { PaymentFiltersService } from './../payment-filters/payment-filters.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { BasePaymentsListComponent } from '../payments-base.component';
-import { Payment, EditPaymentModel } from '../../../core/payments/payment.model';
-import { PaymentsDataService } from '../../../core/payments/payments-data.service';
-import { AppPreferencesService } from '../../../core/preferences/app-preferences.service';
-import { PaymentFiltersDataService } from '../../../core/payment-filters/payment-filters-data.service';
-import { CUSTOM_MODAL_DATA } from '../../../core/injection.token';
+import {EditPaymentComponent} from './../edit-payment/edit-payment.component';
+import {ChangeEvent} from 'angular2-virtual-scroll';
+import {ActivatedRoute} from '@angular/router';
+import {MdlDialogService, MdlDialogReference} from '@angular-mdl/core';
+import {PaymentFiltersService} from './../payment-filters/payment-filters.service';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {BasePaymentsListComponent} from '../payments-base.component';
+import {Payment, EditPaymentModel} from '../../../core/payments/payment.model';
+import {PaymentsDataService} from '../../../core/payments/payments-data.service';
+import {AppPreferencesService} from '../../../core/preferences/app-preferences.service';
+import {PaymentFiltersDataService} from '../../../core/payment-filters/payment-filters-data.service';
+import {CUSTOM_MODAL_DATA} from '../../../core/injection.token';
+import 'rxjs/add/operator/mergeMap';
 
 @Component({
   selector: 'ft-payments',
@@ -21,11 +22,10 @@ export class PaymentsListComponent extends BasePaymentsListComponent {
   public isLoading: boolean;
   public totalItems: number;
 
-  constructor(
-    private paymentService: PaymentsDataService,
-    private dialogService: MdlDialogService,
-    filtersDataService: PaymentFiltersDataService,
-    preferencesService: AppPreferencesService) {
+  constructor(private paymentService: PaymentsDataService,
+              private dialogService: MdlDialogService,
+              filtersDataService: PaymentFiltersDataService,
+              preferencesService: AppPreferencesService) {
     super(filtersDataService, preferencesService);
   }
 
@@ -60,17 +60,19 @@ export class PaymentsListComponent extends BasePaymentsListComponent {
   }
 
   onDeletePayment(id: number) {
-    this.dialogService.confirm('Delete payment?', 'No', 'Yes  ').subscribe(() => {
-      this.loading.show();
-      this.paymentService.delete(id).subscribe(() => {
+    this.dialogService.confirm('Delete payment?', 'No', 'Delete')
+      .mergeMap(() => {
+        this.loading.show();
+        return this.paymentService.delete(id);
+      })
+      .subscribe(() => {
         this.loading.hide();
-        this.payments.slice(this.payments.findIndex(payment => payment.id !== id), 1);
-      },
-        (err) => {
-          this.loading.hide();
-          console.log(err);
-        });
-    });
+        this.payments = this.payments.filter((payment: Payment) => payment.id !== id);
+        this.preferencesService.refreshStatistics().subscribe();
+        this.preferencesService.updateGroupList.emit();
+      }, () => {
+        this.loading.hide();
+      });
   }
 
   onEditPayment(payment: Payment) {
@@ -78,13 +80,15 @@ export class PaymentsListComponent extends BasePaymentsListComponent {
     this.dialogService.showCustomDialog({
       component: EditPaymentComponent,
       providers: [
-        { provide: CUSTOM_MODAL_DATA, useValue: editPaymentModel }
+        {provide: CUSTOM_MODAL_DATA, useValue: editPaymentModel}
       ]
     })
-      .flatMap((data: MdlDialogReference) => data.onHide())
+      .mergeMap((data: MdlDialogReference) => data.onHide())
       .subscribe(() => {
         if (editPaymentModel.isEdited) {
           Object.assign(payment, editPaymentModel);
+          this.preferencesService.refreshStatistics();
+          this.preferencesService.updateGroupList.emit();
         }
       });
   }

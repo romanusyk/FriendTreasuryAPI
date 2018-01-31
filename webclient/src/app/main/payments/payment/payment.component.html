@@ -6,9 +6,9 @@
                 <p [amountColor]="payment.amount" class="payment__amount">{{payment.amount}}</p>
             </div>
             <div class="payment__users">
-                <ft-payment-user (click)="onFromClick(payment.id)" [username]="payment.userFrom.username" [amount]="payment.userFrom.debt" [amount]="payment.amount"></ft-payment-user>
+                <ft-payment-user (click)="onFromClick(payment.userFrom.id)" [username]="payment.userFrom.username" [amount]="payment.userFrom.debt" [amount]="payment.amount"></ft-payment-user>
                 <span class="payment__arrow">&#10230;</span>
-                <ft-payment-user (click)="onToClick(payment.id)" [username]="payment.userTo.username" [amount]="payment.userTo.debt" [amount]="0.00"></ft-payment-user>
+                <ft-payment-user (click)="onToClick(payment.userTo.id)" [username]="payment.userTo.username" [amount]="payment.userTo.debt" [amount]="0.00"></ft-payment-user>
             </div>
 
         </div>

@@ -4,8 +4,8 @@
     <ft-payment
       (deleteClick)="onDeletePayment($event)"
       (editClick)="onEditPayment($event)"
-      (onFromClick)="onFromClick($event)"
-      (onToClick)="onToClick($event)"
+      (fromClick)="onFromClick($event)"
+      (toClick)="onToClick($event)"
       *ngFor="let item of scroll.viewPortItems"
       [isReadonly]="isPaymentReadonly(item)"
       [payment]="item">
