@@ -22,6 +22,7 @@ import {CreatePaymentModel} from '../../core/payments/payment.model';
 import {PaymentFilters} from '../../core/payment-filters/payments-filters.model';
 import {NavigationService} from '../../core/navigation/navigation.service';
 import {MapModalComponent} from '../payments/map-modal/map-modal.component';
+import {GroupListComponent} from '../group-list/group-list.component';
 
 
 @Component({
@@ -30,11 +31,11 @@ import {MapModalComponent} from '../payments/map-modal/map-modal.component';
   styleUrls: ['main-page.component.scss']
 })
 export class MainPageComponent implements OnInit, OnDestroy {
-  groups: Array<Group> = new Array();
   subscription: SubscriptionList;
   preferences: Preferences;
   user: User = new User();
   // View Childs
+  @ViewChild(GroupListComponent) groupList: GroupListComponent;
   @ViewChild('loading') loading: BusyComponent;
   @ViewChild('map') map: MapModalComponent;
   @ViewChild('rightDrawer') rightDrawer: RightDrawerComponent;
@@ -65,6 +66,8 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+    this.preferencesService.clear();
+    this.filtersService.clear();
   }
 
   navigateByFilters(filters: PaymentFilters) {
@@ -78,7 +81,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
     this.paymentService.create(model).subscribe(
       (success) => {
         this.preferencesService.refreshStatistics().subscribe();
-        this.preferencesService.updateGroupList.emit();
+        this.preferencesService.updateGroupList();
         this.toastrManager.success('Payment Created');
       },
       (err) => {

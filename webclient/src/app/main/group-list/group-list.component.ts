@@ -8,9 +8,7 @@ import {Preferences} from '../../core/preferences/preferences.model';
 import {BusyComponent} from '../../shared/busy/busy.component';
 import {AppPreferencesService} from '../../core/preferences/app-preferences.service';
 import {InviteService} from '../../core/invite/invite.service';
-import {UsersService} from '../../core/users/users.service';
 import {PaymentFiltersDataService} from '../../core/payment-filters/payment-filters-data.service';
-import {User} from '../../core/users/user.model';
 
 @Component({
   moduleId: module.id,
@@ -19,15 +17,13 @@ import {User} from '../../core/users/user.model';
   styleUrls: ['group-list.component.scss']
 })
 export class GroupListComponent implements OnInit, OnDestroy {
-  public groups: Array<Group> = [];
   public currentGroup: Group;
   @ViewChild(BusyComponent) public loading: BusyComponent;
   private subscription: SubscriptionList;
   private preferences: Preferences;
 
-  constructor(private groupsService: GroupsService,
+  constructor(
               private route: ActivatedRoute,
-              private usersService: UsersService,
               private paymentFiltersService: PaymentFiltersDataService,
               private preferencesService: AppPreferencesService,
               private inviteService: InviteService,
@@ -41,7 +37,6 @@ export class GroupListComponent implements OnInit, OnDestroy {
       this.updateGroupsList();
     }
     this.subscription.add(this.route.url.subscribe(this.updateCurrentGroup.bind(this)));
-    this.subscription.add(this.preferencesService.updateGroupList.subscribe(this.updateCurrentGroup.bind(this)));
   }
 
   public ngOnDestroy() {
@@ -54,9 +49,8 @@ export class GroupListComponent implements OnInit, OnDestroy {
 
   public updateGroupsList() {
     this.loading.show();
-    const subscription = this.groupsService.getWithPayments(this.preferences.currentUser.id).subscribe(
+    const subscription = this.preferencesService.updateGroupList().subscribe(
       (data) => {
-        this.groups = data;
         const name = this.inviteService.get();
         if (!!name) {
           this.preferencesService.asign({
@@ -65,7 +59,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
           this.inviteService.destroy();
         } else {
           if (!this.updateCurrentGroup()) {
-            this.onSelect(this.groups[0].id + '');
+            this.onSelect(this.preferences.groups[0].id + '');
           }
         }
         this.loading.hide();
@@ -80,7 +74,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
   }
 
   public isAllowToShowEmptyMessage() {
-    return !this.groups || !this.groups.length;
+    return !this.preferences.groups || !this.preferences.groups.length;
   }
 
   public showCreateGroupModal() {
@@ -89,7 +83,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
   }
 
   private updateCurrentGroup(): boolean {
-    if (!this.groups || !this.groups.length) {
+    if (this.isAllowToShowEmptyMessage()) {
       return false;
     }
     if (this.route.snapshot && this.route.snapshot.firstChild) {
@@ -105,8 +99,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
         this.currentGroup = this.preferences.currentGroup;
         return true;
       }
-      this.currentGroup = this.groups.find((group: Group) => group.id === numberGroupId);
-      this.usersService.getUsersInGroup(numberGroupId).subscribe((users: User[]) => this.currentGroup.users = users);
+      this.currentGroup = this.preferences.groups.find((group: Group) => group.id === numberGroupId);
       this.preferencesService.asign({
         currentGroup: this.currentGroup
       });

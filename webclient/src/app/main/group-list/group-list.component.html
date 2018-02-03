@@ -3,11 +3,11 @@
   <div class="group-list__header">
     <div *ngIf="!!currentGroup">
       <div class="group-list__name">{{currentGroup.title}}</div>
-      <div class="group-list__count" *ngIf="currentGroup.users">{{currentGroup.users.length}} members</div>
+      <div class="group-list__count" *ngIf="false">{{currentGroup.usersCount}} members</div>
     </div>
   </div>
   <ul class="group-list">
-    <li *ngFor="let group of groups" class="group" [ngClass]="{'group_selected': group === currentGroup}" (click)="onSelect(group.id)">
+    <li *ngFor="let group of preferences.groups" class="group" [ngClass]="{'group_selected': group === currentGroup}" (click)="onSelect(group.id)">
       <ngx-avatar [name]="group.title"></ngx-avatar>
       <div class="group__name">
         <h5 class="group__title">{{group.title}}</h5>

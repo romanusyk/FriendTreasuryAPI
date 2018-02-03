@@ -1,14 +1,18 @@
-import { MdlDialogService, IMdlDialogConfiguration, MdlDialogComponent, MdlDialogReference } from '@angular-mdl/core';
-import { FormControl } from '@angular/forms';
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter, TemplateRef } from '@angular/core';
-import { MdlDatePickerService } from '@angular-mdl/datepicker';
-import { DatePipe } from '@angular/common';
-import { CreatePaymentModel } from '../../../core/payments/payment.model';
-import { Preferences } from '../../../core/preferences/preferences.model';
-import { AppPreferencesService } from '../../../core/preferences/app-preferences.service';
-import { MarkerOptions } from '../../../shared/map/maps.model';
-import { DateHelper } from '../../../core/date.helper';
+import {MdlDialogService, IMdlDialogConfiguration, MdlDialogComponent, MdlDialogReference} from '@angular-mdl/core';
+import {FormControl} from '@angular/forms';
+import {Component, OnInit, ViewChild, Input, Output, EventEmitter, TemplateRef} from '@angular/core';
+import {MdlDatePickerService} from '@angular-mdl/datepicker';
+import {DatePipe} from '@angular/common';
+import {CreatePaymentModel} from '../../../core/payments/payment.model';
+import {Preferences} from '../../../core/preferences/preferences.model';
+import {AppPreferencesService} from '../../../core/preferences/app-preferences.service';
+import {MarkerOptions} from '../../../shared/map/maps.model';
+import {DateHelper} from '../../../core/date.helper';
 import {DEFAULT_DIALOG_CONFIG} from '../../../shared/dialog.config';
+import {BusyComponent} from '../../../shared/busy/busy.component';
+import {UsersService} from '../../../core/users/users.service';
+import {User} from '../../../core/users/user.model';
+
 @Component({
   selector: 'ft-create-payment-modal',
   templateUrl: 'create-payment-modal.component.html',
@@ -19,6 +23,7 @@ export class CreatePaymentModalComponent implements OnInit {
   @ViewChild('chooseUsersDialog') public chooseUsersDialogTemplate: TemplateRef<any>;
   @ViewChild('fillDataDialog') public fillDataDialogTemplate: TemplateRef<any>;
   @ViewChild('mapDialog') public mapDialogTemplate: TemplateRef<any>;
+
   model: CreatePaymentModel;
   search: string;
   isAllowToShowMap: boolean;
@@ -29,10 +34,13 @@ export class CreatePaymentModalComponent implements OnInit {
   };
   dialog: MdlDialogReference;
   preferences: Preferences;
+  users: User[] = [];
+
   constructor(private datePicker: MdlDatePickerService,
-    preferencesService: AppPreferencesService,
-    private datePipe: DatePipe,
-    private mdlDialogService: MdlDialogService) {
+              private preferencesService: AppPreferencesService,
+              private usersService: UsersService,
+              private datePipe: DatePipe,
+              private mdlDialogService: MdlDialogService) {
     this.preferences = preferencesService.preferences;
   }
 
@@ -44,6 +52,11 @@ export class CreatePaymentModalComponent implements OnInit {
   public show() {
     this.clearData();
     this.showDialog(this.chooseUsersDialogTemplate);
+    this.preferencesService.loading.show();
+    this.usersService.getUsersInGroup(this.preferences.currentGroup.id).subscribe((users: User[]) => {
+      this.users = users.filter((user: User) => user.id !== this.preferences.currentUser.id);
+      this.preferencesService.loading.hide();
+    });
   }
 
   public onComplete() {
@@ -67,7 +80,7 @@ export class CreatePaymentModalComponent implements OnInit {
   }
 
   public pickADate($event: MouseEvent) {
-    this.datePicker.selectDate(DateHelper.currentDate(), { openFrom: $event }).subscribe((selectedDate: Date) => {
+    this.datePicker.selectDate(DateHelper.currentDate(), {openFrom: $event}).subscribe((selectedDate: Date) => {
       this.model.date = this.transformDate(selectedDate);
     });
   }

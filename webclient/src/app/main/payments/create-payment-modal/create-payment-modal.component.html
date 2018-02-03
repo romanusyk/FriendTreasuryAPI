@@ -2,7 +2,7 @@
     <h6 class="mdl-dialog__title">Select Users</h6>
     <mdl-textfield type="text" label="input filter" [(ngModel)]="search"> </mdl-textfield>
         <ul class="create-payment__users">
-            <li class="create-payment__user" [ngClass]="{'create-payment__user-selected' : isUserSelected(user.id)}" *ngFor="let user of preferences.currentGroup.users | searchBy : search : 'username'">
+            <li class="create-payment__user" [ngClass]="{'create-payment__user-selected' : isUserSelected(user.id)}" *ngFor="let user of users | searchBy : search : 'username'">
                 <ft-checkbox [checked]="isUserSelected(user.id)" (change)="onCheckboxChange($event,user.id)">{{user.username}}</ft-checkbox>
             </li>
         </ul>

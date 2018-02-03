@@ -68,9 +68,9 @@ export class PaymentsListComponent extends BasePaymentsListComponent {
       })
       .subscribe(() => {
         this.loading.hide();
-        this.payments = this.payments.filter((payment: Payment) => payment.id !== id);
+        this.filtersDataService.reload();
         this.preferencesService.refreshStatistics().subscribe();
-        this.preferencesService.updateGroupList.emit();
+        this.preferencesService.updateGroupList();
       }, () => {
         this.loading.hide();
       });
@@ -89,7 +89,7 @@ export class PaymentsListComponent extends BasePaymentsListComponent {
         if (editPaymentModel.isEdited) {
           Object.assign(payment, editPaymentModel);
           this.preferencesService.refreshStatistics();
-          this.preferencesService.updateGroupList.emit();
+          this.preferencesService.updateGroupList();
         }
       });
   }

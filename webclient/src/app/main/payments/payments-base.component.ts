@@ -1,13 +1,13 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
-import { Payment } from '../../core/payments/payment.model';
-import { Debt } from '../../core/payments/debt.model';
-import { SubscriptionList } from '../../shared/subscription.model';
-import { Preferences } from '../../core/preferences/preferences.model';
-import { PaymentFilters } from '../../core/payment-filters/payments-filters.model';
-import { BusyComponent } from '../../shared/busy/busy.component';
-import { PaymentFiltersDataService } from '../../core/payment-filters/payment-filters-data.service';
-import { AppPreferencesService } from '../../core/preferences/app-preferences.service';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {OnDestroy} from '@angular/core/src/metadata/lifecycle_hooks';
+import {Payment} from '../../core/payments/payment.model';
+import {Debt} from '../../core/payments/debt.model';
+import {SubscriptionList} from '../../shared/subscription.model';
+import {Preferences} from '../../core/preferences/preferences.model';
+import {PaymentFilters} from '../../core/payment-filters/payments-filters.model';
+import {BusyComponent} from '../../shared/busy/busy.component';
+import {PaymentFiltersDataService} from '../../core/payment-filters/payment-filters-data.service';
+import {AppPreferencesService} from '../../core/preferences/app-preferences.service';
 
 export abstract class BasePaymentsListComponent implements OnInit, OnDestroy {
   public payments: Array<Payment | Debt>;
@@ -16,9 +16,9 @@ export abstract class BasePaymentsListComponent implements OnInit, OnDestroy {
   public filters: PaymentFilters;
 
   @ViewChild(BusyComponent) loading;
-  constructor(
-    protected filtersDataService: PaymentFiltersDataService,
-    protected preferencesService: AppPreferencesService) {
+
+  constructor(protected filtersDataService: PaymentFiltersDataService,
+              protected preferencesService: AppPreferencesService) {
     this.subscription = new SubscriptionList();
     this.updateData = this.updateData.bind(this);
   }
@@ -31,9 +31,13 @@ export abstract class BasePaymentsListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+    this.payments = [];
   }
 
-  private reload() {
+  private reload(filters?: PaymentFilters) {
+    if (!filters) {
+      return;
+    }
     this.payments = [];
     this.updateData();
   }

@@ -29,15 +29,13 @@ export class MapComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('init');
-    console.log(this.config);
     if (!this.config) {
       this.config = {};
     }
     if (!this.isReadOnly) {
-      this.setCurrentPosition();
       this.mapsAPILoader.load().then(() => {
-        this.geocoder  = new google.maps.Geocoder();
+        this.geocoder = new google.maps.Geocoder();
+        this.setCurrentPosition();
         const autocomplete = new google.maps.places.Autocomplete(this.searchInput.inputEl.nativeElement);
         autocomplete.addListener('place_changed', () => {
           this.ngZone.run(() => {
@@ -45,9 +43,8 @@ export class MapComponent implements OnInit {
             if (place.geometry === undefined || place.geometry === null) {
               return;
             }
-            console.log(place);
-            this.setMarkerCoords(place.geometry.location.lat(), place.geometry.location.lng());
-            this.config.zoom = 12;
+            this.setMarkerCoords(place.geometry.location.lat(), place.geometry.location.lng(), place.formatted_address);
+            this.config.zoom = 15;
           });
         });
       });
@@ -55,33 +52,26 @@ export class MapComponent implements OnInit {
   }
 
   public onMapClick($event) {
-    if (this.isReadOnly) {
-      return;
+    if (!this.isReadOnly) {
+      this.geocodeCoordinates($event.coords.lat, $event.coords.lng);
     }
-    this.config.marker = {latitude: $event.coords.lat, longitude: $event.coords.lng};
-    this.markerChanged.emit({
-      latitude: $event.coords.lat,
-      longitude: $event.coords.lng
-    });
-    this.geocoder.geocode({
-      location: $event.coords
-    }, (result, status) => {
-      if (status === google.maps.GeocoderStatus.OK) {
-        console.log(result);
-      }
-    });
   }
 
   public onMarkerDragEnd($event) {
-    this.markerChanged.emit({
-      latitude: $event.lat,
-      longitude: $event.lng
-    });
+    if (!this.isReadOnly) {
+      this.geocodeCoordinates($event.coords.lat, $event.coords.lng);
+    }
+  }
+
+  private geocodeCoordinates(lat: number, lng: number) {
     this.geocoder.geocode({
-      location: $event.coords
+      location: {
+        lat: lat,
+        lng: lng
+      }
     }, (result, status) => {
       if (status === google.maps.GeocoderStatus.OK) {
-        console.log(result);
+        this.setMarkerCoords(lat, lng, result[0].formatted_address);
       }
     });
   }
@@ -89,16 +79,16 @@ export class MapComponent implements OnInit {
   private setCurrentPosition() {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
-        this.setMarkerCoords(position.coords.latitude, position.coords.longitude);
+        this.geocodeCoordinates(position.coords.latitude, position.coords.longitude);
         this.config.zoom = 12;
       });
     }
   }
 
-  private setMarkerCoords(latitude: number, longitude: number) {
+  private setMarkerCoords(latitude: number, longitude: number, label?: string) {
     this.config.latitude = latitude;
     this.config.longitude = longitude;
-    this.config.marker = {latitude: latitude, longitude: longitude};
+    this.config.marker = {latitude: latitude, longitude: longitude, label: label};
     this.markerChanged.emit(this.config.marker);
   }
 }

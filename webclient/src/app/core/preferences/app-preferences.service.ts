@@ -5,15 +5,18 @@ import {Preferences} from './preferences.model';
 import {Observable} from 'rxjs/Observable';
 import {UsersService} from '../users/users.service';
 import {UserStatistics} from '../users/user.model';
+import {GroupsService} from '../groups/groups.service';
+import {Group} from '../groups/group.model';
+import {AuthDataService} from '../auth/auth-data.service';
+import {TokenService} from '../auth/token.service';
 
 // TODO: remove after implementing ngrx (REDUX)
 @Injectable()
 export class AppPreferencesService {
   private _preferences: Preferences;
   private _mainComponent: MainPageComponent;
-  private _updateGroupList: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private userService: UsersService) {
+  constructor(private userService: UsersService, private groupService: GroupsService) {
     this._preferences = new Preferences();
   }
 
@@ -21,8 +24,11 @@ export class AppPreferencesService {
     return this._mainComponent.loading;
   }
 
-  public get updateGroupList() {
-    return this._updateGroupList;
+  public updateGroupList() {
+    return this.groupService.getGroups().map((groups: Group[]) => {
+      Object.assign(this.preferences, {groups});
+      return groups;
+    });
   }
 
   public get rightDrawer() {
@@ -60,6 +66,14 @@ export class AppPreferencesService {
 
   public init(component: MainPageComponent) {
     this._mainComponent = component;
+  }
+
+  public clear() {
+    this.asign({
+      currentGroup: null,
+      groups: null,
+      currentUser: null
+    });
   }
 
 }

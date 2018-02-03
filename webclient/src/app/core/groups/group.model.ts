@@ -5,7 +5,7 @@ export class Group {
     title: string;
     amount?: number;
     name?: string;
-    users?: User[];
+    usersCount?: number;
     constructor(group?: Group, amount?: number) {
         if (!!group) {
             Object.assign(this, group);
