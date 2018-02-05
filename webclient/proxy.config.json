@@ -1,0 +1,6 @@
+{
+  "/api/**": {
+	"target": "http://52.186.121.68:9999/ft",
+	"pathRewrite": {"^/api" : "/api/v1/"}
+  }
+}

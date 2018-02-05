@@ -1,67 +1,56 @@
+import { AuthService } from './auth.service';
 import { IAppConfig } from './../config/iapp.config';
-import { SubscriptionList } from './../shared/models/subscription.model';
-import { InviteService } from './../shared/services/invite.service';
-import { AuthService } from './../shared/services/auth.service';
-import { FtValidators } from './../shared/validators/ft-validators';
-import { Error, ErrorsList } from './../shared/models/error.model';
-import { Credentials, CredentialsType } from './../shared/models/credentials.model';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { ErrorTransformingService } from '../shared/services/error-transforming.service';
-import { BusyComponent } from '../shared/components/busy/busy.component';
 import { ConfigManager } from '../config/app.config';
+import { CredentialsType } from '../core/auth/credentials.model';
+import { BusyComponent } from '../shared/busy/busy.component';
+import { ErrorsList } from '../core/erros/error.model';
+import { SubscriptionList } from '../shared/subscription.model';
+import { AuthDataService } from '../core/auth/auth-data.service';
+import { InviteService } from '../core/invite/invite.service';
+import { ErrorTransformingService } from '../core/erros/error-transforming.service';
 @Component({
   templateUrl: './auth.component.html',
-  styleUrls: ['./auth.component.scss']
+  styleUrls: ['./auth.component.scss'],
+  providers: [AuthService]
 })
 export class AuthComponent implements OnInit, OnDestroy {
-  authType = CredentialsType.login;
+  authType = CredentialsType.Login;
   title: string;
   config: IAppConfig;
   subscription: SubscriptionList;
   errors = new ErrorsList();
   authForm: FormGroup;
+
   @ViewChild(BusyComponent) loading: BusyComponent;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private authDataService: AuthDataService,
     private authService: AuthService,
-    private fb: FormBuilder,
     private inviteService: InviteService,
     private errorTransforming: ErrorTransformingService) {
-    this.authForm = this.fb.group({
-      'username': ['', Validators.required],
-      'password': ['', Validators.required]
-    });
+    this.authForm = this.authService.buildForm();
     this.subscription = new SubscriptionList();
     this.config = ConfigManager.config;
   }
   ngOnInit() {
     this.route.url.subscribe(data => {
-      this.setCredentialsType(data[data.length - 1].path);
+      this.authType = this.authService.getCredentialsType(data[data.length - 1].path);
       this.updateTitle();
       if (this.isLogin()) {
-        this.authForm.removeControl('phone');
-        this.authForm.removeControl('email');
-        this.authForm.removeControl('confirm-password');
+        this.authService.buildLoginForm(this.authForm);
       } else {
-        this.authForm.addControl('phone', new FormControl('', [
-            Validators.required,
-            FtValidators.Length(8, 12)
-          ]));
-        this.authForm.addControl('confirmPassword', new FormControl('', [
-            Validators.required,
-            FtValidators.EqualTo(this.authForm.controls['password'])
-          ]));
-        this.authForm.addControl('email', new FormControl('', [
-            Validators.required,
-            Validators.email
-          ]));
+        this.authService.buildRegisterForm(this.authForm);
       }
     });
-    this.authForm.valueChanges.subscribe(p => this.onValueChange(p, this.authForm));
+    this.subscription.add(this.authForm.valueChanges
+      .subscribe(p => this.authService.onFormValueChanged(p, this.authForm, this.errors))
+    );
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();
@@ -71,10 +60,9 @@ export class AuthComponent implements OnInit, OnDestroy {
     this.errors.clear();
     const credentials = this.authForm.value;
     this.loading.show();
-    this.subscription.add(this.authService
+    this.subscription.add(this.authDataService
       .attemptAuth(this.authType, credentials)
-      .subscribe(
-      data => {
+      .subscribe(() => {
         const name = this.inviteService.get();
         if (!name) {
           this.router.navigateByUrl(this.config.routes.main);
@@ -82,7 +70,6 @@ export class AuthComponent implements OnInit, OnDestroy {
           this.router.navigateByUrl(this.config.routes.invite + name);
         }
         this.loading.hide();
-
       },
       (err) => {
         this.errors.push('*', this.errorTransforming.transformServerError(err));
@@ -90,61 +77,12 @@ export class AuthComponent implements OnInit, OnDestroy {
       }));
   }
 
-  public onValueChange(data: any, form: FormGroup) {
-    this.errors.clear();
-    for (const key in form.controls) {
-      const control = form.get(key);
-      if (control && control.dirty && !control.valid) {
-        const message = ValidationMessages[key];
-        if (!!message) {
-          for (const error in control.errors) {
-            this.errors.push(key, message[error]);
-          }
-        }
-      }
-    }
-  }
 
   public isLogin(): Boolean {
-    return this.authType === CredentialsType.login;
-  }
-
-  private setCredentialsType(data: string): void {
-    switch (data) {
-      case 'login':
-        this.authType = CredentialsType.login;
-        break;
-      case 'register':
-        this.authType = CredentialsType.register;
-        break;
-      default:
-        this.authType = CredentialsType.login;
-        break;
-    }
+    return this.authType === CredentialsType.Login;
   }
 
   private updateTitle(): void {
     this.title = this.isLogin() ? 'Sign in' : 'Sign up';
   }
 }
-
-export const ValidationMessages = {
-  username: {
-    required: 'Username is required'
-  },
-  password: {
-    required: 'Password is required'
-  },
-  phone: {
-    required: 'Phone is required',
-    range: 'Phone should be in range [8:12]'
-  },
-  confirmPassword: {
-    required: 'Password confirmation is required',
-    equalTo: 'Password\'s doesn\'t match'
-  },
-  email: {
-    required: 'Email is required',
-    email: 'Email address not valid'
-  }
-};

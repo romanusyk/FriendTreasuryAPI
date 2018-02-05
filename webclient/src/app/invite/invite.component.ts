@@ -1,12 +1,12 @@
-import { InviteService } from './../shared/services/invite.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AuthService } from './../shared/services/auth.service';
 import { Subscription } from 'rxjs/Rx';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { IAppConfig } from '../config/iapp.config';
 import { ConfigManager } from '../config/app.config';
-import { BusyComponent } from '../shared/components/busy/busy.component';
+import { BusyComponent } from '../shared/busy/busy.component';
+import { InviteService } from '../core/invite/invite.service';
+import { TokenService } from '../core/auth/token.service';
 
 @Component({
     templateUrl: 'invite.component.html'
@@ -16,7 +16,7 @@ export class InviteComponent implements OnInit, OnDestroy {
     private config: IAppConfig;
     @ViewChild(BusyComponent) loading: BusyComponent;
     constructor(private inviteService: InviteService,
-        private authService: AuthService,
+        private tokenService: TokenService,
         private router: Router,
         private route: ActivatedRoute,
         private toastr: ToastrService) {
@@ -30,7 +30,7 @@ export class InviteComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         const name = this.route.snapshot.params['name'];
         this.loading.show();
-        if (this.authService.isAuthorized()) {
+        if (this.tokenService.isAuthorized()) {
             this.subscription = this.inviteService.joinGroup(name).subscribe(
                 (data) => {
                     this.toastr.success('Joined');

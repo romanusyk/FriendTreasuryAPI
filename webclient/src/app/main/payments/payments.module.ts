@@ -1,21 +1,24 @@
-import { OverrideMDLModule } from './../../shared/override-mdl/override-mdl.module';
-import { PaymentComponent } from './components/payment/payment.component';
-import { DebtComponent } from './components/debt/debt.component';
-import { PaymentsEntryComponent } from './components/payments-entry.component';
-import { NgModule } from '@angular/core';
-import { SharedModule } from '../../shared/shared.module';
-import { CommonModule } from '@angular/common';
-import { AmountColorDirective } from './directives/amount-color.directive';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MdlModule } from '@angular-mdl/core';
-import { AvatarModule } from 'ngx-avatar';
 import { MdlDatePickerModule } from '@angular-mdl/datepicker';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { CreatePaymentModalComponent } from './components/create-payment-modal/create-payment-modal.component';
-import { PaymentUserComponent } from './components/payment-user/payment-user.component';
-import { PaymentFiltersComponent } from './components/payment-filters/payment-filters.component';
-import { PaymentFiltersService } from './services/payment-filters.service';
 import { VirtualScrollModule } from 'angular2-virtual-scroll';
+import { AvatarModule } from 'ngx-avatar';
+
+import { SharedModule } from '../../shared/shared.module';
+import { OverrideMDLModule } from './../../shared/override-mdl/override-mdl.module';
+import { CreatePaymentModalComponent } from './create-payment-modal/create-payment-modal.component';
+import { DebtComponent } from './debt/debt.component';
+import { DebtsListComponent } from './debts-list/debts-list.component';
+import { EditPaymentComponent } from './edit-payment/edit-payment.component';
+import { PaymentFiltersComponent } from './payment-filters/payment-filters.component';
+import { PaymentUserComponent } from './payment-user/payment-user.component';
+import { PaymentComponent } from './payment/payment.component';
+import { PaymentsListComponent } from './payments-list/payments-list.component';
+import { AmountColorDirective } from './amount-color-directive/amount-color.directive';
+import { MapModalComponent } from './map-modal/map-modal.component';
 
 @NgModule({
   imports: [
@@ -37,16 +40,21 @@ import { VirtualScrollModule } from 'angular2-virtual-scroll';
     PaymentComponent,
     PaymentFiltersComponent,
     PaymentUserComponent,
-    PaymentsEntryComponent
+    EditPaymentComponent,
+    PaymentsListComponent,
+    DebtsListComponent,
+    MapModalComponent
   ],
   exports: [
     AmountColorDirective,
     CreatePaymentModalComponent,
     PaymentFiltersComponent,
-    PaymentsEntryComponent
+    PaymentsListComponent,
+    DebtsListComponent,
+    MapModalComponent
   ],
-  providers: [
-    PaymentFiltersService
+  entryComponents: [
+    EditPaymentComponent
   ]
 })
 export class PaymentsModule { }

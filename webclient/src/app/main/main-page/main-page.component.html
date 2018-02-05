@@ -24,14 +24,13 @@
 
   </mdl-layout-header>
   <mdl-layout-drawer #leftDrawer>
-    <ft-group-list [groups]="groups" (select)="onGroupSelect($event);" (createGroupClick)="onCreateGroupClick()"></ft-group-list>
+    <ft-group-list (createGroupClick)="onCreateGroupClick()"></ft-group-list>
   </mdl-layout-drawer>
 
   <mdl-layout-content>
     <div class="mdl-grid mdl-grid--no-spacing">
       <div class="mdl-cell mdl-cell--12-col">
-        <ft-payments>
-        </ft-payments>
+        <router-outlet></router-outlet>
       </div>
     </div>
 
@@ -54,3 +53,4 @@
 <ft-manage-group #createGroup (complete)="onManageGroupComplete($event)"></ft-manage-group>
 <ft-create-payment-modal #createPayment (complete)="onCreatePaymentComplete($event)">
 </ft-create-payment-modal>
+<ft-map-modal #map></ft-map-modal>

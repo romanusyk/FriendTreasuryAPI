@@ -11,6 +11,9 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MainModule } from './main/main.module';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { CoreModule } from './core/core.module';
+import { ToastNoAnimationModule, ToastrModule, ToastNoAnimation } from 'ngx-toastr';
 
 @NgModule({
   imports: [
@@ -24,12 +27,18 @@ import { MainModule } from './main/main.module';
     AuthModule,
     MainModule,
     AppRoutingModule,
-    InviteModule
+    InviteModule,
+    CoreModule,
+    ToastNoAnimationModule,
+    ToastrModule.forRoot({
+      newestOnTop: true,
+      closeButton: true,
+      positionClass: 'toast-bottom-right',
+      toastComponent: ToastNoAnimation,
+    })
   ],
   declarations: [
     AppComponent
-  ],
-  providers: [
   ],
   bootstrap: [AppComponent]
 })

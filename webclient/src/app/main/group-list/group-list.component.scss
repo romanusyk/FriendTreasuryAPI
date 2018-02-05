@@ -1,10 +1,15 @@
 @import "../../../assets/variables.scss";
 @import "../../../assets/mixins.scss";
 
-:host(){
+:host{
   font-size: 16px;
   font-weight: 400;
 }
+
+.host {
+  position: relative;
+}
+
 .group-list{
   text-decoration: none;
   padding: 0;
@@ -34,7 +39,6 @@
 }
 .group{
   display: flex;
-  flex: 1 1 1;
   padding: 15px 15px; transition: background .6s;
   @include ellipsisText;
 
@@ -43,6 +47,7 @@
   }
 
   &_selected{
+    background-color: $color-group-selected-background;
   }
 
   &__name{

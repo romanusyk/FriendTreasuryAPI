@@ -1,0 +1,32 @@
+@import '../../../../assets/mixins.scss';
+
+.debt {
+    display: flex;
+    justify-content: space-around;
+    padding: 15px 15%;
+    margin: 0 5px;
+    @include phonePortraitMode{
+        padding: 15px 5px;
+    };
+    &__user{
+        display: flex;
+        cursor: default;
+        &-name{
+            margin-left: 15px;
+            line-height: 3;
+            @include ellipsisText;
+        }
+    }
+    &__arrow{
+        font-size: 60px;
+        line-height: .7;
+        @include phonePortraitMode{
+            font-size: 30px;
+            line-height: 1.5;
+        };
+    }
+    &__amount{
+        line-height: 3;
+    }
+
+}

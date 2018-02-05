@@ -1,0 +1,13 @@
+<nav class="mdl-navigation">
+    <button
+      *ngFor="let filter of getFilters()"
+      mdl-button
+      mdl-ripple
+      mdl-colored="accent"
+      mdl-button-type="{{getButtonType(filter)}}"
+      [title]="filter"
+      (click)="onChange(filter)">
+      <i class="fa fa-{{getIcon(filter)}}"></i>
+      <span *ngIf="!responsive.isPhonePortraitMode()">{{filter}}</span>
+    </button>
+</nav>
