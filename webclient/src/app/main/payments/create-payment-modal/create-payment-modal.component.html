@@ -22,7 +22,7 @@
         <mdl-icon>event</mdl-icon>
         <span>{{model.date}}</span>
     </button>
-    <ft-textfield label="Description" [(ngModel)]="model.description" rows="3" maxrows="3" floating-label>
+    <ft-textfield label="Description" #description required errors="Please, provide description"  [(ngModel)]="model.description" rows="3" maxrows="3" floating-label>
     </ft-textfield>
     <mdl-checkbox [mdl-ripple]="true" [(ngModel)]="model.shallIPayForMyself" *ngIf="!isOneUser">
         Shall i pay for my self
@@ -33,8 +33,8 @@
 
     <div class="mdl-dialog__actions">
         <button mdl-button (click)="onCancel()" mdl-ripple>Cancel</button>
-        <button mdl-button *ngIf="!isAllowToShowMap" mdl-button-type="raised" mdl-colored="primary" (click)="onComplete()" [disabled]="!amount.isValid" mdl-ripple>Save</button>
-        <button mdl-button *ngIf="isAllowToShowMap" (click)="onFillDataDialogNextClick()" mdl-ripple [disabled]="!amount.isValid">Next</button>
+        <button mdl-button *ngIf="!isAllowToShowMap" mdl-button-type="raised" mdl-colored="primary" (click)="onComplete()" [disabled]="!amount.isValid || !description.isValid" mdl-ripple>Save</button>
+        <button mdl-button *ngIf="isAllowToShowMap" (click)="onFillDataDialogNextClick()" mdl-ripple [disabled]="!amount.isValid || !description.isValid">Next</button>
         <button mdl-button (click)="onFillDataDialogPrevClick()" *ngIf="!isOneUser" mdl-ripple>Prev</button>
     </div>
 </ng-template>
