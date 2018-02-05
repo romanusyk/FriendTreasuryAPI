@@ -20,7 +20,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
   public currentGroup: Group;
   @ViewChild(BusyComponent) public loading: BusyComponent;
   private subscription: SubscriptionList;
-  private preferences: Preferences;
+  public preferences: Preferences;
 
   constructor(
               private route: ActivatedRoute,
