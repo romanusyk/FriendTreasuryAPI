@@ -1,0 +1,8 @@
+<ng-template #dialog>
+  <h6 class="mdl-dialog__title">Map</h6>
+  <ft-map [isReadOnly]="true" [config]="options"></ft-map>
+  <div class="mdl-dialog__actions">
+    <button mdl-button mdl-button-type="raised" mdl-colored="primary" (click)="close()"
+    mdl-ripple>Close</button>
+  </div>
+</ng-template>
