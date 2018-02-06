@@ -1,15 +1,13 @@
 import { UrlParamsHelper, UrlParam } from '../url-params.helper';
-import { GroupInfo } from '../groups/group.model';
 export class PaymentFilters {
     public sum?: boolean;
-    public group?: GroupInfo;
+    public group?: number;
     public from?: number;
     public to?: number;
     public user?: number;
     public page? = 0;
     public size? = 10;
     constructor(init?: Partial<PaymentFilters>) {
-        this.group = {};
         Object.assign(this, init);
     }
     public toUrl(): string {
@@ -24,8 +22,8 @@ export class PaymentFilters {
         if (!!this.to && !this.sum) {
             helper.add('userTo', this.to);
         }
-        if (this.group.id > -1) {
-            helper.add('group', this.group.id);
+        if (this.group > -1) {
+            helper.add('group', this.group);
         }
         if (!!this.sum && !!this.user) {
             helper.add('user', this.user);

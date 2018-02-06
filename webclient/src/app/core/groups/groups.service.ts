@@ -33,7 +33,7 @@ export class GroupsService {
         const filters = new PaymentFilters();
         filters.sum = true;
         filters.user = userId;
-        filters.group.id = 0;
+        filters.group = 0;
         return this.paymentsService.get(filters)
             .map((payments: Payment[]) => payments.map((payment: Payment) => new Group(payment.group, payment.amount)));
     }

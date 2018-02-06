@@ -1,14 +1,14 @@
-import { Component, ViewChild, Input, EventEmitter, Output, OnInit } from '@angular/core';
-import { Group } from '../../core/groups/group.model';
-import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
-import { GroupsService } from '../../core/groups/groups.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import { SubscriptionList } from '../../shared/subscription.model';
-import { Preferences } from '../../core/preferences/preferences.model';
-import { BusyComponent } from '../../shared/busy/busy.component';
-import { AppPreferencesService } from '../../core/preferences/app-preferences.service';
-import { InviteService } from '../../core/invite/invite.service';
-import { PaymentFiltersDataService } from '../../core/payment-filters/payment-filters-data.service';
+import {Component, ViewChild, Input, EventEmitter, Output, OnInit} from '@angular/core';
+import {Group} from '../../core/groups/group.model';
+import {OnDestroy} from '@angular/core/src/metadata/lifecycle_hooks';
+import {GroupsService} from '../../core/groups/groups.service';
+import {Router, ActivatedRoute} from '@angular/router';
+import {SubscriptionList} from '../../shared/subscription.model';
+import {Preferences} from '../../core/preferences/preferences.model';
+import {BusyComponent} from '../../shared/busy/busy.component';
+import {AppPreferencesService} from '../../core/preferences/app-preferences.service';
+import {InviteService} from '../../core/invite/invite.service';
+import {PaymentFiltersDataService} from '../../core/payment-filters/payment-filters-data.service';
 
 @Component({
   moduleId: module.id,
@@ -23,11 +23,11 @@ export class GroupListComponent implements OnInit, OnDestroy {
   public preferences: Preferences;
 
   constructor(
-    private route: ActivatedRoute,
-    private paymentFiltersService: PaymentFiltersDataService,
-    private preferencesService: AppPreferencesService,
-    private inviteService: InviteService,
-    private router: Router) {
+              private route: ActivatedRoute,
+              private paymentFiltersService: PaymentFiltersDataService,
+              private preferencesService: AppPreferencesService,
+              private inviteService: InviteService,
+              private router: Router) {
     this.preferences = this.preferencesService.preferences;
     this.subscription = new SubscriptionList();
   }
@@ -59,7 +59,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
           this.inviteService.destroy();
         } else {
           if (!this.updateCurrentGroup()) {
-            this.onSelect(this.preferences.groups[0].name);
+            this.onSelect(this.preferences.groups[0].id + '');
           }
         }
         this.loading.hide();
@@ -87,32 +87,23 @@ export class GroupListComponent implements OnInit, OnDestroy {
       return false;
     }
     if (this.route.snapshot && this.route.snapshot.firstChild) {
-      const groupName = this.route.snapshot.firstChild.params['group'];
+      const groupId = this.route.snapshot.firstChild.params['group'];
       // If filter by group is disabled
-      if (groupName === 'all') {
+      if (groupId === 'all') {
         this.currentGroup = null;
         return true;
       }
+      const numberGroupId = +groupId;
       // If navigating by filters
-      if (!this.currentGroup && (this.preferences.currentGroup && this.preferences.currentGroup.name === groupName)) {
+      if (!this.currentGroup && (this.preferences.currentGroup && this.preferences.currentGroup.id === numberGroupId)) {
         this.currentGroup = this.preferences.currentGroup;
         return true;
       }
-      this.currentGroup = this.preferences.groups.find((group: Group) => group.name === groupName);
-      if(!this.currentGroup) {
-        console.log('navigation')
-        // todo navigate to 404
-      }
+      this.currentGroup = this.preferences.groups.find((group: Group) => group.id === numberGroupId);
       this.preferencesService.asign({
         currentGroup: this.currentGroup
       });
-      this.paymentFiltersService.changeFilters({
-        group: {
-          name: groupName,
-          id: this.currentGroup? this.currentGroup.id : -1,
-        },
-        page: 0
-      });
+      this.paymentFiltersService.changeFilters({group: numberGroupId});
       this.preferencesService.leftDrawer.closeDrawer();
       return true;
     }

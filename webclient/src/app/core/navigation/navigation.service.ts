@@ -19,13 +19,13 @@ export class NavigationService {
     if (!data) {
       return;
     }
-    if (data.sum && data.group.id === -1) {
+    if (data.sum && data.group === -1) {
       this.navigate(this.GROUP_NOT_SELECTED, this.DEBTS);
-    } else if (data.sum && data.group && data.group.id !== -1) {
-      this.navigate(data.group.name, this.DEBTS);
-    } else if (data.group && data.group.id !== -1) {
-      this.navigate(data.group.name, this.PAYMENTS);
-    } else if (data.group.id === -1) {
+    } else if (data.sum && data.group && data.group !== -1) {
+      this.navigate(data.group, this.DEBTS);
+    } else if (data.group && data.group !== -1) {
+      this.navigate(data.group, this.PAYMENTS);
+    } else if (data.group === -1) {
       this.navigate(this.GROUP_NOT_SELECTED, this.PAYMENTS);
     }
   }
