@@ -20,7 +20,7 @@ export class PaymentFiltersService {
       case PaymentFiltersType.Sum:
         return !!filters.sum;
       case PaymentFiltersType.Group:
-        return filters.group > -1;
+        return filters.group.id > -1;
       default:
         return false;
     }
@@ -60,7 +60,10 @@ export class PaymentFiltersService {
         break;
       case PaymentFiltersType.Group:
         this.service.changeFilters({
-          group: filters.group > -1 ? -1 : preferences.currentGroup.id,
+          group: {
+            id: filters.group.id > -1 ? -1 : preferences.currentGroup.id,
+            name: filters.group.name
+          },
           page: 0
         });
         break;

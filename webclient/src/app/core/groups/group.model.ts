@@ -1,12 +1,17 @@
 import { User } from '../users/user.model';
 
-export class Group {
-    id: number;
+
+export class GroupInfo {
+  id?: number;
+  name?: string;
+}
+
+export class Group extends GroupInfo {
     title: string;
     amount?: number;
-    name?: string;
     usersCount?: number;
     constructor(group?: Group, amount?: number) {
+        super();
         if (!!group) {
             Object.assign(this, group);
         }
