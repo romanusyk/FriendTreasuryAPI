@@ -5,6 +5,8 @@ import { Group } from '../../core/groups/group.model';
 import { AppPreferencesService } from '../../core/preferences/app-preferences.service';
 import { GroupsService } from '../../core/groups/groups.service';
 import {DEFAULT_DIALOG_CONFIG} from '../../shared/dialog.config';
+import {BusyComponent} from '../../shared/busy/busy.component';
+import {NavigationService} from '../../core/navigation/navigation.service';
 
 
 @Component({
@@ -15,37 +17,39 @@ import {DEFAULT_DIALOG_CONFIG} from '../../shared/dialog.config';
 export class ManageGroupComponent {
     @Output() public complete: EventEmitter<any> = new EventEmitter();
     @ViewChild('dialog') dialogTemplate: TemplateRef<any>;
+    @ViewChild(BusyComponent) loading: BusyComponent;
     public model: Group;
     public dialog: MdlDialogReference;
     public error: string;
     private isEdit: boolean;
-    constructor(private groupService: GroupsService,
+    constructor(
+        private groupService: GroupsService,
+        private navigationService: NavigationService,
         private dialogService: MdlDialogService,
         private preferencesService: AppPreferencesService) {
     }
 
     public onSave() {
         this.preferencesService.loading.show();
-        const subscription = (this.isEdit ? this.groupService.edit(this.model) : this.groupService.create(this.model)).subscribe(
+        const subscription = (this.isEdit ? this.groupService.edit(this.model) : this.groupService.create(this.model))
+          .mergeMap((data: Group) => {
+            Object.assign(this.model, data);
+            return this.preferencesService.updateGroupList();
+          })
+            .subscribe(
             (data) => {
                 this.complete.emit(this.model);
-                this.preferencesService.loading.hide();
                 this.close();
                 subscription.unsubscribe();
+                this.navigationService.navigate(this.model.id);
             },
-            (err) => {
-                this.preferencesService.loading.hide();
-                subscription.unsubscribe();
-            },
-            () => {
-                this.preferencesService.loading.hide();
-                subscription.unsubscribe();
-            }
+            () => this.close()
         );
     }
 
     public close() {
-        this.dialog.hide();
+      this.loading.hide();
+      this.dialog.hide();
     }
 
     public show(group?: Group) {
