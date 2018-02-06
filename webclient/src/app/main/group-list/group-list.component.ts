@@ -1,6 +1,5 @@
-import {Component, ViewChild, Input, EventEmitter, Output, OnInit} from '@angular/core';
+import {Component, ViewChild, Input, EventEmitter, Output, OnInit, OnDestroy} from '@angular/core';
 import {Group} from '../../core/groups/group.model';
-import {OnDestroy} from '@angular/core/src/metadata/lifecycle_hooks';
 import {GroupsService} from '../../core/groups/groups.service';
 import {Router, ActivatedRoute} from '@angular/router';
 import {SubscriptionList} from '../../shared/subscription.model';
@@ -22,8 +21,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
   private subscription: SubscriptionList;
   public preferences: Preferences;
 
-  constructor(
-              private route: ActivatedRoute,
+  constructor(private route: ActivatedRoute,
               private paymentFiltersService: PaymentFiltersDataService,
               private preferencesService: AppPreferencesService,
               private inviteService: InviteService,
@@ -100,10 +98,15 @@ export class GroupListComponent implements OnInit, OnDestroy {
         return true;
       }
       this.currentGroup = this.preferences.groups.find((group: Group) => group.id === numberGroupId);
+      // If group id is'n in group list
+      if (!this.currentGroup) {
+        this.router.navigate(['404']);
+        return;
+      }
       this.preferencesService.asign({
         currentGroup: this.currentGroup
       });
-      this.paymentFiltersService.changeFilters({group: numberGroupId});
+      this.paymentFiltersService.changeFilters({group: numberGroupId, page: 0});
       this.preferencesService.leftDrawer.closeDrawer();
       return true;
     }
