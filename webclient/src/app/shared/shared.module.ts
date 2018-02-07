@@ -10,6 +10,10 @@ import { BusyComponent } from './busy/busy.component';
 import { OverrideMDLModule } from './override-mdl/override-mdl.module';
 import { ConfigManager } from '../config/app.config';
 import { SearchPipe } from './search.pipe';
+import {CopyTextModalComponent} from './copy-text-modal/copy-text-modal.component';
+import {CopyTextModalModule} from './copy-text-modal/copy-text-modal.module';
+import {Error500Module} from './error500/error500.module';
+import {Error404Module} from './error404/error404.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -19,17 +23,18 @@ import { SearchPipe } from './search.pipe';
     AgmCoreModule.forRoot({
       libraries: ['places'],
       apiKey: ConfigManager.config.apiKeys.googleMaps
-    })
+    }),
+    CopyTextModalModule,
+    Error500Module,
+    Error404Module
   ],
   declarations: [
-    Error404Component,
     MapComponent,
     SearchPipe,
     EmptyMessageComponent,
     BusyComponent,
   ],
   exports: [
-    Error404Component,
     MapComponent,
     SearchPipe,
     EmptyMessageComponent,

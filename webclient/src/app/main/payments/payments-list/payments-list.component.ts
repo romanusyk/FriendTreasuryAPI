@@ -70,7 +70,7 @@ export class PaymentsListComponent extends BasePaymentsListComponent {
         this.loading.hide();
         this.filtersDataService.reload();
         this.preferencesService.refreshStatistics().subscribe();
-        this.preferencesService.updateGroupList();
+        this.preferencesService.updateGroupList().subscribe();
       }, () => {
         this.loading.hide();
       });
@@ -88,8 +88,8 @@ export class PaymentsListComponent extends BasePaymentsListComponent {
       .subscribe(() => {
         if (editPaymentModel.isEdited) {
           Object.assign(payment, editPaymentModel);
-          this.preferencesService.refreshStatistics();
-          this.preferencesService.updateGroupList();
+          this.preferencesService.refreshStatistics().subscribe();
+          this.preferencesService.updateGroupList().subscribe();
         }
       });
   }

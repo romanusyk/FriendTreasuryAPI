@@ -81,7 +81,8 @@ export class MainPageComponent implements OnInit, OnDestroy {
     this.paymentService.create(model).subscribe(
       (success) => {
         this.preferencesService.refreshStatistics().subscribe();
-        this.preferencesService.updateGroupList();
+        this.preferencesService.updateGroupList().subscribe();
+        this.filtersService.setDefaultPage();
         this.toastrManager.success('Payment Created');
       },
       (err) => {

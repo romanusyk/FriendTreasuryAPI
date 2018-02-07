@@ -9,6 +9,7 @@ import { PaymentsListComponent } from './main/payments/payments-list/payments-li
 import { DebtsListComponent } from './main/payments/debts-list/debts-list.component';
 import { LoginGuard } from './core/guards/login.guard';
 import { Error404Component } from './shared/error404/error404.component';
+import {Error500Component} from './shared/error500/error500.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -28,7 +29,7 @@ const routes: Routes = [
   { path: 'login', component: AuthComponent, canActivate: [LoginGuard] },
   { path: 'register', component: AuthComponent, canActivate: [LoginGuard] },
   { path: '404', component: Error404Component },
-  { path: '500', component: Error404Component },
+  { path: '500', component: Error500Component },
   { path: '**', redirectTo: '404', pathMatch: 'full' }
 ];
 
