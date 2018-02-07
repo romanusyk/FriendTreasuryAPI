@@ -1,31 +1,49 @@
-import { HttpClient } from '@angular/common/http';
-import { ConfigManager } from './../../config/app.config';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import {HttpClient} from '@angular/common/http';
+import {ConfigManager} from './../../config/app.config';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs/Observable';
+import {MdlDialogService} from '@angular-mdl/core';
+import {CopyTextModalModule} from '../../shared/copy-text-modal/copy-text-modal.module';
+import {CUSTOM_MODAL_DATA} from '../injection.token';
+import {DEFAULT_DIALOG_CONFIG} from '../../shared/dialog.config';
+import {CopyTextModalComponent} from '../../shared/copy-text-modal/copy-text-modal.component';
 
 @Injectable()
 export class InviteService {
-    private name = 'invite_name';
-    constructor(private http: HttpClient) { }
+  private name = 'invite_name';
 
-    public joinGroup(name: string): Observable<any> {
-        return this.http.put('api/users/group/' + name, {});
-    }
+  constructor(private http: HttpClient, private dialogService: MdlDialogService) {
+  }
 
-    public save(name: string) {
-        localStorage.setItem(this.name, name);
-    }
+  public joinGroup(name: string): Observable<any> {
+    return this.http.put('api/users/group/' + name, {});
+  }
 
-    public get(): string {
-        return localStorage.getItem(this.name);
-    }
+  public save(name: string) {
+    localStorage.setItem(this.name, name);
+  }
 
-    public destroy() {
-        localStorage.removeItem(this.name);
-    }
+  public get(): string {
+    return localStorage.getItem(this.name);
+  }
 
-    public generate(name: string): string {
-        const config = ConfigManager.config;
-        return config.frontEndUrl + '/' + config.routes.invite + '/' + name;
-    }
+  public destroy() {
+    localStorage.removeItem(this.name);
+  }
+
+  public generate(name: string): string {
+    const config = ConfigManager.config;
+    return config.frontEndUrl + '/' + config.routes.invite + '/' + name;
+  }
+
+  public showClopyLinkModal(name: string) {
+    const config = {
+      component: CopyTextModalComponent,
+      providers: [
+        {provide: CUSTOM_MODAL_DATA, useValue: {text: this.generate(name), title: 'Copy invite link'}}
+      ],
+    };
+    Object.assign(config, DEFAULT_DIALOG_CONFIG);
+    this.dialogService.showCustomDialog(config).subscribe();
+  }
 }

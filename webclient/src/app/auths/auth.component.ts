@@ -67,7 +67,7 @@ export class AuthComponent implements OnInit, OnDestroy {
         if (!name) {
           this.router.navigateByUrl(this.config.routes.main);
         } else {
-          this.router.navigateByUrl(this.config.routes.invite + name);
+          this.router.navigateByUrl(this.config.routes.invite + '/' + name);
         }
         this.loading.hide();
       },

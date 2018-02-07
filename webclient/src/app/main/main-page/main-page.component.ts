@@ -110,7 +110,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   onGenerationError() {
-    this.toastrManager.error('Cannot copy link');
+    this.inviteService.showClopyLinkModal(this.preferences.currentGroup.name);
   }
 
   onEditGroupClick($event) {
