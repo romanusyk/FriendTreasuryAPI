@@ -1,11 +1,12 @@
 import { Error } from './error.model';
 import { Injectable } from '@angular/core';
 import { ServerError } from './server-error.model';
+import {HttpErrorResponse} from '@angular/common/http';
 @Injectable()
 export class ErrorTransformingService {
 
-  transformServerError(err: ServerError): string {
-    let message = err.exception;
+  transformServerError(err: HttpErrorResponse ): string {
+    let message = (<ServerError>err.error).exception;
     if (!message) {
       message = 'ServerError';
     }
