@@ -110,7 +110,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   onGenerationError() {
-    this.inviteService.showClopyLinkModal(this.preferences.currentGroup.name);
+    this.inviteService.showCopyLinkModal(this.preferences.currentGroup.name);
   }
 
   onEditGroupClick($event) {

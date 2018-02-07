@@ -36,7 +36,7 @@ export class InviteService {
     return config.frontEndUrl + '/' + config.routes.invite + '/' + name;
   }
 
-  public showClopyLinkModal(name: string) {
+  public showCopyLinkModal(name: string) {
     const config = {
       component: CopyTextModalComponent,
       providers: [
