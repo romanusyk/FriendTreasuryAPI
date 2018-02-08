@@ -1,5 +1,6 @@
-import {NgModule} from '@angular/core';
-import {Error404Component} from './error404.component';
+import { NgModule } from '@angular/core';
+
+import { Error404Component } from './error404.component';
 
 @NgModule({
   declarations: [

@@ -51,12 +51,18 @@ export class AuthComponent implements OnInit, OnDestroy {
     this.subscription.add(this.authForm.valueChanges
       .subscribe(p => this.authService.onFormValueChanged(p, this.authForm, this.errors))
     );
+    this.authForm.updateValueAndValidity();
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 
   public submitForm() {
+    if (this.authForm.invalid) {
+      this.authService.markFormAsDirtyAndTouched(this.authForm);
+      this.authForm.updateValueAndValidity();
+      return;
+    }
     this.errors.clear();
     const credentials = this.authForm.value;
     this.loading.show();
@@ -71,10 +77,10 @@ export class AuthComponent implements OnInit, OnDestroy {
         }
         this.loading.hide();
       },
-      (err) => {
-        this.errors.push('*', this.errorTransforming.transformServerError(err));
-        this.loading.hide();
-      }));
+        (err) => {
+          this.errors.push('*', this.errorTransforming.transformServerError(err));
+          this.loading.hide();
+        }));
   }
 
 

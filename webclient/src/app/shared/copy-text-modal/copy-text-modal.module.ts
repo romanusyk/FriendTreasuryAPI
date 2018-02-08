@@ -1,16 +1,15 @@
-import {NgModule} from '@angular/core';
-import {CopyTextModalComponent} from './copy-text-modal.component';
-import {MdlButtonModule, MdlIconModule, MdlModule, MdlTextFieldModule} from '@angular-mdl/core';
-import {CommonModule} from '@angular/common';
-import {ClipboardModule} from 'ngx-clipboard';
-import {OverrideMDLModule} from '../override-mdl/override-mdl.module';
-import {FormsModule} from '@angular/forms';
+import { MdlButtonModule, MdlIconModule } from '@angular-mdl/core';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { ClipboardModule } from 'ngx-clipboard';
+
+import { CopyTextModalComponent } from './copy-text-modal.component';
 
 @NgModule({
   imports: [
     CommonModule,
     MdlButtonModule.forRoot(),
-    MdlIconModule,
+    MdlIconModule.forRoot(),
     ClipboardModule,
   ],
   declarations: [

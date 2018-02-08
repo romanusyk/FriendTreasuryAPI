@@ -9,6 +9,7 @@ export class AuthService {
   constructor(private fb: FormBuilder) { }
 
   public onFormValueChanged(data: any, form: FormGroup, errors: ErrorsList): ErrorsList {
+    console.log('validation')
     errors.clear();
     for (const key in form.controls) {
       const control = form.get(key);
@@ -64,6 +65,16 @@ export class AuthService {
       'username': ['', Validators.required],
       'password': ['', Validators.required]
     });
+  }
+
+  public markFormAsDirtyAndTouched(form: FormGroup) {
+    form.markAsDirty();
+    form.markAsTouched();
+    for (const key in form.controls) {
+      const control = form.get(key);
+      control.markAsDirty();
+      control.markAsUntouched();
+    }
   }
 }
 

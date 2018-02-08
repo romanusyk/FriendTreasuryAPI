@@ -1,5 +1,6 @@
-import {NgModule} from '@angular/core';
-import {Error500Component} from './error500.component';
+import { NgModule } from '@angular/core';
+
+import { Error500Component } from './error500.component';
 
 @NgModule({
   declarations: [

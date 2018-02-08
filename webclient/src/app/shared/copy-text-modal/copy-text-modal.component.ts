@@ -1,8 +1,9 @@
-import {Component, Inject, OnInit, ViewChild} from '@angular/core';
-import {CUSTOM_MODAL_DATA} from '../../core/injection.token';
-import {MdlDialogReference, MdlTextFieldComponent} from '@angular-mdl/core';
-import {CopyModalOptions} from './copy-text-modal.model';
-import {ToastrService} from 'ngx-toastr';
+import { MdlDialogReference } from '@angular-mdl/core';
+import { Component, Inject } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
+
+import { CUSTOM_MODAL_DATA } from '../../core/injection.token';
+import { CopyModalOptions } from './copy-text-modal.model';
 
 @Component({
   selector: 'ft-copy-text-modal',

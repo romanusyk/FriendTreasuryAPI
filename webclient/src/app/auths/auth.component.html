@@ -7,7 +7,7 @@
         <button type="button" class="full-width" mdl-button mdl-ripple [routerLink]="['/register']" *ngIf="isLogin()">Need an account?</button>
 
         <div>
-            <ft-textfield label="UserName" autofocus type="text" formControlName="username" name="username" [errors]="errors.get('username')"></ft-textfield>
+            <ft-textfield label="UserName" floating-label autofocus type="text" formControlName="username" name="username" [errors]="errors.get('username')"></ft-textfield>
         </div>
         <div *ngIf="!isLogin()">
             <ft-textfield label="Email" floating-label autofocus type="email" formControlName="email" name="email" [errors]="errors.get('email')"></ft-textfield>
@@ -25,7 +25,7 @@
           {{errors.get('*')}}
         </div>
         <div>
-            <button class="full-width" mdl-button mdl-button-type="raised" type="submit" mdl-colored="primary" [disabled]="(authForm.touched && !authForm.valid) || (!errors.isEmpty() && !errors.get('*')) "
+            <button class="full-width" mdl-button mdl-button-type="raised" type="submit" mdl-colored="primary" [disabled]="(!errors.isEmpty() && !errors.get('*')) "
                 mdl-ripple>
                 <mdl-icon>send</mdl-icon>
                 Submit
