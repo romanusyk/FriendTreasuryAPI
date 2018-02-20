@@ -1,17 +1,19 @@
-import {MdlDialogService, IMdlDialogConfiguration, MdlDialogComponent, MdlDialogReference} from '@angular-mdl/core';
-import {FormControl} from '@angular/forms';
-import {Component, OnInit, ViewChild, Input, Output, EventEmitter, TemplateRef} from '@angular/core';
-import {MdlDatePickerService} from '@angular-mdl/datepicker';
-import {DatePipe} from '@angular/common';
-import {CreatePaymentModel} from '../../../core/payments/payment.model';
-import {Preferences} from '../../../core/preferences/preferences.model';
-import {AppPreferencesService} from '../../../core/preferences/app-preferences.service';
-import {MarkerOptions} from '../../../shared/map/maps.model';
-import {DateHelper} from '../../../core/date.helper';
-import {DEFAULT_DIALOG_CONFIG} from '../../../shared/dialog.config';
-import {BusyComponent} from '../../../shared/busy/busy.component';
-import {UsersService} from '../../../core/users/users.service';
-import {User} from '../../../core/users/user.model';
+import { BusyComponent } from './../../../shared/busy/busy.component';
+import { PaymentsDataService } from './../../../core/payments/payments-data.service';
+import { MdlDialogService, IMdlDialogConfiguration, MdlDialogComponent, MdlDialogReference } from '@angular-mdl/core';
+import { FormControl } from '@angular/forms';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter, TemplateRef } from '@angular/core';
+import { MdlDatePickerService } from '@angular-mdl/datepicker';
+import { DatePipe } from '@angular/common';
+import { CreatePaymentModel } from '../../../core/payments/payment.model';
+import { Preferences } from '../../../core/preferences/preferences.model';
+import { AppPreferencesService } from '../../../core/preferences/app-preferences.service';
+import { MarkerOptions } from '../../../shared/map/maps.model';
+import { DateHelper } from '../../../core/date.helper';
+import { DEFAULT_DIALOG_CONFIG } from '../../../shared/dialog.config';
+import { UsersService } from '../../../core/users/users.service';
+import { User } from '../../../core/users/user.model';
+import { stat } from 'fs';
 
 @Component({
   selector: 'ft-create-payment-modal',
@@ -19,123 +21,123 @@ import {User} from '../../../core/users/user.model';
   styleUrls: ['create-payment-modal.component.scss']
 })
 export class CreatePaymentModalComponent implements OnInit {
-  @Output() public complete: EventEmitter<CreatePaymentModel> = new EventEmitter();
-  @ViewChild('chooseUsersDialog') public chooseUsersDialogTemplate: TemplateRef<any>;
-  @ViewChild('fillDataDialog') public fillDataDialogTemplate: TemplateRef<any>;
-  @ViewChild('mapDialog') public mapDialogTemplate: TemplateRef<any>;
+  public title: string;
+  public state: State;
+  public payment: CreatePaymentModel;
+  public isAllowToShowMap: boolean;
+  public users: User[] = [];
 
-  model: CreatePaymentModel;
-  search: string;
-  isAllowToShowMap: boolean;
-  mapOptions = {
-    zoom: 4,
-    latitude: 39.8282,
-    longitude: -98.5795
-  };
-  dialog: MdlDialogReference;
-  preferences: Preferences;
-  users: User[] = [];
+  @ViewChild('loading') public loading: BusyComponent;
 
-  constructor(private datePicker: MdlDatePickerService,
-              private preferencesService: AppPreferencesService,
-              private usersService: UsersService,
-              private datePipe: DatePipe,
-              private mdlDialogService: MdlDialogService) {
+  private preferences: Preferences;
+
+  constructor(
+    private datePicker: MdlDatePickerService,
+    private preferencesService: AppPreferencesService,
+    private usersService: UsersService,
+    private datePipe: DatePipe,
+    private dialog: MdlDialogReference,
+    private paymentsService: PaymentsDataService) {
     this.preferences = preferencesService.preferences;
   }
 
   public ngOnInit(): void {
-    this.clearData();
-    this.isAllowToShowMap = false;
-  }
-
-  public show() {
-    this.clearData();
-    this.showDialog(this.chooseUsersDialogTemplate);
-    this.preferencesService.loading.show();
-    this.usersService.getUsersInGroup(this.preferences.currentGroup.id).subscribe((users: User[]) => {
-      this.users = users.filter((user: User) => user.id !== this.preferences.currentUser.id);
-      this.preferencesService.loading.hide();
+    this.loading.show();
+    this.state = State.Users;
+    this.payment = new CreatePaymentModel({
+      usersTo : [],
+      date : this.transformDate(DateHelper.currentDate())
+    });
+    this.usersService.getUsersInGroup(this.preferences.currentGroup.id)
+      .subscribe((users: User[]) => {
+        this.users = users.filter((user: User) => user.id !== this.preferences.currentUser.id);
+        this.loading.hide();
     });
   }
 
-  public onComplete() {
+  public onSaveClick() {
     if (!this.isAllowToShowMap) {
-      this.model.latitude = null;
-      this.model.longitude = null;
+      this.payment.latitude = null;
+      this.payment.longitude = null;
     }
-    this.complete.emit(this.model);
-    this.dialog.hide();
-    this.clearData();
+    this.loading.show();
+    this.paymentsService.create(this.payment)
+      .subscribe(() => {
+        this.loading.hide();
+        this.dialog.hide(true);
+    });
   }
 
-  public onCancel() {
-    this.dialog.hide();
-    this.clearData();
+  public onCancelClick() {
+    this.dialog.hide(false);
   }
 
   public onLocationChanged($event: MarkerOptions) {
-    this.model.latitude = $event.latitude;
-    this.model.longitude = $event.longitude;
+    this.payment.latitude = $event.latitude;
+    this.payment.longitude = $event.longitude;
   }
 
   public pickADate($event: MouseEvent) {
-    this.datePicker.selectDate(DateHelper.currentDate(), {openFrom: $event}).subscribe((selectedDate: Date) => {
-      this.model.date = this.transformDate(selectedDate);
-    });
+    this.datePicker
+      .selectDate(DateHelper.currentDate(), { openFrom: $event })
+      .subscribe((selectedDate: Date) => {
+        this.payment.date = this.transformDate(selectedDate);
+      });
   }
 
   public onCheckboxChange($event: boolean, id: number) {
-    const index = this.model.usersTo.lastIndexOf(id);
+    const index = this.payment.usersTo.lastIndexOf(id);
     if ($event && index === -1) {
-      this.model.usersTo.push(id);
+      this.payment.usersTo.push(id);
     } else if (index > -1) {
-      this.model.usersTo.splice(index, 1);
+      this.payment.usersTo.splice(index, 1);
     }
   }
 
   public isUserSelected(id: number) {
-    const index = this.model.usersTo.lastIndexOf(id);
+    const index = this.payment.usersTo.lastIndexOf(id);
     return index > -1;
   }
 
-  private clearData() {
-    this.model = new CreatePaymentModel();
-    this.model.usersTo = [];
-    this.model.date = this.transformDate(DateHelper.currentDate());
-  }
-
   public onChooseUserNext() {
-    this.showDialog(this.fillDataDialogTemplate);
+    this.state = State.Data;
   }
 
-  public onMapDialogPrevClick() {
-    this.showDialog(this.fillDataDialogTemplate);
-
+  public setState(state: number) {
+    this.state = state;
+    this.setTitle(state);
   }
 
-  public onFillDataDialogPrevClick() {
-    this.showDialog(this.chooseUsersDialogTemplate);
-
-  }
-
-  public onFillDataDialogNextClick() {
-    this.showDialog(this.mapDialogTemplate);
+  private setTitle(state: State) {
+    switch (state) {
+      case State.Users:
+        this.title = 'Select Users';
+        break;
+      case State.Map:
+        this.title = 'Chose location on map';
+        break;
+      case State.Data:
+        this.title = 'Fill data';
+        break;
+      default:
+        this.title = 'DEFAULT';
+        break;
+    }
   }
 
   private transformDate(date) {
     return this.datePipe.transform(date, 'yyyy-MMM-dd');
   }
-
-  private showDialog(dialog: TemplateRef<any>) {
-    if (this.dialog) {
-      this.dialog.hide();
-    }
-    const subscription = this.mdlDialogService.showDialogTemplate(dialog, DEFAULT_DIALOG_CONFIG).subscribe(data => {
-      this.dialog = data;
-      subscription.unsubscribe();
-    });
-  }
 }
 
+enum State {
+  Users = 1,
+  Data,
+  Map
+}
 
+export const DefaultMapOptions = {
+  zoom: 4,
+  latitude: 39.8282,
+  longitude: -98.5795
+};
