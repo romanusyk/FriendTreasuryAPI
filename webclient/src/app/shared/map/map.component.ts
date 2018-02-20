@@ -28,7 +28,7 @@ export class MapComponent implements OnInit {
 
   ngOnInit(): void {
     if (!this.config) {
-      this.config = {};
+      this.config = DEFAULT_MAP_CONFIG;
     }
     if (!this.isReadOnly) {
       this.mapsAPILoader.load().then(() => {
@@ -90,3 +90,10 @@ export class MapComponent implements OnInit {
     this.markerChanged.emit(this.config.marker);
   }
 }
+
+
+export const DEFAULT_MAP_CONFIG = {
+  zoom: 4,
+  latitude: 39.8282,
+  longitude: -98.5795
+};

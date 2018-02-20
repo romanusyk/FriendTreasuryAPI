@@ -64,8 +64,7 @@
       <div class="create-payment__content" *ngIf="state === 3">
           <ft-map
           (markerChanged)="onLocationChanged($event)"
-          [isReadOnly]="false"
-          [config]="DefaultMapOptions">
+          [isReadOnly]="false">
           </ft-map>
           <div class="mdl-dialog__actions">
             <button mdl-button (click)="onCancelClick()" mdl-ripple>Cancel</button>

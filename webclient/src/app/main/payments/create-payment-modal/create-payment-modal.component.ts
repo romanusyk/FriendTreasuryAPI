@@ -43,7 +43,7 @@ export class CreatePaymentModalComponent implements OnInit {
 
   public ngOnInit(): void {
     this.loading.show();
-    this.state = State.Users;
+    this.setState(State.Users);
     this.payment = new CreatePaymentModel({
       usersTo : [],
       date : this.transformDate(DateHelper.currentDate())
@@ -135,9 +135,3 @@ enum State {
   Data,
   Map
 }
-
-export const DefaultMapOptions = {
-  zoom: 4,
-  latitude: 39.8282,
-  longitude: -98.5795
-};
