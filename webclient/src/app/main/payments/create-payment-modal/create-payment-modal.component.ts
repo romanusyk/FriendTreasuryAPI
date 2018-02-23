@@ -46,7 +46,8 @@ export class CreatePaymentModalComponent implements OnInit {
     this.setState(State.Users);
     this.payment = new CreatePaymentModel({
       usersTo : [],
-      date : this.transformDate(DateHelper.currentDate())
+      date : this.transformDate(DateHelper.currentDate()),
+      group: this.preferences.currentGroup.id
     });
     this.usersService.getUsersInGroup(this.preferences.currentGroup.id)
       .subscribe((users: User[]) => {
@@ -60,6 +61,7 @@ export class CreatePaymentModalComponent implements OnInit {
       this.payment.latitude = null;
       this.payment.longitude = null;
     }
+    this.payment.shallIPayForMyself = this.payment.shallIPayForMyself ? 1 : 0;
     this.loading.show();
     this.paymentsService.create(this.payment)
       .subscribe(() => {

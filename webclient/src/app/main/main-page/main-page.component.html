@@ -10,7 +10,7 @@
       </ft-payment-filters>
       <mdl-layout-spacer></mdl-layout-spacer>
       <button mdl-button mdl-ripple mdl-button-type="icon" *ngIf="isCurrentGroupSelected() && !responsive.isPhonePortraitMode()"
-        (click)="createPayment.show()" title="Create payment">
+        (click)="showCreatePaymentModal()" title="Create payment">
         <mdl-icon>add</mdl-icon>
       </button>
       <button *ngIf="isCurrentGroupSelected()" mdl-button #extermalMenuBtn="mdlButton" (click)="groupExternalMenu.toggle($event, extermalMenuBtn)"
@@ -51,6 +51,4 @@
   </mdl-menu-item>
 </mdl-menu>
 <ft-manage-group #createGroup (complete)="onManageGroupComplete($event)"></ft-manage-group>
-<ft-create-payment-modal #createPayment (complete)="onCreatePaymentComplete($event)">
-</ft-create-payment-modal>
 <ft-map-modal #map></ft-map-modal>
