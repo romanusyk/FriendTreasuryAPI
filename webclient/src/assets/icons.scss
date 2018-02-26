@@ -8,6 +8,7 @@
     background-color: $colort-filter-icons;
     mask-repeat: no-repeat;
     mask-size: cover;
+    vertical-align: middle;
 
     &__piggy-bank {
       mask-image: url('./icons/piggy-bank.svg');
