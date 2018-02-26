@@ -12,11 +12,11 @@ import { ResponsiveDetectorService } from '../../../core/responsive-detector.ser
 })
 export class PaymentFiltersComponent implements OnInit {
   public filterIcons = {
-    sum: 'cart-arrow-down',
-    group: 'users',
-    userfrom: 'arrow-up',
-    userto: 'arrow-down',
-    user: 'user-circle'
+    sum: 'piggy-bank',
+    group: 'group',
+    userfrom: 'atm-man ft-icon-r',
+    userto: 'atm-man',
+    user: 'user'
   };
   constructor(
     public responsive: ResponsiveDetectorService,

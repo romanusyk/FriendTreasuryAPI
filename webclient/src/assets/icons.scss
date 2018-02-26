@@ -1,0 +1,32 @@
+@import "./variables.scss";
+.ft {
+
+  &-icon{
+    height: 14px;
+    width: 14px;
+    display: inline-block;
+    background-color: $colort-filter-icons;
+    mask-repeat: no-repeat;
+    mask-size: cover;
+
+    &__piggy-bank {
+      mask-image: url('./icons/piggy-bank.svg');
+    }
+
+    &__atm-man {
+      mask-image: url('./icons/atm-man.svg');
+    }
+
+    &__group {
+      mask-image: url('./icons/group.svg');
+    }
+
+    &__user {
+      mask-image: url('./icons/user.svg');
+    }
+
+    &-r {
+      transform:scaleX(-1);
+    }
+  }
+}
