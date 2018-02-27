@@ -11,11 +11,16 @@
 }
 
 @mixin phoneLandscapeMode {
-    @media (max-width: 736px) {
+    @media (orientation: landscape) and (max-width: 736px) {
         @content;
     }
 }
 
+@mixin tabletPortraitMode {
+    @media (orientation: portrait) and (min-width: 415px) {
+        @content;
+    }
+}
 
 @mixin ellipsisText {
     white-space: nowrap;
