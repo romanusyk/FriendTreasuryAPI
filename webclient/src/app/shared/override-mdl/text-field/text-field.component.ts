@@ -1,4 +1,4 @@
-import { ViewEncapsulation, forwardRef, DoCheck, Renderer2, ElementRef, Inject, Optional, Input, Component } from '@angular/core';
+import {ViewEncapsulation, forwardRef, DoCheck, Renderer2, ElementRef, Inject, Optional, Input, Component, ViewChild} from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MdlTextFieldComponent, DISABLE_NATIVE_VALIDITY_CHECKING } from '@angular-mdl/core';
 
@@ -28,6 +28,11 @@ export class FtTextFieldComponent extends MdlTextFieldComponent {
         }
         return false;
     }
+
+    public get input() {
+      return this.inputEl.nativeElement;
+    }
+
     constructor(
         renderer: Renderer2,
         elmRef: ElementRef,

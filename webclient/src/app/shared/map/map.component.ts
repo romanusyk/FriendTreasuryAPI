@@ -1,14 +1,12 @@
-import {MdlTextFieldComponent} from '@angular-mdl/core';
-import {FormControl} from '@angular/forms';
-import {Component, Input, OnInit, ViewChild, NgZone, EventEmitter, Output, ElementRef} from '@angular/core';
-import {MapsAPILoader} from '@agm/core';
+import { MapsAPILoader } from '@agm/core';
+import { AgmMarker } from '@agm/core/directives/marker';
+import { Component, EventEmitter, Input, NgZone, OnInit, Output, ViewChild } from '@angular/core';
 import {} from 'googlemaps';
-import {AgmMarker} from '@agm/core/directives/marker';
-import {MapOptions, MarkerOptions} from './maps.model';
-import {FtTextFieldComponent} from '../override-mdl/text-field/text-field.component';
+
+import { FtTextFieldComponent } from '../override-mdl/text-field/text-field.component';
+import { MapOptions, MarkerOptions } from './maps.model';
 
 @Component({
-  moduleId: module.id,
   selector: 'ft-map',
   templateUrl: 'map.component.html',
   styleUrls: ['map.component.scss']

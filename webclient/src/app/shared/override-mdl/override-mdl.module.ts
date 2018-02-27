@@ -1,18 +1,21 @@
-import {FtCheckBoxComponent} from './checkbox/checkbox.component';
-import {FtTextFieldComponent} from './text-field/text-field.component';
-import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {MdlDialogService, MdlModule} from '@angular-mdl/core';
-import {NgModule} from '@angular/core';
-import {RightDrawerComponent} from './right-drawer/right-drawer.component';
+import { NgModule } from '@angular/core';
+
+import { FtCheckboxModule } from './checkbox/checkbox.module';
+import { RightDrawerModule } from './right-drawer/right-drawer.module';
+import { FtTextFieldModule } from './text-field/text-field.module';
 
 
 @NgModule({
-  imports: [MdlModule, FormsModule, CommonModule],
-  exports: [FtTextFieldComponent, FtCheckBoxComponent, RightDrawerComponent],
-  declarations: [FtTextFieldComponent, FtCheckBoxComponent, RightDrawerComponent],
-  providers: [
+  imports: [
+    FtCheckboxModule,
+    FtTextFieldModule,
+    RightDrawerModule
   ],
+  exports: [
+    FtCheckboxModule,
+    FtTextFieldModule,
+    RightDrawerModule
+  ]
 })
 export class OverrideMDLModule {
 }

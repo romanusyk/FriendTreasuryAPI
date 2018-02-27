@@ -26,6 +26,12 @@ export class PaymentFiltersDataService {
     return this.filters;
   }
 
+  public setDefaultPage() {
+    this.changeFilters({
+      page: 0
+    });
+  }
+
   public clear() {
     Object.assign(this.filters, new PaymentFilters({
       group: null,

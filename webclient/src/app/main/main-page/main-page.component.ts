@@ -81,7 +81,8 @@ export class MainPageComponent implements OnInit, OnDestroy {
     this.paymentService.create(model).subscribe(
       (success) => {
         this.preferencesService.refreshStatistics().subscribe();
-        this.preferencesService.updateGroupList();
+        this.preferencesService.updateGroupList().subscribe();
+        this.filtersService.setDefaultPage();
         this.toastrManager.success('Payment Created');
       },
       (err) => {
@@ -110,7 +111,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   onGenerationError() {
-    this.toastrManager.error('Cannot copy link');
+    this.inviteService.showCopyLinkModal(this.preferences.currentGroup.name);
   }
 
   onEditGroupClick($event) {

@@ -1,0 +1,14 @@
+@import "../../../assets/variables";
+.copy-text__input {
+  border:none;
+  font-size: 16px;
+  border-bottom: 1px $color-input-valid;
+  &:focus {
+    outline:none;
+  }
+  &:after {
+    content: '';
+    height: 2px;
+    background-color: $color-input-valid;
+  }
+}

@@ -10,7 +10,7 @@ import { DISABLE_NATIVE_VALIDITY_CHECKING, MdlCheckboxComponent } from '@angular
       multi: true
     }],
     encapsulation: ViewEncapsulation.None,
-    templateUrl: './checkbox.template.component.html',
+    templateUrl: './checkbox.template.html',
     host: {
       '(click)': 'onClick()',
       '[class.mdl-checkbox]': 'true',

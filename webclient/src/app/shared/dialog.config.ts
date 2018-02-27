@@ -1,4 +1,4 @@
-import {IMdlDialogConfiguration} from '@angular-mdl/core';
+import { IMdlDialogConfiguration } from '@angular-mdl/core';
 
 export const DEFAULT_DIALOG_CONFIG: IMdlDialogConfiguration = {
   clickOutsideToClose: false,

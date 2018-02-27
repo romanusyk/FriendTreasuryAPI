@@ -1,0 +1,15 @@
+<div class="edit-payment">
+  <h3 class="mdl-dialog__title">{{options.title}}</h3>
+  <div class="mdl-dialog__content">
+    <input
+      #text
+      class="copy-text__input full-width"
+      id="text"
+      [value]="options.text"
+      type="text"/>
+  </div>
+  <div class="mdl-dialog__actions">
+    <button mdl-button mdl-button-type="raised" mdl-colored="primary" [ngxClipboard]="text" (cbOnSuccess)="onCopySuccess($event)" (cbOnError)="onCopyError($event)" mdl-ripple><mdl-icon>assignment</mdl-icon> Copy</button>
+    <button mdl-button (click)="onCloseClick()" mdl-button-type="raised" mdl-colored="accent" mdl-ripple>Close</button>
+  </div>
+</div>
