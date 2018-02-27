@@ -1,17 +1,14 @@
-import {EditPaymentComponent} from './../edit-payment/edit-payment.component';
-import {ChangeEvent} from 'angular2-virtual-scroll';
-import {ActivatedRoute} from '@angular/router';
-import {MdlDialogService, MdlDialogReference} from '@angular-mdl/core';
-import {PaymentFiltersService} from './../payment-filters/payment-filters.service';
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {BasePaymentsListComponent} from '../payments-base.component';
-import {Payment, EditPaymentModel} from '../../../core/payments/payment.model';
-import {PaymentsDataService} from '../../../core/payments/payments-data.service';
-import {AppPreferencesService} from '../../../core/preferences/app-preferences.service';
-import {PaymentFiltersDataService} from '../../../core/payment-filters/payment-filters-data.service';
-import {CUSTOM_MODAL_DATA} from '../../../core/injection.token';
 import 'rxjs/add/operator/mergeMap';
-import {MapOptions} from '../../../shared/map/maps.model';
+
+import { Component } from '@angular/core';
+import { ChangeEvent } from 'angular2-virtual-scroll';
+
+import { PaymentFiltersDataService } from '../../../core/payment-filters/payment-filters-data.service';
+import { Payment } from '../../../core/payments/payment.model';
+import { PaymentsDataService } from '../../../core/payments/payments-data.service';
+import { AppPreferencesService } from '../../../core/preferences/app-preferences.service';
+import { BasePaymentsListComponent } from '../payments-base.component';
+import { PaymentModalsService } from './../payment-modals.service';
 
 @Component({
   selector: 'ft-payments',
@@ -24,13 +21,13 @@ export class PaymentsListComponent extends BasePaymentsListComponent {
   public totalItems: number;
 
   constructor(private paymentService: PaymentsDataService,
-              private dialogService: MdlDialogService,
+              private paymentModalsService: PaymentModalsService,
               filtersDataService: PaymentFiltersDataService,
               preferencesService: AppPreferencesService) {
     super(filtersDataService, preferencesService);
   }
 
-  onListChange(event: ChangeEvent) {
+  public onListChange(event: ChangeEvent) {
     if (event.end !== this.payments.length || this.isLoading || this.totalItems === this.payments.length) {
       return;
     }
@@ -38,7 +35,7 @@ export class PaymentsListComponent extends BasePaymentsListComponent {
     this.updateData();
   }
 
-  updateData() {
+  public updateData() {
     this.isLoading = true;
     if (this.filters.page === 0) {
       this.loading.show();
@@ -60,59 +57,51 @@ export class PaymentsListComponent extends BasePaymentsListComponent {
     );
   }
 
-  onDeletePayment(id: number) {
-    this.dialogService.confirm('Delete payment?', 'No', 'Delete')
+  public onDeletePaymentClick(id: number) {
+    const subscription = this.paymentModalsService.showDeletePaymentModal()
       .mergeMap(() => {
         this.loading.show();
         return this.paymentService.delete(id);
       })
       .subscribe(() => {
         this.loading.hide();
-        this.filtersDataService.reload();
-        this.preferencesService.refreshStatistics().subscribe();
-        this.preferencesService.updateGroupList().subscribe();
+        this.reloadData();
+        subscription.unsubscribe();
       }, () => {
         this.loading.hide();
+        subscription.unsubscribe();
       });
   }
 
-  onEditPayment(payment: Payment) {
-    const editPaymentModel: EditPaymentModel = Object.assign({}, payment);
-    this.dialogService.showCustomDialog({
-      component: EditPaymentComponent,
-      providers: [
-        {provide: CUSTOM_MODAL_DATA, useValue: editPaymentModel}
-      ]
-    })
-      .mergeMap((data: MdlDialogReference) => data.onHide())
-      .subscribe(() => {
-        if (editPaymentModel.isEdited) {
-          Object.assign(payment, editPaymentModel);
-          this.preferencesService.refreshStatistics().subscribe();
-          this.preferencesService.updateGroupList().subscribe();
+  public onEditPaymentClick(payment: Payment) {
+    const subscription = this.paymentModalsService.showEditPaymentModal(payment)
+      .subscribe((isEdited: boolean) => {
+        if (isEdited) {
+          this.reloadData();
         }
+        subscription.unsubscribe();
       });
   }
 
-  isPaymentReadonly(payment: Payment) {
+  public isPaymentReadonly(payment: Payment) {
     return payment.userFrom.id !== this.preferences.currentUser.id;
   }
 
-  onToClick(id: number) {
+  public onToClick(id: number) {
     this.filtersDataService.changeFilters({
       to: this.filters.to === id ? 0 : id,
       page: 0
     });
   }
 
-  onFromClick(id: number) {
+  public onFromClick(id: number) {
     this.filtersDataService.changeFilters({
       from: this.filters.from === id ? 0 : id,
       page: 0
     });
   }
 
-  onShowOnMapClick(payment: Payment) {
+  public onShowOnMapClick(payment: Payment) {
     this.preferencesService.mapModal.show({
       latitude: payment.latitude,
       longitude: payment.longitude,
@@ -122,5 +111,11 @@ export class PaymentsListComponent extends BasePaymentsListComponent {
         longitude: payment.longitude
       }
     });
+  }
+
+  private reloadData() {
+    this.filtersDataService.reload();
+    this.subscription.add(this.preferencesService.refreshStatistics().subscribe());
+    this.subscription.add(this.preferencesService.updateGroupList().subscribe());
   }
 }

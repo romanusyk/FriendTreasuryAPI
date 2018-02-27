@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 
 import { PaymentFiltersType } from './payment-filters.enum';
 import { PaymentFiltersService } from './payment-filters.service';
-import { ResponsiveDetectorService } from '../../../core/responsive-detector.service';
 
 @Component({
   selector: 'ft-payment-filters',
@@ -19,7 +18,6 @@ export class PaymentFiltersComponent implements OnInit {
     user: 'user-circle'
   };
   constructor(
-    public responsive: ResponsiveDetectorService,
     private filtersService: PaymentFiltersService) {
   }
   public ngOnInit(): void {

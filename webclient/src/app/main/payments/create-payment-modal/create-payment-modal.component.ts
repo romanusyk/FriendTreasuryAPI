@@ -1,19 +1,17 @@
-import { BusyComponent } from './../../../shared/busy/busy.component';
-import { PaymentsDataService } from './../../../core/payments/payments-data.service';
-import { MdlDialogService, IMdlDialogConfiguration, MdlDialogComponent, MdlDialogReference } from '@angular-mdl/core';
-import { FormControl } from '@angular/forms';
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter, TemplateRef } from '@angular/core';
+import { MdlDialogReference } from '@angular-mdl/core';
 import { MdlDatePickerService } from '@angular-mdl/datepicker';
 import { DatePipe } from '@angular/common';
-import { CreatePaymentModel } from '../../../core/payments/payment.model';
-import { Preferences } from '../../../core/preferences/preferences.model';
-import { AppPreferencesService } from '../../../core/preferences/app-preferences.service';
-import { MarkerOptions } from '../../../shared/map/maps.model';
+import { Component, OnInit, ViewChild } from '@angular/core';
+
 import { DateHelper } from '../../../core/date.helper';
-import { DEFAULT_DIALOG_CONFIG } from '../../../shared/dialog.config';
-import { UsersService } from '../../../core/users/users.service';
+import { CreatePaymentModel } from '../../../core/payments/payment.model';
+import { AppPreferencesService } from '../../../core/preferences/app-preferences.service';
+import { Preferences } from '../../../core/preferences/preferences.model';
 import { User } from '../../../core/users/user.model';
-import { stat } from 'fs';
+import { UsersService } from '../../../core/users/users.service';
+import { MarkerOptions } from '../../../shared/map/maps.model';
+import { PaymentsDataService } from './../../../core/payments/payments-data.service';
+import { BusyComponent } from './../../../shared/busy/busy.component';
 
 @Component({
   selector: 'ft-create-payment-modal',

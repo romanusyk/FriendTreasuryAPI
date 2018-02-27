@@ -1,28 +1,25 @@
-import {MdlDialogService, MdlLayoutComponent} from '@angular-mdl/core';
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ToastrService} from 'ngx-toastr';
-import {Group} from '../../core/groups/group.model';
-import {SubscriptionList} from '../../shared/subscription.model';
-import {Preferences} from '../../core/preferences/preferences.model';
-import {User} from '../../core/users/user.model';
-import {BusyComponent} from '../../shared/busy/busy.component';
-import {RightDrawerComponent} from '../../shared/override-mdl/right-drawer/right-drawer.component';
-import {ManageGroupComponent} from '../manage-group/manage-group.component';
-import {CreatePaymentModalComponent} from '../payments/create-payment-modal/create-payment-modal.component';
-import {GroupsService} from '../../core/groups/groups.service';
-import {PaymentsDataService} from '../../core/payments/payments-data.service';
-import {UsersService} from '../../core/users/users.service';
-import {TokenService} from '../../core/auth/token.service';
-import {InviteService} from '../../core/invite/invite.service';
-import {PaymentFiltersDataService} from '../../core/payment-filters/payment-filters-data.service';
-import {ResponsiveDetectorService} from '../../core/responsive-detector.service';
-import {AppPreferencesService} from '../../core/preferences/app-preferences.service';
-import {CreatePaymentModel} from '../../core/payments/payment.model';
-import {PaymentFilters} from '../../core/payment-filters/payments-filters.model';
-import {NavigationService} from '../../core/navigation/navigation.service';
-import {MapModalComponent} from '../payments/map-modal/map-modal.component';
-import {GroupListComponent} from '../group-list/group-list.component';
+import { MdlDialogService, MdlLayoutComponent } from '@angular-mdl/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
+
+import { TokenService } from '../../core/auth/token.service';
+import { Group } from '../../core/groups/group.model';
+import { InviteService } from '../../core/invite/invite.service';
+import { NavigationService } from '../../core/navigation/navigation.service';
+import { PaymentFiltersDataService } from '../../core/payment-filters/payment-filters-data.service';
+import { PaymentFilters } from '../../core/payment-filters/payments-filters.model';
+import { CreatePaymentModel } from '../../core/payments/payment.model';
+import { PaymentsDataService } from '../../core/payments/payments-data.service';
+import { AppPreferencesService } from '../../core/preferences/app-preferences.service';
+import { Preferences } from '../../core/preferences/preferences.model';
+import { User } from '../../core/users/user.model';
+import { BusyComponent } from '../../shared/busy/busy.component';
+import { RightDrawerComponent } from '../../shared/override-mdl/right-drawer/right-drawer.component';
+import { SubscriptionList } from '../../shared/subscription.model';
+import { GroupListComponent } from '../group-list/group-list.component';
+import { ManageGroupComponent } from '../manage-group/manage-group.component';
+import { MapModalComponent } from '../payments/map-modal/map-modal.component';
+import { PaymentModalsService } from './../payments/payment-modals.service';
 
 
 @Component({
@@ -40,19 +37,16 @@ export class MainPageComponent implements OnInit, OnDestroy {
   @ViewChild('map') map: MapModalComponent;
   @ViewChild('rightDrawer') rightDrawer: RightDrawerComponent;
   @ViewChild('layout') layout: MdlLayoutComponent;
-  @ViewChild('createPayment') createPaymentModal: CreatePaymentModalComponent;
   @ViewChild(ManageGroupComponent) manageGroup: ManageGroupComponent;
 
-  constructor(private groupService: GroupsService,
-              private paymentService: PaymentsDataService,
-              private userService: UsersService,
+  constructor(private paymentService: PaymentsDataService,
+              private paymentModalsService: PaymentModalsService,
               private tokenService: TokenService,
               private toastrManager: ToastrService,
               private dialogService: MdlDialogService,
               private inviteService: InviteService,
               private filtersService: PaymentFiltersDataService,
               private navigationService: NavigationService,
-              public responsive: ResponsiveDetectorService,
               private preferencesService: AppPreferencesService) {
     this.preferences = this.preferencesService.preferences;
     this.preferencesService.init(this);
@@ -128,5 +122,16 @@ export class MainPageComponent implements OnInit, OnDestroy {
     if (!!this.preferences.currentGroup) {
       this.preferencesService.asign({currentGroup: group});
     }
+  }
+
+  public showCreatePaymentModal(){
+    this.paymentModalsService
+      .showCreatePaymentModal()
+      .subscribe((isSuccess) => {
+        this.preferencesService.refreshStatistics().subscribe();
+        this.preferencesService.updateGroupList().subscribe();
+        this.filtersService.setDefaultPage();
+        this.toastrManager.success('Payment Created');
+      });
   }
 }

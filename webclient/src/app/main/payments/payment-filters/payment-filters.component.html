@@ -8,6 +8,6 @@
       [title]="filter"
       (click)="onChange(filter)">
       <i class="fa fa-{{getIcon(filter)}}"></i>
-      <span *ngIf="!responsive.isPhonePortraitMode()">{{filter}}</span>
+      <span class="xs-hide-r">{{filter}}</span>
     </button>
 </nav>
