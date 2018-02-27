@@ -1,14 +1,12 @@
-import {EventEmitter, Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
-import {MainPageComponent} from '../../main/main-page/main-page.component';
-import {Preferences} from './preferences.model';
-import {Observable} from 'rxjs/Observable';
-import {UsersService} from '../users/users.service';
-import {UserStatistics} from '../users/user.model';
-import {GroupsService} from '../groups/groups.service';
-import {Group} from '../groups/group.model';
-import {AuthDataService} from '../auth/auth-data.service';
-import {TokenService} from '../auth/token.service';
+import { MainPageComponent } from '../../main/main-page/main-page.component';
+import { Group } from '../groups/group.model';
+import { GroupsService } from '../groups/groups.service';
+import { UserStatistics } from '../users/user.model';
+import { UsersService } from '../users/users.service';
+import { Preferences } from './preferences.model';
 
 // TODO: remove after implementing ngrx (REDUX)
 @Injectable()

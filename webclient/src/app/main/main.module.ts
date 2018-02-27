@@ -14,6 +14,7 @@ import { MainPageComponent } from './main-page/main-page.component';
 import { ManageGroupComponent } from './manage-group/manage-group.component';
 import { PaymentsModule } from './payments/payments.module';
 import { RightMenuComponent } from './right-menu/right-menu.component';
+import { GroupsModule } from './groups/groups.module';
 
 const config = ConfigManager.config;
 @NgModule({
@@ -28,7 +29,8 @@ const config = ConfigManager.config;
         AvatarModule,
         ClipboardModule,
         PaymentsModule,
-        OverrideMDLModule
+        OverrideMDLModule,
+        GroupsModule
     ],
     declarations: [
         GroupListComponent,

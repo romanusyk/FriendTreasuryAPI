@@ -10,6 +10,6 @@
 </ft-textfield>
 <div class="mdl-dialog__actions">
     <button mdl-button mdl-button-type="raised" mdl-colored="primary" [disabled]="!title.isValid" (click)="onSave()" mdl-ripple>Save</button>
-    <button mdl-button (click)="close()" mdl-ripple>Cancel</button>
-</div>    
+    <button mdl-button (click)="onClose()" mdl-ripple>Cancel</button>
+</div>
 </ng-template>

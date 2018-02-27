@@ -1,4 +1,4 @@
-import { MdlDialogService, MdlLayoutComponent } from '@angular-mdl/core';
+import { MdlLayoutComponent } from '@angular-mdl/core';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 
@@ -43,7 +43,6 @@ export class MainPageComponent implements OnInit, OnDestroy {
               private paymentModalsService: PaymentModalsService,
               private tokenService: TokenService,
               private toastrManager: ToastrService,
-              private dialogService: MdlDialogService,
               private inviteService: InviteService,
               private filtersService: PaymentFiltersDataService,
               private navigationService: NavigationService,
