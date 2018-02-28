@@ -1,4 +1,3 @@
-import { Observable } from 'rxjs/Rx';
 import { MdlDialogReference, MdlDialogService } from '@angular-mdl/core';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -18,17 +17,17 @@ export class PaymentModalsService {
     return this.dialogService.showCustomDialog({
       component: EditPaymentComponent,
       providers: [
-        {provide: CUSTOM_MODAL_DATA, useValue: Object.assign({}, payment)}
+        { provide: CUSTOM_MODAL_DATA, useValue: Object.assign({}, payment) }
       ],
       ...DEFAULT_DIALOG_CONFIG
     })
-    .mergeMap((data: MdlDialogReference) => data.onHide())
-    .mergeMap((editedPayment: EditPaymentModel) => {
-      if (editedPayment.isEdited) {
-        Object.assign(payment, editedPayment);
-      }
-      return Observable.of(editedPayment.isEdited);
-    });
+      .mergeMap((data: MdlDialogReference) => data.onHide())
+      .mergeMap((editedPayment: EditPaymentModel) => {
+        if (editedPayment.isEdited) {
+          Object.assign(payment, editedPayment);
+        }
+        return Observable.of(editedPayment.isEdited);
+      });
   }
 
   public showCreatePaymentModal(): Observable<boolean> {
@@ -36,7 +35,7 @@ export class PaymentModalsService {
       component: CreatePaymentModalComponent,
       ...DEFAULT_DIALOG_CONFIG
     })
-    .mergeMap((data: MdlDialogReference) => data.onHide());
+      .mergeMap((data: MdlDialogReference) => data.onHide());
   }
 
   public showDeletePaymentModal(): Observable<void> {

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthDataService } from './auth/auth-data.service';
 import { TokenService } from './auth/token.service';
@@ -44,6 +44,7 @@ import {NavigationService} from './navigation/navigation.service';
     PaymentFiltersDataService,
     NavigationService,
     ResponsiveDetectorService,
+    DatePipe,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ServerErrorInterceptor,

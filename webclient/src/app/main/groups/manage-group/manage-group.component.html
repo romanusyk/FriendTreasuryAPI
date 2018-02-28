@@ -9,7 +9,7 @@
     [(ngModel)]="model.title">
 </ft-textfield>
 <div class="mdl-dialog__actions">
-    <button mdl-button mdl-button-type="raised" mdl-colored="primary" [disabled]="!title.isValid" (click)="onSave()" mdl-ripple>Save</button>
-    <button mdl-button (click)="onClose()" mdl-ripple>Cancel</button>
+    <button mdl-button mdl-button-type="raised" mdl-colored="primary" [disabled]="!title.isValid" (click)="onSaveClick()" mdl-ripple>Save</button>
+    <button mdl-button (click)="onCloseClick()" mdl-ripple>Cancel</button>
 </div>
 </ng-template>

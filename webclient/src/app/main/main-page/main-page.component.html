@@ -1,5 +1,4 @@
 <ft-busy #loading></ft-busy>
-
 <mdl-layout mdl-layout-fixed-header mdl-layout-fixed-drawer mdl-layout-header-seamed #layout="mdlLayout">
   <mdl-layout-header>
     <mdl-layout-header-row>
@@ -10,7 +9,7 @@
       </ft-payment-filters>
       <mdl-layout-spacer></mdl-layout-spacer>
       <button mdl-button mdl-ripple mdl-button-type="icon" *ngIf="isCurrentGroupSelected()" class="xs-hide"
-        (click)="showCreatePaymentModal()" title="Create payment">
+        (click)="showCreatePaymentModal()" title="create payment">
         <mdl-icon>add</mdl-icon>
       </button>
       <button *ngIf="isCurrentGroupSelected()" mdl-button #extermalMenuBtn="mdlButton" (click)="groupExternalMenu.toggle($event, extermalMenuBtn)"
@@ -24,7 +23,7 @@
 
   </mdl-layout-header>
   <mdl-layout-drawer #leftDrawer>
-    <ft-group-list (createGroupClick)="onCreateGroupClick()"></ft-group-list>
+    <ft-group-list></ft-group-list>
   </mdl-layout-drawer>
 
   <mdl-layout-content>
@@ -37,10 +36,10 @@
   </mdl-layout-content>
 </mdl-layout>
 <ft-right-drawer #rightDrawer>
-  <ft-right-menu [user]="user" (createGroupClick)="onCreateGroupClick()" (logoutClick)="logout()"></ft-right-menu>
+  <ft-right-menu [user]="user" (createGroupClick)="showCreateGroupModal()" (logoutClick)="logout()"></ft-right-menu>
 </ft-right-drawer>
 <mdl-menu #groupExternalMenu="mdlMenu" mdl-menu-position="bottom-right">
-    <mdl-menu-item (click)="onEditGroupClick($event)">
+    <mdl-menu-item (click)="showEditGroupModal()">
       Edit group
     </mdl-menu-item>
   <mdl-menu-item class="xs-hide-r" (click)="showCreatePaymentModal()">
@@ -50,5 +49,4 @@
     Generate invite link
   </mdl-menu-item>
 </mdl-menu>
-<ft-manage-group #createGroup (complete)="onManageGroupComplete($event)"></ft-manage-group>
 <ft-map-modal #map></ft-map-modal>

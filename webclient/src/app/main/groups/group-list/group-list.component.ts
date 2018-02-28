@@ -16,10 +16,10 @@ import { SubscriptionList } from '../../../shared/subscription.model';
   styleUrls: ['group-list.component.scss']
 })
 export class GroupListComponent implements OnInit, OnDestroy {
-  public currentGroup: Group;
   @ViewChild(BusyComponent) public loading: BusyComponent;
-  private subscription: SubscriptionList;
+  public currentGroup: Group;
   public preferences: Preferences;
+  private subscription: SubscriptionList;
 
   constructor(private route: ActivatedRoute,
               private paymentFiltersService: PaymentFiltersDataService,
@@ -30,7 +30,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
     this.subscription = new SubscriptionList();
   }
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     if (this.preferences.currentUser.groupCount) {
       this.updateGroupsList();
     }

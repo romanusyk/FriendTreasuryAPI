@@ -18,10 +18,6 @@ export class AppPreferencesService {
     this._preferences = new Preferences();
   }
 
-  public get loading() {
-    return this._mainComponent.loading;
-  }
-
   public updateGroupList() {
     return this.groupService.getGroups().map((groups: Group[]) => {
       Object.assign(this.preferences, {groups});
@@ -51,11 +47,11 @@ export class AppPreferencesService {
   }
 
   public showCreatePaymentDialog() {
-    this._mainComponent.createPaymentModal.show();
+    this._mainComponent.showCreatePaymentModal();
   }
 
   public showCreateGroupDialog() {
-    this._mainComponent.manageGroup.show();
+    this._mainComponent.showCreateGroupModal();
   }
 
   public asign(preferences: Preferences) {

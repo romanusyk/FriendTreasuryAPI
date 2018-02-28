@@ -1,10 +1,13 @@
-import { MdlDialogModule, MdlButtonModule } from '@angular-mdl/core';
-import { BusyModule } from './../../shared/busy/busy.module';
+import { MdlButtonModule, MdlDialogModule } from '@angular-mdl/core';
 import { CommonModule } from '@angular/common';
-import { ManageGroupComponent } from './../manage-group/manage-group.component';
 import { NgModule } from '@angular/core';
-import { GroupListComponent } from './group-list/group-list.component';
+import { AvatarModule } from 'ngx-avatar';
+
 import { FtTextFieldModule } from '../../shared/override-mdl/text-field/text-field.module';
+import { BusyModule } from './../../shared/busy/busy.module';
+import { EmptyMessageModule } from './../../shared/empty-message/empty-message.module';
+import { GroupListComponent } from './group-list/group-list.component';
+import { ManageGroupComponent } from './manage-group/manage-group.component';
 
 
 @NgModule({
@@ -13,7 +16,9 @@ import { FtTextFieldModule } from '../../shared/override-mdl/text-field/text-fie
     BusyModule,
     MdlDialogModule.forRoot(),
     MdlButtonModule.forRoot(),
-    FtTextFieldModule
+    FtTextFieldModule,
+    AvatarModule,
+    EmptyMessageModule
    ],
   declarations: [
     GroupListComponent,
