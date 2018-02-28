@@ -45,7 +45,7 @@
   <mdl-menu-item class="xs-hide-r" (click)="showCreatePaymentModal()">
     Create payment
   </mdl-menu-item>
-  <mdl-menu-item mdl-ripple ngxClipboard [cbContent]="generateInvite()" (cbOnSuccess)="onGenerationgSuccess()" (cbOnError)="onGenerationError()">
+  <mdl-menu-item mdl-ripple ngxClipboard [cbContent]="generateInviteLink()" (cbOnSuccess)="onGenerationInviteLinkSuccess()" (cbOnError)="onGenerationInviteLinkError()">
     Generate invite link
   </mdl-menu-item>
 </mdl-menu>

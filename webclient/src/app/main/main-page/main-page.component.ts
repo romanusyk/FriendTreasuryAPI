@@ -37,13 +37,13 @@ export class MainPageComponent implements OnInit, OnDestroy {
   @ViewChild('layout') layout: MdlLayoutComponent;
 
   constructor(private paymentModalsService: PaymentModalsService,
-              private groupsModalService: GroupModalsService,
-              private tokenService: TokenService,
-              private toastrManager: ToastrService,
-              private inviteService: InviteService,
-              private filtersService: PaymentFiltersDataService,
-              private navigationService: NavigationService,
-              private preferencesService: AppPreferencesService) {
+    private groupsModalService: GroupModalsService,
+    private tokenService: TokenService,
+    private toastrManager: ToastrService,
+    private inviteService: InviteService,
+    private filtersService: PaymentFiltersDataService,
+    private navigationService: NavigationService,
+    private preferencesService: AppPreferencesService) {
     this.preferences = this.preferencesService.preferences;
     this.preferencesService.init(this);
     this.subscription = new SubscriptionList();
@@ -73,6 +73,9 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   public generateInviteLink(): string {
+    if (!this.preferences.currentGroup) {
+      return '';
+    }
     return this.inviteService.generate(this.preferences.currentGroup.name);
   }
 
@@ -88,30 +91,30 @@ export class MainPageComponent implements OnInit, OnDestroy {
     this.layout.closeDrawer();
     this.rightDrawer.hide();
     const subscription = this.groupsModalService.showManageGroupModal()
-    .mergeMap((group: EditGroupModel) => !!group.isChanged ? this.preferencesService.updateGroupList() : Observable.empty())
-    .subscribe(() => subscription.unsubscribe());
+      .mergeMap((group: EditGroupModel) => !!group.isChanged ? this.preferencesService.updateGroupList() : Observable.empty())
+      .subscribe(() => subscription.unsubscribe());
   }
 
   public showEditGroupModal(): void {
     this.layout.closeDrawer();
     this.rightDrawer.hide();
     const subscription = this.groupsModalService.showManageGroupModal()
-    .subscribe((group: EditGroupModel) => {
-      if (!!group.isChanged) {
-        this.preferencesService.asign({currentGroup: group});
-      }
-      subscription.unsubscribe()
-    });
+      .subscribe((group: EditGroupModel) => {
+        if (!!group.isChanged) {
+          this.preferencesService.asign({ currentGroup: group });
+        }
+        subscription.unsubscribe()
+      });
   }
 
-  public showCreatePaymentModal(): void{
+  public showCreatePaymentModal(): void {
     const subscription = this.paymentModalsService
       .showCreatePaymentModal()
       .mergeMap((isSuccess: boolean) =>
         Observable.forkJoin(
           this.preferencesService.refreshStatistics(),
           this.preferencesService.updateGroupList())
-        )
+      )
       .subscribe(() => {
         this.filtersService.setDefaultPage();
         this.toastrManager.success('Payment Created');
