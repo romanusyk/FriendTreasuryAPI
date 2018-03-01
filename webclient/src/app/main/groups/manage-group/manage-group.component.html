@@ -1,15 +1,30 @@
-<ng-template #dialog>
-    <ft-textfield
+<ft-busy #loading></ft-busy>
+<ft-textfield
     #title
     type="text"
     errors="Please enter not empty group name"
     floating-label
     label="Enter title"
     required
-    [(ngModel)]="model.title">
+    [(ngModel)]="group.title"
+>
 </ft-textfield>
 <div class="mdl-dialog__actions">
-    <button mdl-button mdl-button-type="raised" mdl-colored="primary" [disabled]="!title.isValid" (click)="onSaveClick()" mdl-ripple>Save</button>
-    <button mdl-button (click)="onCloseClick()" mdl-ripple>Cancel</button>
+    <button
+        mdl-button
+        mdl-button-type="raised"
+        mdl-colored="primary"
+        [disabled]="!title.isValid"
+        (click)="onSaveClick()"
+        mdl-ripple
+    >
+        Save
+    </button>
+    <button
+        mdl-button
+        (click)="onCloseClick()"
+        mdl-ripple
+    >
+        Cancel
+    </button>
 </div>
-</ng-template>

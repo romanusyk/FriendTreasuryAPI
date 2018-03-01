@@ -98,12 +98,13 @@ export class MainPageComponent implements OnInit, OnDestroy {
   public showEditGroupModal(): void {
     this.layout.closeDrawer();
     this.rightDrawer.hide();
-    const subscription = this.groupsModalService.showManageGroupModal()
+    const subscription =
+      this.groupsModalService.showManageGroupModal(this.preferences.currentGroup)
       .subscribe((group: EditGroupModel) => {
         if (!!group.isChanged) {
           this.preferencesService.asign({ currentGroup: group });
         }
-        subscription.unsubscribe()
+        subscription.unsubscribe();
       });
   }
 
@@ -111,14 +112,21 @@ export class MainPageComponent implements OnInit, OnDestroy {
     const subscription = this.paymentModalsService
       .showCreatePaymentModal()
       .mergeMap((isSuccess: boolean) =>
-        Observable.forkJoin(
-          this.preferencesService.refreshStatistics(),
-          this.preferencesService.updateGroupList())
+        isSuccess ?
+          Observable.forkJoin(
+            this.preferencesService.refreshStatistics(),
+            this.preferencesService.updateGroupList())
+          // If cancel button was clicked
+          : Observable.throw(isSuccess)
       )
-      .subscribe(() => {
-        this.filtersService.setDefaultPage();
-        this.toastrManager.success('Payment Created');
-        subscription.unsubscribe();
-      });
+      .subscribe(
+        () => {
+          this.filtersService.setDefaultPage();
+          this.toastrManager.success('Payment Created');
+          subscription.unsubscribe();
+        },
+        (isSuccess: boolean) => {
+          subscription.unsubscribe();
+        });
   }
 }

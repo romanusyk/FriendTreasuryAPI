@@ -2,8 +2,8 @@
 <virtual-scroll *ngIf="isAllowToShowPayments()" #scroll [items]="payments" (update)="scroll.viewPortItems = $event"
     (end)="onListChange($event)">
     <ft-payment
-      (deleteClick)="onDeletePayment($event)"
-      (editClick)="onEditPayment($event)"
+      (deleteClick)="onDeletePaymentClick($event)"
+      (editClick)="onEditPaymentClick($event)"
       (showOnMapClick)="onShowOnMapClick($event)"
       (fromClick)="onFromClick($event)"
       (toClick)="onToClick($event)"

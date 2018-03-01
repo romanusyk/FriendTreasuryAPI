@@ -25,6 +25,9 @@ export class ManageGroupComponent implements OnInit {
   public ngOnInit(): void {
     if (!!this.group && !!this.group.id) {
       this.isEdit = true;
+    } else {
+      this.group = new Group();
+      this.group.isChanged = false;
     }
   }
 
@@ -34,7 +37,7 @@ export class ManageGroupComponent implements OnInit {
       .subscribe(
         (data: any) => {
           this.loading.hide();
-          this.group.isChanged = this.isEdit;
+          this.group.isChanged = true;
           this.onCloseClick();
           subscription.unsubscribe();
         },
