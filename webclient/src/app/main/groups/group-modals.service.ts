@@ -12,7 +12,7 @@ export class GroupModalsService {
 
   constructor(private dialogService: MdlDialogService) { }
 
-  public showManageGroupModal(group?: Group): Observable<EditGroupModel> {
+  public showManageGroupModal(group?: Group): Observable<boolean> {
     return this.dialogService.showCustomDialog({
       providers: [
         { provide: CUSTOM_MODAL_DATA, useValue: Object.assign({}, group) }

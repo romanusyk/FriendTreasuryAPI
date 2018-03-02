@@ -90,9 +90,10 @@ export class MainPageComponent implements OnInit, OnDestroy {
   public showCreateGroupModal(): void {
     this.layout.closeDrawer();
     this.rightDrawer.hide();
-    const subscription = this.groupsModalService.showManageGroupModal()
-      .mergeMap((group: EditGroupModel) => !!group.isChanged ? this.preferencesService.updateGroupList() : Observable.empty())
-      .subscribe(() => subscription.unsubscribe());
+    const subscription =
+      this.groupsModalService.showManageGroupModal()
+        .mergeMap((isSuccess: boolean) => !!isSuccess ? this.preferencesService.updateGroupList() : Observable.empty())
+        .subscribe(() => subscription.unsubscribe());
   }
 
   public showEditGroupModal(): void {
@@ -100,12 +101,10 @@ export class MainPageComponent implements OnInit, OnDestroy {
     this.rightDrawer.hide();
     const subscription =
       this.groupsModalService.showManageGroupModal(this.preferences.currentGroup)
-      .subscribe((group: EditGroupModel) => {
-        if (!!group.isChanged) {
-          this.preferencesService.asign({ currentGroup: group });
-        }
-        subscription.unsubscribe();
-      });
+        .mergeMap((isSuccess: boolean) => isSuccess ? this.preferencesService.updateGroupList() : Observable.empty())
+        .subscribe((group: EditGroupModel) => {
+          subscription.unsubscribe();
+        });
   }
 
   public showCreatePaymentModal(): void {

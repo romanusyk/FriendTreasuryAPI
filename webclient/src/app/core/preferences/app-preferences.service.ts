@@ -20,7 +20,11 @@ export class AppPreferencesService {
 
   public updateGroupList() {
     return this.groupService.getGroups().map((groups: Group[]) => {
-      Object.assign(this.preferences, {groups});
+      Object.assign(this.preferences, { groups });
+      if (!!this.preferences.currentGroup) {
+        const newGroup = groups.find((group: Group) => group.id === this.preferences.currentGroup.id);
+        Object.assign(this.preferences.currentGroup, { newGroup });
+      }
       return groups;
     });
   }

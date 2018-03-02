@@ -100,7 +100,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
       this.currentGroup = this.preferences.groups.find((group: Group) => group.id === numberGroupId);
       // If group id is'n in group list
       if (!this.currentGroup) {
-        this.router.navigate(['404']);
+        this.router.navigate(['/404']);
         return;
       }
       this.preferencesService.asign({

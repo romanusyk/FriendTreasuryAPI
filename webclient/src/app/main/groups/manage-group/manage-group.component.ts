@@ -20,14 +20,13 @@ export class ManageGroupComponent implements OnInit {
   constructor(
     private groupService: GroupsService,
     private dialog: MdlDialogReference,
-    @Inject(CUSTOM_MODAL_DATA) public group: EditGroupModel) { }
+    @Inject(CUSTOM_MODAL_DATA) public group: Group) { }
 
   public ngOnInit(): void {
     if (!!this.group && !!this.group.id) {
       this.isEdit = true;
     } else {
       this.group = new Group();
-      this.group.isChanged = false;
     }
   }
 
@@ -37,8 +36,7 @@ export class ManageGroupComponent implements OnInit {
       .subscribe(
         (data: any) => {
           this.loading.hide();
-          this.group.isChanged = true;
-          this.onCloseClick();
+          this.dialog.hide(true);
           subscription.unsubscribe();
         },
         (err: any) => {
@@ -50,6 +48,6 @@ export class ManageGroupComponent implements OnInit {
   }
 
   public onCloseClick(): void {
-    this.dialog.hide(this.group);
+    this.dialog.hide(false);
   }
 }
