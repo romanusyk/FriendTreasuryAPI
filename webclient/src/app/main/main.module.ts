@@ -28,7 +28,9 @@ const config = ConfigManager.config;
         AvatarModule,
         ClipboardModule,
         PaymentsModule,
-        OverrideMDLModule
+        OverrideMDLModule,
+        AvatarModule,
+        MdlModule
     ],
     declarations: [
         GroupListComponent,

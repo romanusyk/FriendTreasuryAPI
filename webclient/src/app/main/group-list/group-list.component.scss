@@ -2,29 +2,14 @@
 @import "../../../assets/mixins.scss";
 
 :host{
-  font-size: 16px;
-  font-weight: 400;
-}
-
-.host {
   position: relative;
+  height: 100vh;
 }
 
 .group-list{
-  text-decoration: none;
-  padding: 0;
-  margin: 0;
-  max-height: calc(100vh - 50px);
-  height: calc(100vh - 50px);
-  overflow-y: auto;
-
   &__header {
     background-color: $color-header;
     height: 50px;
-    display: flex;
-    flex-direction: column;
-    font-size: 14px;
-    padding-left: 15px;
     color: $color-groups-text;
   }
 
@@ -76,8 +61,8 @@
       }
 
       &_zero{
-          color: $color-zero-balance;
-          &:before {
+          color: black;
+          &:after {
             content: '0';
         }
       }
