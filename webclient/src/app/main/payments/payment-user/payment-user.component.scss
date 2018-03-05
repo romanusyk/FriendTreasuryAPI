@@ -4,10 +4,6 @@
     cursor: pointer;
     @include ellipsisText;
 
-    @include phonePortraitMode {
-      width:
-    }
-
     &__username {
       margin-left: 15px;
       font-size: 16px;
