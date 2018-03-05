@@ -3,21 +3,21 @@
   <div class="group-list__header">
     <div *ngIf="!!currentGroup">
       <div class="group-list__name">{{currentGroup.title}}</div>
-      <div class="group-list__count" *ngIf="false">{{currentGroup.usersCount}} members</div>
+      <div class="group-list__count" *ngIf="true">{{!!currentGroup.usersCount ? currentGroup.usersCount : 0}} members</div>
     </div>
   </div>
 </mdl-layout-title>
 <mdl-list class="mdl-navigation">
-  <mdl-list-item class="mdl-navigation__link" *ngFor="let group of preferences.groups" (click)="onSelect(group.id)">
+  <mdl-list-item class="mdl-navigation__link group" *ngFor="let group of preferences.groups" (click)="onSelect(group.id)" [ngClass]="{'group--selected':isGroupSelected(group)}">
     <mdl-list-item-primary-content>
       <ngx-avatar [size]="50" mdl-list-item-avatar [name]="group.title"></ngx-avatar>
-      <span>{{group.title}}</span>
+      <span class="group__title">{{group.title}}</span>
     </mdl-list-item-primary-content>
     <mdl-list-item-secondary-content>
       <span class="group__price" [ngClass]="{
-                  'group__price_negative':group.amount < 0,
-                  'group__price_positive':group.amount > 0,
-                  'group__price_zero':!group.amount
+                  'group__price--negative':group.amount < 0,
+                  'group__price--positive':group.amount > 0,
+                  'group__price--zero':!group.amount
                 }">
       </span>
     </mdl-list-item-secondary-content>

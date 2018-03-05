@@ -80,6 +80,10 @@ export class GroupListComponent implements OnInit, OnDestroy {
     this.preferencesService.showCreateGroupDialog();
   }
 
+  public isGroupSelected(group: Group): boolean {
+    return group === this.currentGroup;
+  }
+
   private updateCurrentGroup(): boolean {
     if (this.isAllowToShowEmptyMessage()) {
       return false;

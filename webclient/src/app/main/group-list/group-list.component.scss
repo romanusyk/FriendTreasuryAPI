@@ -1,70 +1,64 @@
 @import "../../../assets/variables.scss";
 @import "../../../assets/mixins.scss";
 
-:host{
+:host {
   position: relative;
   height: 100vh;
 }
 
-.group-list{
+.group-list {
   &__header {
     background-color: $color-header;
-    height: 50px;
+    height: 40px;
     color: $color-groups-text;
+    padding-top: 10px;
+    padding-left: 15px;
   }
 
   &__name {
-    font-weight: 600;
-    margin-top: 5px;
+    font-size: 16px;
+    color: black;
   }
 
   &__count {
-
+    font-size: 14px;
   }
 }
-.group{
-  display: flex;
-  padding: 15px 15px; transition: background .6s;
+
+.group {
   @include ellipsisText;
 
-  &:hover{
-      cursor: pointer;
+  &:hover {
+    cursor: pointer;
   }
 
-  &_selected{
-    background-color: $color-group-selected-background;
+  &--selected {
+    background-color: rgb(200,200,200);
   }
 
-  &__name{
-      display: flex;
-      flex-direction: column;
-      margin-left: 10px;
-      color: $color-groups-text;
+  &__title {
+    padding-left: 5px;
   }
 
-  &__title{
-      margin: 0 0 5px;
-  }
+  &__price {
+    font-weight: 500;
 
-  &__price{
-      font-weight: 500;
-
-      &_positive{
-          color: $color-positive-balance;
-          &:before {
-              content: '+';
-          }
+    &--positive {
+      color: $color-positive-balance;
+      &:before {
+        content: "+";
       }
+    }
 
-      &_negative{
-          color: $color-negative-balance
-      }
+    &--negative {
+      color: $color-negative-balance;
+    }
 
-      &_zero{
-          color: black;
-          &:after {
-            content: '0';
-        }
+    &--zero {
+      color: $color-zero-balance;
+      &:after {
+        content: "0";
       }
+    }
   }
 }

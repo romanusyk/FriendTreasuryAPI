@@ -6,32 +6,32 @@
 // }
 
 .mdl-textfield.ng-invalid {
+  .mdl-textfield__input {
+    border-color: $color-danger;
+  }
+  label.mdl-textfield__label {
+    color: $color-danger;
+    &::after {
+      background-color: $color-danger;
+    }
+  }
+  span.mdl-textfield__error {
+    visibility: visible;
+  }
+  &.ng-pristine {
     .mdl-textfield__input {
-        border-color: $color-danger;
+      border-color: $color-input-valid;
     }
     label.mdl-textfield__label {
-        color: $color-danger;
-        &::after {
-            background-color: $color-danger;
-        }
+      color: $color-input-valid;
+      &::after {
+        background-color: $color-input-valid;
+      }
     }
     span.mdl-textfield__error {
-        visibility: visible;
+      visibility: hidden;
     }
-    &.ng-pristine {
-        .mdl-textfield__input {
-            border-color: $color-input-valid;
-        }
-        label.mdl-textfield__label {
-            color: $color-input-valid;
-            &::after {
-                background-color: $color-input-valid;
-            }
-        }
-        span.mdl-textfield__error {
-            visibility: hidden;
-        }
-    }
+  }
 }
 
 // .mdl-layout__drawer {
@@ -59,13 +59,15 @@
   display: inline-block;
 }
 
-
-.mdl-layout__drawer .mdl-navigation .mdl-navigation__link {
-  display: inherit;
-  padding: 10px;
+.mdl-layout__drawer {
+  border: none;
+  .mdl-navigation .mdl-navigation__link {
+    display: inherit;
+    padding: 10px;
+  }
 }
 
-.mdl-layout__drawer .mdl-navigation{
+.mdl-layout__drawer .mdl-navigation {
   padding-top: 0;
 }
 .mdl-list__item {
