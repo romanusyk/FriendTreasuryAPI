@@ -1,11 +1,16 @@
+@import "../../../../assets/mixins.scss";
 .payment-user {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    max-width: 150px;
+    width: 150px;
     cursor: pointer;
+    @include ellipsisText;
 
-    &__amount {
-        line-height: 3;
+    @include phonePortraitMode {
+      width:
+    }
+
+    &__username {
+      margin-left: 15px;
+      font-size: 16px;
+      line-height: 2.3;
     }
 }

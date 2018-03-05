@@ -26,6 +26,12 @@
       mask-image: url('./icons/user.svg');
     }
 
+    &__arrow {
+      mask-image: url('./icons/arrow.svg');
+      height: 33px;
+      width: 80px;
+    }
+
     &-r {
       transform:scaleX(-1);
     }

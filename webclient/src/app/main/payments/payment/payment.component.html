@@ -1,29 +1,3 @@
-<!-- <div class="payment" >
-    <div class="payment__info">
-        <div class="payment__info_main">
-            <div class="payment__header">
-                <p class="payment__description">{{payment.description}}</p>
-                <p </p>
-            </div>
-            <div class="payment__users">
-                <ft-payment-user (click)="onFromClick(payment.userFrom.id)" [username]="payment.userFrom.username" [amount]="payment.userFrom.debt" [amount]="payment.amount"></ft-payment-user>
-                <span class="payment__arrow">&#10230;</span>
-                <ft-payment-user (click)="onToClick(payment.userTo.id)" [username]="payment.userTo.username" [amount]="payment.userTo.debt" [amount]="0.00"></ft-payment-user>
-            </div>
-
-        </div>
-        <div class="payment__info_additional">
-            <div class="payment__edit-buttons" >
-              <button mdl-button mdl-button-type="raised" mdl-colored="accent"  ></button>
-              <button mdl-button mdl-button-type="raised" mdl-colored="accent" mdl-ripple ></button>
-            </div>
-            <div class="paymet__map" >
-                <button mdl-button mdl-button-type="raised" mdl-colored="accent" mdl-ripple ></button>
-            </div>
-            <div class="payment__date"></div>
-        </div>
-    </div>
-</div> -->
 <section class="section--center mdl-grid mdl-grid--no-spacing payment" mdl-shadow="2">
   <header class="mdl-cell mdl-cell--3-col-desktop mdl-cell--2-col-tablet mdl-cell--4-col-phone payment__description">
     <div class="payment__info">
@@ -39,7 +13,7 @@
       <div class="payment__users">
         <ft-payment-user (click)="onFromClick(payment.userFrom.id)" [username]="payment.userFrom.username" [amount]="payment.userFrom.debt"
           [amount]="payment.amount"></ft-payment-user>
-        <span class="payment__arrow">&#10230;</span>
+        <span class="payment__arrow ft-icon ft-icon__arrow"></span>
         <ft-payment-user (click)="onToClick(payment.userTo.id)" [username]="payment.userTo.username" [amount]="payment.userTo.debt"
           [amount]="0.00"></ft-payment-user>
       </div>
