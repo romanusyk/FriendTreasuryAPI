@@ -35,4 +35,12 @@ export class PaymentComponent {
   public onShowOnMapClick($event: Payment) {
     this.showOnMapClick.emit($event);
   }
+
+  public isAllowToShowMapButton(): boolean {
+    return Boolean(this.payment.latitude || this.payment.longitude);
+  }
+
+  public isAllowToShowActions() {
+    return this.isAllowToShowMapButton() || !this.isReadonly;
+  }
 }

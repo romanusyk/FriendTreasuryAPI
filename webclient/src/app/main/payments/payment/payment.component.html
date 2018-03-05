@@ -25,25 +25,29 @@
     </div>
 </div> -->
 <section class="section--center mdl-grid mdl-grid--no-spacing payment" mdl-shadow="2">
-    <header class="mdl-cell mdl-cell--3-col-desktop mdl-cell--2-col-tablet mdl-cell--4-col-phone payment__description">
-        <div>
-          <span>{{payment.timestamp | date}}</span>
-          <span [amountColor]="payment.amount">{{payment.amount}}</span>
-        </div>
-        {{payment.description}}
-    </header>
-    <div class="mdl-card mdl-cell mdl-cell--9-col-desktop mdl-cell--6-col-tablet mdl-cell--4-col-phone">
-      <div class="mdl-card__supporting-text">
-          <div class="payment__users">
-              <ft-payment-user (click)="onFromClick(payment.userFrom.id)" [username]="payment.userFrom.username" [amount]="payment.userFrom.debt" [amount]="payment.amount"></ft-payment-user>
-              <span class="payment__arrow">&#10230;</span>
-              <ft-payment-user (click)="onToClick(payment.userTo.id)" [username]="payment.userTo.username" [amount]="payment.userTo.debt" [amount]="0.00"></ft-payment-user>
-          </div>
-      </div>
-      <div class="mdl-card__actions">
-        <button mdl-button mdl-ripple (click)="onEditClick(payment)" *ngIf="!isReadonly">Edit</button>
-        <button mdl-button mdl-ripple (click)="onDeleteClick(payment.id)" *ngIf="!isReadonly">Delete</button>
-        <button mdl-button mdl-ripple (click)="onShowOnMapClick(payment)" *ngIf="payment.latitude || payment.longitude">Show on Map</button>
+  <header class="mdl-cell mdl-cell--3-col-desktop mdl-cell--2-col-tablet mdl-cell--4-col-phone payment__description">
+    <div class="payment__info">
+      <span class="payment__date">{{payment.timestamp | date}}</span>
+      <span class="payment__amount" [amountColor]="payment.amount">{{payment.amount}}</span>
+    </div>
+    <div class="payment__description-text">
+      {{payment.description}}
+    </div>
+  </header>
+  <div class="mdl-card mdl-cell mdl-cell--9-col-desktop mdl-cell--6-col-tablet mdl-cell--4-col-phone">
+    <div class="mdl-card__supporting-text">
+      <div class="payment__users">
+        <ft-payment-user (click)="onFromClick(payment.userFrom.id)" [username]="payment.userFrom.username" [amount]="payment.userFrom.debt"
+          [amount]="payment.amount"></ft-payment-user>
+        <span class="payment__arrow">&#10230;</span>
+        <ft-payment-user (click)="onToClick(payment.userTo.id)" [username]="payment.userTo.username" [amount]="payment.userTo.debt"
+          [amount]="0.00"></ft-payment-user>
       </div>
     </div>
-  </section>
+    <div class="mdl-card__actions" *ngIf="isAllowToShowActions()">
+      <button mdl-button mdl-ripple (click)="onEditClick(payment)" *ngIf="!isReadonly">Edit</button>
+      <button mdl-button mdl-ripple (click)="onDeleteClick(payment.id)" *ngIf="!isReadonly">Delete</button>
+      <button mdl-button mdl-ripple (click)="onShowOnMapClick(payment)" *ngIf="isAllowToShowMapButton()">Show on Map</button>
+    </div>
+  </div>
+</section>
