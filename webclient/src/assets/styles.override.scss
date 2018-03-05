@@ -73,3 +73,11 @@
 .mdl-list__item {
   padding-left: 5px;
 }
+
+.mdl-card{
+  min-height: 0;
+}
+
+.mdl-card__actions {
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+}

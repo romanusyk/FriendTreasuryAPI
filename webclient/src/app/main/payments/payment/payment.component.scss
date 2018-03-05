@@ -2,11 +2,18 @@
 @import '../../../../assets/variables.scss';
 
 .payment {
-    display: flex;
-    flex-direction: column;
-    margin: 10px;
-    background-color: white;
     padding: 10px;
+    background-color: white;
+    margin: 10px;
+
+    &__description {
+      text-transform: capitalize;
+      font-size: 14px;
+      font-weight: 600;
+      color: $color-payments-description-text;
+      background: rgb(254, 254, 254);
+      @include ellipsisText;
+    }
     &__info {
         display: flex;
         flex-direction: row;
@@ -47,13 +54,7 @@
         text-align: center;
     }
 
-    &__description {
-        text-transform: capitalize;
-        font-size: 14px;
-        font-weight: 600;
-        color: $color-payments-description-text;
-        @include ellipsisText;
-    }
+
 
     &__amount {
         font-size: 20px;

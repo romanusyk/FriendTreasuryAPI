@@ -1,9 +1,9 @@
-<div class="payment" mdl-shadow="2">
+<!-- <div class="payment" >
     <div class="payment__info">
         <div class="payment__info_main">
             <div class="payment__header">
                 <p class="payment__description">{{payment.description}}</p>
-                <p [amountColor]="payment.amount" class="payment__amount">{{payment.amount}}</p>
+                <p </p>
             </div>
             <div class="payment__users">
                 <ft-payment-user (click)="onFromClick(payment.userFrom.id)" [username]="payment.userFrom.username" [amount]="payment.userFrom.debt" [amount]="payment.amount"></ft-payment-user>
@@ -13,14 +13,37 @@
 
         </div>
         <div class="payment__info_additional">
-            <div class="payment__edit-buttons" *ngIf="!isReadonly">
-              <button mdl-button mdl-button-type="raised" mdl-colored="accent" mdl-ripple (click)="onEditClick(payment)">Edit</button>
-              <button mdl-button mdl-button-type="raised" mdl-colored="accent" mdl-ripple (click)="onDeleteClick(payment.id)">Delete</button>
+            <div class="payment__edit-buttons" >
+              <button mdl-button mdl-button-type="raised" mdl-colored="accent"  ></button>
+              <button mdl-button mdl-button-type="raised" mdl-colored="accent" mdl-ripple ></button>
             </div>
-            <div class="paymet__map" *ngIf="payment.latitude || payment.longitude">
-                <button mdl-button mdl-button-type="raised" mdl-colored="accent" mdl-ripple (click)="onShowOnMapClick(payment)">Show on Map</button>
+            <div class="paymet__map" >
+                <button mdl-button mdl-button-type="raised" mdl-colored="accent" mdl-ripple ></button>
             </div>
-            <div class="payment__date">{{payment.timestamp | date}}</div>
+            <div class="payment__date"></div>
         </div>
     </div>
-</div>
+</div> -->
+<section class="section--center mdl-grid mdl-grid--no-spacing payment" mdl-shadow="2">
+    <header class="mdl-cell mdl-cell--3-col-desktop mdl-cell--2-col-tablet mdl-cell--4-col-phone payment__description">
+        <div>
+          <span>{{payment.timestamp | date}}</span>
+          <span [amountColor]="payment.amount">{{payment.amount}}</span>
+        </div>
+        {{payment.description}}
+    </header>
+    <div class="mdl-card mdl-cell mdl-cell--9-col-desktop mdl-cell--6-col-tablet mdl-cell--4-col-phone">
+      <div class="mdl-card__supporting-text">
+          <div class="payment__users">
+              <ft-payment-user (click)="onFromClick(payment.userFrom.id)" [username]="payment.userFrom.username" [amount]="payment.userFrom.debt" [amount]="payment.amount"></ft-payment-user>
+              <span class="payment__arrow">&#10230;</span>
+              <ft-payment-user (click)="onToClick(payment.userTo.id)" [username]="payment.userTo.username" [amount]="payment.userTo.debt" [amount]="0.00"></ft-payment-user>
+          </div>
+      </div>
+      <div class="mdl-card__actions">
+        <button mdl-button mdl-ripple (click)="onEditClick(payment)" *ngIf="!isReadonly">Edit</button>
+        <button mdl-button mdl-ripple (click)="onDeleteClick(payment.id)" *ngIf="!isReadonly">Delete</button>
+        <button mdl-button mdl-ripple (click)="onShowOnMapClick(payment)" *ngIf="payment.latitude || payment.longitude">Show on Map</button>
+      </div>
+    </div>
+  </section>
