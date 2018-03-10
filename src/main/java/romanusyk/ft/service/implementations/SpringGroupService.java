@@ -45,7 +45,7 @@ public class SpringGroupService implements GroupService {
     }
 
     @Override
-    public Integer createGroup(Group group, User creator) {
+    public Group createGroup(Group group, User creator) {
 
         if (group.getId() != null) {
             throw new EntityNotValidException(
@@ -91,12 +91,12 @@ public class SpringGroupService implements GroupService {
             throw new RuntimeException(e.getMessage());
         }
 
-        return group.getId();
+        return group;
 
     }
 
     @Override
-    public void updateGroup(Group group) {
+    public Group updateGroup(Group group) {
 
         if (group.getId() == null) {
             throw new EntityNotValidException("Attempt to update group with null id");
@@ -119,6 +119,8 @@ public class SpringGroupService implements GroupService {
             logger.error(e.getLocalizedMessage());
             throw new RuntimeException(e.getMessage());
         }
+
+        return existingGroup;
 
     }
 

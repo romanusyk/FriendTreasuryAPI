@@ -60,7 +60,7 @@ public class GroupController {
     @RequestMapping(value = "", method = RequestMethod.POST)
     @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
-    public Integer createGroup(
+    public Group createGroup(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
             @RequestBody @Valid Group group) {
 
@@ -72,7 +72,8 @@ public class GroupController {
 
     @RequestMapping(value = "", method = RequestMethod.PATCH)
     @PreAuthorize("@securityService.hasRole('user')")
-    public void updateGroup(
+    @ResponseBody
+    public Group updateGroup(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
             @RequestBody @Valid Group group) {
         User u = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
@@ -81,7 +82,7 @@ public class GroupController {
             logger.debug(String.format("Access denied for user %d trying to modify group %s", u.getId(), group.toString()));
             throw new UserAuthenticationException("Group can be modified only by its participants.");
         }
-        groupService.updateGroup(group);
+        return groupService.updateGroup(group);
     }
 
     @RequestMapping(value = "/my", method = RequestMethod.GET)
