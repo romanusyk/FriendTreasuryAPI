@@ -70,6 +70,27 @@ public class PaymentController {
         return result.values().stream().flatMap(List::stream).collect(Collectors.toList());
     }
 
+    @RequestMapping(value = "/debts", method = RequestMethod.GET)
+    @PreAuthorize("@securityService.hasRole('user')")
+    @ResponseBody List<Debt> getPaymentSumForClientByAllGroups(
+            @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization
+    ) {
+        User client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        Map <Group, List<Debt> > result = paymentService.getPaymentSum(client.getId(), 0, client);
+        return result.values().stream().flatMap(List::stream).collect(Collectors.toList());
+    }
+
+    @RequestMapping(value = "/debts/{groupId}", method = RequestMethod.GET)
+    @PreAuthorize("@securityService.hasRole('user')")
+    @ResponseBody List<Debt> getPaymentSumForClientByGroup(
+            @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
+            @PathVariable("groupId") Integer groupId
+    ) {
+        User client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        Map <Group, List<Debt> > result = paymentService.getPaymentSum(client.getId(), groupId, client);
+        return result.values().stream().flatMap(List::stream).collect(Collectors.toList());
+    }
+
     @RequestMapping(value = "", method = RequestMethod.POST)
     @PreAuthorize("@securityService.hasRole('user')")
     public void makeGroupPayment(
