@@ -38,9 +38,9 @@ public class SpringGroupServiceTest {
             return group;
         });
 
-        Integer groupID = groupService.createGroup(group, null);
+        Group resultGroup = groupService.createGroup(group, null);
 
-        assertThat(groupID).isEqualTo(1);
+        assertThat(resultGroup.getId()).isEqualTo(1);
 
     }
 

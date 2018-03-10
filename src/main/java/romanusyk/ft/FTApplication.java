@@ -15,7 +15,7 @@ public class FTApplication {
         ConfigurableApplicationContext context = SpringApplication.run(FTApplication.class, args);
 
         // This line need be removed
-//         context.getBean(FromCodeDBInit.class).init();
+         context.getBean(FromCodeDBInit.class).init();
     }
 
 }
