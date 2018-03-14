@@ -71,7 +71,7 @@ public class GroupControllerTest {
         // TODO:
         Group group = new Group("testGroup", "");
 
-        when(groupService.createGroup(any(), eq(null))).thenReturn(1);
+        when(groupService.createGroup(any(), eq(null))).thenReturn(group);
 
         mvc.perform(post("/api/v1/groups/")
                 .header("Authorization", "dsdfsf")

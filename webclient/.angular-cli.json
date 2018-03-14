@@ -24,6 +24,7 @@
         "assets/styles.override.scss",
         "assets/icon-font.scss",
         "assets/mixins.scss",
+        "assets/icons.scss",
         "../node_modules/font-awesome/css/font-awesome.css",
         "../node_modules/ngx-toastr/toastr.css"
       ],
