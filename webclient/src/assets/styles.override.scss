@@ -1,4 +1,7 @@
-@import "./variables.scss";
+@import './variables.scss';
+@import '~@angular-mdl/core/scss/material-design-lite';
+@import '~@angular-mdl/datepicker/datepicker';
+
 .mdl-dialog__title {
     text-align: center;
     font-size: 1.4rem;
@@ -34,18 +37,6 @@
     }
 }
 
-.mdl-layout__drawer {
-    border: none;
-    box-shadow: none;
-    background-color: $color-groups-background;
-    &-button {
-        color: white;
-    }
-}
-
-.mdl-layout__header {
-    background-color: $color-header;;
-}
 
 .mdl-button--accent.mdl-button--accent {
     color: white;
@@ -53,4 +44,24 @@
         background-color: $color-payments-background;
         color: $color-header;
     }
+}
+
+.mdl-layout {
+  max-width: 1200px;
+  margin: 0 auto;
+
+  &__drawer {
+    border: none;
+    box-shadow: none;
+    background-color: $color-groups-background;
+
+    &-button {
+        color: white;
+        margin: 1px 12px;
+    }
+  }
+
+  &__header {
+    background-color: $color-header;
+  }
 }

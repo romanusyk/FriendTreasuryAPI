@@ -1,12 +1,12 @@
-import {HttpClient} from '@angular/common/http';
-import {ConfigManager} from './../../config/app.config';
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {MdlDialogService} from '@angular-mdl/core';
-import {CopyTextModalModule} from '../../shared/copy-text-modal/copy-text-modal.module';
-import {CUSTOM_MODAL_DATA} from '../injection.token';
-import {DEFAULT_DIALOG_CONFIG} from '../../shared/dialog.config';
-import {CopyTextModalComponent} from '../../shared/copy-text-modal/copy-text-modal.component';
+import { MdlDialogService } from '@angular-mdl/core';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+
+import { CopyTextModalComponent } from '../../shared/copy-text-modal/copy-text-modal.component';
+import { DEFAULT_DIALOG_CONFIG } from '../../shared/dialog.config';
+import { CUSTOM_MODAL_DATA } from '../injection.token';
+import { ConfigManager } from './../../config/app.config';
 
 @Injectable()
 export class InviteService {
@@ -42,8 +42,8 @@ export class InviteService {
       providers: [
         {provide: CUSTOM_MODAL_DATA, useValue: {text: this.generate(name), title: 'Copy invite link'}}
       ],
+      ...DEFAULT_DIALOG_CONFIG
     };
-    Object.assign(config, DEFAULT_DIALOG_CONFIG);
     this.dialogService.showCustomDialog(config).subscribe();
   }
 }

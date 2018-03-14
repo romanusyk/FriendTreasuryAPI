@@ -1,13 +1,13 @@
-import {Component, ViewChild, Input, EventEmitter, Output, OnInit, OnDestroy} from '@angular/core';
-import {Group} from '../../core/groups/group.model';
-import {GroupsService} from '../../core/groups/groups.service';
-import {Router, ActivatedRoute} from '@angular/router';
-import {SubscriptionList} from '../../shared/subscription.model';
-import {Preferences} from '../../core/preferences/preferences.model';
-import {BusyComponent} from '../../shared/busy/busy.component';
-import {AppPreferencesService} from '../../core/preferences/app-preferences.service';
-import {InviteService} from '../../core/invite/invite.service';
-import {PaymentFiltersDataService} from '../../core/payment-filters/payment-filters-data.service';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { Group } from '../../../core/groups/group.model';
+import { InviteService } from '../../../core/invite/invite.service';
+import { PaymentFiltersDataService } from '../../../core/payment-filters/payment-filters-data.service';
+import { AppPreferencesService } from '../../../core/preferences/app-preferences.service';
+import { Preferences } from '../../../core/preferences/preferences.model';
+import { BusyComponent } from '../../../shared/busy/busy.component';
+import { SubscriptionList } from '../../../shared/subscription.model';
 
 @Component({
   moduleId: module.id,
@@ -16,10 +16,10 @@ import {PaymentFiltersDataService} from '../../core/payment-filters/payment-filt
   styleUrls: ['group-list.component.scss']
 })
 export class GroupListComponent implements OnInit, OnDestroy {
-  public currentGroup: Group;
   @ViewChild(BusyComponent) public loading: BusyComponent;
-  private subscription: SubscriptionList;
+  public currentGroup: Group;
   public preferences: Preferences;
+  private subscription: SubscriptionList;
 
   constructor(private route: ActivatedRoute,
               private paymentFiltersService: PaymentFiltersDataService,
@@ -30,7 +30,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
     this.subscription = new SubscriptionList();
   }
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     if (this.preferences.currentUser.groupCount) {
       this.updateGroupsList();
     }
@@ -100,7 +100,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
       this.currentGroup = this.preferences.groups.find((group: Group) => group.id === numberGroupId);
       // If group id is'n in group list
       if (!this.currentGroup) {
-        this.router.navigate(['404']);
+        this.router.navigate(['/404']);
         return;
       }
       this.preferencesService.asign({
