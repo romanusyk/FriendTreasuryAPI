@@ -33,7 +33,8 @@ export class MapComponent implements OnInit {
     if (!this.isReadOnly) {
       this.mapsAPILoader.load().then(() => {
         this.geocoder = new google.maps.Geocoder();
-        this.setCurrentPosition();
+        setTimeout( this.setCurrentPosition.bind(this), 5000);
+       
         const autocomplete = new google.maps.places.Autocomplete(this.searchInput.inputEl.nativeElement);
         autocomplete.addListener('place_changed', () => {
           this.ngZone.run(() => {
@@ -77,6 +78,7 @@ export class MapComponent implements OnInit {
   private setCurrentPosition() {
     console.log(navigator)
     if (navigator && navigator.geolocation && navigator.geolocation.getCurrentPosition) {
+      console.log('in if');
       navigator.geolocation.getCurrentPosition((position) => {
         console.log('set current');
         this.geocodeCoordinates(position.coords.latitude, position.coords.longitude);
