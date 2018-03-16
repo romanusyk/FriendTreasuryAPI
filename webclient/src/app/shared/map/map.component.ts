@@ -33,7 +33,7 @@ export class MapComponent implements OnInit {
     if (!this.isReadOnly) {
       this.mapsAPILoader.load().then(() => {
         this.geocoder = new google.maps.Geocoder();
-        setTimeout( this.setCurrentPosition.bind(this), 5000);
+        this.setCurrentPosition();
        
         const autocomplete = new google.maps.places.Autocomplete(this.searchInput.inputEl.nativeElement);
         autocomplete.addListener('place_changed', () => {
@@ -76,14 +76,11 @@ export class MapComponent implements OnInit {
   }
 
   private setCurrentPosition() {
-    console.log(navigator)
     if (navigator && navigator.geolocation && navigator.geolocation.getCurrentPosition) {
-      console.log('in if');
       navigator.geolocation.getCurrentPosition((position) => {
-        console.log('set current');
         this.geocodeCoordinates(position.coords.latitude, position.coords.longitude);
         this.config.zoom = 12;
-      });
+      }, (err) => console.log(err));
     }
   }
 
@@ -97,7 +94,7 @@ export class MapComponent implements OnInit {
 
 
 export const DEFAULT_MAP_CONFIG = {
-  zoom: 6,
+  zoom: 8,
   latitude: 50.450724,
   longitude: 30.523094
 };
