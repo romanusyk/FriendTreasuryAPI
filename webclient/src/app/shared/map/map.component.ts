@@ -76,7 +76,7 @@ export class MapComponent implements OnInit {
 
   private setCurrentPosition() {
     console.log(navigator)
-    if ('geolocation' in navigator) {
+    if (navigator && navigator.geolocation && navigator.geolocation.getCurrentPosition) {
       navigator.geolocation.getCurrentPosition((position) => {
         console.log('set current');
         this.geocodeCoordinates(position.coords.latitude, position.coords.longitude);
