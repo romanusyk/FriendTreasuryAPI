@@ -75,8 +75,10 @@ export class MapComponent implements OnInit {
   }
 
   private setCurrentPosition() {
+    console.log(navigator)
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
+        console.log('set current');
         this.geocodeCoordinates(position.coords.latitude, position.coords.longitude);
         this.config.zoom = 12;
       });
@@ -93,7 +95,7 @@ export class MapComponent implements OnInit {
 
 
 export const DEFAULT_MAP_CONFIG = {
-  zoom: 4,
-  latitude: 39.8282,
-  longitude: -98.5795
+  zoom: 6,
+  latitude: 50.450724,
+  longitude: 30.523094
 };
