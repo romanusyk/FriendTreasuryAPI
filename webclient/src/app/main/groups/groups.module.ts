@@ -1,4 +1,4 @@
-import { MdlButtonModule, MdlDialogModule } from '@angular-mdl/core';
+import { MdlButtonModule, MdlDialogModule, MdlListModule, MdlLayoutTitleComponent, MdlLayoutModule } from '@angular-mdl/core';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -18,6 +18,8 @@ import { GroupModalsService } from './group-modals.service';
     BusyModule,
     MdlDialogModule.forRoot(),
     MdlButtonModule.forRoot(),
+    MdlListModule.forRoot(),
+    MdlLayoutModule.forRoot(),
     FtTextFieldModule,
     AvatarModule,
     EmptyMessageModule,
