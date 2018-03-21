@@ -1,14 +1,12 @@
-import {EventEmitter, Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
-import {MainPageComponent} from '../../main/main-page/main-page.component';
-import {Preferences} from './preferences.model';
-import {Observable} from 'rxjs/Observable';
-import {UsersService} from '../users/users.service';
-import {UserStatistics} from '../users/user.model';
-import {GroupsService} from '../groups/groups.service';
-import {Group} from '../groups/group.model';
-import {AuthDataService} from '../auth/auth-data.service';
-import {TokenService} from '../auth/token.service';
+import { MainPageComponent } from '../../main/main-page/main-page.component';
+import { Group } from '../groups/group.model';
+import { GroupsService } from '../groups/groups.service';
+import { UserStatistics } from '../users/user.model';
+import { UsersService } from '../users/users.service';
+import { Preferences } from './preferences.model';
 
 // TODO: remove after implementing ngrx (REDUX)
 @Injectable()
@@ -20,13 +18,13 @@ export class AppPreferencesService {
     this._preferences = new Preferences();
   }
 
-  public get loading() {
-    return this._mainComponent.loading;
-  }
-
   public updateGroupList() {
     return this.groupService.getGroups().map((groups: Group[]) => {
-      Object.assign(this.preferences, {groups});
+      Object.assign(this.preferences, { groups });
+      if (!!this.preferences.currentGroup) {
+        const newGroup = groups.find((group: Group) => group.id === this.preferences.currentGroup.id);
+        Object.assign(this.preferences.currentGroup, { newGroup });
+      }
       return groups;
     });
   }
@@ -53,11 +51,11 @@ export class AppPreferencesService {
   }
 
   public showCreatePaymentDialog() {
-    this._mainComponent.createPaymentModal.show();
+    this._mainComponent.showCreatePaymentModal();
   }
 
   public showCreateGroupDialog() {
-    this._mainComponent.manageGroup.show();
+    this._mainComponent.showCreateGroupModal();
   }
 
   public asign(preferences: Preferences) {

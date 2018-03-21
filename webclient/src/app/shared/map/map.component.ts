@@ -28,12 +28,13 @@ export class MapComponent implements OnInit {
 
   ngOnInit(): void {
     if (!this.config) {
-      this.config = {};
+      this.config = DEFAULT_MAP_CONFIG;
     }
     if (!this.isReadOnly) {
       this.mapsAPILoader.load().then(() => {
         this.geocoder = new google.maps.Geocoder();
         this.setCurrentPosition();
+       
         const autocomplete = new google.maps.places.Autocomplete(this.searchInput.inputEl.nativeElement);
         autocomplete.addListener('place_changed', () => {
           this.ngZone.run(() => {
@@ -75,11 +76,11 @@ export class MapComponent implements OnInit {
   }
 
   private setCurrentPosition() {
-    if ('geolocation' in navigator) {
+    if (navigator && navigator.geolocation && navigator.geolocation.getCurrentPosition) {
       navigator.geolocation.getCurrentPosition((position) => {
         this.geocodeCoordinates(position.coords.latitude, position.coords.longitude);
         this.config.zoom = 12;
-      });
+      }, (err) => console.log(err));
     }
   }
 
@@ -90,3 +91,10 @@ export class MapComponent implements OnInit {
     this.markerChanged.emit(this.config.marker);
   }
 }
+
+
+export const DEFAULT_MAP_CONFIG = {
+  zoom: 8,
+  latitude: 50.450724,
+  longitude: 30.523094
+};

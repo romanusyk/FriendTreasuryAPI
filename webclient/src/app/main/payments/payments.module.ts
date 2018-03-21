@@ -19,6 +19,7 @@ import { PaymentComponent } from './payment/payment.component';
 import { PaymentsListComponent } from './payments-list/payments-list.component';
 import { AmountColorDirective } from './amount-color-directive/amount-color.directive';
 import { MapModalComponent } from './map-modal/map-modal.component';
+import { PaymentModalsService } from './payment-modals.service';
 
 @NgModule({
   imports: [
@@ -54,7 +55,11 @@ import { MapModalComponent } from './map-modal/map-modal.component';
     MapModalComponent
   ],
   entryComponents: [
-    EditPaymentComponent
+    EditPaymentComponent,
+    CreatePaymentModalComponent
+  ],
+  providers: [
+    PaymentModalsService
   ]
 })
 export class PaymentsModule { }

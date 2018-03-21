@@ -3,7 +3,7 @@
   <div class="group-list__header">
     <div *ngIf="!!currentGroup">
       <div class="group-list__name">{{currentGroup.title}}</div>
-      <div class="group-list__count" *ngIf="true">{{!!currentGroup.usersCount ? currentGroup.usersCount : 0}} members</div>
+      <div class="group-list__count" *ngIf="!!currentGroup.usersCount">{{currentGroup.usersCount}} members</div>
     </div>
   </div>
 </mdl-layout-title>

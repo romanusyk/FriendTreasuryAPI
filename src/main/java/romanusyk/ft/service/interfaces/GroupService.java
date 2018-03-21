@@ -10,11 +10,11 @@ import java.util.List;
  */
 public interface GroupService {
 
-    Integer createGroup(Group group, User creator);
+    Group createGroup(Group group, User creator);
 
     Group getGroupByName(String groupTitle);
 
-    void updateGroup(Group group);
+    Group updateGroup(Group group);
 
     List<Group> getGroupsByUser(User user);
 
