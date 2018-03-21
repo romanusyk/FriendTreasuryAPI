@@ -8,7 +8,7 @@
       {{payment.description}}
     </div>
   </header>
-  <div class="mdl-card mdl-cell mdl-cell--9-col-desktop mdl-cell--6-col-tablet mdl-cell--4-col-phone">
+  <div class="mdl-card mdl-cell mdl-cell--8-col-desktop mdl-cell--7-col-tablet mdl-cell--3-col-phone">
     <div class="mdl-card__supporting-text">
       <div class="payment__users">
         <ft-payment-user (click)="onFromClick(payment.userFrom.id)" [username]="payment.userFrom.username" [amount]="payment.userFrom.debt"
@@ -18,10 +18,12 @@
           [amount]="0.00"></ft-payment-user>
       </div>
     </div>
+  </div>
+  <div class="mdl-cell mdl-cell--1-col-desktop mdl-cell--1-col-tablet mdl-cell--1-col-phone">
     <div class="mdl-card__actions" *ngIf="isAllowToShowActions()">
-      <button mdl-button mdl-ripple (click)="onEditClick(payment)" *ngIf="!isReadonly">Edit</button>
-      <button mdl-button mdl-ripple (click)="onDeleteClick(payment.id)" *ngIf="!isReadonly">Delete</button>
-      <button mdl-button mdl-ripple (click)="onShowOnMapClick(payment)" *ngIf="isAllowToShowMapButton()">Show on Map</button>
+      <button mdl-button mdl-ripple (click)="onEditClick(payment)" *ngIf="!isReadonly"><span class="ft-icon ft-icon__group"></span></button>
+      <button mdl-button mdl-ripple (click)="onDeleteClick(payment.id)" *ngIf="!isReadonly"><span class="ft-icon ft-icon__group"></span></button>
+      <button mdl-button mdl-ripple (click)="onShowOnMapClick(payment)" *ngIf="isAllowToShowMapButton()"><span class="ft-icon ft-icon__group"></span></button>
     </div>
   </div>
 </section>
