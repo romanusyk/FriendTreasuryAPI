@@ -2,7 +2,10 @@
   <header class="mdl-cell mdl-cell--3-col-desktop mdl-cell--2-col-tablet mdl-cell--4-col-phone payment__description">
     <div class="payment__info">
       <span class="payment__date">{{payment.timestamp | date}}</span>
-      <span class="payment__amount" [amountColor]="payment.amount">{{payment.amount}}</span>
+      <span class="mdl-chip mdl-chip--contact payment__amount">
+        <span class="mdl-chip__text" [amountColor]="payment.amount">{{payment.amount}}</span>
+    </span>
+      <!-- <span class="" ></span> -->
     </div>
     <div class="payment__description-text">
       {{payment.description}}
