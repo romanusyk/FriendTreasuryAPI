@@ -1,4 +1,4 @@
-@import "./variables.scss";
+@import './variables.scss';
 .ft {
 
   &-icon{
@@ -22,6 +22,18 @@
       mask-image: url('./icons/group.svg');
     }
 
+    &__delete {
+      mask-image: url('./icons/delete.svg');
+    }
+
+    &__edit {
+      mask-image: url('./icons/edit.svg');
+    }
+
+    &__marker {
+      mask-image: url('./icons/marker.svg');
+    }
+
     &__user {
       mask-image: url('./icons/user.svg');
     }
@@ -32,8 +44,12 @@
       width: 80px;
     }
 
-    &-r {
+    &--r {
       transform:scaleX(-1);
+    }
+
+    &--red {
+      background-color: $color-danger;
     }
   }
 }

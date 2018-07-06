@@ -13,7 +13,7 @@ export class PaymentFiltersComponent implements OnInit {
   public filterIcons = {
     sum: 'piggy-bank',
     group: 'group',
-    userfrom: 'atm-man ft-icon-r',
+    userfrom: 'atm-man ft-icon--r',
     userto: 'atm-man',
     user: 'user'
   };

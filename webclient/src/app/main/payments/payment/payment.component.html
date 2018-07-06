@@ -24,9 +24,9 @@
   </div>
   <div class="mdl-cell mdl-cell--1-col-desktop mdl-cell--1-col-tablet mdl-cell--1-col-phone">
     <div class="mdl-card__actions" *ngIf="isAllowToShowActions()">
-      <button mdl-button mdl-ripple (click)="onEditClick(payment)" *ngIf="!isReadonly"><span class="ft-icon ft-icon__group"></span></button>
-      <button mdl-button mdl-ripple (click)="onDeleteClick(payment.id)" *ngIf="!isReadonly"><span class="ft-icon ft-icon__group"></span></button>
-      <button mdl-button mdl-ripple (click)="onShowOnMapClick(payment)" *ngIf="isAllowToShowMapButton()"><span class="ft-icon ft-icon__group"></span></button>
+      <button mdl-button mdl-ripple (click)="onEditClick(payment)" *ngIf="!isReadonly"><span class="ft-icon ft-icon__edit"></span></button>
+      <button mdl-button mdl-ripple (click)="onDeleteClick(payment.id)" *ngIf="!isReadonly"><span class="ft-icon ft-icon__delete ft-icon--red"></span></button>
+      <button mdl-button mdl-ripple (click)="onShowOnMapClick(payment)" *ngIf="isAllowToShowMapButton()"><span class="ft-icon ft-icon__marker"></span></button>
     </div>
   </div>
 </section>
