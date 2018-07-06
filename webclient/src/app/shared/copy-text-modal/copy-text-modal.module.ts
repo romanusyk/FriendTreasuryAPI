@@ -8,8 +8,6 @@ import { CopyTextModalComponent } from './copy-text-modal.component';
 @NgModule({
   imports: [
     CommonModule,
-    MdlButtonModule.forRoot(),
-    MdlIconModule.forRoot(),
     ClipboardModule,
   ],
   declarations: [

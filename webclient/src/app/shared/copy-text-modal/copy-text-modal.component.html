@@ -9,7 +9,7 @@
       type="text"/>
   </div>
   <div class="mdl-dialog__actions">
-    <button mdl-button mdl-button-type="raised" mdl-colored="primary" [ngxClipboard]="text" (cbOnSuccess)="onCopySuccess($event)" (cbOnError)="onCopyError($event)" mdl-ripple><mdl-icon>assignment</mdl-icon> Copy</button>
-    <button mdl-button (click)="onCloseClick()" mdl-button-type="raised" mdl-colored="accent" mdl-ripple>Close</button>
+    <button [ngxClipboard]="text" (cbOnSuccess)="onCopySuccess($event)" (cbOnError)="onCopyError($event)" > Copy</button>
+    <button (click)="onCloseClick()" >Close</button>
   </div>
 </div>
