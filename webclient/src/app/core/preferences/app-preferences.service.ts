@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { MainPageComponent } from '../../main/main-page/main-page.component';
 import { Group } from '../groups/group.model';

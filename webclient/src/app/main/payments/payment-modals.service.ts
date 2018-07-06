@@ -1,12 +1,12 @@
 import { MdlDialogReference, MdlDialogService } from '@angular-mdl/core';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 
 import { Payment, EditPaymentModel } from '../../core/payments/payment.model';
 import { DEFAULT_DIALOG_CONFIG } from '../../shared/dialog.config';
 import { CUSTOM_MODAL_DATA } from './../../core/injection.token';
 import { CreatePaymentModalComponent } from './create-payment-modal/create-payment-modal.component';
 import { EditPaymentComponent } from './edit-payment/edit-payment.component';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class PaymentModalsService {

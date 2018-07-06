@@ -1,7 +1,7 @@
 import { MdlDialogService } from '@angular-mdl/core';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { CopyTextModalComponent } from '../../shared/copy-text-modal/copy-text-modal.component';
 import { DEFAULT_DIALOG_CONFIG } from '../../shared/dialog.config';

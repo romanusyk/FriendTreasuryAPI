@@ -1,4 +1,4 @@
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/internal/Subscription';
 
 export class SubscriptionList {
   private _subscription: Subscription;

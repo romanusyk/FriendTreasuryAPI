@@ -2,6 +2,11 @@
 @import '~@angular-mdl/core/scss/material-design-lite';
 @import '~@angular-mdl/datepicker/datepicker';
 
+@import "~uikit/src/scss/variables-theme.scss";
+@import "~uikit/src/scss/mixins-theme.scss";
+@import "~uikit/src/scss/uikit-theme.scss";
+
+
 .mdl-dialog__title {
     text-align: center;
     font-size: 1.4rem;

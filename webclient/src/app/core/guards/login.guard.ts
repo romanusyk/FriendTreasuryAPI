@@ -1,5 +1,5 @@
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { IAppConfig } from '../../config/iapp.config';
 import { Injectable } from '@angular/core';
 import { ConfigManager } from '../../config/app.config';

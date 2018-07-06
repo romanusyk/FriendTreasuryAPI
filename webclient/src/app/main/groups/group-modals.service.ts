@@ -1,6 +1,6 @@
 import { MdlDialogReference, MdlDialogService } from '@angular-mdl/core';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { EditGroupModel, Group } from '../../core/groups/group.model';
 import { CUSTOM_MODAL_DATA } from '../../core/injection.token';
