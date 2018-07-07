@@ -9,7 +9,7 @@
     </div>
   </div>
   <div class="empty-message__action" *ngIf="!!actionText">
-    <button (click)="action.emit($event)" mdl-button mdl-button-type="raised" mdl-colored="accent" mdl-ripple>
+    <button (click)="action.emit($event)" class="uk-button uk-button-default">
       {{actionText}}</button>
   </div>
 </div>

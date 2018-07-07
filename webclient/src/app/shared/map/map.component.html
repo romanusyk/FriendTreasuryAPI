@@ -1,5 +1,4 @@
-<ft-textfield *ngIf="!isReadOnly" type="text" #search label="Search for location">
-</ft-textfield>
+<input *ngIf="!isReadOnly" class="uk-input" type="text" placeholder="Search for location" #search/>
 <agm-map [latitude]="config.latitude" [longitude]="config.longitude" [scrollwheel]="true" [disableDoubleClickZoom]="true"
          (mapClick)="onMapClick($event)"
          [disableDefaultUI]="true" [zoomControl]="true" [draggable]="false" [zoom]="config.zoom">

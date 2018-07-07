@@ -1,5 +1,4 @@
 import { InviteModule } from './invite/invite.module';
-import { MdlModule, MdlDialogModule } from '@angular-mdl/core';
 import { RouterModule } from '@angular/router';
 import { AuthModule } from './auths/auth.module';
 import { SharedModule } from './shared/shared.module';
@@ -23,7 +22,6 @@ import { ToastNoAnimationModule, ToastrModule, ToastNoAnimation } from 'ngx-toas
     HttpClientModule,
     SharedModule,
     RouterModule,
-    MdlDialogModule.forRoot(),
     AuthModule,
     MainModule,
     AppRoutingModule,

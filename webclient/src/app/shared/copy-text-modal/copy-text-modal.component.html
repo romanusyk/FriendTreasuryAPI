@@ -13,3 +13,36 @@
     <button (click)="onCloseClick()" >Close</button>
   </div>
 </div>
+
+
+
+<button class="uk-modal-close-default" type="button" uk-close></button>
+<div class="uk-modal-header">
+  <h2 class="uk-modal-title">{{title}}</h2>
+</div>
+<div class="uk-modal-body">
+    <div class="uk-margin">
+        <div class="uk-inline">
+            <a
+              class="uk-form-icon uk-form-icon-flip"
+              uk-icon="icon: pencil"
+              [ngxClipboard]="text"
+              (cbOnSuccess)="onCopySuccess()"
+              (cbOnError)="onCopyError()"
+              title="Copy">
+            </a>
+            <input class="uk-input" type="text" #text [value]="text">
+        </div>
+    </div>
+  <input type="text" class="uk-input"  />
+</div>
+<div class="uk-modal-footer uk-text-right">
+    <button
+      class="uk-button uk-button-primary"
+      type="button"
+      [ngxClipboard]="text"
+      (cbOnSuccess)="onCopySuccess()"
+      (cbOnError)="onCopyError()">
+    Copy</button>
+    <button class="uk-button uk-button-default uk-modal-close" type="button" (click)="onCloseClick()">Close</button>
+</div>

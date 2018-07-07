@@ -7,7 +7,6 @@ import { EmptyMessageModule } from './empty-message/empty-message.module';
 import { Error404Module } from './error404/error404.module';
 import { Error500Module } from './error500/error500.module';
 import { MapModule } from './map/map.module';
-import { OverrideMDLModule } from './override-mdl/override-mdl.module';
 import { SearchPipeModule } from './search/search.module';
 
 @NgModule({
@@ -18,7 +17,6 @@ import { SearchPipeModule } from './search/search.module';
     BusyModule,
     EmptyMessageModule,
     MapModule,
-    OverrideMDLModule,
     SearchPipeModule
   ],
   exports: [
@@ -28,7 +26,6 @@ import { SearchPipeModule } from './search/search.module';
     BusyModule,
     EmptyMessageModule,
     MapModule,
-    OverrideMDLModule,
     SearchPipeModule
   ],
 })
