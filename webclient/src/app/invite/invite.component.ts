@@ -1,6 +1,6 @@
 import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { IAppConfig } from '../config/iapp.config';
 import { ConfigManager } from '../config/app.config';

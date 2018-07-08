@@ -1,7 +1,5 @@
-import { MdlDialogReference } from '@angular-mdl/core';
 import { Component, Inject, ViewChild } from '@angular/core';
 
-import { CUSTOM_MODAL_DATA } from '../../../core/injection.token';
 import { EditPaymentModel } from '../../../core/payments/payment.model';
 import { PaymentsDataService } from '../../../core/payments/payments-data.service';
 import { BusyComponent } from '../../../shared/busy/busy.component';
@@ -14,10 +12,9 @@ import { BusyComponent } from '../../../shared/busy/busy.component';
 
 export class EditPaymentComponent {
   @ViewChild('loading') loading: BusyComponent;
+  public payment: EditPaymentModel;
   constructor(
-    private paymentService: PaymentsDataService,
-    private dialog: MdlDialogReference,
-    @Inject(CUSTOM_MODAL_DATA) public payment: EditPaymentModel) {}
+    private paymentService: PaymentsDataService) {}
 
   public onEditClick() {
     this.loading.show();
@@ -34,6 +31,5 @@ export class EditPaymentComponent {
 
   public onCancelClick() {
     this.loading.hide();
-    this.dialog.hide(this.payment);
   }
 }

@@ -47,28 +47,28 @@ export class GroupListComponent implements OnInit, OnDestroy {
 
   public updateGroupsList() {
     this.loading.show();
-    const subscription = this.preferencesService.updateGroupList().subscribe(
-      (data) => {
-        const name = this.inviteService.get();
-        if (!!name) {
-          this.preferencesService.asign({
-            currentGroup: data.find(group => group.name === name)
-          });
-          this.inviteService.destroy();
-        } else {
-          if (!this.updateCurrentGroup()) {
-            this.onSelect(this.preferences.groups[0].id + '');
-          }
-        }
-        this.loading.hide();
-        subscription.unsubscribe();
-      },
-      err => {
-        console.log(err);
-        this.loading.hide();
-        subscription.unsubscribe();
-      }
-    );
+    // const subscription = this.preferencesService.updateGroupList().subscribe(
+    //   (data) => {
+    //     const name = this.inviteService.get();
+    //     if (!!name) {
+    //       this.preferencesService.asign({
+    //         currentGroup: data.find(group => group.name === name)
+    //       });
+    //       this.inviteService.destroy();
+    //     } else {
+    //       if (!this.updateCurrentGroup()) {
+    //         this.onSelect(this.preferences.groups[0].id + '');
+    //       }
+    //     }
+    //     this.loading.hide();
+    //     subscription.unsubscribe();
+    //   },
+    //   err => {
+    //     console.log(err);
+    //     this.loading.hide();
+    //     subscription.unsubscribe();
+    //   }
+    // );
   }
 
   public isAllowToShowEmptyMessage() {
@@ -76,8 +76,6 @@ export class GroupListComponent implements OnInit, OnDestroy {
   }
 
   public showCreateGroupModal() {
-    this.preferencesService.leftDrawer.closeDrawer();
-    this.preferencesService.showCreateGroupDialog();
   }
 
   private updateCurrentGroup(): boolean {
@@ -107,7 +105,6 @@ export class GroupListComponent implements OnInit, OnDestroy {
         currentGroup: this.currentGroup
       });
       this.paymentFiltersService.changeFilters({group: numberGroupId, page: 0});
-      this.preferencesService.leftDrawer.closeDrawer();
       return true;
     }
     return false;

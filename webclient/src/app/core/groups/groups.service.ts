@@ -1,16 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Group } from './group.model';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/forkJoin';
 
 import { PaymentsDataService } from '../payments/payments-data.service';
 import { Payment } from '../payments/payment.model';
 import { PaymentFilters } from '../payment-filters/payments-filters.model';
-import { filter } from 'rxjs/operators/filter';
 
 
 @Injectable()
@@ -35,6 +31,6 @@ export class GroupsService {
         filters.user = userId;
         filters.group = 0;
         return this.paymentsService.get(filters)
-            .map((payments: Payment[]) => payments.map((payment: Payment) => new Group(payment.group, payment.amount)));
+            // .map((payments: Payment[]) => payments.map((payment: Payment) => new Group(payment.group, payment.amount)));
     }
 }

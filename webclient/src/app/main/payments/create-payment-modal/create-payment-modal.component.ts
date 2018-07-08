@@ -1,5 +1,3 @@
-import { MdlDialogReference } from '@angular-mdl/core';
-import { MdlDatePickerService } from '@angular-mdl/datepicker';
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 
@@ -30,11 +28,9 @@ export class CreatePaymentModalComponent implements OnInit {
   private preferences: Preferences;
 
   constructor(
-    private datePicker: MdlDatePickerService,
     private preferencesService: AppPreferencesService,
     private usersService: UsersService,
     private datePipe: DatePipe,
-    private dialog: MdlDialogReference,
     private paymentsService: PaymentsDataService) {
     this.preferences = preferencesService.preferences;
   }
@@ -64,12 +60,10 @@ export class CreatePaymentModalComponent implements OnInit {
     this.paymentsService.create(this.payment)
       .subscribe(() => {
         this.loading.hide();
-        this.dialog.hide(true);
     });
   }
 
   public onCancelClick() {
-    this.dialog.hide(false);
   }
 
   public onLocationChanged($event: MarkerOptions) {
@@ -78,11 +72,7 @@ export class CreatePaymentModalComponent implements OnInit {
   }
 
   public pickADate($event: MouseEvent) {
-    this.datePicker
-      .selectDate(DateHelper.currentDate(), { openFrom: $event })
-      .subscribe((selectedDate: Date) => {
-        this.payment.date = this.transformDate(selectedDate);
-      });
+
   }
 
   public onCheckboxChange($event: boolean, id: number) {

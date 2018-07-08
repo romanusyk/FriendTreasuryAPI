@@ -15,7 +15,7 @@ export class AuthInterceptor implements HttpInterceptor {
     }
     public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         if (!this.tokenService.isAuthorized()) {
-            return next.handle(request).catch(this.handleError);
+            return next.handle(request)
         }
         const token = this.storage.get();
         const cloned = request.clone({
@@ -23,7 +23,7 @@ export class AuthInterceptor implements HttpInterceptor {
                 'X-Auth-Token' : token.token
             }
         });
-        return next.handle(cloned).catch(this.handleError);
+        return next.handle(cloned)
     }
 
     private handleError(err: HttpErrorResponse): Observable<HttpEvent<any>> {

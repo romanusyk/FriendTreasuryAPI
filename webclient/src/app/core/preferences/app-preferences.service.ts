@@ -19,23 +19,23 @@ export class AppPreferencesService {
   }
 
   public updateGroupList() {
-    return this.groupService.getGroups().map((groups: Group[]) => {
-      Object.assign(this.preferences, { groups });
-      if (!!this.preferences.currentGroup) {
-        const newGroup = groups.find((group: Group) => group.id === this.preferences.currentGroup.id);
-        Object.assign(this.preferences.currentGroup, { newGroup });
-      }
-      return groups;
-    });
+    // return this.groupService.getGroups().map((groups: Group[]) => {
+    //   Object.assign(this.preferences, { groups });
+    //   if (!!this.preferences.currentGroup) {
+    //     const newGroup = groups.find((group: Group) => group.id === this.preferences.currentGroup.id);
+    //     Object.assign(this.preferences.currentGroup, { newGroup });
+    //   }
+    //   return groups;
+    // });
   }
 
-  public get rightDrawer() {
-    return this._mainComponent.rightDrawer;
-  }
+  // public get rightDrawer() {
+  //   // return this._mainComponent.rightDrawer;
+  // }
 
-  public get leftDrawer() {
-    return this._mainComponent.layout;
-  }
+  // public get leftDrawer() {
+  //   // return this._mainComponent.layout;
+  // }
 
   public get mapModal() {
     return this._mainComponent.map;
@@ -47,7 +47,7 @@ export class AppPreferencesService {
 
   public refreshStatistics(): Observable<UserStatistics> {
     return this.userService.getUserStatistics()
-      .map((data: UserStatistics) => this._preferences.currentUser = data);
+      // .map((data: UserStatistics) => this._preferences.currentUser = data);
   }
 
   public showCreatePaymentDialog() {

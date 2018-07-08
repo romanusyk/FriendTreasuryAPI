@@ -1,18 +1,15 @@
-import { MdlDialogService } from '@angular-mdl/core';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { CopyTextModalComponent } from '../../shared/copy-text-modal/copy-text-modal.component';
-import { DEFAULT_DIALOG_CONFIG } from '../../shared/dialog.config';
-import { CUSTOM_MODAL_DATA } from '../injection.token';
 import { ConfigManager } from './../../config/app.config';
 
 @Injectable()
 export class InviteService {
   private name = 'invite_name';
 
-  constructor(private http: HttpClient, private dialogService: MdlDialogService) {
+  constructor(private http: HttpClient) {
   }
 
   public joinGroup(name: string): Observable<any> {
@@ -37,13 +34,13 @@ export class InviteService {
   }
 
   public showCopyLinkModal(name: string) {
-    const config = {
-      component: CopyTextModalComponent,
-      providers: [
-        {provide: CUSTOM_MODAL_DATA, useValue: {text: this.generate(name), title: 'Copy invite link'}}
-      ],
-      ...DEFAULT_DIALOG_CONFIG
-    };
-    this.dialogService.showCustomDialog(config).subscribe();
+    // const config = {
+    //   component: CopyTextModalComponent,
+    //   providers: [
+    //     {provide: CUSTOM_MODAL_DATA, useValue: {text: this.generate(name), title: 'Copy invite link'}}
+    //   ],
+    //   ...DEFAULT_DIALOG_CONFIG
+    // };
+    // this.dialogService.showCustomDialog(config).subscribe();
   }
 }

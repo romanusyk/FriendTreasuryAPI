@@ -5,7 +5,7 @@
   "scripts": {
     "build:prod:publish": "ng build -prod -dop -op /var/www/html -bh /",
     "build": "ng build",
-    "start": "ng serve -o --port=8080 --proxy-config proxy.config.json",
+    "start": "ng serve -o --port=8080 --proxy-config proxy.config.json --poll=1000",
     "test": "karma start ./karma.conf.js"
   },
   "private": true,
@@ -27,7 +27,6 @@
     "core-js": "^2.5.4",
     "font-awesome": "^4.7.0",
     "moment": "^2.20.1",
-    "ngx-avatar": "2.9.0",
     "ngx-clipboard": "9.1.3",
     "ngx-toastr": "^8.8.0",
     "rxjs": "^6.0.0",

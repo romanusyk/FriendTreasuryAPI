@@ -8,7 +8,6 @@ import {CopyTextModalModule} from '../shared/copy-text-modal/copy-text-modal.mod
     imports: [
         SharedModule,
         RouterModule,
-        MdlDialogModule,
         CopyTextModalModule
     ],
     declarations: [

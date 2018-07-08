@@ -11,7 +11,6 @@
       [isReadonly]="isPaymentReadonly(item)"
       [payment]="item">
     </ft-payment>
-    <mdl-progress *ngIf="isLoading" indeterminate="true"></mdl-progress>
 </virtual-scroll>
 
 <ft-empty-message icon="credit-card" *ngIf="isAllowToShowEmptyMessage()" [actionText]="getActionText()" button-icon="shopping_cart" (action)="onCreatePaymentCLick()">

@@ -1,5 +1,4 @@
-import { Observable } from 'rxjs/Rx';
-import { MdlLayoutComponent } from '@angular-mdl/core';
+import { Observable } from 'rxjs';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 
@@ -15,7 +14,6 @@ import { AppPreferencesService } from '../../core/preferences/app-preferences.se
 import { Preferences } from '../../core/preferences/preferences.model';
 import { User } from '../../core/users/user.model';
 import { BusyComponent } from '../../shared/busy/busy.component';
-import { RightDrawerComponent } from '../../shared/override-mdl/right-drawer/right-drawer.component';
 import { SubscriptionList } from '../../shared/subscription.model';
 import { MapModalComponent } from '../payments/map-modal/map-modal.component';
 import { PaymentModalsService } from './../payments/payment-modals.service';
@@ -33,8 +31,6 @@ export class MainPageComponent implements OnInit, OnDestroy {
   user: User = new User();
   // View Childs
   @ViewChild('map') map: MapModalComponent;
-  @ViewChild('rightDrawer') rightDrawer: RightDrawerComponent;
-  @ViewChild('layout') layout: MdlLayoutComponent;
 
   constructor(private paymentModalsService: PaymentModalsService,
     private groupsModalService: GroupModalsService,
@@ -88,36 +84,33 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   public showCreateGroupModal(): void {
-    this.layout.closeDrawer();
-    this.rightDrawer.hide();
-    const subscription =
-      this.groupsModalService.showManageGroupModal()
-        .mergeMap((isSuccess: boolean) => !!isSuccess ? this.preferencesService.updateGroupList() : Observable.empty())
-        .subscribe(() => subscription.unsubscribe());
+    // this.rightDrawer.hide();
+    // const subscription =
+    //   this.groupsModalService.showManageGroupModal()
+    //     .mergeMap((isSuccess: boolean) => !!isSuccess ? this.preferencesService.updateGroupList() : Observable.empty())
+    //     .subscribe(() => subscription.unsubscribe());
   }
 
-  public showEditGroupModal(): void {
-    this.layout.closeDrawer();
-    this.rightDrawer.hide();
-    const subscription =
-      this.groupsModalService.showManageGroupModal(this.preferences.currentGroup)
-        .mergeMap((isSuccess: boolean) => isSuccess ? this.preferencesService.updateGroupList() : Observable.empty())
-        .subscribe((group: EditGroupModel) => {
-          subscription.unsubscribe();
-        });
-  }
+  // public showEditGroupModal(): void {
+  //   this.rightDrawer.hide();
+  //   const subscription =
+  //     this.groupsModalService.showManageGroupModal(this.preferences.currentGroup)
+  //       .subscribe((group) => {
+  //         subscription.unsubscribe();
+  //       });
+  // }
 
   public showCreatePaymentModal(): void {
     const subscription = this.paymentModalsService
       .showCreatePaymentModal()
-      .mergeMap((isSuccess: boolean) =>
-        isSuccess ?
-          Observable.forkJoin(
-            this.preferencesService.refreshStatistics(),
-            this.preferencesService.updateGroupList())
-          // If cancel button was clicked
-          : Observable.throw(isSuccess)
-      )
+      // .mergeMap((isSuccess: boolean) =>
+      //   isSuccess ?
+      //     Observable.forkJoin(
+      //       this.preferencesService.refreshStatistics(),
+      //       this.preferencesService.updateGroupList())
+      //     // If cancel button was clicked
+      //     : Observable.throw(isSuccess)
+      // )
       .subscribe(
         () => {
           this.filtersService.setDefaultPage();

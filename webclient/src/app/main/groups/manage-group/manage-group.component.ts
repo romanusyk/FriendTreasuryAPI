@@ -1,12 +1,10 @@
-import { MdlDialogReference, MdlDialogService } from '@angular-mdl/core';
 import { Component, EventEmitter, Output, TemplateRef, ViewChild, Inject, OnInit } from '@angular/core';
 
 import { Group, EditGroupModel } from '../../../core/groups/group.model';
 import { GroupsService } from '../../../core/groups/groups.service';
 import { AppPreferencesService } from '../../../core/preferences/app-preferences.service';
-import { DEFAULT_DIALOG_CONFIG } from '../../../shared/dialog.config';
 import { BusyComponent } from '../../../shared/busy/busy.component';
-import { CUSTOM_MODAL_DATA } from '../../../core/injection.token';
+import { ModalRef } from '../../../core/modals/modal.model';
 
 
 @Component({
@@ -16,11 +14,11 @@ import { CUSTOM_MODAL_DATA } from '../../../core/injection.token';
 export class ManageGroupComponent implements OnInit {
   @ViewChild('loading') loading: BusyComponent;
   public error: string;
+  public group: Group;
   private isEdit: boolean;
   constructor(
     private groupService: GroupsService,
-    private dialog: MdlDialogReference,
-    @Inject(CUSTOM_MODAL_DATA) public group: Group) { }
+    private modalRef: ModalRef<ManageGroupComponent>) { }
 
   public ngOnInit(): void {
     if (!!this.group && !!this.group.id) {
@@ -36,7 +34,7 @@ export class ManageGroupComponent implements OnInit {
       .subscribe(
         (data: any) => {
           this.loading.hide();
-          this.dialog.hide(true);
+          this.modalRef.ref.hide();
           subscription.unsubscribe();
         },
         (err: any) => {
@@ -48,6 +46,6 @@ export class ManageGroupComponent implements OnInit {
   }
 
   public onCloseClick(): void {
-    this.dialog.hide(false);
+    this.modalRef.ref.hide(false);
   }
 }

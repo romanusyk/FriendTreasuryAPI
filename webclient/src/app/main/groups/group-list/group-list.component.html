@@ -8,7 +8,7 @@
   </div>
   <ul class="group-list">
     <li *ngFor="let group of preferences.groups" class="group" [ngClass]="{'group_selected': group === currentGroup}" (click)="onSelect(group.id)">
-      <ngx-avatar [name]="group.title"></ngx-avatar>
+      <!-- <ngx-avatar [name]="group.title"></ngx-avatar> -->
       <div class="group__name">
         <h5 class="group__title">{{group.title}}</h5>
         <span class="group__price" [ngClass]="{

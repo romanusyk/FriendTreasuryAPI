@@ -1,5 +1,3 @@
-import 'rxjs/add/operator/mergeMap';
-
 import { Component } from '@angular/core';
 import { ChangeEvent } from 'angular2-virtual-scroll';
 
@@ -59,10 +57,10 @@ export class PaymentsListComponent extends BasePaymentsListComponent {
 
   public onDeletePaymentClick(id: number) {
     const subscription = this.paymentModalsService.showDeletePaymentModal()
-      .mergeMap(() => {
-        this.loading.show();
-        return this.paymentService.delete(id);
-      })
+      // .mergeMap(() => {
+      //   this.loading.show();
+      //   return this.paymentService.delete(id);
+      // })
       .subscribe(() => {
         this.loading.hide();
         this.reloadData();
@@ -74,13 +72,13 @@ export class PaymentsListComponent extends BasePaymentsListComponent {
   }
 
   public onEditPaymentClick(payment: Payment) {
-    const subscription = this.paymentModalsService.showEditPaymentModal(payment)
-      .subscribe((isEdited: boolean) => {
-        if (isEdited) {
-          this.reloadData();
-        }
-        subscription.unsubscribe();
-      });
+    // const subscription = this.paymentModalsService.showEditPaymentModal(payment)
+    //   .subscribe((isEdited: boolean) => {
+    //     if (isEdited) {
+    //       this.reloadData();
+    //     }
+    //     subscription.unsubscribe();
+    //   });
   }
 
   public isPaymentReadonly(payment: Payment) {
@@ -116,6 +114,6 @@ export class PaymentsListComponent extends BasePaymentsListComponent {
   private reloadData() {
     this.filtersDataService.reload();
     this.subscription.add(this.preferencesService.refreshStatistics().subscribe());
-    this.subscription.add(this.preferencesService.updateGroupList().subscribe());
+    // this.subscription.add(this.preferencesService.updateGroupList().subscribe());
   }
 }
