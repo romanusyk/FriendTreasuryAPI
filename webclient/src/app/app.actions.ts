@@ -7,15 +7,6 @@ export enum ConfigActionTypes {
   ShowBusy = '[CONFIG] SHOW_BUSY',
   HideBusy = '[CONFIG] HIDE_BUSY'
 }
-
-export enum AuthActionTypes {
-  Success = '[AUTH] SUCCESS',
-  Failed = '[AUTH] FAILED',
-  Register = '[AUTH] REGISTER',
-  Login = '[AUTH] LOGIN',
-}
-
-
 export class ToogleSidebar implements Action {
   readonly type = ConfigActionTypes.ToogleSidebar
 }

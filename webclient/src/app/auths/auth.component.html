@@ -1,54 +1,54 @@
 <ft-busy #busy></ft-busy>
 <div class="center-items">
-    <form role="form" [formGroup]="authForm" (ngSubmit)="submitForm()" class="auth-form uk-form-stacked">
-        <h2 class="text-center">{{title}}</h2>
-        <hr>
-        <button type="button" class="uk-button uk-button-default uk-width-1-1" [routerLink]="['/login']" *ngIf="!isLogin()">Have an account?</button>
-        <button type="button" class="uk-button uk-button-default uk-width-1-1" [routerLink]="['/register']" *ngIf="isLogin()">Need an account?</button>
+  <form role="form" [formGroup]="authForm" (ngSubmit)="submitForm()" class="auth-form uk-form-stacked">
+    <h2 class="text-center">{{title}}</h2>
+    <hr>
+    <button type="button" class="uk-button uk-button-default uk-width-1-1" [routerLink]="['/login']" *ngIf="!isLogin()">Have an account?</button>
+    <button type="button" class="uk-button uk-button-default uk-width-1-1" [routerLink]="['/register']" *ngIf="isLogin()">Need an account?</button>
 
-        <div class="uk-margin">
-            <label class="uk-form-label" for="username">UserName</label>
-            <div class="uk-form-controls">
-                <input class="uk-input" formControlName="username" name="username" id="username" type="text" placeholder="UserName">
-                <span class="uk-text-danger">errors.get('username')</span>
-            </div>
-        </div>
-        <div class="uk-margin" *ngIf="!isLogin()">
-            <label class="uk-form-label" for="email">Email</label>
-            <div class="uk-form-controls">
-                <input class="uk-input" formControlName="email" name="email" id="email" type="email" placeholder="Email">
-                <span class="uk-text-danger">errors.get('email')</span>
-            </div>
-        </div>
-        <div class="uk-margin" *ngIf="!isLogin()">
-            <label class="uk-form-label" for="phone">Phone</label>
-            <div class="uk-form-controls">
-                <input class="uk-input" formControlName="phone" name="phone" id="phone" type="number" placeholder="Phone">
-                <span class="uk-text-danger">errors.get('phone')</span>
-            </div>
-        </div>
-		<div class="uk-margin">
-            <label class="uk-form-label" for="password">Password</label>
-            <div class="uk-form-controls">
-                <input class="uk-input" formControlName="password" name="password" id="password" type="password" placeholder="Password">
-                <span class="uk-text-danger">errors.get('password')</span>
-            </div>
-        </div>
-		<div class="uk-margin" *ngIf="!isLogin()">
-            <label class="uk-form-label" for="confirmPassword">Confirm Password</label>
-            <div class="uk-form-controls">
-                <input class="uk-input" formControlName="password" name="confirmPassword" id="confirmPassword" type="password" placeholder="Confirm Password">
-                <span class="uk-text-danger">errors.get('confirmPassword')</span>
-            </div>
-        </div>
-        <div class="form__errors">
-			<span class="uk-text-danger">{{errors.get('*')}}</span>
-        </div>
-        <div>
-            <button class="uk-button uk-button-primary uk-width-1-1" type="submit" [disabled]="(!errors.isEmpty() && !errors.get('*')) ">
-              <span uk-icon="check"> </span>
-                Submit
-            </button>
-        </div>
-    </form>
+    <div class="uk-margin">
+      <label class="uk-form-label" for="username">UserName</label>
+      <div class="uk-form-controls">
+        <input class="uk-input" formControlName="username" name="username" type="text" placeholder="UserName">
+        <ft-form-control-error-messages [control]="authForm.get('username')"></ft-form-control-error-messages>
+      </div>
+    </div>
+    <div class="uk-margin" *ngIf="!isLogin()">
+      <label class="uk-form-label" for="email">Email</label>
+      <div class="uk-form-controls">
+        <input class="uk-input" formControlName="email" name="email" type="email" placeholder="Email">
+        <ft-form-control-error-messages [control]="authForm.get('email')"></ft-form-control-error-messages>
+      </div>
+    </div>
+    <div class="uk-margin" *ngIf="!isLogin()">
+      <label class="uk-form-label" for="phone">Phone</label>
+      <div class="uk-form-controls">
+        <input class="uk-input" formControlName="phone" name="phone" type="number" placeholder="Phone">
+        <ft-form-control-error-messages [control]="authForm.get('phone')"></ft-form-control-error-messages>
+      </div>
+    </div>
+    <div class="uk-margin">
+      <label class="uk-form-label" for="password">Password</label>
+      <div class="uk-form-controls">
+        <input class="uk-input" formControlName="password" name="password" id="password" type="password" placeholder="Password">
+        <ft-form-control-error-messages [control]="authForm.get('password')"></ft-form-control-error-messages>
+      </div>
+    </div>
+    <div class="uk-margin" *ngIf="!isLogin()">
+      <label class="uk-form-label" for="confirmPassword">Confirm Password</label>
+      <div class="uk-form-controls">
+        <input class="uk-input" formControlName="password" name="confirmPassword" id="confirmPassword" type="password" placeholder="Confirm Password">
+        <ft-form-control-error-messages [control]="authForm.get('confirmPassword')"></ft-form-control-error-messages>
+      </div>
+    </div>
+    <div class="form__errors">
+      <span class="uk-text-danger"></span>
+    </div>
+    <div>
+      <button class="uk-button uk-button-primary uk-width-1-1" type="submit">
+        <span uk-icon="check"> </span>
+        Submit
+      </button>
+    </div>
+  </form>
 </div>

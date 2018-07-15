@@ -15,9 +15,11 @@
       "es2017",
       "dom"
     ],
+    "baseUrl": ".",
     "paths": {
-      "@core/*": ["app/core/*"],
-      "@shared/*": ["app/shared/*"]
+      "@core/*": ["src/app/core/*"],
+      "@shared/*": ["src/app/shared/*"],
+      "@app/*": ["src/app/*"]
     }
   }
 }

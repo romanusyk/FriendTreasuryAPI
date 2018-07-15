@@ -1,4 +1,4 @@
-export class ServerError {
+export class ServerErrorResponse {
   timestamp: number;
   status: number;
   error: string;

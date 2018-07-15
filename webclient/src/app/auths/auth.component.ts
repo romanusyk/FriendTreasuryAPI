@@ -1,41 +1,27 @@
 import { AuthService } from './auth.service';
-import { IAppConfig } from './../config/iapp.config';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ConfigManager } from '../config/app.config';
-import { CredentialsType } from '../core/auth/credentials.model';
-import { BusyComponent } from '../shared/busy/busy.component';
-import { ErrorsList } from '../core/erros/error.model';
-import { SubscriptionList } from '../shared/subscription.model';
-import { AuthDataService } from '../core/auth/auth-data.service';
+import { ActivatedRoute } from '@angular/router';
+import { BusyComponent } from '@shared/busy/busy.component';
 import { InviteService } from '../core/invite/invite.service';
-import { ErrorTransformingService } from '../core/erros/error-transforming.service';
+import { CredentialsType } from './models/credentials.model';
+import { AuthDataService } from './auth-data.service';
 @Component({
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss'],
-  providers: [AuthService]
+  providers: [AuthService, AuthDataService]
 })
 export class AuthComponent implements OnInit, OnDestroy {
   authType = CredentialsType.Login;
   title: string;
-  config: IAppConfig;
-  subscription: SubscriptionList;
-  errors = new ErrorsList();
   authForm: FormGroup;
 
   @ViewChild(BusyComponent) loading: BusyComponent;
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
-    private authDataService: AuthDataService,
-    private authService: AuthService,
-    private inviteService: InviteService,
-    private errorTransforming: ErrorTransformingService) {
+    private authService: AuthService) {
     this.authForm = this.authService.buildForm();
-    this.subscription = new SubscriptionList();
-    this.config = ConfigManager.config;
   }
   ngOnInit() {
     this.route.url.subscribe(data => {

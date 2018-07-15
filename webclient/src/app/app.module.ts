@@ -13,6 +13,10 @@ import { MainModule } from './main/main.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CoreModule } from './core/core.module';
 import { ToastNoAnimationModule, ToastrModule, ToastNoAnimation } from 'ngx-toastr';
+import { EffectsModule } from '@ngrx/effects';
+import { AuthEffects } from '@app/auths/state';
+import { StoreModule } from '@ngrx/store';
+import { reducers } from '@app/app.reducers';
 
 @NgModule({
   imports: [
@@ -33,7 +37,9 @@ import { ToastNoAnimationModule, ToastrModule, ToastNoAnimation } from 'ngx-toas
       closeButton: true,
       positionClass: 'toast-bottom-right',
       toastComponent: ToastNoAnimation,
-    })
+    }),
+    EffectsModule.forRoot([AuthEffects]),
+    StoreModule.forRoot(reducers, {}),
   ],
   declarations: [
     AppComponent

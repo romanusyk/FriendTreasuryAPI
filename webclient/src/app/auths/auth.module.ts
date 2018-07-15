@@ -5,6 +5,7 @@ import { SharedModule } from './../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { BusyModule } from '../shared/busy/busy.module';
+import { FormControlErrorMessagesModule } from '@shared/form-control-error-message/form-control-error-messages.module';
 
 @NgModule({
     imports: [
@@ -12,7 +13,8 @@ import { BusyModule } from '../shared/busy/busy.module';
         FormsModule,
         RouterModule,
         ReactiveFormsModule,
-        BusyModule
+        BusyModule,
+        FormControlErrorMessagesModule
     ],
     declarations: [
         AuthComponent,
