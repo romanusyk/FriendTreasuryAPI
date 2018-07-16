@@ -1,22 +1,22 @@
-import { InviteModule } from './invite/invite.module';
-import { RouterModule } from '@angular/router';
-import { AuthModule } from './auths/auth.module';
-import { SharedModule } from './shared/shared.module';
-import { NgModule, ErrorHandler } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule } from '@angular/router';
+import { reducers } from '@app/app.reducers';
+import { AuthEffects } from '@app/auths/state/auth.effect';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { ToastNoAnimation, ToastNoAnimationModule, ToastrModule } from 'ngx-toastr';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { MainModule } from './main/main.module';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthModule } from './auths/auth.module';
 import { CoreModule } from './core/core.module';
-import { ToastNoAnimationModule, ToastrModule, ToastNoAnimation } from 'ngx-toastr';
-import { EffectsModule } from '@ngrx/effects';
-import { AuthEffects } from '@app/auths/state';
-import { StoreModule } from '@ngrx/store';
-import { reducers } from '@app/app.reducers';
+import { InviteModule } from './invite/invite.module';
+import { MainModule } from './main/main.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   imports: [

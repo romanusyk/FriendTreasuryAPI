@@ -1,31 +1,42 @@
-import { AuthService } from './auth.service';
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { ActivatedRoute, UrlSegment } from '@angular/router';
+import { AppState } from '@app/app.state';
+import { AuthLogin, AuthRegister } from '@app/auths/state/auth.actions';
+import { Observable } from '@app/rxjs.import';
+import { Store, select } from '@ngrx/store';
 import { BusyComponent } from '@shared/busy/busy.component';
-import { InviteService } from '../core/invite/invite.service';
-import { CredentialsType } from './models/credentials.model';
+
 import { AuthDataService } from './auth-data.service';
+import { AuthService } from './auth.service';
+import { CredentialsType } from './models/credentials.model';
+import { selectErrorMessage } from './state/auth.state';
+
 @Component({
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss'],
-  providers: [AuthService, AuthDataService]
+  providers: [AuthDataService]
 })
 export class AuthComponent implements OnInit, OnDestroy {
-  authType = CredentialsType.Login;
-  title: string;
-  authForm: FormGroup;
-
+  private authType = CredentialsType.Login;
+  public title: string;
+  public authForm: FormGroup;
+  public errorMessage$: Observable<string>;
   @ViewChild(BusyComponent) loading: BusyComponent;
 
   constructor(
     private route: ActivatedRoute,
-    private authService: AuthService) {
+    private authService: AuthService,
+    private store: Store<AppState>
+  ) {
     this.authForm = this.authService.buildForm();
+    this.errorMessage$ = this.store.pipe(select(selectErrorMessage));
   }
   ngOnInit() {
-    this.route.url.subscribe(data => {
-      this.authType = this.authService.getCredentialsType(data[data.length - 1].path);
+    this.route.url.subscribe((data: UrlSegment[]) => {
+      this.authType = this.authService.getCredentialsType(
+        data[data.length - 1].path
+      );
       this.updateTitle();
       if (this.isLogin()) {
         this.authService.buildLoginForm(this.authForm);
@@ -33,14 +44,8 @@ export class AuthComponent implements OnInit, OnDestroy {
         this.authService.buildRegisterForm(this.authForm);
       }
     });
-    this.subscription.add(this.authForm.valueChanges
-      .subscribe(p => this.authService.onFormValueChanged(p, this.authForm, this.errors))
-    );
-    this.authForm.updateValueAndValidity();
   }
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
+  ngOnDestroy() {}
 
   public submitForm() {
     if (this.authForm.invalid) {
@@ -48,26 +53,14 @@ export class AuthComponent implements OnInit, OnDestroy {
       this.authForm.updateValueAndValidity();
       return;
     }
-    this.errors.clear();
     const credentials = this.authForm.value;
     this.loading.show();
-    this.subscription.add(this.authDataService
-      .attemptAuth(this.authType, credentials)
-      .subscribe(() => {
-        const name = this.inviteService.get();
-        if (!name) {
-          this.router.navigateByUrl(this.config.routes.main);
-        } else {
-          this.router.navigateByUrl(this.config.routes.invite + '/' + name);
-        }
-        this.loading.hide();
-      },
-        (err) => {
-          this.errors.push('*', this.errorTransforming.transformServerError(err));
-          this.loading.hide();
-        }));
+    if (this.isLogin()) {
+      this.store.dispatch(new AuthLogin(credentials));
+    } else {
+      this.store.dispatch(new AuthRegister(credentials));
+    }
   }
-
 
   public isLogin(): Boolean {
     return this.authType === CredentialsType.Login;

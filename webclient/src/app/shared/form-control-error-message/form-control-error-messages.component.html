@@ -1,5 +1,5 @@
 <ul class="form-control-error-messages">
-  <li *ngFor='let error of (control.errors | keys)'>
+  <li *ngFor="let error of (control.errors | keys)">
     <span class="uk-test-danger">{{control.errors[error]}}></span>
   </li>
 </ul>

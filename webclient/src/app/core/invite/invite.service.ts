@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { CopyTextModalComponent } from '../../shared/copy-text-modal/copy-text-modal.component';
-import { ConfigManager } from './../../config/app.config';
+import { AppConfig } from '@app/config/app.config';
 
 @Injectable()
 export class InviteService {
@@ -29,8 +29,7 @@ export class InviteService {
   }
 
   public generate(name: string): string {
-    const config = ConfigManager.config;
-    return config.frontEndUrl + '/' + config.routes.invite + '/' + name;
+    return AppConfig.frontEndUrl + '/' + AppConfig.routes.invite + '/' + name;
   }
 
   public showCopyLinkModal(name: string) {

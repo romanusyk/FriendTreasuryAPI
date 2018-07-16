@@ -1,5 +1,5 @@
-import { ActionReducerMap } from "@ngrx/store";
-import { AppState} from "./app.state";
+import { ActionReducerMap } from '@ngrx/store';
+import { AppState} from './app.state';
 import * as fromAuth from './auths/state/auth.reducer';
 
 

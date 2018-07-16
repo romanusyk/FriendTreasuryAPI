@@ -9,7 +9,7 @@ import { toPayload } from '@core/helpers';
 import { InviteService } from '@core/invite/invite.service';
 import { Actions, Effect } from '@ngrx/effects';
 
-import { AuthActionType, AuthActionTypes, AuthFailed, AuthSuccess } from '.';
+import { AuthActionType, AuthActionTypes, AuthFailed, AuthSuccess } from './auth.actions';
 import { AuthDataService } from '../auth-data.service';
 
 @Injectable()

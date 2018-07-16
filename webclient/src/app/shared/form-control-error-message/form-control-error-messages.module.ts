@@ -1,11 +1,14 @@
-import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common/src/common_module";
-import { FormControlErrorMessagesComponent } from "./form-control-error-messages.component";
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { KeysPipeModule } from '@shared/keys/keysPipe.module';
+
+import { FormControlErrorMessagesComponent } from './form-control-error-messages.component';
 
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    KeysPipeModule
   ],
   declarations: [
     FormControlErrorMessagesComponent

@@ -1,7 +1,7 @@
-import { Token } from './token.model';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { DateHelper } from '../date.helper';
+import { Token } from '@app/auths/models/token.model';
 
 
 @Injectable()

@@ -1,3 +1,4 @@
+import { AuthDataService } from './auth-data.service';
 import { AuthComponent } from './auth.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -21,6 +22,9 @@ import { FormControlErrorMessagesModule } from '@shared/form-control-error-messa
     ],
     exports: [
         AuthComponent,
+    ],
+    providers: [
+      AuthDataService
     ]
 })
 export class AuthModule {

@@ -1,8 +1,8 @@
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { ConfigManager } from '../../config/app.config';
+import { AppConfig } from '@app/config/app.config';
+import { Observable } from 'rxjs';
 
 
 @Injectable()
@@ -21,7 +21,7 @@ export class ServerErrorInterceptor implements HttpInterceptor {
         const { status } = err;
 
         if (status === 500) {
-            this.router.navigate([ConfigManager.config.routes.serverError], { replaceUrl: true });
+            this.router.navigate([AppConfig.routes.serverError], { replaceUrl: true });
         }
 
         return Observable.throw(err);

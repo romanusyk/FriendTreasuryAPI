@@ -9,5 +9,11 @@
   "exclude": [
     "test.ts",
     "**/*.spec.ts"
-  ]
+  ],
+  "baseUrl": "",
+  "paths": {
+    "@core/*": ["app/core/*"],
+    "@shared/*": ["app/shared/*"],
+    "@app/*": ["app/*"]
+  }
 }

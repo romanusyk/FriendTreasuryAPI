@@ -1,4 +1,5 @@
-import { Token } from "../models/token.model";
+import { AppState } from '@app/app.state';
+import { Token } from '../models/token.model';
 
 export interface State {
   isAuthenticated: boolean;
@@ -11,3 +12,7 @@ export const initialState: State = {
   token: null,
   errorMessage: null
 };
+
+
+export const selectErrorMessage = (state: AppState) => state.auth.errorMessage;
+export const selectIsAuthenticated = (state: AppState) => state.auth.isAuthenticated;
