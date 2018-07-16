@@ -8,4 +8,8 @@ import { AbstractControl } from '@angular/forms';
 })
 export class FormControlErrorMessagesComponent {
   @Input() control: AbstractControl;
+
+  public hasError(): boolean {
+    return this.control && this.control.dirty && this.control.invalid;
+  }
 }

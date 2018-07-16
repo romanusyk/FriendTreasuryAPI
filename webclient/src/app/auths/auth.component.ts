@@ -15,13 +15,14 @@ import { selectErrorMessage } from './state/auth.state';
 @Component({
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss'],
-  providers: [AuthDataService]
+  providers: [AuthService]
 })
 export class AuthComponent implements OnInit, OnDestroy {
   private authType = CredentialsType.Login;
   public title: string;
   public authForm: FormGroup;
   public errorMessage$: Observable<string>;
+
   @ViewChild(BusyComponent) loading: BusyComponent;
 
   constructor(
@@ -50,7 +51,6 @@ export class AuthComponent implements OnInit, OnDestroy {
   public submitForm() {
     if (this.authForm.invalid) {
       this.authService.markFormAsDirtyAndTouched(this.authForm);
-      this.authForm.updateValueAndValidity();
       return;
     }
     const credentials = this.authForm.value;
