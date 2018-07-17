@@ -1,6 +1,5 @@
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Injectable } from '@angular/core';
-import { ErrorsList } from '@core/erros/error.model';
 import { FtValidators } from '@core/validators/ft-validators';
 import { CredentialsType } from './models/credentials.model';
 

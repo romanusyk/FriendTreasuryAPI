@@ -17,6 +17,7 @@ import { CoreModule } from './core/core.module';
 import { InviteModule } from './invite/invite.module';
 import { MainModule } from './main/main.module';
 import { SharedModule } from './shared/shared.module';
+import { BusyEffects } from '@core/busy/busy.effects';
 
 @NgModule({
   imports: [
@@ -38,7 +39,7 @@ import { SharedModule } from './shared/shared.module';
       positionClass: 'toast-bottom-right',
       toastComponent: ToastNoAnimation,
     }),
-    EffectsModule.forRoot([AuthEffects]),
+    EffectsModule.forRoot([AuthEffects, BusyEffects]),
     StoreModule.forRoot(reducers, {}),
   ],
   declarations: [

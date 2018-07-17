@@ -1,4 +1,4 @@
-<ft-busy #busy></ft-busy>
+<ft-busy [show]="loading$ | async"></ft-busy>
 <div class="center-items">
   <form role="form" [formGroup]="authForm" (ngSubmit)="submitForm()" class="auth-form uk-form-stacked">
     <h2 class="text-center">{{title}}</h2>

@@ -1,5 +1,5 @@
-import { Action } from "@ngrx/store";
-import { Token } from "../models/token.model";
+import { Action } from '@ngrx/store';
+import { Token } from '../models/token.model';
 
 export enum AuthActionTypes {
   Success = '[AUTH] SUCCESS',
@@ -38,3 +38,10 @@ export class AuthLogout implements Action {
 }
 
 export type AuthActionType = AuthLogin | AuthLogout | AuthRegister | AuthFailed | AuthSuccess;
+
+export type AuthShowBusyType = AuthLogin | AuthRegister;
+
+export type AuthHideBusyType = AuthFailed | AuthSuccess;
+
+export const AuthShowBusyActionTypes: string[] = [AuthActionTypes.Login, AuthActionTypes.Register];
+export const AuthHideBusyActionTypes: string[] = [AuthActionTypes.Failed, AuthActionTypes.Success];

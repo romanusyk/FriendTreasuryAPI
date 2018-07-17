@@ -1,5 +1,5 @@
-import { initialState, State } from "./auth.state";
-import { AuthActionType, AuthActionTypes } from "./auth.actions";
+import { initialState, State } from './auth.state';
+import { AuthActionType, AuthActionTypes } from './auth.actions';
 
 export function authReducer(state: State = initialState, action: AuthActionType): State{
   switch(action.type){

@@ -1,3 +1,4 @@
+import { selectBusy } from './../core/busy/busy.state';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
@@ -22,8 +23,7 @@ export class AuthComponent implements OnInit, OnDestroy {
   public title: string;
   public authForm: FormGroup;
   public errorMessage$: Observable<string>;
-
-  @ViewChild(BusyComponent) loading: BusyComponent;
+  public loading$: Observable<boolean>;
 
   constructor(
     private route: ActivatedRoute,
@@ -32,6 +32,7 @@ export class AuthComponent implements OnInit, OnDestroy {
   ) {
     this.authForm = this.authService.buildForm();
     this.errorMessage$ = this.store.pipe(select(selectErrorMessage));
+    this.loading$ = this.store.pipe(select(selectBusy));
   }
   ngOnInit() {
     this.route.url.subscribe((data: UrlSegment[]) => {
@@ -54,7 +55,6 @@ export class AuthComponent implements OnInit, OnDestroy {
       return;
     }
     const credentials = this.authForm.value;
-    this.loading.show();
     if (this.isLogin()) {
       this.store.dispatch(new AuthLogin(credentials));
     } else {

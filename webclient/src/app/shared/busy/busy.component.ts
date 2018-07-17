@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
     selector: 'ft-busy',
@@ -7,17 +7,5 @@ import { Component } from '@angular/core';
 })
 
 export class BusyComponent {
-    private _state;
-
-    public get isHidden() {
-        return !this._state;
-    }
-
-    public show() {
-        this._state = true;
-    }
-
-    public hide() {
-        this._state = false;
-    }
+    @Input() show: boolean;
 }
