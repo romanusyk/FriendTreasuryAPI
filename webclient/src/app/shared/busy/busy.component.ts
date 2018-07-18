@@ -1,4 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
+
+import { AppState } from '@app/app.state';
+import { Observable } from '@app/rxjs.import';
+import { selectBusy } from '@shared/busy/store/busy.state';
 
 @Component({
     selector: 'ft-busy',
@@ -7,5 +12,9 @@ import { Component, Input } from '@angular/core';
 })
 
 export class BusyComponent {
-    @Input() show: boolean;
+    public show$: Observable<boolean>;
+
+    constructor(private store: Store<AppState>){
+      this.show$ = store.select(selectBusy);
+    }
 }

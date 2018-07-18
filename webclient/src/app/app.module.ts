@@ -17,7 +17,7 @@ import { CoreModule } from './core/core.module';
 import { InviteModule } from './invite/invite.module';
 import { MainModule } from './main/main.module';
 import { SharedModule } from './shared/shared.module';
-import { BusyEffects } from '@core/busy/busy.effects';
+import { BusyEffects } from '@shared/busy/store/busy.effects';
 
 @NgModule({
   imports: [

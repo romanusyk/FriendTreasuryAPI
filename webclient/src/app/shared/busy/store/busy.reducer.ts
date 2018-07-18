@@ -8,17 +8,15 @@ export function reducer(
   switch (action.type) {
     case BusyActionTypes.Show: {
       return {
-        ...state,
         show: true
       };
     }
     case BusyActionTypes.Hide: {
       return {
-        ...state,
         show: false
       };
     }
     default:
-      return Object.assign({}, state);
+      return state;
   }
 }
