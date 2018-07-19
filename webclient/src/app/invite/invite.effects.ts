@@ -1,33 +1,16 @@
-import {
-  InviteActionType,
-  InviteActionTypes,
-  InviteRequireLogin,
-  InviteSuccess,
-  InviteFailed
-} from './invite.actions';
-import { AppState } from '@app/app.state';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Credentials } from '@app/auths/models/credentials.model';
-import { Token } from '@app/auths/models/token.model';
+import { AppState } from '@app/app.state';
+import { selectIsAuthenticated } from '@app/auths/store/auth.state';
 import { AppConfig } from '@app/config/app.config';
-import {
-  catchError,
-  map,
-  Observable,
-  of,
-  switchMap,
-  tap,
-  withLatestFrom,
-  filter
-} from '@app/rxjs.import';
-import { TokenStorageService } from '@core/auth/token-storage.service';
+import { catchError, map, Observable, of, switchMap, tap, withLatestFrom } from '@app/rxjs.import';
 import { toPayload } from '@core/helpers';
 import { InviteService } from '@core/invite/invite.service';
 import { Actions, Effect } from '@ngrx/effects';
-
 import { Store } from '@ngrx/store';
-import { selectIsAuthenticated } from '@app/auths/state/auth.state';
+import { ToastrService } from 'ngx-toastr';
+
+import * as inviteActions from './invite.actions';
 
 @Injectable()
 export class InviteEffects {
@@ -35,53 +18,58 @@ export class InviteEffects {
     private actions$: Actions,
     private store: Store<AppState>,
     private router: Router,
-    private inviteService: InviteService
+    private inviteService: InviteService,
+    private toast: ToastrService
   ) {}
 
   @Effect()
-  public Join$: Observable<InviteActionType> = this.actions$
-    .ofType(InviteActionTypes.Join)
+  public Join$: Observable<inviteActions.InviteActionType> = this.actions$
+    .ofType(inviteActions.InviteActionTypes.Join)
     .pipe(
       map(toPayload),
       withLatestFrom(this.store.select(selectIsAuthenticated)),
       switchMap(([payload, isAuthonticated]) => {
-        this.inviteService.save(payload);
         if (!isAuthonticated) {
-          return of(new InviteRequireLogin());
+          return of(new inviteActions.InviteRequireLogin(payload));
         }
-        return this.inviteService.joinGroup(payload).pipe(
-          map(() => new InviteSuccess()),
-          catchError(() => of(new InviteFailed()))
-        );
+        this.inviteService.destroy();
+        return this.inviteService.joinGroup(payload)
+          .pipe(
+            map(() => new inviteActions.InviteSuccess()),
+            catchError(() => of(new inviteActions.InviteFailed()))
+          );
       })
     );
 
-  @Effect()
-  public Register$: Observable<AuthActionType> = this.actions$
-    .ofType(AuthActionTypes.Login)
+  @Effect({dispatch: false})
+  public InviteSuccess$: Observable<any> = this.actions$
+    .ofType(inviteActions.InviteActionTypes.Success)
     .pipe(
-      map(toPayload),
-      switchMap((payload: Credentials) =>
-        this.authService.login(payload).pipe(
-          map((token: Token) => new AuthSuccess(token)),
-          catchError((response: string) => of(new AuthFailed(response)))
-        )
-      )
+      tap(() => {
+        this.toast.success('Joined');
+        this.router.navigateByUrl(AppConfig.routes.main);
+      })
     );
 
-  @Effect({ dispatch: false })
-  public AuthSuccess$: Observable<any> = this.actions$
-    .ofType(AuthActionTypes.Success)
+  @Effect({dispatch: false})
+  public InviteFailed$: Observable<any> = this.actions$
+    .ofType(inviteActions.InviteActionTypes.Failed)
+    .pipe(
+      tap(() => {
+        this.toast.error('Join failed');
+        this.router.navigateByUrl(AppConfig.routes.main);
+      })
+    );
+
+  @Effect({dispatch: false})
+  public InviteRequireLogin$: Observable<any> = this.actions$
+    .ofType(inviteActions.InviteActionTypes.RequireLogin)
     .pipe(
       map(toPayload),
-      tap((token: Token) => {
-        this.tokenStorage.save(token);
-        const name = this.inviteService.get();
-        if (!name) {
-          this.router.navigateByUrl(AppConfig.routes.main);
-        } else {
-          this.router.navigateByUrl(AppConfig.routes.invite + '/' + name);
-        }
+      tap((payload: string) => {
+        this.inviteService.save(payload);
+        this.toast.info('Please login');
+        this.router.navigateByUrl(AppConfig.routes.login);
       })
     );
 }

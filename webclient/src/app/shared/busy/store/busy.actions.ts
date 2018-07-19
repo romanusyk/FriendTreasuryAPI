@@ -1,5 +1,16 @@
 import { Action } from '@ngrx/store';
-import { AuthShowBusyType, AuthHideBusyType, AuthShowBusyActionTypes, AuthHideBusyActionTypes } from '@app/auths/state/auth.actions';
+import {
+  AuthShowBusyType,
+  AuthHideBusyType,
+  AuthShowBusyActionTypes,
+  AuthHideBusyActionTypes
+} from '@app/auths/store/auth.actions';
+import {
+  InviteShowBusyType,
+  InviteHideBusyType,
+  InviteShowBusyActionTypes,
+  InviteHideBusyActionTypes
+} from '@app/invite/invite.actions';
 
 export enum BusyActionTypes {
   Show = '[BUSY] SHOW',
@@ -16,9 +27,15 @@ export class HideBusy implements Action {
 
 export type BusyActionType = ShowBusy | HideBusy;
 
-export type ShowBusyActionType = AuthShowBusyType;
+export type ShowBusyActionType = AuthShowBusyType | InviteShowBusyType;
 
-export type HideBusyActionType = AuthHideBusyType;
+export type HideBusyActionType = AuthHideBusyType | InviteHideBusyType;
 
-export const ShowBusyActionTypes: string[] = [...AuthShowBusyActionTypes];
-export const HideBusyActionTypes: string[] = [...AuthHideBusyActionTypes];
+export const ShowBusyActionTypes: string[] = [
+  ...AuthShowBusyActionTypes,
+  ...InviteShowBusyActionTypes
+];
+export const HideBusyActionTypes: string[] = [
+  ...AuthHideBusyActionTypes,
+  ...InviteHideBusyActionTypes
+];

@@ -18,18 +18,31 @@ export class InviteFailed implements Action {
 export class InviteJoin implements Action {
   public readonly type = InviteActionTypes.Join;
 
-  constructor(public payload: string){}
+  constructor(public payload: string) {}
 }
 
 export class InviteRequireLogin implements Action {
   public readonly type = InviteActionTypes.RequireLogin;
+
+  constructor(public payload: string) {}
 }
 
-export type InviteActionType = InviteSuccess | InviteFailed | InviteJoin | InviteRequireLogin;
+export type InviteActionType =
+  | InviteSuccess
+  | InviteFailed
+  | InviteJoin
+  | InviteRequireLogin;
 
 export type InviteShowBusyType = InviteJoin;
 
-export type InviteHideBusyType = InviteFailed | InviteSuccess | InviteRequireLogin;
+export type InviteHideBusyType =
+  | InviteFailed
+  | InviteSuccess
+  | InviteRequireLogin;
 
 export const InviteShowBusyActionTypes: string[] = [InviteActionTypes.Join];
-export const InviteHideBusyActionTypes: string[] = [InviteActionTypes.Failed, InviteActionTypes.Success, InviteActionTypes.RequireLogin];
+export const InviteHideBusyActionTypes: string[] = [
+  InviteActionTypes.Failed,
+  InviteActionTypes.Success,
+  InviteActionTypes.RequireLogin
+];

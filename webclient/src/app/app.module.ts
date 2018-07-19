@@ -5,10 +5,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { reducers } from '@app/app.reducers';
-import { AuthEffects } from '@app/auths/state/auth.effect';
+import { AuthEffects } from '@app/auths/store/auth.effect';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { ToastNoAnimation, ToastNoAnimationModule, ToastrModule } from 'ngx-toastr';
+import {
+  ToastNoAnimation,
+  ToastNoAnimationModule,
+  ToastrModule
+} from 'ngx-toastr';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,6 +22,7 @@ import { InviteModule } from './invite/invite.module';
 import { MainModule } from './main/main.module';
 import { SharedModule } from './shared/shared.module';
 import { BusyEffects } from '@shared/busy/store/busy.effects';
+import { InviteEffects } from '@app/invite/invite.effects';
 
 @NgModule({
   imports: [
@@ -37,16 +42,12 @@ import { BusyEffects } from '@shared/busy/store/busy.effects';
       newestOnTop: true,
       closeButton: true,
       positionClass: 'toast-bottom-right',
-      toastComponent: ToastNoAnimation,
+      toastComponent: ToastNoAnimation
     }),
-    EffectsModule.forRoot([AuthEffects, BusyEffects]),
-    StoreModule.forRoot(reducers, {}),
+    EffectsModule.forRoot([AuthEffects, BusyEffects, InviteEffects]),
+    StoreModule.forRoot(reducers, {})
   ],
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   bootstrap: [AppComponent]
 })
-
-export class AppModule {
-}
+export class AppModule {}
