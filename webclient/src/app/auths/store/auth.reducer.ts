@@ -17,6 +17,6 @@ export function authReducer(state: State = initialState, action: AuthActionType)
         errorMessage: action.payload
       }
     }
-    default: return Object.assign({}, state);
+    default: return state;
   }
 }

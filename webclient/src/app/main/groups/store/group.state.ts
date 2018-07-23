@@ -1,18 +1,18 @@
 import { AppState } from '@app/app.state';
-import { Token } from '../models/token.model';
 
 export interface State {
-  isAuthenticated: boolean;
-  token: Token | null;
-  errorMessage: string | null;
+  groups: any[],
+  selected: any,
+  error: string
 }
 
 export const initialState: State = {
-  isAuthenticated: false,
-  token: null,
-  errorMessage: null
+  groups: [],
+  selected: null,
+  error: ''
 };
 
 
-export const selectErrorMessage = (state: AppState) => state.auth.errorMessage;
-export const selectIsAuthenticated = (state: AppState) => state.auth.isAuthenticated;
+export const selectSelectedGroup = (state: AppState) => state.group.selected;
+export const selectGroups = (state: AppState) => state.group.error;
+export const selectErrorMessage = (state: AppState) => state.group.error;
