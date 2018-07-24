@@ -1,4 +1,4 @@
-import { Group } from './../../../core/groups/group.model';
+import { Group } from './../models/group.model';
 import { AppState } from '@app/app.state';
 
 export interface State {

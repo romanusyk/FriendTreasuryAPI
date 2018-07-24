@@ -64,10 +64,10 @@ export class ModalService {
   private attachConfig<T>(config: ModalConfig, componentRef: ComponentRef<T>): void {
     const inputs = config.inputs ? config.inputs : {};
     const outputs = config.outputs ? config.outputs : {};
-    for (var key in inputs) {
+    for (const key in inputs) {
       componentRef.instance[key] = inputs[key];
     }
-    for (var key in outputs) {
+    for (const key in outputs) {
       componentRef.instance[key] = outputs[key];
     }
   }

@@ -23,7 +23,7 @@ export class AuthInterceptor implements HttpInterceptor {
                 'X-Auth-Token' : token.token
             }
         });
-        return next.handle(cloned)
+        return next.handle(cloned);
     }
 
     private handleError(err: HttpErrorResponse): Observable<HttpEvent<any>> {
