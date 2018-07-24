@@ -1,27 +1,32 @@
 import { toPayload } from '@core/helpers';
-import { initialState, State } from './group.state';
-import { GroupActionType, GroupActionTypes, GroupSelect } from './group.actions';
 
-export function authReducer(state: State = initialState, action: GroupActionType): State{
-  switch(action.type){
+import { GroupActionType, GroupActionTypes } from './group.actions';
+import { initialState, State } from './group.state';
+
+export function reducer(
+  state: State = initialState,
+  action: GroupActionType
+): State {
+  switch (action.type) {
     case GroupActionTypes.FetchCompleted: {
       return {
         ...state,
         groups: toPayload(action)
-      }
+      };
     }
-    case(GroupActionTypes.Select): {
+    case GroupActionTypes.Select: {
       return {
         ...state,
         selected: toPayload(action)
-      }
+      };
     }
-    case(GroupActionTypes.Unselect): {
+    case GroupActionTypes.Unselect: {
       return {
         ...state,
         selected: null
-      }
+      };
     }
-    default: state;
+    default:
+      return state;
   }
 }

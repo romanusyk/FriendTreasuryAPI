@@ -1,4 +1,6 @@
-import { Action } from "@ngrx/store";
+import { Group } from './../../../core/groups/group.model';
+import { SelectGroupPayload } from './../models/select-group.payload';
+import { Action } from '@ngrx/store';
 
 export enum GroupActionTypes {
   Create = '[GROUP] CREATE',
@@ -7,21 +9,20 @@ export enum GroupActionTypes {
   FetchAll = '[GROUP] FETCH_ALL',
   Select = '[GROUP] SELECT',
   Unselect = '[GROUP] UNSELECT',
-  ShowManageModal = '[GROUP] SHOW_MANAGE_MODAL',
-  HideManageModal = '[GROUP] HIDE_MANAGE_MODAL',
-  FetchCompleted = '[GROUP] FETCH_COMPLETE'
+  FetchCompleted = '[GROUP] FETCH_COMPLETE',
+  Navigate = '[GROUP] NAVIGATE'
 }
 
 export class GroupCreate implements Action {
   public readonly type = GroupActionTypes.Create;
 
-  constructor(public payload: any){}
+  constructor(public payload: any) {}
 }
 
 export class GroupEdit implements Action {
   public readonly type = GroupActionTypes.Edit;
 
-  constructor(public payload: any){}
+  constructor(public payload: any) {}
 }
 
 export class GroupFetchAll implements Action {
@@ -31,33 +32,29 @@ export class GroupFetchAll implements Action {
 export class GroupSelect implements Action {
   public readonly type = GroupActionTypes.Select;
 
-  constructor(public payload: any){}
+  constructor(public payload: Group) {}
 }
 
 export class GroupUnselect implements Action {
   public readonly type = GroupActionTypes.Unselect;
 }
 
+export class GroupNavigate implements Action {
+  public readonly type = GroupActionTypes.Navigate;
+
+  constructor(public payload: SelectGroupPayload) {}
+}
+
 export class GroupCreateEditFailed implements Action {
   public readonly type = GroupActionTypes.CreateEditFailed;
 
-  constructor(public payload: any){}
-}
-
-export class GroupShowManageModal implements Action {
-  public readonly type = GroupActionTypes.ShowManageModal;
-
-  constructor(public payload: any){}
-}
-
-export class GroupHideManageModal implements Action {
-  public readonly type = GroupActionTypes.HideManageModal;
+  constructor(public payload: any) {}
 }
 
 export class GroupFetchCompleted implements Action {
   public readonly type = GroupActionTypes.FetchCompleted;
 
-  constructor(public payload: any){};
+  constructor(public payload: any) {}
 }
 
 export type GroupActionType = GroupSelect | GroupFetchCompleted | GroupUnselect;
@@ -65,5 +62,6 @@ export type GroupShowBusyActionType = GroupFetchAll;
 export type GroupHideBusyActionType = GroupFetchCompleted;
 
 export const GroupShowBusyActionTypes: string[] = [GroupActionTypes.FetchAll];
-export const GroupHideBusyActionTypes: string[] = [GroupActionTypes.FetchCompleted];
-
+export const GroupHideBusyActionTypes: string[] = [
+  GroupActionTypes.FetchCompleted
+];

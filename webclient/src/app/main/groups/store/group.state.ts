@@ -1,9 +1,10 @@
+import { Group } from './../../../core/groups/group.model';
 import { AppState } from '@app/app.state';
 
 export interface State {
-  groups: any[],
-  selected: any,
-  error: string
+  groups: Group[];
+  selected: Group;
+  error: string;
 }
 
 export const initialState: State = {
@@ -11,7 +12,6 @@ export const initialState: State = {
   selected: null,
   error: ''
 };
-
 
 export const selectSelectedGroup = (state: AppState) => state.group.selected;
 export const selectGroups = (state: AppState) => state.group.error;

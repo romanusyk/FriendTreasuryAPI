@@ -1,3 +1,5 @@
+import { GroupsHeeaderComponent } from './groups-header/groups-header.component';
+import { GroupComponent } from './group/group.component';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -18,7 +20,9 @@ import { GroupModalsService } from './group-modals.service';
    ],
   declarations: [
     GroupListComponent,
-    ManageGroupComponent
+    ManageGroupComponent,
+    GroupComponent,
+    GroupsHeeaderComponent
   ],
   exports: [
     GroupListComponent

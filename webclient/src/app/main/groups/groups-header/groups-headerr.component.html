@@ -1,0 +1,6 @@
+<div class="group-list__header">
+  <div *ngIf="!!group">
+    <div class="group-list__name">{{group.title}}</div>
+    <div class="group-list__count" *ngIf="!!currentGroup.usersCount">{{group.usersCount}} members</div>
+  </div>
+</div>

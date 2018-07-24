@@ -1,24 +1,8 @@
 <div class="host">
-  <ft-busy></ft-busy>
-  <div class="group-list__header">
-    <div *ngIf="!!currentGroup">
-      <div class="group-list__name">{{(currentGroup$ | async).title}}</div>
-      <div class="group-list__count" *ngIf="!!currentGroup.usersCount">{{(currentGroup$ | async).usersCount}} members</div>
-    </div>
-  </div>
+  <ft-groups-header [group]="selected$ | async"></ft-groups-header>
   <ul class="group-list">
-    <li *ngFor="let group of (groups$ | async)" class="group" [ngClass]="{'group_selected': group === currentGroup}" (click)="onSelect(group.id)">
-      <!-- <ngx-avatar [name]="group.title"></ngx-avatar> -->
-      <div class="group__name">
-        <h5 class="group__title">{{group.title}}</h5>
-        <span class="group__price" [ngClass]="{
-                'group__price_negative':group.amount < 0,
-                'group__price_positive':group.amount > 0,
-                'group__price_zero':!group.amount
-              }">
-          {{group.amount}}
-        </span>
-      </div>
+    <li *ngFor="let group of (groups$ | async)">
+      <ft-group [group]="group" [currentGroup]="selected$ | async"></ft-group>
     </li>
     <ft-empty-message *ngIf="(groups$ | async).length" icon="user" actionText="Create group" button-icon="group_add" (action)="showCreateGroupModal()">
       You don't have groups, please click button bellow to create one
