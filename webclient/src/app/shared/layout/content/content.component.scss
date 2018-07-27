@@ -1,0 +1,19 @@
+.content-padder {
+  margin-left: 0px;
+}
+.content-background {
+  min-height: calc(100% - 80px);
+  background-color: #F0F0F0;
+}
+
+@media (min-width: 960px) {
+  .content-padder {
+      margin-left: 240px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .content-padder {
+      margin-left: 300px;
+  }
+}

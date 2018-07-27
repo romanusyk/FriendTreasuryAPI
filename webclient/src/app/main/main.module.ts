@@ -9,6 +9,7 @@ import { GroupsModule } from './groups/groups.module';
 import { MainPageComponent } from './main-page/main-page.component';
 import { PaymentsModule } from './payments/payments.module';
 import { RightMenuComponent } from './right-menu/right-menu.component';
+import { LayoutModule } from '@shared/layout/layout.module';
 
 @NgModule({
     imports: [
@@ -19,7 +20,8 @@ import { RightMenuComponent } from './right-menu/right-menu.component';
         SharedModule,
         ClipboardModule,
         PaymentsModule,
-        GroupsModule
+        GroupsModule,
+        LayoutModule
     ],
     declarations: [
         MainPageComponent,

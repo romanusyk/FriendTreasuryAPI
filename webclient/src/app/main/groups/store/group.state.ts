@@ -14,5 +14,5 @@ export const initialState: State = {
 };
 
 export const selectSelectedGroup = (state: AppState) => state.group.selected;
-export const selectGroups = (state: AppState) => state.group.error;
+export const selectGroups = (state: AppState) => state.group.groups;
 export const selectErrorMessage = (state: AppState) => state.group.error;
