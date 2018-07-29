@@ -13,3 +13,4 @@ backup/*
 *.bak
 
 webclient/yarn.lock
+src/main/resources/static/*
