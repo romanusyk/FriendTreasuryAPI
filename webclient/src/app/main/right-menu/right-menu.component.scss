@@ -1,0 +1,42 @@
+@import '../../../assets/variables.scss';
+.right-menu {
+  background-color: $color-right-drawer-menu-background;
+  height: 100vh;
+  &__title {
+    padding: 5px;
+    background-color: $color-right-drawer-user-info-background;
+  }
+
+  &__avatar {
+    display: flex;
+    justify-content: center;
+  }
+  &__info {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 5px;
+  }
+
+  &__name {
+    color: $color-right-drawer-user-name-text;
+  }
+
+  &__debt {
+    color: $color-right-drawer-user-name-debt;
+    font-weight: 700;
+  }
+
+  &__navigation {
+    list-style: none;
+    font-size: 20px;
+    line-height: 3;
+    padding-left: 0;
+    &-item {
+      padding-left: 10px;
+      cursor: pointer;
+    }
+    &-item:hover{
+      background-color: $color-right-drawer-menu-item-hover;
+    }
+  }
+}

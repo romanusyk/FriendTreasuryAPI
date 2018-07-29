@@ -18,20 +18,14 @@ import java.util.List;
  */
 public interface PaymentRepository extends CrudRepository<Payment, Integer> {
 
-    @Query("FROM Payment p where p.userTo = :#{#user}")
-    List<Payment> findPaymentsToUser(@Param("user") User userTo);
-
-    @Query("FROM Payment p where p.userFrom = :#{#user}")
-    List<Payment> findPaymentsFromUser(@Param("user") User userFrom);
-
-    @Query("FROM Payment p where p.userFrom = :#{#userFrom} and p.userTo = :#{#userTo}")
-    List<Payment> findPaymentsFromUserToUser(@Param("userFrom") User userFrom, @Param("userTo") User userTo);
-
-    @Query("SELECT new Debt(P.userFrom, P.userTo, P.group, sum(P.amount)) FROM Payment P GROUP BY P.userFrom, P.userTo, P.group")
-    List<Debt> getDebts();
-
     Page<Payment> findAll(Specification<Payment> specification, Pageable pageable);
 
     List<Payment> findAll(Specification<Payment> specification);
+
+    @Query("select sum(p.amount) from Payment p where p.userFrom = ?1")
+    BigDecimal getUserOutcome(User user);
+
+    @Query("select sum(p.amount) from Payment p where p.userTo = ?1")
+    BigDecimal getUserIncome(User user);
 
 }

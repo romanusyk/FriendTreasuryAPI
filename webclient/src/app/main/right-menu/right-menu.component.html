@@ -1,0 +1,15 @@
+<div class="right-menu">
+  <div class="right-menu__title">
+    <div class="right-menu__avatar">
+      <ngx-avatar size="100"  [name]="user.username"></ngx-avatar>
+    </div>
+    <div class="right-menu__info">
+      <div class="right-menu__name">{{user.username}}</div>
+      <div class="right-menu__debt" [amountColor]="user.debt">{{user.debt}}</div>
+    </div>
+  </div>
+  <ul class="right-menu__navigation">
+    <li class="right-menu__navigation-item" (click)="createGroupClick.emit()"><i class="fa fa-users" aria-hidden="true"></i> Create Group</li>
+    <li class="right-menu__navigation-item" (click)="logoutClick.emit()"><i class="fa fa-close" aria-hidden="true"></i> Logout</li>
+  </ul>
+</div>

@@ -1,0 +1,36 @@
+<ft-busy #busy></ft-busy>
+<div class="mdl-grid center-items">
+    <form role="form" [formGroup]="authForm" (ngSubmit)="submitForm()" class="auth-form">
+        <h2 class="text-center">{{title}}</h2>
+        <hr>
+        <button type="button" class="full-width" mdl-button mdl-ripple [routerLink]="['/login']" *ngIf="!isLogin()">Have an account?</button>
+        <button type="button" class="full-width" mdl-button mdl-ripple [routerLink]="['/register']" *ngIf="isLogin()">Need an account?</button>
+
+        <div>
+            <ft-textfield label="UserName" floating-label autofocus type="text" formControlName="username" name="username" [errors]="errors.get('username')"></ft-textfield>
+        </div>
+        <div *ngIf="!isLogin()">
+            <ft-textfield label="Email" floating-label autofocus type="email" formControlName="email" name="email" [errors]="errors.get('email')"></ft-textfield>
+        </div>
+        <div *ngIf="!isLogin()">
+            <ft-textfield label="Phone" floating-label type="number" formControlName="phone" name="phone" [errors]="errors.get('phone')"></ft-textfield>
+        </div>
+        <div>
+            <ft-textfield label="Password" floating-label autofocus type="password" formControlName="password" name="password" [errors]="errors.get('password')"></ft-textfield>
+        </div>
+        <div *ngIf="!isLogin()">
+            <ft-textfield label="Confirm Password" floating-label autofocus type="password" formControlName="confirmPassword" name="confirmPassword" [errors]="errors.get('confirmPassword')"></ft-textfield>
+        </div>
+        <div class="form__errors">
+          {{errors.get('*')}}
+        </div>
+        <div>
+            <button class="full-width" mdl-button mdl-button-type="raised" type="submit" mdl-colored="primary" [disabled]="(!errors.isEmpty() && !errors.get('*')) "
+                mdl-ripple>
+                <mdl-icon>send</mdl-icon>
+                Submit
+            </button>
+        </div>
+
+    </form>
+</div>

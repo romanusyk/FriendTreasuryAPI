@@ -12,7 +12,6 @@
     ],
     "curly": true,
     "eofline": true,
-    "forin": true,
     "import-blacklist": [
       true,
       "rxjs"
@@ -57,7 +56,7 @@
     "no-empty-interface": true,
     "no-eval": true,
     "no-inferrable-types": [
-      true,
+      false,
       "ignore-params"
     ],
     "no-misused-new": true,
@@ -114,23 +113,12 @@
       "check-separator",
       "check-type"
     ],
-    "directive-selector": [
-      true,
-      "attribute",
-      "ft",
-      "camelCase"
-    ],
     "component-selector": [
       true,
       "element",
       "ft",
       "kebab-case"
     ],
-    "use-input-property-decorator": true,
-    "use-output-property-decorator": true,
-    "use-host-property-decorator": true,
-    "no-input-rename": true,
-    "no-output-rename": true,
     "use-life-cycle-interface": true,
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,

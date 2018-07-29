@@ -8,7 +8,7 @@ do
 	LOCAL=$(git rev-parse @)
 	BASE=$(git merge-base @ "$UPSTREAM")
 	REMOTE=$(git rev-parse "$UPSTREAM")
-	BRANCH="master"
+	BRANCH="dev"
 	INTERVAL=$((10*1))
 
 	if [ $LOCAL = $REMOTE ]; then

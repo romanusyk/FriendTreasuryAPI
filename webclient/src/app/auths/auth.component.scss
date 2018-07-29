@@ -1,0 +1,11 @@
+@import '../../assets/variables.scss';
+:host(){
+    height: 100vh;
+}
+.auth-form {
+    max-width: 300px;
+}
+
+.form__errors {
+    color: $color-danger;
+}

@@ -2,14 +2,18 @@ package romanusyk.ft.service.implementations;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Example;
 import romanusyk.ft.domain.Group;
 import romanusyk.ft.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import romanusyk.ft.exception.EntityAlreadyExistsException;
 import romanusyk.ft.exception.EntityNotValidException;
+import romanusyk.ft.repository.GroupExampleBuilder;
 import romanusyk.ft.repository.GroupRepository;
 import romanusyk.ft.repository.UserRepository;
 import romanusyk.ft.service.interfaces.GroupService;
+import romanusyk.ft.utils.RandomString;
 
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
@@ -28,7 +32,20 @@ public class SpringGroupService implements GroupService {
     UserRepository userRepository;
 
     @Override
-    public Integer createGroup(Group group, User creator) {
+    public void checkIfExists(Group group) {
+        GroupExampleBuilder builder = new GroupExampleBuilder();
+        Example<Group> example = builder.buildExistingGroupExample(group);
+        Iterable<Group> groups = groupRepository.findAll(example);
+        if (!groups.iterator().hasNext()) {
+            throw new EntityAlreadyExistsException(
+                    Group.class,
+                    new String[]{"name"}
+            );
+        }
+    }
+
+    @Override
+    public Group createGroup(Group group, User creator) {
 
         if (group.getId() != null) {
             throw new EntityNotValidException(
@@ -55,6 +72,18 @@ public class SpringGroupService implements GroupService {
             group.getUsers().add(creator);
         }
 
+        if (group.getName() != null) {
+            throw new EntityNotValidException(
+                    String.format(
+                            "Attempt to create group \"%s\" with non null name.",
+                            group.getName()
+                    )
+            );
+        } else {
+            RandomString randomString = new RandomString();
+            group.setName(randomString.nextString());
+        }
+
         try {
             groupRepository.save(group);
         } catch (Exception e) {
@@ -62,12 +91,12 @@ public class SpringGroupService implements GroupService {
             throw new RuntimeException(e.getMessage());
         }
 
-        return group.getId();
+        return group;
 
     }
 
     @Override
-    public void updateGroup(Group group) {
+    public Group updateGroup(Group group) {
 
         if (group.getId() == null) {
             throw new EntityNotValidException("Attempt to update group with null id");
@@ -80,6 +109,9 @@ public class SpringGroupService implements GroupService {
         }
 
         existingGroup.setTitle(group.getTitle());
+        existingGroup.setName(group.getName());
+
+        checkIfExists(existingGroup);
 
         try {
             groupRepository.save(existingGroup);
@@ -87,6 +119,8 @@ public class SpringGroupService implements GroupService {
             logger.error(e.getLocalizedMessage());
             throw new RuntimeException(e.getMessage());
         }
+
+        return existingGroup;
 
     }
 
@@ -102,8 +136,8 @@ public class SpringGroupService implements GroupService {
     }
 
     @Override
-    public Group getGroupByTitle(String groupTitle) {
-        return groupRepository.findByTitle(groupTitle);
+    public Group getGroupByName(String groupName) {
+        return groupRepository.findByName(groupName);
     }
 
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());

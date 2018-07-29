@@ -1,0 +1,29 @@
+@mixin smallPhonePortraitMode {
+  @media (max-width: 375px) {
+      @content;
+  }
+}
+
+@mixin phonePortraitMode {
+  @media (max-width: 414px) {
+      @content;
+  }
+}
+
+@mixin phoneLandscapeMode {
+  @media (orientation: landscape) and (max-width: 736px) {
+      @content;
+  }
+}
+
+@mixin tabletPortraitMode {
+  @media (orientation: portrait) and (min-width: 415px) {
+      @content;
+  }
+}
+
+@mixin ellipsisText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

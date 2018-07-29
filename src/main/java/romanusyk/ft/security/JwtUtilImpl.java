@@ -1,16 +1,16 @@
 package romanusyk.ft.security;
 
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import romanusyk.ft.domain.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.impl.crypto.MacProvider;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.invoke.MethodHandles;
-import java.security.Key;
 import java.util.Date;
 
 /**
@@ -19,7 +19,9 @@ import java.util.Date;
 @Component
 public class JwtUtilImpl implements JwtUtil {
 
-    private static Key secret = MacProvider.generateKey();
+    @Value("${ft.token.secret}")
+    private String secret;
+
     public static final long EXPIRE_TIME = 60 * 60 * 24;
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
@@ -36,10 +38,10 @@ public class JwtUtilImpl implements JwtUtil {
 
         try {
             return Jwts.parser()
-                    .setSigningKey(secret)
+                    .setSigningKey(secret.getBytes("UTF-8"))
                     .parseClaimsJws(token)
                     .getBody();
-        } catch (JwtException | ClassCastException e) {
+        } catch (JwtException | ClassCastException | UnsupportedEncodingException e) {
             logger.error(String.format(
                     "Failed to parse token %s. Error: %s",
                     token,
@@ -99,16 +101,24 @@ public class JwtUtilImpl implements JwtUtil {
         claims.put("username", u.getUsername());
         claims.put("expireTime", expireTime);
 
-        return Jwts.builder()
-                .setClaims(claims)
-                .signWith(SignatureAlgorithm.HS512, secret)
-                .compact();
+        try {
+            return Jwts.builder()
+                    .setClaims(claims)
+                    .signWith(SignatureAlgorithm.HS512, secret.getBytes("UTF-8"))
+                    .compact();
+        } catch (UnsupportedEncodingException e) {
+            logger.warn(e.getMessage());
+            return Jwts.builder()
+                    .setClaims(claims)
+                    .signWith(SignatureAlgorithm.HS512, secret.getBytes())
+                    .compact();
+        }
     }
 
     @Override
     public JwtAccessToken generateToken(User user) {
         long expireTime = new Date().getTime() / 1000 + EXPIRE_TIME;
         String token = generateToken(user, expireTime);
-        return new JwtAccessToken(token, expireTime);
+        return new JwtAccessToken(token, expireTime, user.getId());
     }
 }

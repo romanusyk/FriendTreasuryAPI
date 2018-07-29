@@ -2,7 +2,9 @@ package romanusyk.ft.service.interfaces;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.springframework.context.annotation.Scope;
 import romanusyk.ft.domain.Debt;
+import romanusyk.ft.domain.Group;
 import romanusyk.ft.domain.Payment;
 
 import java.math.BigDecimal;
@@ -14,12 +16,8 @@ import java.util.Map;
  */
 public interface Optimizer {
 
-    void sumPayments(List<Payment> paymentList, Integer groupID);
+    void optimize(Map<Group, List<Debt> > debts);
 
-    void optimizeDebts();
-
-    Map<Integer, Map<Integer, BigDecimal>> getDebtMap();
-
-    public List<Debt> getDebts();
+    void optimize(Map<Group, List<Debt> > debts, int maxIterations);
 
 }

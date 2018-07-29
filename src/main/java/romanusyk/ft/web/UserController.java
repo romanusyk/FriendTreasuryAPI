@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import romanusyk.ft.domain.Group;
 import romanusyk.ft.domain.User;
+import romanusyk.ft.domain.UserStatistics;
 import romanusyk.ft.exception.EntityAlreadyExistsException;
 import romanusyk.ft.exception.NotValidPasswordException;
 import romanusyk.ft.exception.EntityNotFoundException;
@@ -76,14 +77,19 @@ public class UserController {
         return user;
     }
 
+    @RequestMapping(value = "/statistics", method = RequestMethod.GET)
+    @ResponseBody
+    public UserStatistics getUserStatistics(
+            @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization
+    ) {
+        User client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        return userService.getUserStatistics(client);
+    }
+
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public JwtAccessToken addUser(@RequestBody @Valid User user) {
-
-        User existingUser = userService.getUserByUsername(user.getUsername());
-        if (existingUser != null) throw new EntityAlreadyExistsException(User.class, existingUser);
-
         user.setAuthorities("user");
         SpringUserService.encryptPassword(user);
         userService.createUser(user);
@@ -119,23 +125,23 @@ public class UserController {
         userService.updateUser(user);
     }
 
-    @RequestMapping(value = "group/{group}", method = RequestMethod.PUT)
+    @RequestMapping(value = "group/{groupname}", method = RequestMethod.PUT)
     @PreAuthorize("@securityService.hasRole('user')")
     public void joinGroup(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
-            @PathVariable("group") Integer groupID) {
+            @PathVariable("groupname") String groupName) {
 
         User user = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
-        userService.addUserToGroup(user.getId(), groupID);
+        userService.addUserToGroup(user.getId(), groupName);
     }
 
-    @RequestMapping(value = "group/{group}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "group/{groupname}", method = RequestMethod.DELETE)
     @PreAuthorize("@securityService.hasRole('user')")
     public void leaveGroup(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
-            @PathVariable("group") Integer groupID) {
+            @PathVariable("groupname") String groupName) {
         User user = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
-        userService.removeUserFromGroup(user.getId(), groupID);
+        userService.removeUserFromGroup(user.getId(), groupName);
     }
 
     @RequestMapping(value = "group/{group}", method = RequestMethod.GET)

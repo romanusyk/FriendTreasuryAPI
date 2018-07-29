@@ -1,15 +1,9 @@
 package romanusyk.ft.service.interfaces;
 
 import org.springframework.data.domain.Page;
-import romanusyk.ft.domain.Debt;
-import romanusyk.ft.domain.Payment;
-import romanusyk.ft.domain.PaymentDTO;
-import romanusyk.ft.domain.User;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.jpa.domain.Specification;
+import romanusyk.ft.domain.*;
 
-import javax.annotation.PostConstruct;
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -20,14 +14,16 @@ public interface PaymentService {
 
     void makeGroupPayment(PaymentDTO paymentDTO);
 
-    Map<Integer, BigDecimal> getUserPayments(Integer userID);
+    Payment updatePayment(Payment payment, User client);
 
-    List<Payment> getPaymentsBetweenUsers(Integer userFromID, Integer userToID);
+    void deletePayment(Integer paymentID, User client);
 
-    List<Debt> getDebts();
+    Specification<Payment> getFilter(Integer userFrom, Integer userTo, Integer groupId, User client);
 
-    Page<Payment> getPaymentsPage(int page, int size, Integer userFromID, Integer userToID, Integer groupID);
+    Map<Group, List<Debt> > getPaymentSum(Integer user, Integer groupID, User client);
 
-    List<Payment> getPayments(Integer userFromID, Integer userToID, Integer groupID);
+    Page<Payment> getPaymentsPage(int page, int size,
+                                  Integer userFromID, Integer userToID, Integer groupID, User client);
 
+    List<Payment> getPayments(Integer userFromID, Integer userToID, Integer groupID, User client);
 }

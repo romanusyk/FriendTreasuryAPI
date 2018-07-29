@@ -1,6 +1,9 @@
 package romanusyk.ft.domain;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Date;
@@ -86,9 +89,9 @@ public class Payment {
         return String.format(
                 "{id: %d, key: (%s: %s -> %s), amount: %s, time: %d}",
                 id,
-                group.getTitle(),
-                userFrom.getUsername(),
-                userTo.getUsername(),
+                group == null ? "null" : group.getTitle(),
+                userFrom == null ? "null" : userFrom.getUsername(),
+                userTo == null ? "null" : userTo.getUsername(),
                 df.format(amount),
                 timestamp
         );

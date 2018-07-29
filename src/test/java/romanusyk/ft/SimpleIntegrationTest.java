@@ -102,7 +102,8 @@ public class SimpleIntegrationTest {
         User yura = userRepository.findUserByUsername("Yura");
         User geka = userRepository.findUserByUsername("Geka");
 
-        Group group = groupRepository.findByTitle("guys");
+        // TODO:
+        Group group = new Group();//groupRepository.findByTitle("guys");
 
         String s = this.json(new User("123", "Roma", "111", ""));
 

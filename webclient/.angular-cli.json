@@ -1,7 +1,8 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "project": {
-    "name": "ft"
+    "name": "ft",
+    "ejected": false
   },
   "apps": [
     {
@@ -20,13 +21,14 @@
       "prefix": "ft",
       "styles": [
         "assets/styles.scss",
+        "assets/styles.override.scss",
         "assets/icon-font.scss",
+        "assets/mixins.scss",
+        "assets/icons.scss",
         "../node_modules/font-awesome/css/font-awesome.css",
-        "../node_modules/ng2-toastr/bundles/ng2-toastr.min.css",
-        "../node_modules/angular2-busy/build/style/busy.css"
+        "../node_modules/ngx-toastr/toastr.css"
       ],
-      "scripts": [
-      ],
+      "scripts": [],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
@@ -51,6 +53,10 @@
   },
   "defaults": {
     "styleExt": "scss",
-    "component": {}
+	"serve": {
+		"port": 8080
+	},
+    "component": {
+    }
   }
 }

@@ -15,6 +15,7 @@ spring:
 ft:
   token:
     header: "X-Auth-Token"
+    secret: gene444ka!
 
 ---
 
@@ -46,7 +47,24 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-    show-sql: false
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgresPlusDialect
+
+
+---
+
+
+spring:
+  profiles: dev-prod
+  datasource:
+    url: jdbc:postgresql://52.186.121.68:5432/ft
+    driver-class-name: org.postgresql.Driver
+    username: romm
+    password: romm
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
     database-platform: org.hibernate.dialect.PostgresPlusDialect
 
 

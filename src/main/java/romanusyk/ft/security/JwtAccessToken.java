@@ -13,11 +13,18 @@ public class JwtAccessToken {
 
     private long expireTime;
 
+    private Integer userId;
+
     public JwtAccessToken() {}
 
     public JwtAccessToken(String token, long expireTime) {
         this.token = token;
         this.expireTime = expireTime;
+    }
+
+    public JwtAccessToken(String token, long expireTime, Integer userId) {
+        this(token, expireTime);
+        this.userId = userId;
     }
 
     public String getToken() {
@@ -28,13 +35,21 @@ public class JwtAccessToken {
         this.token = token;
     }
 
-
     public long getExpireTime() {
         return expireTime;
     }
 
+
     public void setExpireTime(long expireTime) {
         this.expireTime = expireTime;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
 }

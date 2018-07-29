@@ -1,0 +1,18 @@
+:host(){
+    height: 100vh;
+}
+.mdl-layout__header{
+    height: 50px;
+    min-height: 50px;
+    &-row{
+        height: 50px;
+    }
+}
+.mdl-grid{
+    padding: 0;
+}
+.mdl-cell{
+    margin: 0;
+}
+
+

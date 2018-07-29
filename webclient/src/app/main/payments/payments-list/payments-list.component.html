@@ -1,0 +1,19 @@
+<ft-busy #loading></ft-busy>
+<virtual-scroll *ngIf="isAllowToShowPayments()" #scroll [items]="payments" (update)="scroll.viewPortItems = $event"
+    (end)="onListChange($event)">
+    <ft-payment
+      (deleteClick)="onDeletePaymentClick($event)"
+      (editClick)="onEditPaymentClick($event)"
+      (showOnMapClick)="onShowOnMapClick($event)"
+      (fromClick)="onFromClick($event)"
+      (toClick)="onToClick($event)"
+      *ngFor="let item of scroll.viewPortItems"
+      [isReadonly]="isPaymentReadonly(item)"
+      [payment]="item">
+    </ft-payment>
+    <mdl-progress *ngIf="isLoading" indeterminate="true"></mdl-progress>
+</virtual-scroll>
+
+<ft-empty-message icon="credit-card" *ngIf="isAllowToShowEmptyMessage()" [actionText]="getActionText()" button-icon="shopping_cart" (action)="onCreatePaymentCLick()">
+  {{getEmptyMessage()}}
+</ft-empty-message>

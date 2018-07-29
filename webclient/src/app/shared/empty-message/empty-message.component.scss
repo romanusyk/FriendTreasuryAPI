@@ -1,0 +1,31 @@
+@import '../../../assets/variables.scss';
+.empty-message {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  font-size: 25px;
+  justify-content: center;
+  color: $color-empty-message-text;
+  line-height: 1.3;
+  flex-direction: column;
+
+  &__info {
+    flex-direction: row;
+    display: flex;
+    justify-content: center;
+    padding-left: 10px;
+    margin-bottom: 10px;
+  }
+  &__icon {
+    align-self: center;
+  }
+
+  &__text {
+    align-self: center;
+    padding-left: 10px;
+  }
+
+  &__action {
+    align-self: center;
+  }
+}

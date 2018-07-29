@@ -1,0 +1,85 @@
+@import "../../../../assets/variables.scss";
+@import "../../../../assets/mixins.scss";
+
+:host{
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.host {
+  position: relative;
+}
+
+.group-list{
+  text-decoration: none;
+  padding: 0;
+  margin: 0;
+  max-height: calc(100vh - 50px);
+  height: calc(100vh - 50px);
+  overflow-y: auto;
+
+  &__header {
+    background-color: $color-header;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    padding-left: 15px;
+    color: $color-groups-text;
+  }
+
+  &__name {
+    font-weight: 600;
+    margin-top: 5px;
+  }
+
+  &__count {
+
+  }
+}
+.group{
+  display: flex;
+  padding: 15px 15px; transition: background .6s;
+  @include ellipsisText;
+
+  &:hover{
+      cursor: pointer;
+  }
+
+  &_selected{
+    background-color: $color-group-selected-background;
+  }
+
+  &__name{
+      display: flex;
+      flex-direction: column;
+      margin-left: 10px;
+      color: $color-groups-text;
+  }
+
+  &__title{
+      margin: 0 0 5px;
+  }
+
+  &__price{
+      font-weight: 500;
+
+      &_positive{
+          color: $color-positive-balance;
+          &:before {
+              content: '+';
+          }
+      }
+
+      &_negative{
+          color: $color-negative-balance
+      }
+
+      &_zero{
+          color: $color-zero-balance;
+          &:before {
+            content: '0';
+        }
+      }
+  }
+}

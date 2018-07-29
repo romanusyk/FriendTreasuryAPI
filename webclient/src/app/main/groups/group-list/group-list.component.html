@@ -1,0 +1,27 @@
+<div class="host">
+  <ft-busy #loading></ft-busy>
+  <div class="group-list__header">
+    <div *ngIf="!!currentGroup">
+      <div class="group-list__name">{{currentGroup.title}}</div>
+      <div class="group-list__count" *ngIf="!!currentGroup.usersCount">{{currentGroup.usersCount}} members</div>
+    </div>
+  </div>
+  <ul class="group-list">
+    <li *ngFor="let group of preferences.groups" class="group" [ngClass]="{'group_selected': group === currentGroup}" (click)="onSelect(group.id)">
+      <ngx-avatar [name]="group.title"></ngx-avatar>
+      <div class="group__name">
+        <h5 class="group__title">{{group.title}}</h5>
+        <span class="group__price" [ngClass]="{
+                'group__price_negative':group.amount < 0,
+                'group__price_positive':group.amount > 0,
+                'group__price_zero':!group.amount
+              }">
+          {{group.amount}}
+        </span>
+      </div>
+    </li>
+    <ft-empty-message *ngIf="isAllowToShowEmptyMessage()" icon="user" actionText="Create group" button-icon="group_add" (action)="showCreateGroupModal()">
+      You don't have groups, please click button bellow to create one
+    </ft-empty-message>
+  </ul>
+</div>

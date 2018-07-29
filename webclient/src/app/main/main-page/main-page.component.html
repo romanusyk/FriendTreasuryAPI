@@ -1,0 +1,52 @@
+<ft-busy #loading></ft-busy>
+<mdl-layout mdl-layout-fixed-header mdl-layout-fixed-drawer mdl-layout-header-seamed #layout="mdlLayout">
+  <mdl-layout-header>
+    <mdl-layout-header-row>
+
+      <mdl-layout-spacer></mdl-layout-spacer>
+
+      <ft-payment-filters *ngIf="isCurrentGroupSelected()">
+      </ft-payment-filters>
+      <mdl-layout-spacer></mdl-layout-spacer>
+      <button mdl-button mdl-ripple mdl-button-type="icon" *ngIf="isCurrentGroupSelected()" class="xs-hide"
+        (click)="showCreatePaymentModal()" title="create payment">
+        <mdl-icon>add</mdl-icon>
+      </button>
+      <button *ngIf="isCurrentGroupSelected()" mdl-button #extermalMenuBtn="mdlButton" (click)="groupExternalMenu.toggle($event, extermalMenuBtn)"
+        mdl-button-type="icon" mdl-ripple>
+        <mdl-icon>more_vert</mdl-icon>
+      </button>
+      <button mdl-button (click)="rightDrawer.show()" mdl-button-type="icon" mdl-ripple>
+        <mdl-icon>person</mdl-icon>
+      </button>
+    </mdl-layout-header-row>
+
+  </mdl-layout-header>
+  <mdl-layout-drawer #leftDrawer>
+    <ft-group-list></ft-group-list>
+  </mdl-layout-drawer>
+
+  <mdl-layout-content>
+    <div class="mdl-grid mdl-grid--no-spacing">
+      <div class="mdl-cell mdl-cell--12-col">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+
+  </mdl-layout-content>
+</mdl-layout>
+<ft-right-drawer #rightDrawer>
+  <ft-right-menu [user]="user" (createGroupClick)="showCreateGroupModal()" (logoutClick)="logout()"></ft-right-menu>
+</ft-right-drawer>
+<mdl-menu #groupExternalMenu="mdlMenu" mdl-menu-position="bottom-right">
+    <mdl-menu-item (click)="showEditGroupModal()">
+      Edit group
+    </mdl-menu-item>
+  <mdl-menu-item class="xs-hide-r" (click)="showCreatePaymentModal()">
+    Create payment
+  </mdl-menu-item>
+  <mdl-menu-item mdl-ripple ngxClipboard [cbContent]="generateInviteLink()" (cbOnSuccess)="onGenerationInviteLinkSuccess()" (cbOnError)="onGenerationInviteLinkError()">
+    Generate invite link
+  </mdl-menu-item>
+</mdl-menu>
+<ft-map-modal #map></ft-map-modal>

@@ -1,0 +1,173 @@
+<div class="create-payment">
+    <ft-busy #loading></ft-busy>
+    <h6 class="mdl-dialog__title">{{title}}</h6>
+    <div
+        class="create-payment__content"
+        *ngIf="state === 1"
+    >
+        <mdl-textfield
+            type="text"
+            label="input filter"
+            [(ngModel)]="search"
+        ></mdl-textfield>
+        <ul class="create-payment__users">
+            <li
+                class="create-payment__user"
+                [ngClass]="{'create-payment__user-selected' : isUserSelected(user.id)}"
+                *ngFor="let user of users | searchBy : search : 'username'"
+            >
+                <ft-checkbox
+                    [checked]="isUserSelected(user.id)"
+                    (change)="onCheckboxChange($event,user.id)"
+                >
+                    {{user.username}}
+                </ft-checkbox>
+            </li>
+        </ul>
+        <div class="mdl-dialog__actions">
+            <button
+                mdl-button
+                mdl-button-type="raised"
+                [disabled]="!payment.usersTo || payment.usersTo.length === 0"
+                mdl-colored="primary"
+                (click)="setState(2)"
+                mdl-ripple
+            >
+                Next
+            </button>
+            <button
+                mdl-button
+                (click)="onCancelClick()"
+                mdl-ripple
+            >
+                Cancel
+            </button>
+        </div>
+    </div>
+    <div
+        class="create-payment__content"
+        *ngIf="state === 2"
+    >
+        <ft-textfield
+            #amount
+            tabindex="1"
+            type="number"
+            min="0"
+            tep="0.01"
+            label="Enter amount"
+            required
+            pattern="[0-9]*(\.[0-9]+)?"
+            errors="Input is not a number"
+            floating-label
+            [(ngModel)]="payment.amount"
+        >
+        </ft-textfield>
+        <button
+            tabindex="2"
+            mdl-button
+            (click)="pickADate($event)"
+            mdl-ripple
+        >
+            <mdl-icon>event</mdl-icon>
+            <span>{{payment.date}}</span>
+        </button>
+        <ft-textfield
+            label="Description"
+            #description
+            required
+            errors="Please, provide description"
+            [(ngModel)]="payment.description"
+            rows="3"
+            maxrows="3"
+            tabindex="3"
+            floating-label
+        >
+        </ft-textfield>
+        <mdl-checkbox
+            [mdl-ripple]="true"
+            [(ngModel)]="payment.shallIPayForMyself"
+            *ngIf="!isOneUser"
+        >
+            Shall i pay for my self
+        </mdl-checkbox>
+        <mdl-checkbox
+            [mdl-ripple]="true"
+            [(ngModel)]="isAllowToShowMap"
+        >
+            Set location on map
+        </mdl-checkbox>
+
+        <div class="mdl-dialog__actions">
+            <button
+                mdl-button
+                (click)="onCancelClick()"
+                mdl-ripple
+            >
+                Cancel
+            </button>
+            <button
+                mdl-button
+                *ngIf="!isAllowToShowMap"
+                mdl-button-type="raised"
+                mdl-colored="primary"
+                (click)="onSaveClick()"
+                [disabled]="!amount.isValid || !description.isValid"
+                mdl-ripple
+            >
+                Save
+            </button>
+            <button
+                mdl-button
+                *ngIf="isAllowToShowMap"
+                (click)="setState(3)"
+                mdl-ripple
+                [disabled]="!amount.isValid || !description.isValid"
+            >
+                Next
+            </button>
+            <button
+                mdl-button
+                (click)="setState(1)"
+                *ngIf="!isOneUser"
+                mdl-ripple
+            >
+                Prev
+            </button>
+        </div>
+    </div>
+    <div
+        class="create-payment__content"
+        *ngIf="state === 3"
+    >
+        <ft-map
+            (markerChanged)="onLocationChanged($event)"
+            [isReadOnly]="false"
+        >
+        </ft-map>
+        <div class="mdl-dialog__actions">
+            <button
+                mdl-button
+                (click)="onCancelClick()"
+                mdl-ripple
+            >
+                Cancel
+            </button>
+            <button
+                mdl-button
+                mdl-button-type="raised"
+                mdl-colored="primary"
+                (click)="onSaveClick()"
+                mdl-ripple
+            >
+                Save
+            </button>
+            <button
+                mdl-button
+                (click)="setState(2)"
+                mdl-ripple
+            >
+                Prev
+            </button>
+        </div>
+    </div>
+</div>
