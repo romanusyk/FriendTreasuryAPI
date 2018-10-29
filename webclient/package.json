@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "build:prod:publish": "ng build -prod -dop -op /var/www/html -bh /",
+     "build:prod": "ng build -prod -bh /",
     "build": "ng build",
     "start": "ng serve -o --port=8080 --proxy-config proxy.config.json",
     "test": "karma start ./karma.conf.js"
