@@ -24,11 +24,11 @@ services:
     depends_on:
     - db
     
-  #frontend:
-  #  build: "./webclient"
-  #  ports:
-  #  - "8080:80"
-  #  depends_on:
-  #  - backend
+  frontend:
+    build: "./webclient"
+    ports:
+    - "8080:80"
+    depends_on:
+    - backend
     
 

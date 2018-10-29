@@ -7,4 +7,4 @@ RUN npm run build:prod
 
 FROM nginx:1.15
 COPY --from=build /app/dist/out/ /usr/share/nginx/html
-COPY --from=build /nginx-webserver.config /etc/nginx/conf.d/default.conf
+COPY --from=build /app/nginx-webserver.config /etc/nginx/conf.d/default.conf
