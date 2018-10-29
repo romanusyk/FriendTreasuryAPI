@@ -1,0 +1,26 @@
+# Use postgres/example user/password credentials
+version: '3.1'
+
+services:
+
+  db:
+    build: "db/"
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: iknowdocker
+    volumes:
+      - /home/yevhenii/database:/var/lib/postgresql/data
+    ports:
+     - "5432:5432"
+
+  backend:
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/ft
+      SPRING_DATASOURCE_USERNAME: romm
+      SPRING_DATASOURCE_PASSWORD: romm
+    build: "./"
+    ports:
+    - "9999:9999"
+    depends_on:
+    - db
+
