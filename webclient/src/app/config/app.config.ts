@@ -9,7 +9,7 @@ export const AppConfig: IAppConfig = {
     invite: 'invite'
   },
   endpoint: '/api',
-  frontEndUrl: 'http://40.121.89.244',
+  frontEndUrl: 'http://friendtreasury.club',
   apiKeys: {
     googleMaps: 'AIzaSyDso7YZsPTvjCyvu7od9OpNN5G5w4oY7WE'
   },
