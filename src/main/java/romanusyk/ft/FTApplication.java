@@ -3,12 +3,13 @@ package romanusyk.ft;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-import romanusyk.ft.service.implementations.FromCodeDBInit;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * Created by Roman Usyk on 03.09.17.
  */
 @SpringBootApplication
+@EnableScheduling
 public class FTApplication {
 
     public static void main(String[] args) {
@@ -16,6 +17,7 @@ public class FTApplication {
 
         // This line need be removed
 //         context.getBean(FromCodeDBInit.class).init();
+
     }
 
 }
