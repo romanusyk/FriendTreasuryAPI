@@ -67,20 +67,18 @@ public class SpringMailSender implements MailSender {
                         String.join("\n", badDebts) + "\n\n";
             }
             message += "If you want to unsubscribe from this mailing, you can donate us to make us able " +
-                    "hire first payed developer!\n" +
+                    "to hire first payed developer!\n" +
                     "Also we don't thank you for being with us so long because you cannot leave us " +
                     "and we will keep your personal data and send emails forever :)\n\n" +
                     "With delicious love, your Friend Treasury!";
-            if (user.getEmail().equals("romanysik@gmail.com")) {
-                String[] senders = new String[]{user.getEmail()};
-                SpringMailSender.sendFromGMail(
-                        this.mailUsername,
-                        this.mailPassword,
-                        senders,
-                        SpringMailSender.SUBJECT,
-                        message
-                );
-            }
+            String[] senders = new String[]{user.getEmail()};
+            SpringMailSender.sendFromGMail(
+                    this.mailUsername,
+                    this.mailPassword,
+                    senders,
+                    SpringMailSender.SUBJECT,
+                    message
+            );
         }
     }
 
