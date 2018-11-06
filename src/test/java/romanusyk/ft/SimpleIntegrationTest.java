@@ -118,12 +118,12 @@ public class SimpleIntegrationTest {
                     .getResponse()
                     .getContentAsByteArray()
         );
-
         PaymentDTO paymentDTO = new PaymentDTO(
                 roma.getId(),
                 new Integer[]{yura.getId(), geka.getId()},
                 group.getId(),
                 new BigDecimal(500),
+                1,
                 "Test",
                 new Date(),
                 10.,
