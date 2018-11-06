@@ -57,7 +57,7 @@ spring:
 spring:
   profiles: dev-prod
   datasource:
-    url: jdbc:postgresql://52.186.121.68:5432/ft
+    url: jdbc:postgresql://http://friendtreasury.club/ft
     driver-class-name: org.postgresql.Driver
     username: romm
     password: romm
