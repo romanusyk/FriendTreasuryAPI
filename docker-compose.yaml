@@ -30,5 +30,6 @@ services:
     - "80:80"
     depends_on:
     - backend
-    
 
+ports:
+  - "5432:5432"
