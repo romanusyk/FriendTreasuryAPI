@@ -33,7 +33,7 @@ public class SpringMailSender implements MailSender {
 
     private static String SUBJECT = "Lannisters always pay their debts";
 
-    @Scheduled(cron = "0 0 22 * * TUE")
+    @Scheduled(cron = "${mail.cron}")
     public void sendEmails() {
         List<User> allUsers = userService.getAllUsers();
         for (User user: allUsers) {
