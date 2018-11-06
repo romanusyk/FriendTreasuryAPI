@@ -45,7 +45,7 @@ public class SpringMailSender implements MailSender {
             for (Debt debt: debts) {
                 if (Objects.equals(debt.getUserFrom().getId(), user.getId())) {
                     goodDebts.add(debt.getUserTo().getUsername() + ": " + debt.getAmount() + " hryvnas");
-                } else {
+                } else if (Objects.equals(debt.getUserTo().getId(), user.getId())) {
                     badDebts.add(debt.getUserFrom().getUsername() + ": " + debt.getAmount() + " hryvnas");
                 }
             }
@@ -72,7 +72,7 @@ public class SpringMailSender implements MailSender {
                     "and we will keep your personal data and send emails forever :)\n\n" +
                     "With delicious love, your Friend Treasury!";
             if (user.getEmail().equals("romanysik@gmail.com")) {
-                String[] senders = new String[]{"romanysik@gmail.com"};
+                String[] senders = new String[]{user.getEmail()};
                 SpringMailSender.sendFromGMail(
                         this.mailUsername,
                         this.mailPassword,
@@ -121,7 +121,5 @@ public class SpringMailSender implements MailSender {
         }
         log.debug(String.format("Message to %s was successfully sent.", to[0]));
     }
-
-//    private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 }
