@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import romanusyk.ft.domain.Group;
 import romanusyk.ft.domain.GroupDTO;
 import romanusyk.ft.domain.User;
+import romanusyk.ft.domain.UserStatistics;
 import romanusyk.ft.exception.EntityNotFoundException;
 import romanusyk.ft.exception.UserAuthenticationException;
 import romanusyk.ft.security.JwtUtil;
@@ -22,7 +23,10 @@ import romanusyk.ft.service.interfaces.UserService;
 import javax.validation.Valid;
 import java.lang.invoke.MethodHandles;
 import java.text.ParseException;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -100,9 +104,15 @@ public class GroupController {
         ) {
         User user = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
         List<Group> groupList = groupService.getGroupsByUser(user);
-        List<GroupDTO> groupDTOList = groupList.stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
+        List<GroupDTO> groupDTOList = new LinkedList<>();
+        for (Group group: groupList) {
+            GroupDTO groupDTO = convertToDto(group);
+            Set<Group> groupSet = new HashSet<>();
+            groupSet.add(group);
+            UserStatistics userStatistics = userService.getUserStatistics(user, groupSet);
+            groupDTO.setUserDebt(userStatistics.getDebt());
+            groupDTOList.add(groupDTO);
+        }
         return groupDTOList;
     }
 
