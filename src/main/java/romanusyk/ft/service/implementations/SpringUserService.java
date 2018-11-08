@@ -120,6 +120,7 @@ public class SpringUserService implements UserService {
         existingUser.setEmail(user.getEmail());
         existingUser.setPhone(user.getPhone());
         existingUser.setPassword(user.getPassword());
+        existingUser.setCreditCard(user.getCreditCard());
 
         checkIfExists(existingUser);
 
