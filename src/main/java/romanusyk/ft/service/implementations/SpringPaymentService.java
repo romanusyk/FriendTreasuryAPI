@@ -121,9 +121,10 @@ public class SpringPaymentService implements PaymentService {
                         g.getId(),
                         debt.getUserFrom().getUsername(),
                         debt.getUserTo().getUsername(),
-                        debt.getAmount()
+                        debt.getAmount().floatValue()
                 ));
                 if (debt.getAmount().equals(BigDecimal.ZERO)) {
+                    logger.info("Ok");
                     continue;
                 }
                 debtMap.get(g).add(debt);
