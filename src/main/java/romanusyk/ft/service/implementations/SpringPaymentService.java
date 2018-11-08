@@ -117,11 +117,11 @@ public class SpringPaymentService implements PaymentService {
                 if (debt.getAmount().compareTo(BigDecimal.ZERO) < 0) {
                     debt = new Debt(debt.getUserTo(), debt.getUserFrom(), debt.getGroup(), debt.getAmount().abs());
                 }
-                logger.info(String.format("%d [%s -> %s]: %f",
+                logger.info(String.format("%d [%s -> %s]: %e",
                         g.getId(),
                         debt.getUserFrom().getUsername(),
                         debt.getUserTo().getUsername(),
-                        debt.getAmount().floatValue()
+                        debt.getAmount()
                 ));
                 if (debt.getAmount().equals(BigDecimal.ZERO)) {
                     logger.info("Ok");
