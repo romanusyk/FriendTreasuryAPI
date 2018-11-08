@@ -45,9 +45,9 @@ public class FromCodeDBInit implements DBInit {
         groupRepository.save(guys);
         groupRepository.save(universe);
 
-        User roma = new User("ro","ro@gmail.com", "380123456789", "111", "user");
-        User yura = new User("yu","yu@gmail.com", "380234567891", "111", "user");
-        User geka = new User("ge","ge@gmail.com", "380345678912", "111", "user");
+        User roma = new User("ro","ro@gmail.com", "380123456789", "111", "1234123412341234", "user");
+        User yura = new User("yu","yu@gmail.com", "380234567891", "111", "1234123412341234", "user");
+        User geka = new User("ge","ge@gmail.com", "380345678912", "111", "1234123412341234", "user");
 
         SpringUserService.encryptPassword(roma);
         SpringUserService.encryptPassword(yura);

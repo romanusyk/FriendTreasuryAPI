@@ -2,6 +2,7 @@ package romanusyk.ft.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.slf4j.Logger;
@@ -20,6 +21,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@Getter
+@Setter
 public class User {
 
     @Id
@@ -35,13 +38,17 @@ public class User {
     private String email;
 
     @Length(min = 8, max = 12)
-    @Column(length = 12, unique = true, nullable = false)
+    @Column(length = 12, unique = true)
     private String phone;
 
     @NotNull
     @Column(nullable = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
+
+    @Length(min = 16, max = 16)
+    @Column(length = 16)
+    private String creditCard;
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "users", cascade = CascadeType.MERGE)
@@ -101,75 +108,25 @@ public class User {
         this.authorities = authorities;
     }
 
-    public User(String username, String email, String phone, String password, String authorities) {
+    public User(String username, String email, String phone, String password, String creditCard, String authorities) {
         this();
         this.username = username;
         this.email = email;
         this.phone = phone;
         this.password = password;
+        this.creditCard = creditCard;
         this.authorities = authorities;
     }
 
-    public User(String username, String email, String phone, String password, String authorities, Set<Group> groups) {
-        this(username, email, phone, password, authorities);
+    public User(String username, String email, String phone, String password, String creditCard,
+                String authorities, Set<Group> groups) {
+        this(username, email, phone, password, creditCard, authorities);
         this.groups = groups;
-    }
-
-    public Integer getId() {
-        return id;
     }
 
     public User setId(Integer id) {
         this.id = id;
         return this;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Set<Group> getGroups() {
-        return groups;
-    }
-
-    public void setGroups(Set<Group> groups) {
-        this.groups = groups;
-    }
-
-    public String getAuthorities() {
-        return authorities;
-    }
-
-    public void setAuthorities(String authorities) {
-        this.authorities = authorities;
     }
 
 }
