@@ -186,10 +186,25 @@ public class SpringUserService implements UserService {
             userIncome = new BigDecimal(0);
         }
         return new UserStatistics(
-                u.getUsername(),
-                u.getId(),
-                userOutcome.subtract(userIncome),
-                u.getGroups().size()
+                u,
+                userOutcome.subtract(userIncome)
+        );
+    }
+
+    @Override
+    public UserStatistics getUserStatistics(User client, Set<Group> groupSet) {
+        User u = userRepository.findOne(client.getId());
+        BigDecimal userOutcome = paymentRepository.getUserOutcomeInGroups(u, groupSet);
+        if (userOutcome == null) {
+            userOutcome = new BigDecimal(0);
+        }
+        BigDecimal userIncome = paymentRepository.getUserIncomeInGroups(u, groupSet);
+        if (userIncome == null) {
+            userIncome = new BigDecimal(0);
+        }
+        return new UserStatistics(
+                u,
+                userOutcome.subtract(userIncome)
         );
     }
 

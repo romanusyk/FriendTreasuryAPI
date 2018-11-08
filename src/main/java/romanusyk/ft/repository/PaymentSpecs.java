@@ -13,18 +13,36 @@ import java.util.Set;
  */
 public class PaymentSpecs {
 
+    /**
+     * Add filter by userFromId unless userFromId is not null or 0
+     * @param userFromID
+     * @return filter by field
+     */
     public static Specification<Payment> whereUserFrom(Integer userFromID) {
         return (root, criteriaQuery, criteriaBuilder) -> userFromID == null || userFromID == 0 ?
                 criteriaBuilder.conjunction() :
                 criteriaBuilder.equal(root.get("userFrom").get("id"), userFromID);
     }
 
+    /**
+     * Add filter by userToID unless userToID is not null or 0
+     * @param userToID
+     * @return filter by field
+     */
     public static Specification<Payment> whereUserTo(Integer userToID) {
         return (root, criteriaQuery, criteriaBuilder) -> userToID == null || userToID == 0 ?
                 criteriaBuilder.conjunction() :
                 criteriaBuilder.equal(root.get("userTo").get("id"), userToID);
     }
 
+    /**
+     * Add one of the following filter by groupID:
+     *  - if groupID is null or 0, leave only userGroups groups
+     *  - apply filter by groupID otherwise
+     * @param groupID - exact id to filter. Can be 0 or null
+     * @param userGroups - set of groups to pass in case groupId is null or 0
+     * @return filter by field
+     */
     public static Specification<Payment> whereGroup(Integer groupID, Set<Group> userGroups) {
         return (root, criteriaQuery, criteriaBuilder) -> groupID == null || groupID == 0 ?
                 userGroups.isEmpty() ? criteriaBuilder.conjunction() : root.get("group").in(userGroups) :
@@ -41,6 +59,14 @@ public class PaymentSpecs {
         };
     }
 
+    /**
+     * Apply filter by provided fields
+     * @param userFromID
+     * @param userToID
+     * @param groupID
+     * @param userGroups
+     * @return filter by fields
+     */
     public static Specification<Payment> filterPayment(
             Integer userFromID, Integer userToID, Integer groupID, Set<Group> userGroups) {
         return where(whereUserFrom(userFromID))

@@ -1,6 +1,10 @@
 package romanusyk.ft.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.math.BigDecimal;
+import java.util.Set;
 
 /**
  * Created by Roman Usyk on 19.01.18.
@@ -8,18 +12,28 @@ import java.math.BigDecimal;
 public class UserStatistics {
 
     private String username;
-    private Integer id;
+
+    @JsonIgnore
+    private User user;
+
+    @JsonProperty("id")
+    private Integer userId;
+
     private BigDecimal debt;
+
     private Integer groupCount;
+
+    @JsonIgnore
+    private Set<Group> groups;
 
     public UserStatistics() {
     }
 
-    public UserStatistics(String username, Integer id, BigDecimal debt, Integer groupCount) {
-        this.username = username;
-        this.id = id;
+    public UserStatistics(User user, BigDecimal debt) {
+        this.username = user.getUsername();
+        this.setUser(user);
         this.debt = debt;
-        this.groupCount = groupCount;
+        this.setGroups(user.getGroups());
     }
 
     public String getUsername() {
@@ -30,12 +44,12 @@ public class UserStatistics {
         this.username = username;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public BigDecimal getDebt() {
@@ -54,4 +68,21 @@ public class UserStatistics {
         this.groupCount = groupCount;
     }
 
+    public Set<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(Set<Group> groups) {
+        this.groups = groups;
+        this.groupCount = groups.size();
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+        this.userId = user.getId();
+    }
 }

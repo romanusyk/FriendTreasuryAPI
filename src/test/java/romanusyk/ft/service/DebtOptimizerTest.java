@@ -66,12 +66,12 @@
 //        payments.add(new Payment(carol, alice, group, new BigDecimal(150), "", 0., 0.));
 //        payments.add(new Payment(carol, alice, group, new BigDecimal(150), "", 0., 0.));
 //
-//        optimizer.sumPayments(payments, group.getId());
+//        optimizer.sumPayments(payments, group.getUserId());
 //        Map<Integer, Map<Integer, BigDecimal>> actual = optimizer.getDebtMap();
 //
-//        Integer aliceID = alice.getId();
-//        Integer bobID = bob.getId();
-//        Integer carolID = carol.getId();
+//        Integer aliceID = alice.getUserId();
+//        Integer bobID = bob.getUserId();
+//        Integer carolID = carol.getUserId();
 //
 //        assertThat(actual.size()).isEqualTo(3);
 //        assertThat(actual.get(aliceID).size()).isEqualTo(2);
@@ -108,13 +108,13 @@
 //        payments.add(new Payment(bob, carol, group, new BigDecimal(200), "", 0., 0.));
 //        payments.add(new Payment(carol, alice, group, new BigDecimal(150), "", 0., 0.));
 //
-//        optimizer.sumPayments(payments, group.getId());
+//        optimizer.sumPayments(payments, group.getUserId());
 //        optimizer.optimizeDebts();
 //        Map<Integer, Map<Integer, BigDecimal>> actual = optimizer.getDebtMap();
 //
-//        Integer aliceID = alice.getId();
-//        Integer bobID = bob.getId();
-//        Integer carolID = carol.getId();
+//        Integer aliceID = alice.getUserId();
+//        Integer bobID = bob.getUserId();
+//        Integer carolID = carol.getUserId();
 //
 //        assertThat(actual.size()).isEqualTo(2);
 //        assertThat(actual.get(aliceID)).isNull();
@@ -156,14 +156,14 @@
 //        payments.add(new Payment(dan, bob, group, new BigDecimal(200), "", 0., 0.));
 //        payments.add(new Payment(alice, dan, group, new BigDecimal(150), "", 0., 0.));
 //
-//        optimizer.sumPayments(payments, group.getId());
+//        optimizer.sumPayments(payments, group.getUserId());
 //        optimizer.optimizeDebts();
 //        Map<Integer, Map<Integer, BigDecimal>> actual = optimizer.getDebtMap();
 //
-//        Integer aliceID = alice.getId();
-//        Integer bobID = bob.getId();
-//        Integer carolID = carol.getId();
-//        Integer danID = dan.getId();
+//        Integer aliceID = alice.getUserId();
+//        Integer bobID = bob.getUserId();
+//        Integer carolID = carol.getUserId();
+//        Integer danID = dan.getUserId();
 //
 //        assertThat(actual.size()).isEqualTo(3);
 //        assertThat(actual.get(bobID)).isNull();
