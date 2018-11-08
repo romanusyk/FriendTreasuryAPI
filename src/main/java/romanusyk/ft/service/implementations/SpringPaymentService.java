@@ -123,7 +123,7 @@ public class SpringPaymentService implements PaymentService {
                         debt.getUserTo().getUsername(),
                         debt.getAmount()
                 ));
-                if (debt.getAmount().equals(BigDecimal.ZERO)) {
+                if (debt.getAmount().compareTo(BigDecimal.ZERO) == 0) {
                     logger.info("Ok");
                     continue;
                 }
