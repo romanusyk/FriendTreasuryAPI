@@ -120,7 +120,7 @@ public class SpringPaymentService implements PaymentService {
                 debtMap.get(g).add(debt);
             }
         }
-        return null;
+        return debtMap;
     }
 
 //    @Override
