@@ -1,4 +1,4 @@
-package romanusyk.ft.service.sandbox;
+package romanusyk.ft.service.interfaces;
 
 import romanusyk.ft.domain.Debt;
 import romanusyk.ft.domain.UserStatistics;

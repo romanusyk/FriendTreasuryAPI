@@ -15,11 +15,8 @@ import romanusyk.ft.repository.GroupRepository;
 import romanusyk.ft.repository.PaymentRepository;
 import romanusyk.ft.repository.PaymentSpecs;
 import romanusyk.ft.repository.UserRepository;
-import romanusyk.ft.service.interfaces.Optimizer;
 import romanusyk.ft.service.interfaces.PaymentService;
 import romanusyk.ft.service.interfaces.UserService;
-import romanusyk.ft.service.sandbox.SimpleDebtOptimizerV2;
-import romanusyk.ft.utils.debts.DebtMapHolder;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -41,9 +38,6 @@ public class SpringPaymentService implements PaymentService {
 
     @Autowired
     private PaymentRepository paymentRepository;
-
-    @Autowired
-    private Optimizer optimizer;
 
     private static final Logger logger = Logger.getLogger(SpringPaymentService.class);
 
@@ -125,37 +119,6 @@ public class SpringPaymentService implements PaymentService {
         }
         return debtMap;
     }
-
-//    @Override
-//    public Map<Group, List<Debt> > getPaymentSum(Integer user, Integer groupID, User client) {
-//
-//        List<Payment> payments = getPayments(null, null, groupID, client);
-//
-//        boolean dropGroup = groupID == null;
-//        DebtMapHolder holder = new DebtMapHolder(payments, dropGroup);
-//
-//        Map<Group, List<Debt> > debtMap = holder
-//                .dropGroup(dropGroup)
-//                .sum()
-//                .optimize(optimizer)
-//                .applyUserFilter(user)
-//                .reorderUsers()
-//                .sum()
-//                .getResult();
-//
-//        for (Group group: debtMap.keySet()) {
-//            for (Debt debt : debtMap.get(group)) {
-//                if (debt.getUserFrom().getId() != null && debt.getUserFrom().getId() > 0) {
-//                    debt.setUserFrom(userRepository.findOne(debt.getUserFrom().getId()));
-//                }
-//                if (debt.getUserTo().getId() != null && debt.getUserTo().getId() > 0) {
-//                    debt.setUserTo(userRepository.findOne(debt.getUserTo().getId()));
-//                }
-//            }
-//        }
-//
-//        return debtMap;
-//    }
 
     @Override
     public Specification<Payment> getFilter(Integer userFrom, Integer userTo, Integer groupId, User client) {

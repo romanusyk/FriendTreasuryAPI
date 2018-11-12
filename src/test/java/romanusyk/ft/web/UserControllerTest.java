@@ -10,14 +10,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import romanusyk.ft.domain.User;
-import romanusyk.ft.service.interfaces.Optimizer;
-import romanusyk.ft.service.interfaces.PaymentService;
 import romanusyk.ft.service.interfaces.UserService;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.core.IsNull.notNullValue;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -35,12 +30,6 @@ public class UserControllerTest {
 
     @Autowired
     private MockMvc mvc;
-
-    @MockBean
-    private PaymentService paymentService;
-
-    @MockBean
-    private Optimizer optimizer;
 
     @MockBean
     private UserService userService;

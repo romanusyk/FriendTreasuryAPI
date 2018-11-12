@@ -4,7 +4,7 @@ import romanusyk.ft.domain.Debt;
 import romanusyk.ft.domain.Group;
 import romanusyk.ft.domain.User;
 import romanusyk.ft.domain.UserStatistics;
-import romanusyk.ft.service.sandbox.SimpleDebtOptimizerV2;
+import romanusyk.ft.service.implementations.SimpleDebtOptimizerV2;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
