@@ -1,7 +1,7 @@
 package romanusyk.ft.service.interfaces;
 
-import romanusyk.ft.domain.Group;
-import romanusyk.ft.domain.User;
+import romanusyk.ft.data.entity.Group;
+import romanusyk.ft.data.entity.User;
 
 import java.util.List;
 

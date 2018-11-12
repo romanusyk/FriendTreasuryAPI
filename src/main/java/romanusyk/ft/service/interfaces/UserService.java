@@ -1,11 +1,9 @@
 package romanusyk.ft.service.interfaces;
 
-import romanusyk.ft.domain.Group;
-import romanusyk.ft.domain.User;
-import org.springframework.transaction.annotation.Transactional;
-import romanusyk.ft.domain.UserStatistics;
+import romanusyk.ft.data.entity.Group;
+import romanusyk.ft.data.entity.User;
+import romanusyk.ft.data.model.dto.UserStatistics;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Set;
 

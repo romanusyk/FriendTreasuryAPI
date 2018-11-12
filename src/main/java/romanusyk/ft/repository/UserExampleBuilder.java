@@ -2,7 +2,7 @@ package romanusyk.ft.repository;
 
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
-import romanusyk.ft.domain.User;
+import romanusyk.ft.data.entity.User;
 
 /**
  * Created by Roman Usyk on 15.11.17.

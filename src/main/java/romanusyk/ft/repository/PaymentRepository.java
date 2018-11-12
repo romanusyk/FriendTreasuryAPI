@@ -3,10 +3,9 @@ package romanusyk.ft.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import romanusyk.ft.domain.Debt;
-import romanusyk.ft.domain.Group;
-import romanusyk.ft.domain.Payment;
-import romanusyk.ft.domain.User;
+import romanusyk.ft.data.entity.Group;
+import romanusyk.ft.data.entity.Payment;
+import romanusyk.ft.data.entity.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -24,8 +23,8 @@ public interface PaymentRepository extends CrudRepository<Payment, Integer> {
 
     List<Payment> findAll(Specification<Payment> specification);
 
-    @Query("select sum(p.amount) from Payment p where p.userFrom = ?1")
-    BigDecimal getUserOutcome(User user);
+    @Query("select sum(p.amount) from Payment p where p.userFrom = :user")
+    BigDecimal getUserOutcome(@Param("user") User user);
 
     @Query("select sum(p.amount) from Payment p where p.userFrom = ?1 and p.group in ?2")
     BigDecimal getUserOutcomeInGroups(User user, Set<Group> groupSet);

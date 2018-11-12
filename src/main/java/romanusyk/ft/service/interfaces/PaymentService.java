@@ -2,7 +2,11 @@ package romanusyk.ft.service.interfaces;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
-import romanusyk.ft.domain.*;
+import romanusyk.ft.data.model.dto.PaymentDTO;
+import romanusyk.ft.data.model.value.Debt;
+import romanusyk.ft.data.entity.Group;
+import romanusyk.ft.data.entity.Payment;
+import romanusyk.ft.data.entity.User;
 
 import java.util.List;
 import java.util.Map;

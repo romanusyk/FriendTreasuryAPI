@@ -1,7 +1,7 @@
 package romanusyk.ft.security;
 
 import io.jsonwebtoken.Claims;
-import romanusyk.ft.domain.User;
+import romanusyk.ft.data.entity.User;
 
 /**
  * Created by Roman Usyk on 17.09.17.

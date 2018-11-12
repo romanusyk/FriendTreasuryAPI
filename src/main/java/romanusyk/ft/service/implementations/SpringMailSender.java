@@ -5,9 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import romanusyk.ft.domain.Debt;
-import romanusyk.ft.domain.Group;
-import romanusyk.ft.domain.User;
+import romanusyk.ft.data.model.value.Debt;
+import romanusyk.ft.data.entity.Group;
+import romanusyk.ft.data.entity.User;
 import romanusyk.ft.service.interfaces.MailSender;
 
 import java.util.*;
@@ -38,7 +38,7 @@ public class SpringMailSender implements MailSender {
         List<User> allUsers = userService.getAllUsers();
         for (User user: allUsers) {
             Map<Group, List<Debt> > result = paymentService.getPaymentSum(null, null, user);
-            Group key = new Group().setId(0);
+            Group key = Group.builder().id(0).build();
             List<Debt> debts = result.get(key);
             List<String> goodDebts = new LinkedList<>();
             List<String> badDebts = new LinkedList<>();

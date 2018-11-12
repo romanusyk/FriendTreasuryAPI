@@ -1,12 +1,18 @@
 package romanusyk.ft.service.implementations;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import romanusyk.ft.domain.*;
+import romanusyk.ft.data.model.dto.PaymentDTO;
+import romanusyk.ft.data.model.dto.UserStatistics;
+import romanusyk.ft.data.model.value.Debt;
+import romanusyk.ft.data.model.value.DebtKey;
+import romanusyk.ft.data.entity.Group;
+import romanusyk.ft.data.entity.Payment;
+import romanusyk.ft.data.entity.User;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import romanusyk.ft.exception.EntityIdNotValidException;
 import romanusyk.ft.exception.EntityNotFoundException;
@@ -17,6 +23,7 @@ import romanusyk.ft.repository.PaymentSpecs;
 import romanusyk.ft.repository.UserRepository;
 import romanusyk.ft.service.interfaces.PaymentService;
 import romanusyk.ft.service.interfaces.UserService;
+import romanusyk.ft.utils.converter.PaymentConverter;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -25,19 +32,13 @@ import java.util.*;
  * Created by romm on 16.03.17.
  */
 @Service
+@RequiredArgsConstructor
 public class SpringPaymentService implements PaymentService {
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private GroupRepository groupRepository;
-
-    @Autowired
-    private PaymentRepository paymentRepository;
+    private final UserRepository userRepository;
+    private final UserService userService;
+    private final GroupRepository groupRepository;
+    private final PaymentRepository paymentRepository;
 
     private static final Logger logger = Logger.getLogger(SpringPaymentService.class);
 
@@ -169,6 +170,7 @@ public class SpringPaymentService implements PaymentService {
                 2,
                 BigDecimal.ROUND_CEILING
         );
+        paymentDTO.setAmount(amountPerUser);
         for (Integer userToID : paymentDTO.getUsersTo()) {
             User userTo = userRepository.findOne(userToID);
 
@@ -177,12 +179,7 @@ public class SpringPaymentService implements PaymentService {
             }
             checkUserInGroup(userTo, group);
 
-            Payment payment = new Payment(
-                    userFrom, userTo, group, amountPerUser,
-                    paymentDTO.getDescription(),
-                    paymentDTO.getDate(),
-                    paymentDTO.getLongitude(), paymentDTO.getLatitude()
-            );
+            Payment payment = PaymentConverter.from(paymentDTO, userFrom, userTo, group);
             paymentRepository.save(payment);
         }
 

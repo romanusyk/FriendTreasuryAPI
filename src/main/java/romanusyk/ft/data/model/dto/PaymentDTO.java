@@ -1,9 +1,9 @@
-package romanusyk.ft.domain;
+package romanusyk.ft.data.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import lombok.experimental.Accessors;
-import org.hibernate.validator.constraints.NotEmpty;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +29,6 @@ public class PaymentDTO {
     private Integer userFrom;
 
     @NotNull
-    @NotEmpty
     private Integer[] usersTo;
 
     @NotNull
@@ -44,7 +43,6 @@ public class PaymentDTO {
     private Integer shallIPayForMyself = 1;
 
     @NotNull
-    @NotEmpty
     private String description;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MMM-dd")
@@ -53,12 +51,13 @@ public class PaymentDTO {
     private double longitude;
     private double latitude;
 
-    public void setShallIPayForMyself(Integer shallIPayForMyself) {
-        if (shallIPayForMyself == null) {
-            this.shallIPayForMyself = 1;
-        } else {
-            this.shallIPayForMyself = shallIPayForMyself;
+    public static class PaymentDTOBuilder {
+
+        public PaymentDTOBuilder date(Long timestamp) {
+            this.date = new Date(timestamp);
+            return this;
         }
+
     }
 
 }

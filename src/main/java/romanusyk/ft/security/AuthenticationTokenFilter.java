@@ -9,8 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import romanusyk.ft.domain.User;
-import romanusyk.ft.service.interfaces.UserService;
+import romanusyk.ft.data.entity.User;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -18,7 +17,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * Created by Roman Usyk on 17.09.17.

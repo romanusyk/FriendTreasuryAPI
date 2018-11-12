@@ -5,14 +5,18 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import romanusyk.ft.domain.*;
+import romanusyk.ft.data.model.dto.PaymentDTO;
+import romanusyk.ft.data.model.value.Debt;
+import romanusyk.ft.data.entity.Group;
+import romanusyk.ft.data.entity.Payment;
+import romanusyk.ft.data.entity.User;
 import romanusyk.ft.exception.UserAuthenticationException;
 import romanusyk.ft.security.JwtUtil;
 import romanusyk.ft.service.interfaces.PaymentService;
+import romanusyk.ft.utils.converter.PaymentConverter;
 
 import javax.validation.Valid;
 import java.lang.invoke.MethodHandles;
@@ -29,16 +33,19 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1/payments")
 public class PaymentController {
 
-    @Autowired
-    private PaymentService paymentService;
+    private final PaymentService paymentService;
+    private final JwtUtil jwtUtil;
 
     @Autowired
-    private JwtUtil jwtUtil;
+    public PaymentController(PaymentService paymentService, JwtUtil jwtUtil) {
+        this.paymentService = paymentService;
+        this.jwtUtil = jwtUtil;
+    }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
-    public Page<Payment> getPayments(
+    public Page<PaymentDTO> getPayments(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
             @RequestParam int page, @RequestParam int size,
             @RequestParam(required = false) Integer userFrom,
@@ -47,7 +54,7 @@ public class PaymentController {
             ) {
         User client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
         Page<Payment> pageResult = paymentService.getPaymentsPage(page, size, userFrom, userTo, group, client);
-        return pageResult;
+        return pageResult.map(PaymentConverter::to);
     }
 
     @RequestMapping(value = "/sum", method = RequestMethod.GET)
@@ -107,6 +114,7 @@ public class PaymentController {
     @RequestMapping(value = "", method = RequestMethod.PUT)
     @ResponseBody
     @PreAuthorize("@securityService.hasRole('user')")
+    // TODO: 13.11.18 PaymentDTO
     public Payment updatePayment(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
             @RequestBody Payment payment
@@ -117,6 +125,7 @@ public class PaymentController {
 
     @RequestMapping(value = "", method = RequestMethod.DELETE)
     @PreAuthorize("@securityService.hasRole('user')")
+    // TODO: 13.11.18 PaymentDTO
     public void deletePayment(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
             @RequestParam Integer paymentID

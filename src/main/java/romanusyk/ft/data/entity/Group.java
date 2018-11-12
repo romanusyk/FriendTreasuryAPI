@@ -1,12 +1,13 @@
-package romanusyk.ft.domain;
+package romanusyk.ft.data.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,6 +16,9 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "pgroups")
+@Data
+@NoArgsConstructor
+@Builder
 public class Group {
 
     @Id
@@ -22,34 +26,16 @@ public class Group {
     private Integer id;
 
     @NotEmpty
-    @NotNull
     @Column(nullable = false, length = 100)
     private String title;
 
-    @Length(max = 21)
+    @Length
     @Column(nullable = false, unique = true, length = 21)
     private String name;
 
-    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "pgroup_user")
-    private Set<User> users;
-
-
-    public Group() {
-        this.users = new HashSet<>();
-    }
-
-    public Group(String title, String name) {
-        this();
-        this.title = title;
-        this.name = name;
-    }
-
-    public Group(String title, String name, Set<User> users) {
-        this(title, name);
-        this.users = users;
-    }
+    private Set<User> users = new HashSet<>();
 
     @Override
     public String toString() {
@@ -69,39 +55,6 @@ public class Group {
         );
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public Group setId(Integer id) {
-        this.id = id;
-        return this;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Group) {
@@ -115,4 +68,5 @@ public class Group {
     public int hashCode() {
         return id == null ? 0 : id;
     }
+
 }

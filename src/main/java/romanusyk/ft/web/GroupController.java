@@ -3,26 +3,27 @@ package romanusyk.ft.web;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.modelmapper.ModelMapper;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import romanusyk.ft.domain.Group;
-import romanusyk.ft.domain.GroupDTO;
-import romanusyk.ft.domain.User;
-import romanusyk.ft.domain.UserStatistics;
+import romanusyk.ft.data.entity.Group;
+import romanusyk.ft.data.model.dto.GroupAdvancedDTO;
+import romanusyk.ft.data.entity.User;
+import romanusyk.ft.data.model.dto.GroupDTO;
+import romanusyk.ft.data.model.dto.UserStatistics;
 import romanusyk.ft.exception.EntityNotFoundException;
 import romanusyk.ft.exception.UserAuthenticationException;
 import romanusyk.ft.security.JwtUtil;
 import romanusyk.ft.service.interfaces.GroupService;
 import romanusyk.ft.service.interfaces.UserService;
+import romanusyk.ft.utils.converter.GroupAdvancedConverter;
+import romanusyk.ft.utils.converter.GroupConverter;
+import romanusyk.ft.utils.converter.UserConverter;
 
 import javax.validation.Valid;
 import java.lang.invoke.MethodHandles;
-import java.text.ParseException;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -35,20 +36,13 @@ import java.util.stream.Collectors;
 @CrossOrigin
 @RestController
 @Api("Group controller")
-@RequestMapping("/api/v1/groups")
+@RequestMapping("/api/v1/groups") // TODO: 12.11.18 add conumes & produce
+@RequiredArgsConstructor
 public class GroupController {
 
-    @Autowired
-    private GroupService groupService;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private JwtUtil jwtUtil;
-
-    @Autowired
-    private ModelMapper modelMapper;
+    private final GroupService groupService;
+    private final UserService userService;
+    private final JwtUtil jwtUtil;
 
     @ApiOperation(
             value = "Get group by title",
@@ -57,76 +51,70 @@ public class GroupController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
-    public Group getGroupByName(
-            @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
+    public GroupDTO getGroupByName(
+            @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token")
+                @RequestHeader("${ft.token.header}")
+                String authorization,
             @RequestParam("name") String groupName
     ) {
         Group group = groupService.getGroupByName(groupName);
         if (group == null) {
-            throw new EntityNotFoundException(Group.class, new Group("unknown", groupName));
+            throw new EntityNotFoundException(Group.class, GroupDTO.builder().title("unknown").name(groupName).build());
         }
-        return group;
+        return GroupConverter.to(group);
     }
 
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @PostMapping
     @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
-    public Group createGroup(
+    public GroupDTO createGroup(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
-            @RequestBody @Valid Group group) {
+            @RequestBody @Valid GroupDTO groupDTO) {
 
         User me = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        Group group = GroupConverter.from(groupDTO);
         logger.debug(String.format("User %d is creating group %s", me.getId(), group.toString()));
         User creator = userService.getUserByID(me.getId());
-        return groupService.createGroup(group, creator);
+        group = groupService.createGroup(group, creator);
+        return GroupConverter.to(group);
     }
 
-    @RequestMapping(value = "", method = RequestMethod.PATCH)
+    @PatchMapping
     @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
-    public Group updateGroup(
+    public GroupDTO updateGroup(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
-            @RequestBody @Valid Group group) {
+            @RequestBody @Valid GroupDTO groupDTO) {
         User u = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
         User user = userService.getUserByID(u.getId());
+        Group group = GroupConverter.from(groupDTO);
         if (!user.getGroups().contains(group)) {
             logger.debug(String.format("Access denied for user %d trying to modify group %s", u.getId(), group.toString()));
             throw new UserAuthenticationException("Group can be modified only by its participants.");
         }
-        return groupService.updateGroup(group);
+        group = groupService.updateGroup(group);
+        return GroupConverter.to(group);
     }
 
     @RequestMapping(value = "/my", method = RequestMethod.GET)
     @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
-    public List<GroupDTO> getUserGroups(
+    public List<GroupAdvancedDTO> getUserGroups(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization
         ) {
         User user = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
         List<Group> groupList = groupService.getGroupsByUser(user);
-        List<GroupDTO> groupDTOList = new LinkedList<>();
+        List<GroupAdvancedDTO> groupDTOList = new LinkedList<>();
         for (Group group: groupList) {
-            GroupDTO groupDTO = convertToDto(group);
             Set<Group> groupSet = new HashSet<>();
             groupSet.add(group);
             UserStatistics userStatistics = userService.getUserStatistics(user, groupSet);
-            groupDTO.setUserDebt(userStatistics.getDebt());
+            GroupAdvancedDTO groupDTO = GroupAdvancedConverter.to(group, userStatistics.getDebt());
             groupDTOList.add(groupDTO);
         }
         return groupDTOList;
     }
 
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-
-    private GroupDTO convertToDto(Group group) {
-        GroupDTO groupDTO = modelMapper.map(group, GroupDTO.class);
-        groupDTO.setUsersCount(group.getUsers().size());
-        return groupDTO;
-    }
-
-    private Group convertFromDto(GroupDTO groupDTO) throws ParseException {
-        Group group = modelMapper.map(groupDTO, Group.class);
-        return group;
-    }
 
 }

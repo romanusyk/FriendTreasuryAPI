@@ -3,49 +3,46 @@ package romanusyk.ft.web;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import romanusyk.ft.domain.Group;
-import romanusyk.ft.domain.User;
-import romanusyk.ft.domain.UserStatistics;
-import romanusyk.ft.exception.EntityAlreadyExistsException;
+import romanusyk.ft.data.entity.Group;
+import romanusyk.ft.data.entity.User;
+import romanusyk.ft.data.model.dto.UserDTO;
+import romanusyk.ft.data.model.dto.UserStatistics;
 import romanusyk.ft.exception.NotValidPasswordException;
 import romanusyk.ft.exception.EntityNotFoundException;
 import romanusyk.ft.exception.UserAuthenticationException;
 import romanusyk.ft.security.JwtAccessToken;
 import romanusyk.ft.security.JwtUtil;
-import romanusyk.ft.security.JwtUtilImpl;
 import romanusyk.ft.service.implementations.SpringUserService;
 import romanusyk.ft.service.interfaces.GroupService;
 import romanusyk.ft.service.interfaces.UserService;
+import romanusyk.ft.utils.converter.UserConverter;
 
 import javax.validation.Valid;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by Roman Usyk on 12.09.17.
  */
 @CrossOrigin
 @RestController
+@RequiredArgsConstructor
 @Api("User controller")
 @RequestMapping("/api/v1/users")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private GroupService groupService;
-
-    @Autowired
-    private JwtUtil jwtUtil;
+    private final UserService userService;
+    private final GroupService groupService;
+    private final JwtUtil jwtUtil;
 
     @ApiOperation(
             value = "get all users",
@@ -55,16 +52,16 @@ public class UserController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
-    public List<User> getAllUsers(
+    public List<UserDTO> getAllUsers(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization
     ) {
-        return userService.getAllUsers();
+        return userService.getAllUsers().stream().map(UserConverter::to).collect(Collectors.toList());
     }
 
     @RequestMapping(value = "/me", method = RequestMethod.GET)
     @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
-    public User getUserInfo(
+    public UserDTO getUserInfo(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization
     ) {
         User u = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
@@ -74,7 +71,7 @@ public class UserController {
             fakeUser.setId(u.getId());
             throw new EntityNotFoundException(User.class, fakeUser);
         }
-        return user;
+        return UserConverter.to(user);
     }
 
     @RequestMapping(value = "/statistics", method = RequestMethod.GET)
@@ -89,7 +86,8 @@ public class UserController {
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public JwtAccessToken addUser(@RequestBody @Valid User user) {
+    public JwtAccessToken addUser(@RequestBody @Valid UserDTO userDTO) {
+        User user = UserConverter.from(userDTO);
         user.setAuthorities("user");
         SpringUserService.encryptPassword(user);
         userService.createUser(user);
@@ -99,8 +97,8 @@ public class UserController {
 
     @RequestMapping(value = "/access", method = RequestMethod.POST)
     @ResponseBody
-    public JwtAccessToken validateUser(@RequestBody User user) {
-
+    public JwtAccessToken validateUser(@RequestBody UserDTO userDTO) {
+        User user = UserConverter.from(userDTO);
         logger.info("Validating user : " + user);
         logger.debug(user.getPassword());
         User validatedUser = userService.validateUser(user);
@@ -115,9 +113,10 @@ public class UserController {
     @PreAuthorize("@securityService.hasRole('user')")
     public void updateUser(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
-            @RequestBody @Valid User user
+            @RequestBody @Valid UserDTO userDTO
         ) {
         User u = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        User user = UserConverter.from(userDTO);
         if (!u.equals(user)) {
             logger.debug(String.format("Access denied for user %d trying to modify user %d", u.getId(), user.getId()));
             throw new UserAuthenticationException();
@@ -147,7 +146,7 @@ public class UserController {
     @RequestMapping(value = "group/{group}", method = RequestMethod.GET)
     @ResponseBody
     @PreAuthorize("@securityService.hasRole('user')")
-    public List<User> getUsersInGroup(
+    public List<UserDTO> getUsersInGroup(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
             @PathVariable("group") Integer groupID) {
         Group group = groupService.getGroupById(groupID);
@@ -162,7 +161,7 @@ public class UserController {
             ));
             throw new UserAuthenticationException("Group members are available only for its members.");
         }
-        return new ArrayList<>(group.getUsers());
+        return group.getUsers().stream().map(UserConverter::to).collect(Collectors.toList());
     }
 
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());

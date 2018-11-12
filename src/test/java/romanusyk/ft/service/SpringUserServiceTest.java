@@ -7,7 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import romanusyk.ft.domain.User;
+import romanusyk.ft.data.entity.User;
 import romanusyk.ft.repository.GroupRepository;
 import romanusyk.ft.repository.UserRepository;
 import romanusyk.ft.service.implementations.SpringUserService;

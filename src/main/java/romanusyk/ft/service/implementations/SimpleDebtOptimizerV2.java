@@ -1,8 +1,8 @@
 package romanusyk.ft.service.implementations;
 
-import romanusyk.ft.domain.Debt;
-import romanusyk.ft.domain.Group;
-import romanusyk.ft.domain.UserStatistics;
+import romanusyk.ft.data.model.value.Debt;
+import romanusyk.ft.data.entity.Group;
+import romanusyk.ft.data.model.dto.UserStatistics;
 import romanusyk.ft.service.interfaces.DebtOptimizerV2;
 
 import java.math.BigDecimal;

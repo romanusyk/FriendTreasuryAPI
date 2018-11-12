@@ -9,7 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import romanusyk.ft.domain.User;
+import romanusyk.ft.data.entity.User;
 import romanusyk.ft.service.interfaces.UserService;
 
 import static org.hamcrest.Matchers.is;

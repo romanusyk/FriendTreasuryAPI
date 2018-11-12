@@ -6,7 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import romanusyk.ft.domain.Group;
+import romanusyk.ft.data.entity.Group;
 import romanusyk.ft.exception.EntityNotValidException;
 import romanusyk.ft.repository.GroupRepository;
 import romanusyk.ft.service.implementations.SpringGroupService;

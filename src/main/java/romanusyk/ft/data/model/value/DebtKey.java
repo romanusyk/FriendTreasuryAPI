@@ -1,10 +1,14 @@
-package romanusyk.ft.domain;
+package romanusyk.ft.data.model.value;
+
+import romanusyk.ft.data.entity.Group;
+import romanusyk.ft.data.entity.User;
 
 import java.io.Serializable;
 
 /**
  * Created by romm on 27.02.17.
  */
+// TODO: 13.11.18 lombokize
 public class DebtKey implements Serializable {
 
     private User userFrom;

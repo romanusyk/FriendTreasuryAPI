@@ -12,7 +12,7 @@ import org.springframework.mock.http.MockHttpOutputMessage;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import romanusyk.ft.domain.Group;
+import romanusyk.ft.data.entity.Group;
 import romanusyk.ft.exception.EntityNotValidException;
 import romanusyk.ft.service.interfaces.GroupService;
 

@@ -1,11 +1,11 @@
 package romanusyk.ft.service.implementations;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Example;
-import romanusyk.ft.domain.Group;
-import romanusyk.ft.domain.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import romanusyk.ft.data.entity.Group;
+import romanusyk.ft.data.entity.User;
 import org.springframework.stereotype.Service;
 import romanusyk.ft.exception.EntityAlreadyExistsException;
 import romanusyk.ft.exception.EntityNotValidException;
@@ -23,13 +23,11 @@ import java.util.List;
  * Created by romm on 29.08.17.
  */
 @Service
+@RequiredArgsConstructor
 public class SpringGroupService implements GroupService {
 
-    @Autowired
-    private GroupRepository groupRepository;
-
-    @Autowired
-    UserRepository userRepository;
+    private final GroupRepository groupRepository;
+    private final UserRepository userRepository;
 
     @Override
     public void checkIfExists(Group group) {

@@ -8,9 +8,9 @@
 //import org.springframework.test.context.ActiveProfiles;
 //import org.springframework.test.context.junit4.SpringRunner;
 //import romanusyk.ft.FTApplication;
-//import romanusyk.ft.domain.Group;
-//import romanusyk.ft.domain.Payment;
-//import romanusyk.ft.domain.User;
+//import Group;
+//import Payment;
+//import User;
 //import romanusyk.ft.repository.GroupRepository;
 //import romanusyk.ft.repository.UserRepository;
 //import romanusyk.ft.service.interfaces.Optimizer;

@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import romanusyk.ft.domain.User;
+import romanusyk.ft.data.entity.User;
 import romanusyk.ft.repository.UserRepository;
 
 import java.util.Collection;

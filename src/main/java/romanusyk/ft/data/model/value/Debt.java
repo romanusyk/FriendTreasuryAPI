@@ -1,6 +1,8 @@
-package romanusyk.ft.domain;
+package romanusyk.ft.data.model.value;
 
-import javax.persistence.*;
+import romanusyk.ft.data.entity.Group;
+import romanusyk.ft.data.entity.User;
+
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Date;
@@ -8,31 +10,17 @@ import java.util.Date;
 /**
  * Created by romm on 01.02.17.
  */
-
-@Entity
-@Table(name = "debts")
-@IdClass(DebtKey.class)
+// TODO: 13.11.18 DTOize
 public class Debt {
 
-    @ManyToOne
-    @JoinColumn(name = "user_from")
-    @Id
     private User userFrom;
 
-    @ManyToOne
-    @JoinColumn(name = "user_to")
-    @Id
     private User userTo;
 
-    @ManyToOne
-    @JoinColumn(name = "pgroup")
-    @Id
     private Group group;
 
-    @Column(nullable = false)
     private BigDecimal amount;
 
-    @Column(nullable = false)
     private Long timestamp;
 
     public Debt() {

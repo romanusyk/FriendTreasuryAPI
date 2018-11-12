@@ -1,15 +1,14 @@
 package romanusyk.ft.service.implementations;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Example;
-import romanusyk.ft.domain.Group;
-import romanusyk.ft.domain.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import romanusyk.ft.data.entity.Group;
+import romanusyk.ft.data.entity.User;
 import org.springframework.stereotype.Service;
-import romanusyk.ft.domain.UserStatistics;
+import romanusyk.ft.data.model.dto.UserStatistics;
 import romanusyk.ft.exception.EntityAlreadyExistsException;
-import romanusyk.ft.exception.EntityIdNotValidException;
 import romanusyk.ft.exception.EntityNotFoundException;
 import romanusyk.ft.exception.EntityNotValidException;
 import romanusyk.ft.repository.GroupRepository;
@@ -22,22 +21,17 @@ import romanusyk.ft.service.interfaces.UserService;
 import java.lang.invoke.MethodHandles;
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by romm on 28.02.17.
  */
 @Service
+@RequiredArgsConstructor
 public class SpringUserService implements UserService {
 
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    GroupRepository groupRepository;
-
-    @Autowired
-    PaymentRepository paymentRepository;
+    private final UserRepository userRepository;
+    private final GroupRepository groupRepository;
+    private final PaymentRepository paymentRepository;
 
     @Override
     public User getUserByID(Integer id) {
@@ -138,7 +132,13 @@ public class SpringUserService implements UserService {
         Group group = groupRepository.findByName(groupName);
 
         if (group == null) {
-            throw new EntityNotFoundException(Group.class, new Group("unknown", groupName));
+            throw new EntityNotFoundException(
+                    Group.class,
+                    Group.builder()
+                            .title("unknown")
+                            .name(groupName)
+                            .build()
+            );
         }
 
         if (!user.getGroups().contains(group)) {
@@ -159,7 +159,13 @@ public class SpringUserService implements UserService {
         Group group = groupRepository.findByName(groupName);
 
         if (group == null) {
-            throw new EntityNotFoundException(Group.class, new Group("unknown", groupName));
+            throw new EntityNotFoundException(
+                    Group.class,
+                    Group.builder()
+                        .title("unknown")
+                        .name(groupName)
+                        .build()
+            );
         }
 
         if (user.getGroups().contains(group)) {
@@ -185,10 +191,7 @@ public class SpringUserService implements UserService {
         if (userIncome == null) {
             userIncome = new BigDecimal(0);
         }
-        return new UserStatistics(
-                u,
-                userOutcome.subtract(userIncome)
-        );
+        return UserStatistics.builder().user(u).debt(userOutcome.subtract(userIncome)).build();
     }
 
     @Override
@@ -202,10 +205,7 @@ public class SpringUserService implements UserService {
         if (userIncome == null) {
             userIncome = new BigDecimal(0);
         }
-        return new UserStatistics(
-                u,
-                userOutcome.subtract(userIncome)
-        );
+        return UserStatistics.builder().user(u).debt(userOutcome.subtract(userIncome)).build();
     }
 
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());

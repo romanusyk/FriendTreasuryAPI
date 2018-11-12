@@ -2,7 +2,7 @@ package romanusyk.ft.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import romanusyk.ft.domain.User;
+import romanusyk.ft.data.entity.User;
 
 /**
  * Created by Roman Usyk on 12.09.17.
