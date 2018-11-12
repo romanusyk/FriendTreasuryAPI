@@ -41,7 +41,7 @@ public class GroupRepositoryTest {
 //        entityManager.flush();
 //
 //        assertThat(groupRepository.findByTitle("megaTitle")).isNotNull();
-//        assertThat(groupRepository.findByTitle("megaTitle").getId()).isEqualTo(testGroup.getId());
+//        assertThat(groupRepository.findByTitle("megaTitle").getUserId()).isEqualTo(testGroup.getUserId());
 //        assertThat(groupRepository.findByTitle("notSoMegaTitle")).isNull();
 //
 //        entityManager.remove(testGroup);

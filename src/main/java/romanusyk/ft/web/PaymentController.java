@@ -12,14 +12,12 @@ import org.springframework.web.bind.annotation.*;
 import romanusyk.ft.domain.*;
 import romanusyk.ft.exception.UserAuthenticationException;
 import romanusyk.ft.security.JwtUtil;
-import romanusyk.ft.service.interfaces.Optimizer;
 import romanusyk.ft.service.interfaces.PaymentService;
 
 import javax.validation.Valid;
 import java.lang.invoke.MethodHandles;
 import java.util.Map;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**

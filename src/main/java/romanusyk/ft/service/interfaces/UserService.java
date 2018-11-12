@@ -1,11 +1,13 @@
 package romanusyk.ft.service.interfaces;
 
+import romanusyk.ft.domain.Group;
 import romanusyk.ft.domain.User;
 import org.springframework.transaction.annotation.Transactional;
 import romanusyk.ft.domain.UserStatistics;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by romm on 03.02.17.
@@ -31,5 +33,7 @@ public interface UserService {
     void checkIfExists(User user);
 
     UserStatistics getUserStatistics(User client);
+
+    UserStatistics getUserStatistics(User client, Set<Group> groupSet);
 
 }

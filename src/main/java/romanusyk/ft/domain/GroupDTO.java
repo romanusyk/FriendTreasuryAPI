@@ -1,5 +1,6 @@
 package romanusyk.ft.domain;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 /**
@@ -16,6 +17,8 @@ public class GroupDTO {
     private Set<User> users;
 
     private Integer usersCount;
+
+    private BigDecimal userDebt;
 
     public Integer getUsersCount() {
         return usersCount;
@@ -49,4 +52,11 @@ public class GroupDTO {
         this.name = name;
     }
 
+    public BigDecimal getUserDebt() {
+        return userDebt;
+    }
+
+    public void setUserDebt(BigDecimal userDebt) {
+        this.userDebt = userDebt;
+    }
 }

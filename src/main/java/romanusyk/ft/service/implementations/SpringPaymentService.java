@@ -15,9 +15,8 @@ import romanusyk.ft.repository.GroupRepository;
 import romanusyk.ft.repository.PaymentRepository;
 import romanusyk.ft.repository.PaymentSpecs;
 import romanusyk.ft.repository.UserRepository;
-import romanusyk.ft.service.interfaces.Optimizer;
 import romanusyk.ft.service.interfaces.PaymentService;
-import romanusyk.ft.utils.debts.DebtMapHolder;
+import romanusyk.ft.service.interfaces.UserService;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -32,44 +31,92 @@ public class SpringPaymentService implements PaymentService {
     private UserRepository userRepository;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private GroupRepository groupRepository;
 
     @Autowired
     private PaymentRepository paymentRepository;
 
-    @Autowired
-    private Optimizer optimizer;
-
     private static final Logger logger = Logger.getLogger(SpringPaymentService.class);
+
+    private List<Debt> getDebtList(Integer groupID, User client) {
+        Set<Group> targetGroups = new HashSet<>();
+        if (groupID != null) {
+            Group selectedGroup = groupRepository.findOne(groupID);
+            targetGroups.add(selectedGroup);
+        } else {
+            targetGroups.addAll(client.getGroups());
+        }
+        List<User> targetUsers = new LinkedList<>();
+        for (Group group: targetGroups) {
+            targetUsers.addAll(group.getUsers());
+        }
+        List<UserStatistics> statistics = new LinkedList<>();
+        for (User u: targetUsers) {
+            statistics.add(userService.getUserStatistics(u, targetGroups));
+        }
+        SimpleDebtOptimizerV2 optimizer = new SimpleDebtOptimizerV2();
+        List<Debt> debts = optimizer.getOptimalPayments(statistics);
+        if (!optimizer.whetherAllDebtsReturned()) {
+            if (groupID != null) {
+                throw new RuntimeException(String.format("Payments are incorrect for group %d!", groupID));
+            }
+            debts = new LinkedList<>();
+            for (Group g: targetGroups) {
+                debts.addAll(getDebtList(g.getId(), client));
+            }
+        }
+        Group group = new Group();
+        group.setId(groupID == null ? 0 : groupID);
+        for (Debt d: debts) {
+            d.setGroup(group);
+        }
+        return debts;
+    }
 
     @Override
     public Map<Group, List<Debt> > getPaymentSum(Integer user, Integer groupID, User client) {
-
-        List<Payment> payments = getPayments(null, null, groupID, client);
-
-        boolean dropGroup = groupID == null;
-        DebtMapHolder holder = new DebtMapHolder(payments, dropGroup);
-
-        Map<Group, List<Debt> > debtMap = holder
-                .dropGroup(dropGroup)
-                .sum()
-                .optimize(optimizer)
-                .applyUserFilter(user)
-                .reorderUsers()
-                .sum()
-                .getResult();
-
-        for (Group group: debtMap.keySet()) {
-            for (Debt debt : debtMap.get(group)) {
-                if (debt.getUserFrom().getId() != null && debt.getUserFrom().getId() > 0) {
-                    debt.setUserFrom(userRepository.findOne(debt.getUserFrom().getId()));
-                }
-                if (debt.getUserTo().getId() != null && debt.getUserTo().getId() > 0) {
-                    debt.setUserTo(userRepository.findOne(debt.getUserTo().getId()));
+        client = userRepository.findOne(client.getId());
+        List<Debt> debts = getDebtList(groupID, client);
+        Map<Group, Map<DebtKey, List<Debt> > > debtKeyMap = new HashMap<>();
+        for (Debt d: debts) {
+            Group group = d.getGroup();
+            debtKeyMap.computeIfAbsent(group, k -> new HashMap<>());
+            DebtKey direct = new DebtKey(d.getUserFrom(), d.getUserTo(), group);
+            Debt toAdd = d;
+            if (!debtKeyMap.get(group).containsKey(direct)) {
+                DebtKey indirect = new DebtKey(d.getUserTo(), d.getUserFrom(), group);
+                if (debtKeyMap.get(group).containsKey(indirect)) {
+                    toAdd = new Debt(d.getUserTo(), d.getUserFrom(), group, BigDecimal.ZERO.subtract(d.getAmount()));
+                } else {
+                    debtKeyMap.get(group).put(direct, new LinkedList<>());
                 }
             }
+            debtKeyMap.get(group).get(direct).add(toAdd);
         }
-
+        Map<Group, List<Debt> > debtMap = new HashMap<>();
+        for (Group g: debtKeyMap.keySet()) {
+            Map<DebtKey, List<Debt> > groupDebtMap = debtKeyMap.get(g);
+            debtMap.computeIfAbsent(g, k -> new LinkedList<>());
+            for (DebtKey dk: groupDebtMap.keySet()) {
+                if (user != null && !(dk.getUserFrom().getId().equals(user) || dk.getUserTo().getId().equals(user))) {
+                    continue;
+                }
+                Debt debt = new Debt(dk.getUserFrom(), dk.getUserTo(), g, BigDecimal.ZERO);
+                for (Debt d: groupDebtMap.get(dk)) {
+                    debt.setAmount(debt.getAmount().add(d.getAmount()));
+                }
+                if (debt.getAmount().compareTo(BigDecimal.ZERO) < 0) {
+                    debt = new Debt(debt.getUserTo(), debt.getUserFrom(), debt.getGroup(), debt.getAmount().abs());
+                }
+                if (debt.getAmount().compareTo(BigDecimal.ZERO) == 0) {
+                    continue;
+                }
+                debtMap.get(g).add(debt);
+            }
+        }
         return debtMap;
     }
 
@@ -174,6 +221,9 @@ public class SpringPaymentService implements PaymentService {
         paymentRepository.delete(payment);
     }
 
+    /**
+     * Check if both of three: userFrom, userTo, groupId are not provided or existing
+     */
     private void validateKeys(Integer userFromID, Integer userToID, Integer groupID) {
         User userFrom = userFromID == null || userFromID == 0 ? null : userRepository.findOne(userFromID);
         User userTo = userToID == null || userToID == 0 ? null : userRepository.findOne(userToID);
