@@ -29,12 +29,4 @@ export class GroupsService {
         return this.http.patch('api/groups', group);
     }
 
-    public getWithPayments(userId: number): Observable<any> {
-        const filters = new PaymentFilters();
-        filters.sum = true;
-        filters.user = userId;
-        filters.group = 0;
-        return this.paymentsService.get(filters)
-            .map((payments: Payment[]) => payments.map((payment: Payment) => new Group(payment.group, payment.amount)));
-    }
 }
