@@ -22,5 +22,5 @@ spring:
   jpa:
     hibernate:
       ddl-auto: ${HIBERNATE_DDL_AUTO}
-    show-sql: true
+    show-sql: ${JPA_SHOW_SQL}
     database-platform: org.hibernate.dialect.PostgresPlusDialect
