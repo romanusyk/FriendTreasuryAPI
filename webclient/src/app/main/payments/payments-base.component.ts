@@ -54,9 +54,9 @@ export abstract class BasePaymentsListComponent implements OnInit, OnDestroy {
 
   getEmptyMessage() {
     if (!(this.preferences && this.preferences.currentGroup)) {
-      return 'Please, chose group from list to show payments';
+      return 'Please, chose group fromCreation list toCreation show payments';
     } else {
-      return 'You currently have no payments, please click button below to create one';
+      return 'You currently have no payments, please click button below toCreation create one';
     }
   }
 

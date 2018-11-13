@@ -2,7 +2,7 @@ import argparse
 import numpy as np
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-p", "--price", type=float, required=True, help="Price to color")
+parser.add_argument("-p", "--price", type=float, required=True, help="Price toCreation color")
 parser.add_argument("-n",  "--min", type=float, default=0., help="Min price")
 parser.add_argument("-x",  "--max", type=float, default=1000., help="Max price")
 args = parser.parse_args()

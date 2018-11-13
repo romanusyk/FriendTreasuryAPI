@@ -1,63 +1,44 @@
 package romanusyk.ft.data.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
-import lombok.experimental.Accessors;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+import romanusyk.ft.data.entity.Group;
+import romanusyk.ft.data.entity.User;
+import romanusyk.ft.data.model.value.DebtKey;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import java.lang.invoke.MethodHandles;
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.Date;
 
 /**
- * Created by romm on 06.02.17.
+ * Created by romm on 01.02.17.
  */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+
 @Builder
-@Accessors(chain = true)
+@AllArgsConstructor
+@Getter
+@Setter
 public class PaymentDTO {
 
-    private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    private Integer id;
 
-    private Integer userFrom;
+    private User userFrom;
 
-    @NotNull
-    private Integer[] usersTo;
+    private User userTo;
 
-    @NotNull
-    private Integer group;
+    private GroupDTO group;
 
-    @NotNull
     private BigDecimal amount;
 
-    @Min(0)
-    @Max(1)
-    @Builder.Default
-    private Integer shallIPayForMyself = 1;
-
-    @NotNull
     private String description;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MMM-dd")
-    private Date date;
+    private Long timestamp;
 
     private double longitude;
+
     private double latitude;
-
-    public static class PaymentDTOBuilder {
-
-        public PaymentDTOBuilder date(Long timestamp) {
-            this.date = new Date(timestamp);
-            return this;
-        }
-
-    }
 
 }

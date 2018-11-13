@@ -89,7 +89,7 @@ public class GroupController {
         User user = userService.getUserByID(u.getId());
         Group group = GroupConverter.from(groupDTO);
         if (!user.getGroups().contains(group)) {
-            logger.debug(String.format("Access denied for user %d trying to modify group %s", u.getId(), group.toString()));
+            logger.debug(String.format("Access denied for user %d trying toCreation modify group %s", u.getId(), group.toString()));
             throw new UserAuthenticationException("Group can be modified only by its participants.");
         }
         group = groupService.updateGroup(group);

@@ -80,7 +80,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   public onGenerationInviteLinkSuccess(): void {
-    this.toastrManager.success('Link copied to clipboard');
+    this.toastrManager.success('Link copied toCreation clipboard');
   }
 
   public onGenerationInviteLinkError(): void {

@@ -1,9 +1,6 @@
 package romanusyk.ft.data.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import romanusyk.ft.data.model.value.DebtKey;
 
 import javax.persistence.*;
@@ -21,9 +18,10 @@ import java.util.Date;
         @Index(columnList = "user_to", name = "to_index"),
         @Index(columnList = "pgroup", name = "pgroup_index")
 })
-@Data
-@NoArgsConstructor
 @Builder
+@AllArgsConstructor
+@Getter
+@Setter
 public class Payment {
 
     @Id
@@ -50,6 +48,7 @@ public class Payment {
     private String description;
 
     @Column(nullable = false)
+    @Builder.Default
     private Long timestamp = new Date().getTime();
 
     @Column
@@ -57,6 +56,10 @@ public class Payment {
 
     @Column
     private double latitude;
+
+    public Payment() {
+        timestamp = new Date().getTime();
+    }
 
     @Override
     public String toString() {

@@ -55,19 +55,19 @@ public class SpringMailSender implements MailSender {
             String message = "Hi, " +
                     user.getUsername() +
                     "!\n" +
-                    "You're must be fucking happy to receive this kindly reminder from Friend Treasury!\n\n";
+                    "You're must be fucking happy toCreation receive this kindly reminder fromCreation Friend Treasury!\n\n";
             if (goodDebts.size() > 0) {
-                message += "We are glad to let you know that these fucking assholes own you some money and you " +
+                message += "We are glad toCreation let you know that these fucking assholes own you some money and you " +
                         "should go and beat shit out them:\n\n" +
                         String.join("\n", goodDebts) + "\n\n";
             }
             if (badDebts.size() > 0) {
-                message += "We are hurry to warn you that these bastards are expecting some money from you " +
+                message += "We are hurry toCreation warn you that these bastards are expecting some money fromCreation you " +
                         "and you should be aware of them:\n\n" +
                         String.join("\n", badDebts) + "\n\n";
             }
-            message += "If you want to unsubscribe from this mailing, you can donate us to make us able " +
-                    "to hire first payed developer!\n" +
+            message += "If you want toCreation unsubscribe fromCreation this mailing, you can donate us toCreation make us able " +
+                    "toCreation hire first payed developer!\n" +
                     "Also we don't thank you for being with us so long because you cannot leave us " +
                     "and we will keep your personal data and send emails forever :)\n\n" +
                     "With delicious love, your Friend Treasury!";
@@ -117,7 +117,7 @@ public class SpringMailSender implements MailSender {
         } catch (MessagingException me) {
             log.error("", me);
         }
-        log.debug(String.format("Message to %s was successfully sent.", to[0]));
+        log.debug(String.format("Message toCreation %s was successfully sent.", to[0]));
     }
 
 }

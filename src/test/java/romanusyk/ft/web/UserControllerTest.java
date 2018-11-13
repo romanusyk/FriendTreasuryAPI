@@ -37,7 +37,11 @@ public class UserControllerTest {
     @Test
     public void testGetUserByIdOnValidId() throws Exception {
 
-        User roma = new User("12345", "roma", "111", "user");
+        User roma = User.builder().
+                username("roma").
+                password("111").
+                authorities("user").
+                build();
         roma.setId(1);
 
         when(userService.getUserByID(roma.getId())).thenReturn(roma);
@@ -51,7 +55,11 @@ public class UserControllerTest {
     @Test
     public void testGetUserByUsernameOnInvalidUsername() throws Exception {
 
-        User roma = new User("12345", "roma", "111", "user");
+        User roma = User.builder()
+                .username("roma")
+                .password("111")
+                .authorities("user")
+                .build();
         roma.setId(1);
 
         when(userService.getUserByID(anyInt())).thenReturn(null);

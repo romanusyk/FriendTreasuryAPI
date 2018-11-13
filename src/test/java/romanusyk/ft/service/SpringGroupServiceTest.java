@@ -31,7 +31,7 @@ public class SpringGroupServiceTest {
     public void testCreateGroupOnValidGroup() {
 
         // TODO:
-        Group group = new Group("testGroup", "");
+        Group group = Group.builder().title("testGroup").name("").build();
 
         when(groupRepository.save(group)).then(invocationOnMock -> {
             group.setId(1);
@@ -48,7 +48,7 @@ public class SpringGroupServiceTest {
     public void testCreateGroupOnGroupWithId() {
 
         // TODO:
-        Group group = new Group("testGroup", "");
+        Group group = Group.builder().title("testGroup").name("").build();
         group.setId(1);
 
         groupService.createGroup(group, null);

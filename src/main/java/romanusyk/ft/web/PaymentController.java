@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import romanusyk.ft.data.model.dto.PaymentCreationDTO;
 import romanusyk.ft.data.model.dto.PaymentDTO;
 import romanusyk.ft.data.model.value.Debt;
 import romanusyk.ft.data.entity.Group;
@@ -100,12 +101,12 @@ public class PaymentController {
     @PreAuthorize("@securityService.hasRole('user')")
     public void makeGroupPayment(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
-            @RequestBody @Valid PaymentDTO paymentDTO
+            @RequestBody @Valid PaymentCreationDTO paymentDTO
     ) {
         User u = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
         if (paymentDTO.getUserFrom() != null) {
-            logger.debug(String.format("Rejected. User %d tried to pay from user %d.", u.getId(), paymentDTO.getUserFrom()));
-            throw new UserAuthenticationException("userFrom should be null. It is taken from auth token.");
+            logger.debug(String.format("Rejected. User %d tried toCreation pay fromCreation user %d.", u.getId(), paymentDTO.getUserFrom()));
+            throw new UserAuthenticationException("userFrom should be null. It is taken fromCreation auth token.");
         }
         paymentDTO.setUserFrom(u.getId());
         paymentService.makeGroupPayment(paymentDTO);

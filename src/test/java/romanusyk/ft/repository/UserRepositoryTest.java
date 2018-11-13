@@ -36,7 +36,11 @@ public class UserRepositoryTest {
 
     @Before
     public void init() {
-        roma = new User("12345", "Roma", "111", "user");
+        roma = User.builder()
+                .username("roma")
+                .password("111")
+                .authorities("user")
+                .build();
         entityManager.persist(roma);
         entityManager.flush();
     }

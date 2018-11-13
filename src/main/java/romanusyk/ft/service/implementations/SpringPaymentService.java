@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import romanusyk.ft.data.model.dto.PaymentDTO;
+import romanusyk.ft.data.model.dto.PaymentCreationDTO;
 import romanusyk.ft.data.model.dto.UserStatistics;
 import romanusyk.ft.data.model.value.Debt;
 import romanusyk.ft.data.model.value.DebtKey;
@@ -159,7 +159,7 @@ public class SpringPaymentService implements PaymentService {
     }
 
     @Override
-    public void makeGroupPayment(PaymentDTO paymentDTO) {
+    public void makeGroupPayment(PaymentCreationDTO paymentDTO) {
         User userFrom = userRepository.findOne(paymentDTO.getUserFrom());
         Group group = groupRepository.findOne(paymentDTO.getGroup());
 
@@ -175,11 +175,11 @@ public class SpringPaymentService implements PaymentService {
             User userTo = userRepository.findOne(userToID);
 
             if (userTo == null) {
-                throw new RuntimeException(String.format("Unable to make payment. User with id %d does not exists.", userToID));
+                throw new RuntimeException(String.format("Unable toCreation make payment. User with id %d does not exists.", userToID));
             }
             checkUserInGroup(userTo, group);
 
-            Payment payment = PaymentConverter.from(paymentDTO, userFrom, userTo, group);
+            Payment payment = PaymentConverter.fromCreation(paymentDTO, userFrom, userTo, group);
             paymentRepository.save(payment);
         }
 
@@ -196,7 +196,7 @@ public class SpringPaymentService implements PaymentService {
         }
         if (!Objects.equals(existingPayment.getUserFrom().getId(), client.getId())) {
             logger.debug(String.format(
-                    "Rejected. User %d tried to pay from user %d.",
+                    "Rejected. User %d tried toCreation pay fromCreation user %d.",
                     client.getId(),
                     existingPayment.getUserFrom().getId()
             ));
@@ -261,7 +261,7 @@ public class SpringPaymentService implements PaymentService {
     private static void checkUserInGroup(User u, Group g) {
         if (!g.getUsers().contains(u)) {
             throw new RuntimeException(String.format(
-                    "Unable to make payment. User %s is not in group %s.",
+                    "Unable toCreation make payment. User %s is not in group %s.",
                     u.getId(),
                     g.getId()
             ));

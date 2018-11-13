@@ -38,7 +38,11 @@ public class SpringUserServiceTest {
 
     @Before
     public void setUp() {
-        roma = new User("12345", "roma", "111", "user");
+        roma = User.builder()
+                .username("roma")
+                .password("111")
+                .authorities("user")
+                .build();
     }
 
     @Test

@@ -2,7 +2,7 @@ package romanusyk.ft.service.interfaces;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
-import romanusyk.ft.data.model.dto.PaymentDTO;
+import romanusyk.ft.data.model.dto.PaymentCreationDTO;
 import romanusyk.ft.data.model.value.Debt;
 import romanusyk.ft.data.entity.Group;
 import romanusyk.ft.data.entity.Payment;
@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public interface PaymentService {
 
-    void makeGroupPayment(PaymentDTO paymentDTO);
+    void makeGroupPayment(PaymentCreationDTO paymentDTO);
 
     Payment updatePayment(Payment payment, User client);
 

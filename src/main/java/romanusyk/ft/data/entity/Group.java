@@ -1,9 +1,6 @@
 package romanusyk.ft.data.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -16,9 +13,10 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "pgroups")
-@Data
-@NoArgsConstructor
 @Builder
+@AllArgsConstructor
+@Getter
+@Setter
 public class Group {
 
     @Id
@@ -35,7 +33,12 @@ public class Group {
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "pgroup_user")
+    @Builder.Default
     private Set<User> users = new HashSet<>();
+
+    public Group() {
+        users = new HashSet<>();
+    }
 
     @Override
     public String toString() {

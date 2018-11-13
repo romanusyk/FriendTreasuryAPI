@@ -13,9 +13,10 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-@Data
-@RequiredArgsConstructor
 @Builder
+@AllArgsConstructor
+@Getter
+@Setter
 public class User {
 
     @Id
@@ -38,10 +39,15 @@ public class User {
     private String creditCard;
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "users", cascade = CascadeType.MERGE)
+    @Builder.Default
     private Set<Group> groups = new HashSet<>();
 
     @Column
     private String authorities;
+
+    public User() {
+        groups = new HashSet<>();
+    }
 
     @Override
     public String toString() {

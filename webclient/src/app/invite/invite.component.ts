@@ -39,14 +39,14 @@ export class InviteComponent implements OnInit, OnDestroy {
                 },
                 (err) => {
                     console.log(err);
-                    this.toastr.error('Error while joining to group');
+                    this.toastr.error('Error while joining toCreation group');
                     this.loading.hide();
                     this.router.navigateByUrl(this.config.routes.main);
                 }
             );
         } else {
             this.inviteService.save(name);
-            this.toastr.info('Please login to join to group');
+            this.toastr.info('Please login toCreation join toCreation group');
             this.router.navigateByUrl(this.config.routes.login);
         }
     }
