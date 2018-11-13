@@ -3,23 +3,32 @@ version: '3.1'
 services:
 
   db:
-    build: "db/"
+    build:
+      context: "db/"
+      args:
+        - USERNAME=${DB_USERNAME}
+        - PASSWORD=${DB_PASSWORD}
     restart: always
-    environment:
-      POSTGRES_PASSWORD: iknowdocker
     volumes:
       - /home/yevhenii/database:/var/lib/postgresql/data
     ports:
-     - "5432:5432"
+     - "${DB_OUTER_PORT}:${DB_INNER_PORT}"
 
   backend:
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/ft
-      SPRING_DATASOURCE_USERNAME: romm
-      SPRING_DATASOURCE_PASSWORD: romm
     build: "./"
+    environment:
+      SERVER_PORT: ${SERVER_PORT}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://${DB_HOST}:${DB_INNER_PORT}/ft
+      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      JPA_SHOW_SQL: ${JPA_SHOW_SQL}
+      HIBERNATE_DDL_AUTO: ${HIBERNATE_DDL_AUTO}
+      FT_TOKEN_SECRET: ${FT_TOKEN_SECRET}
+      INIT_DB: ${INIT_DB}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
     ports:
-    - "9999:9999"
+    - "${SERVER_PORT}:${SERVER_PORT}"
     depends_on:
     - db
     

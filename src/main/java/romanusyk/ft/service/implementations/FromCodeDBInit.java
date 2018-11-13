@@ -1,7 +1,7 @@
 package romanusyk.ft.service.implementations;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import romanusyk.ft.data.entity.Group;
 import romanusyk.ft.data.entity.Payment;
@@ -27,8 +27,15 @@ public class FromCodeDBInit implements DBInit {
     private final GroupRepository groupRepository;
     private final PaymentRepository paymentRepository;
 
+    @Value("${ft.initdb}")
+    private Boolean initDB;
+
     @Override
     public void init() {
+
+        if (!initDB) {
+            return;
+        }
 
         RandomString randomString = new RandomString();
 
