@@ -10,7 +10,7 @@ logging:
 ft:
   token:
     header: "X-Auth-Token"
-  initdb: false
+  initdb: ${INIT_DB}
 
 mail:
   cron: "30 24 00 * * WED"
