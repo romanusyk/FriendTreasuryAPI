@@ -14,4 +14,3 @@ backup/*
 
 webclient/yarn.lock
 src/main/resources/static/*
-src/main/resources/application.yml

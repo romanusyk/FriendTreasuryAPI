@@ -16,7 +16,7 @@ First of all, you need Linux or MacOS system installed (Windows is supported, bu
 3. Install NginX.
 
 ### Running
-1. Use this [commands](db/init.sql) to initialize database.
+1. Use this [commands](db/init.sql.noexec) to initialize database.
 2. In your `application.yml` set `spring.jpa.hibernate.ddl-auto: create` to let Hibernate create all it need to working. For later use set `spring.jpa.hibernate.ddl-auto: validate` back.
 3. To run server use `run.sh` or `start.sh` (to run it in background with logging).
 4. Use [this guide](webclient/) to run frontend.

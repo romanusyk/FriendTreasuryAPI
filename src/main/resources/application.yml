@@ -1,0 +1,26 @@
+server:
+  contextPath: /ft
+
+logging:
+  level:
+    romanusyk.ft: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+ft:
+  token:
+    header: "X-Auth-Token"
+  initdb: false
+
+mail:
+  cron: "30 24 00 * * WED"
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST}:${DB_INNER_PORT}/ft
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: ${HIBERNATE_DDL_AUTO}
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgresPlusDialect

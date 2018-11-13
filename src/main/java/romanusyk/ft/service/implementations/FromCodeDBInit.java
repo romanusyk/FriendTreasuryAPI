@@ -1,6 +1,7 @@
 package romanusyk.ft.service.implementations;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import romanusyk.ft.domain.Group;
@@ -34,8 +35,15 @@ public class FromCodeDBInit implements DBInit {
     @Autowired
     PaymentRepository paymentRepository;
 
+    @Value("${ft.initdb}")
+    private Boolean initDB;
+
     @Override
     public void init() {
+
+        if (!initDB) {
+            return;
+        }
 
         RandomString randomString = new RandomString();
 
