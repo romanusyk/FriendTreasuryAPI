@@ -1,9 +1,6 @@
 package romanusyk.ft.data.model.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import romanusyk.ft.data.entity.Group;
 import romanusyk.ft.data.entity.User;
 import romanusyk.ft.data.model.value.DebtKey;
@@ -18,6 +15,7 @@ import java.util.Date;
  */
 
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
@@ -25,9 +23,9 @@ public class PaymentDTO {
 
     private Integer id;
 
-    private User userFrom;
+    private UserDTO userFrom;
 
-    private User userTo;
+    private UserDTO userTo;
 
     private GroupDTO group;
 

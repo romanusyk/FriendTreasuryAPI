@@ -43,10 +43,10 @@ public class SpringMailSender implements MailSender {
             List<String> goodDebts = new LinkedList<>();
             List<String> badDebts = new LinkedList<>();
             for (Debt debt: debts) {
-                if (Objects.equals(debt.getUserFrom().getId(), user.getId())) {
-                    goodDebts.add(debt.getUserTo().getUsername() + ": " + debt.getAmount() + " hryvnas");
-                } else if (Objects.equals(debt.getUserTo().getId(), user.getId())) {
-                    badDebts.add(debt.getUserFrom().getUsername() + ": " + debt.getAmount() + " hryvnas");
+                if (Objects.equals(debt.getKey().getUserFrom().getId(), user.getId())) {
+                    goodDebts.add(debt.getKey().getUserTo().getUsername() + ": " + debt.getAmount() + " hryvnas");
+                } else if (Objects.equals(debt.getKey().getUserTo().getId(), user.getId())) {
+                    badDebts.add(debt.getKey().getUserFrom().getUsername() + ": " + debt.getAmount() + " hryvnas");
                 }
             }
             if (goodDebts.size() == 0 && badDebts.size() == 0){

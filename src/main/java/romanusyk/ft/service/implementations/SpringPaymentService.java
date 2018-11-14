@@ -72,7 +72,7 @@ public class SpringPaymentService implements PaymentService {
         Group group = new Group();
         group.setId(groupID == null ? 0 : groupID);
         for (Debt d: debts) {
-            d.setGroup(group);
+            d.getKey().setGroup(group);
         }
         return debts;
     }
@@ -85,7 +85,7 @@ public class SpringPaymentService implements PaymentService {
         Map<Group, Map<DebtKey, List<Debt> > > debtKeyMap = new HashMap<>();
 
         for (Debt debt: debts) {
-            Group group = debt.getGroup();
+            Group group = debt.getKey().getGroup();
             debtKeyMap.computeIfAbsent(group, k -> new HashMap<>());
             putDebtToGroupMap(debtKeyMap.get(group), debt);
         }
@@ -98,12 +98,12 @@ public class SpringPaymentService implements PaymentService {
                 if (user != null && !(dk.getUserFrom().getId().equals(user) || dk.getUserTo().getId().equals(user))) {
                     continue;
                 }
-                Debt debt = new Debt(dk.getUserFrom(), dk.getUserTo(), g, BigDecimal.ZERO);
+                Debt debt = Debt.builder().key(dk.getUserFrom(), dk.getUserTo(), g).amount(BigDecimal.ZERO).build();
                 for (Debt d: groupDebtMap.get(dk)) {
                     debt.setAmount(debt.getAmount().add(d.getAmount()));
                 }
                 if (debt.getAmount().compareTo(BigDecimal.ZERO) < 0) {
-                    debt = new Debt(debt.getUserTo(), debt.getUserFrom(), debt.getGroup(), debt.getAmount().abs());
+                    debt = Debt.builder().key(debt.getKey()).amount(debt.getAmount().abs()).build();
                 }
                 if (debt.getAmount().compareTo(BigDecimal.ZERO) == 0) {
                     continue;
@@ -116,19 +116,18 @@ public class SpringPaymentService implements PaymentService {
     }
 
     private static void putDebtToGroupMap(Map<DebtKey, List<Debt> > groupMap, Debt debt) {
-        DebtKey direct = new DebtKey(debt.getUserFrom(), debt.getUserTo(), debt.getGroup());
+        DebtKey direct = debt.getKey();
         DebtKey mapKey = direct;
         Debt mapValue = debt;
         if (!groupMap.containsKey(direct)) {
-            DebtKey indirect = new DebtKey(debt.getUserTo(), debt.getUserFrom(), debt.getGroup());
+            DebtKey indirect = new DebtKey(
+                    debt.getKey().getUserTo(),
+                    debt.getKey().getUserFrom(),
+                    debt.getKey().getGroup()
+            );
             if (groupMap.containsKey(indirect)) {
                 mapKey = indirect;
-                mapValue = new Debt(
-                        debt.getUserTo(),
-                        debt.getUserFrom(),
-                        debt.getGroup(),
-                        BigDecimal.ZERO.subtract(debt.getAmount())
-                );
+                mapValue = Debt.builder().key(debt.getKey()).amount(BigDecimal.ZERO.subtract(debt.getAmount())).build();
             } else {
                 groupMap.put(direct, new LinkedList<>());
             }

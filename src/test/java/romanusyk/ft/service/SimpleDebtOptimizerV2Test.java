@@ -69,8 +69,8 @@ public class SimpleDebtOptimizerV2Test {
         List<Debt> result = optimizer.getOptimalPayments(userStatistics);
         for (Debt debt: result) {
             System.out.println(String.format("%s %s %f",
-                    debt.getUserFrom().getUsername(),
-                    debt.getUserTo().getUsername(),
+                    debt.getKey().getUserFrom().getUsername(),
+                    debt.getKey().getUserTo().getUsername(),
                     debt.getAmount()
             ));
         }

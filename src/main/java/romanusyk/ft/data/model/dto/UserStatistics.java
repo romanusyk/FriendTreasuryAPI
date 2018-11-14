@@ -2,10 +2,7 @@ package romanusyk.ft.data.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import romanusyk.ft.data.entity.Group;
 import romanusyk.ft.data.entity.User;
 
@@ -15,10 +12,11 @@ import java.util.Set;
 /**
  * Created by Roman Usyk on 19.01.18.
  */
-@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Getter
+@Setter
 public class UserStatistics {
 
     private String username;
@@ -48,6 +46,7 @@ public class UserStatistics {
             this.user = user;
             this.username = user.getUsername();
             this.userId = user.getId();
+            this.groups(user.getGroups());
             return this;
         }
 

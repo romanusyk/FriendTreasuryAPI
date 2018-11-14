@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import romanusyk.ft.data.model.dto.DebtDTO;
+import romanusyk.ft.data.model.dto.GroupDTO;
 import romanusyk.ft.data.model.dto.PaymentCreationDTO;
 import romanusyk.ft.data.model.dto.PaymentDTO;
 import romanusyk.ft.data.model.value.Debt;
@@ -17,10 +19,14 @@ import romanusyk.ft.data.entity.User;
 import romanusyk.ft.exception.UserAuthenticationException;
 import romanusyk.ft.security.JwtUtil;
 import romanusyk.ft.service.interfaces.PaymentService;
+import romanusyk.ft.utils.converter.DebtConverter;
+import romanusyk.ft.utils.converter.GroupConverter;
 import romanusyk.ft.utils.converter.PaymentConverter;
 
 import javax.validation.Valid;
 import java.lang.invoke.MethodHandles;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -61,19 +67,41 @@ public class PaymentController {
     @RequestMapping(value = "/sum", method = RequestMethod.GET)
     @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
-    public Object getPaymentSum(
+    public List<DebtDTO> getPaymentSum(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
             @RequestParam(required = false) Integer user,
-            @RequestParam(required = false) Integer group,
-            @RequestParam(required = false) Integer map
+            @RequestParam(required = false) Integer group
     ) {
         logger.debug("GET /getPaymentSum(" + user + ", " + group + ")");
         User client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
         Map <Group, List<Debt> > result = paymentService.getPaymentSum(user, group, client);
-        if (map != null && map == 1) {
-            return result;
+
+        return result.values().stream().flatMap(List::stream).map(DebtConverter::to).collect(Collectors.toList());
+    }
+
+    @RequestMapping(value = "/summap", method = RequestMethod.GET)
+    @PreAuthorize("@securityService.hasRole('user')")
+    @ResponseBody
+    public Map<GroupDTO, List<DebtDTO> > getPaymentSumMap(
+            @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
+            @RequestParam(required = false) Integer user,
+            @RequestParam(required = false) Integer group
+    ) {
+        logger.debug("GET /getPaymentSum(" + user + ", " + group + ")");
+        User client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        Map <Group, List<Debt> > result = paymentService.getPaymentSum(user, group, client);
+
+        Map<GroupDTO, List<DebtDTO> > convertedResult = new HashMap<>();
+        for (Group g: result.keySet()) {
+            GroupDTO gDTO = GroupConverter.to(g);
+            convertedResult.put(gDTO, new LinkedList<>());
+            for (Debt d: result.get(g)) {
+                DebtDTO dDTO = DebtConverter.to(d);
+                convertedResult.get(gDTO).add(dDTO);
+            }
         }
-        return result.values().stream().flatMap(List::stream).collect(Collectors.toList());
+
+        return convertedResult;
     }
 
     @RequestMapping(value = "/debts", method = RequestMethod.GET)

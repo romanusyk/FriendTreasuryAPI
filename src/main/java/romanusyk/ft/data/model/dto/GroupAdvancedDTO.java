@@ -1,9 +1,6 @@
 package romanusyk.ft.data.model.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import romanusyk.ft.data.entity.User;
 
 import java.math.BigDecimal;
@@ -12,10 +9,11 @@ import java.util.Set;
 /**
  * Created by Roman Usyk on 10.03.18.
  */
-@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Getter
+@Setter
 public class GroupAdvancedDTO {
 
     private Integer id;

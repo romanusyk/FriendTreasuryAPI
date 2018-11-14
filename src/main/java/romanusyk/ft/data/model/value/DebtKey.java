@@ -1,5 +1,6 @@
 package romanusyk.ft.data.model.value;
 
+import lombok.*;
 import romanusyk.ft.data.entity.Group;
 import romanusyk.ft.data.entity.User;
 
@@ -8,23 +9,18 @@ import java.io.Serializable;
 /**
  * Created by romm on 27.02.17.
  */
-// TODO: 13.11.18 lombokize
-public class DebtKey implements Serializable {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+public class DebtKey {
 
     private User userFrom;
 
     private User userTo;
 
     private Group group;
-
-    public DebtKey() {
-    }
-
-    public DebtKey(User userFrom, User userTo, Group group) {
-        this.userFrom = userFrom;
-        this.userTo = userTo;
-        this.group = group;
-    }
 
     @Override
     public String toString() {
@@ -55,27 +51,4 @@ public class DebtKey implements Serializable {
         return 31 * 31 * u1 + 31 * u2 + g;
     }
 
-    public User getUserFrom() {
-        return userFrom;
-    }
-
-    public void setUserFrom(User userFrom) {
-        this.userFrom = userFrom;
-    }
-
-    public User getUserTo() {
-        return userTo;
-    }
-
-    public void setUserTo(User userTo) {
-        this.userTo = userTo;
-    }
-
-    public Group getGroup() {
-        return group;
-    }
-
-    public void setGroup(Group group) {
-        this.group = group;
-    }
 }

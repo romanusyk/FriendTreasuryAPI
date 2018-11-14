@@ -17,9 +17,10 @@ import java.util.Date;
 /**
  * Created by romm on 06.02.17.
  */
-@Data
 @AllArgsConstructor
 @Builder
+@Getter
+@Setter
 @Accessors(chain = true)
 public class PaymentCreationDTO {
 

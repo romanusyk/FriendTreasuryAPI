@@ -1,5 +1,9 @@
 package romanusyk.ft.data.model.value;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import romanusyk.ft.data.entity.Group;
 import romanusyk.ft.data.entity.User;
 
@@ -10,35 +14,23 @@ import java.util.Date;
 /**
  * Created by romm on 01.02.17.
  */
-// TODO: 13.11.18 DTOize
+@AllArgsConstructor
+@Builder
+@Getter
+@Setter
 public class Debt {
 
-    private User userFrom;
+    private DebtKey key;
 
-    private User userTo;
+    @Builder.Default
+    private BigDecimal amount = BigDecimal.ZERO;
 
-    private Group group;
-
-    private BigDecimal amount;
-
-    private Long timestamp;
+    @Builder.Default
+    private Long timestamp = new Date().getTime();
 
     public Debt() {
         amount = new BigDecimal(0);
         timestamp = new Date().getTime();
-    }
-
-    public Debt(User userFrom, User userTo, Group group, BigDecimal amount) {
-        this();
-        this.userFrom = userFrom;
-        this.userTo = userTo;
-        this.group = group;
-        this.amount = amount;
-    }
-
-    public Debt(User userFrom, User userTo, Group group, BigDecimal amount, Long timestamp) {
-        this(userFrom, userTo, group, amount);
-        this.timestamp = timestamp;
     }
 
     @Override
@@ -47,7 +39,7 @@ public class Debt {
         df.setMaximumFractionDigits(2);
         return String.format(
                 "{key: %s, amount: %s, time: %d}",
-                new DebtKey(userFrom, userTo, group),
+                key,
                 df.format(amount),
                 timestamp
         );
@@ -56,56 +48,31 @@ public class Debt {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Debt) {
-            Debt u = (Debt) obj;
-            return new DebtKey(userFrom, userTo, group)
-                    .equals(new DebtKey(u.userFrom, u.userTo, u.group));
+            Debt d = (Debt) obj;
+            return this.key.equals(d.key);
         }
         return false;
     }
 
     @Override
     public int hashCode() {
-        return new DebtKey(userFrom, userTo, group).hashCode();
+        return key.hashCode();
     }
 
-    public User getUserFrom() {
-        return userFrom;
+    public void setKey(User userFrom, User userTo, Group group) {
+        this.key = new DebtKey(userFrom, userTo, group);
     }
 
-    public void setUserFrom(User userFrom) {
-        this.userFrom = userFrom;
-    }
+    public static class DebtBuilder {
 
-    public User getUserTo() {
-        return userTo;
-    }
+        public DebtBuilder key(DebtKey key) {
+            this.key = key;
+            return this;
+        }
 
-    public void setUserTo(User userTo) {
-        this.userTo = userTo;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
-
-    public Group getGroup() {
-        return group;
-    }
-
-    public void setGroup(Group group) {
-        this.group = group;
-    }
-
-    public Long getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Long timestamp) {
-        this.timestamp = timestamp;
+        public DebtBuilder key(User userFrom, User userTo, Group group) {
+            return this.key(new DebtKey(userFrom, userTo, group));
+        }
     }
 
 }

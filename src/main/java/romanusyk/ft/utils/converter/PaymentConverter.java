@@ -14,8 +14,8 @@ public class PaymentConverter {
 
     public static PaymentDTO to(Payment payment) {
         return PaymentDTO.builder()
-                .userFrom(payment.getUserFrom())
-                .userTo(payment.getUserTo())
+                .userFrom(UserConverter.to(payment.getUserFrom()))
+                .userTo(UserConverter.to(payment.getUserTo()))
                 .group(GroupConverter.to(payment.getGroup()))
                 .amount(payment.getAmount())
                 .timestamp(payment.getTimestamp())

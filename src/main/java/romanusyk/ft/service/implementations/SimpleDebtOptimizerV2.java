@@ -35,10 +35,6 @@ public class SimpleDebtOptimizerV2 implements DebtOptimizerV2 {
         sortUsers();
         for (UserStatistics positive : positiveUsers) {
             for (UserStatistics negative : negativeUsers) {
-//                System.out.println(String.format("%s %f -> %s %f",
-//                        positive.getUsername(), positive.getDebt(),
-//                        negative.getUsername(), negative.getDebt()
-//                ));
                 if (!areFamiliar.get(positive.getUserId()).get(negative.getUserId())) {
                     continue;
                 }
@@ -48,12 +44,15 @@ public class SimpleDebtOptimizerV2 implements DebtOptimizerV2 {
                 int cmp = positive.getDebt().compareTo(negative.getDebt().abs());
                 BigDecimal debtAmount = cmp < 0 ? positive.getDebt() : negative.getDebt().abs();
 
-                result.add(new Debt(
-                        positive.getUser(),
-                        negative.getUser(),
-                        null,
-                        debtAmount
-                ));
+                result.add(Debt.builder()
+                                .key(
+                                        positive.getUser(),
+                                        negative.getUser(),
+                                        null
+                                )
+                                .amount(debtAmount)
+                                .build()
+                );
 
                 positive.setDebt(positive.getDebt().subtract(debtAmount));
                 debtSums.computeIfAbsent(positive.getUserId(), k -> BigDecimal.ZERO);
