@@ -1,4 +1,4 @@
-package romanusyk.ft.web;
+package romanusyk.ft.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,7 +20,6 @@ import romanusyk.ft.service.interfaces.GroupService;
 import romanusyk.ft.service.interfaces.UserService;
 import romanusyk.ft.utils.converter.GroupAdvancedConverter;
 import romanusyk.ft.utils.converter.GroupConverter;
-import romanusyk.ft.utils.converter.UserConverter;
 
 import javax.validation.Valid;
 import java.lang.invoke.MethodHandles;
@@ -28,7 +27,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Created by Roman Usyk on 12.09.17.

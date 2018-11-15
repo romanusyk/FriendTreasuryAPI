@@ -1,4 +1,4 @@
-package romanusyk.ft.web;
+package romanusyk.ft.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +25,6 @@ import romanusyk.ft.utils.converter.UserConverter;
 
 import javax.validation.Valid;
 import java.lang.invoke.MethodHandles;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -151,7 +149,7 @@ public class UserController {
             @PathVariable("group") Integer groupID) {
         Group group = groupService.getGroupById(groupID);
         if (group == null) {
-            throw new EntityNotFoundException(String.format("Group with id %d does not exist.", groupID));
+            throw new EntityNotFoundException(Group.class, groupID);
         }
         User me = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
         if (!group.getUsers().contains(me)) {

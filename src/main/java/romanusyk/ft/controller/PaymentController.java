@@ -1,4 +1,4 @@
-package romanusyk.ft.web;
+package romanusyk.ft.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;

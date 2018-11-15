@@ -3,7 +3,7 @@ version: '3.1'
 services:
    
   frontend-new:
-    build: "../ft-web-client"
+    build: "../ft-controller-client"
     ports:
     - "8008:80"
     depends_on:
