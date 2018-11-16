@@ -174,7 +174,7 @@ public class SpringPaymentService implements PaymentService {
             User userTo = userRepository.findOne(userToID);
 
             if (userTo == null) {
-                throw new RuntimeException(String.format("Unable toCreation make payment. User with id %d does not exists.", userToID));
+                throw new RuntimeException(String.format("Unable to make payment. User with id %d does not exists.", userToID));
             }
             checkUserInGroup(userTo, group);
 
@@ -195,7 +195,7 @@ public class SpringPaymentService implements PaymentService {
         }
         if (!Objects.equals(existingPayment.getUserFrom().getId(), client.getId())) {
             logger.debug(String.format(
-                    "Rejected. User %d tried toCreation pay fromCreation user %d.",
+                    "Rejected. User %d tried to pay fromCreation user %d.",
                     client.getId(),
                     existingPayment.getUserFrom().getId()
             ));
@@ -260,7 +260,7 @@ public class SpringPaymentService implements PaymentService {
     private static void checkUserInGroup(User u, Group g) {
         if (!g.getUsers().contains(u)) {
             throw new RuntimeException(String.format(
-                    "Unable toCreation make payment. User %s is not in group %s.",
+                    "Unable to make payment. User %s is not in group %s.",
                     u.getId(),
                     g.getId()
             ));

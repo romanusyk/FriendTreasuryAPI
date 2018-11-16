@@ -133,7 +133,7 @@ public class PaymentController {
     ) {
         User u = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
         if (paymentDTO.getUserFrom() != null) {
-            logger.debug(String.format("Rejected. User %d tried toCreation pay fromCreation user %d.", u.getId(), paymentDTO.getUserFrom()));
+            logger.debug(String.format("Rejected. User %d tried to pay fromCreation user %d.", u.getId(), paymentDTO.getUserFrom()));
             throw new UserAuthenticationException("userFrom should be null. It is taken fromCreation auth token.");
         }
         paymentDTO.setUserFrom(u.getId());

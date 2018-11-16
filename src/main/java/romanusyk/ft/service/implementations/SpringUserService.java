@@ -99,13 +99,13 @@ public class SpringUserService implements UserService {
     public void updateUser(User user) {
 
         if (user.getId() == null) {
-            throw new EntityNotValidException("Attempt toCreation update user with null id");
+            throw new EntityNotValidException("Attempt to update user with null id");
         }
 
         User existingUser = userRepository.findOne(user.getId());
 
         if (existingUser == null) {
-            throw new EntityNotValidException("Attempt toCreation update non-existing user by id: " + user.getId());
+            throw new EntityNotValidException("Attempt to update non-existing user by id: " + user.getId());
         }
 
         encryptPassword(user);

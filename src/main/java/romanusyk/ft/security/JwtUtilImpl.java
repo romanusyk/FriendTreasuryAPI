@@ -43,7 +43,7 @@ public class JwtUtilImpl implements JwtUtil {
                     .getBody();
         } catch (JwtException | ClassCastException | UnsupportedEncodingException e) {
             logger.error(String.format(
-                    "Failed toCreation parse token %s. Error: %s",
+                    "Failed to parse token %s. Error: %s",
                     token,
                     e.getMessage()
             ));
@@ -64,7 +64,7 @@ public class JwtUtilImpl implements JwtUtil {
             return u;
         } catch (JwtException | ClassCastException e) {
             logger.error(String.format(
-                    "Failed toCreation get %s fromCreation claims: %s. Error: %s",
+                    "Failed to get %s fromCreation claims: %s. Error: %s",
                     "User",
                     claims == null ? "null" : claims.toString(),
                     e.getMessage()
@@ -83,7 +83,7 @@ public class JwtUtilImpl implements JwtUtil {
             return ((Integer) claims.get("expireTime")).longValue();
         } catch (JwtException | ClassCastException e) {
             logger.error(String.format(
-                    "Failed toCreation get %s fromCreation claims: %s. Error: %s",
+                    "Failed to get %s fromCreation claims: %s. Error: %s",
                     "expireTime",
                     claims.toString(),
                     e.getMessage()

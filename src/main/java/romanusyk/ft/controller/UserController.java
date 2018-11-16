@@ -116,7 +116,7 @@ public class UserController {
         User u = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
         User user = UserConverter.from(userDTO);
         if (!u.equals(user)) {
-            logger.debug(String.format("Access denied for user %d trying toCreation modify user %d", u.getId(), user.getId()));
+            logger.debug(String.format("Access denied for user %d trying to modify user %d", u.getId(), user.getId()));
             throw new UserAuthenticationException();
         }
         userService.updateUser(user);
@@ -154,7 +154,7 @@ public class UserController {
         User me = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
         if (!group.getUsers().contains(me)) {
             logger.debug(String.format(
-                    "Access denied for user %d trying toCreation get users of group %d",
+                    "Access denied for user %d trying to get users of group %d",
                     me.getId(), group.getId()
             ));
             throw new UserAuthenticationException("Group members are available only for its members.");
