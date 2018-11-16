@@ -25,6 +25,6 @@ export class CopyTextModalComponent {
   }
 
   onCopySuccess($event) {
-    this.toastrService.success('Copied toCreation clipboard');
+    this.toastrService.success('Copied to clipboard');
   }
 }

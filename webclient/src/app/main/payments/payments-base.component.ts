@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+  import {Component, OnInit, ViewChild} from '@angular/core';
 import {OnDestroy} from '@angular/core/src/metadata/lifecycle_hooks';
 import {Payment} from '../../core/payments/payment.model';
 import {Debt} from '../../core/payments/debt.model';
@@ -54,9 +54,9 @@ export abstract class BasePaymentsListComponent implements OnInit, OnDestroy {
 
   getEmptyMessage() {
     if (!(this.preferences && this.preferences.currentGroup)) {
-      return 'Please, chose group fromCreation list toCreation show payments';
+      return 'Please, chose group from list to show payments';
     } else {
-      return 'You currently have no payments, please click button below toCreation create one';
+      return 'You currently have no payments, please click button below to create one';
     }
   }
 
