@@ -51,6 +51,15 @@ public class Group {
         this.users = users;
     }
 
+    public void updateFromInstance(Group group) {
+        if (group.name != null) {
+            this.name = group.name;
+        }
+        if (group.title != null) {
+            this.title = group.title;
+        }
+    }
+
     @Override
     public String toString() {
         return String.format(
