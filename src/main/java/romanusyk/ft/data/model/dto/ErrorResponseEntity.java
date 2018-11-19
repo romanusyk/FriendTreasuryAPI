@@ -21,6 +21,6 @@ public class ErrorResponseEntity {
     private String message;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Map<String, String> details;
+    private Map<String, Object> details;
 
 }

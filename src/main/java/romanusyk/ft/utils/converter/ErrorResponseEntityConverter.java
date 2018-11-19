@@ -19,14 +19,7 @@ public class ErrorResponseEntityConverter {
                 .type(errorData.getType())
                 .message(message);
         if (errorDetails != null) {
-            builder = builder.details(errorDetails
-                    .entrySet()
-                    .stream()
-                    .collect(Collectors.toMap(
-                            Map.Entry::getKey,
-                            e -> (String) e.getValue()
-                    ))
-            );
+            builder = builder.details(errorDetails);
         }
         return builder.build();
     }
