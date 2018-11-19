@@ -11,11 +11,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import romanusyk.ft.data.entity.Group;
 import romanusyk.ft.data.entity.User;
+import romanusyk.ft.data.model.dto.GroupDTO;
 import romanusyk.ft.data.model.dto.UserDTO;
 import romanusyk.ft.data.model.dto.UserStatistics;
 import romanusyk.ft.exception.NotValidPasswordException;
 import romanusyk.ft.exception.EntityNotFoundException;
-import romanusyk.ft.exception.UserAuthenticationException;
+import romanusyk.ft.exception.UserPermissionsException;
 import romanusyk.ft.security.JwtAccessToken;
 import romanusyk.ft.security.JwtUtil;
 import romanusyk.ft.service.implementations.SpringUserService;
@@ -117,7 +118,7 @@ public class UserController {
         User user = UserConverter.from(userDTO);
         if (!u.equals(user)) {
             logger.debug(String.format("Access denied for user %d trying to modify user %d", u.getId(), user.getId()));
-            throw new UserAuthenticationException();
+            throw new UserPermissionsException();
         }
         userService.updateUser(user);
     }
@@ -141,26 +142,26 @@ public class UserController {
         userService.removeUserFromGroup(user.getId(), groupName);
     }
 
-    @RequestMapping(value = "group/{group}", method = RequestMethod.GET)
-    @ResponseBody
-    @PreAuthorize("@securityService.hasRole('user')")
-    public List<UserDTO> getUsersInGroup(
-            @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
-            @PathVariable("group") Integer groupID) {
-        Group group = groupService.getGroupById(groupID);
-        if (group == null) {
-            throw new EntityNotFoundException(Group.class, groupID);
-        }
-        User me = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
-        if (!group.getUsers().contains(me)) {
-            logger.debug(String.format(
-                    "Access denied for user %d trying to get users of group %d",
-                    me.getId(), group.getId()
-            ));
-            throw new UserAuthenticationException("Group members are available only for its members.");
-        }
-        return group.getUsers().stream().map(UserConverter::to).collect(Collectors.toList());
-    }
+//    @RequestMapping(value = "group/{group}", method = RequestMethod.GET)
+//    @ResponseBody
+//    @PreAuthorize("@securityService.hasRole('user')")
+//    public List<UserDTO> getUsersInGroup(
+//            @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
+//            @PathVariable("group") Integer groupID) {
+//        GroupDTO group = groupService.getGroupById(groupID);
+//        if (group == null) {
+//            throw new EntityNotFoundException(Group.class, groupID);
+//        }
+//        User me = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+//        if (!group.getUsers().contains(me)) {
+//            logger.debug(String.format(
+//                    "Access denied for user %d trying to get users of group %d",
+//                    me.getId(), group.getId()
+//            ));
+//            throw new UserPermissionsException("Group members are available only for its members.");
+//        }
+//        return group.getUsers().stream().map(UserConverter::to).collect(Collectors.toList());
+//    }
 
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 }

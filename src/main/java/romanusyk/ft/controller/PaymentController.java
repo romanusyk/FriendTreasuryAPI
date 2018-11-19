@@ -16,7 +16,7 @@ import romanusyk.ft.data.model.value.Debt;
 import romanusyk.ft.data.entity.Group;
 import romanusyk.ft.data.entity.Payment;
 import romanusyk.ft.data.entity.User;
-import romanusyk.ft.exception.UserAuthenticationException;
+import romanusyk.ft.exception.UserPermissionsException;
 import romanusyk.ft.security.JwtUtil;
 import romanusyk.ft.service.interfaces.PaymentService;
 import romanusyk.ft.utils.converter.DebtConverter;
@@ -137,7 +137,7 @@ public class PaymentController {
         User u = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
         if (paymentDTO.getUserFrom() != null) {
             logger.debug(String.format("Rejected. User %d tried to pay fromCreation user %d.", u.getId(), paymentDTO.getUserFrom()));
-            throw new UserAuthenticationException("userFrom should be null. It is taken fromCreation auth token.");
+            throw new UserPermissionsException("userFrom should be null. It is taken fromCreation auth token.");
         }
         paymentDTO.setUserFrom(u.getId());
         paymentService.makeGroupPayment(paymentDTO);

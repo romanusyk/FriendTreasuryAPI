@@ -40,12 +40,12 @@ public class Group {
         users = new HashSet<>();
     }
 
-    public void updateFromInstance(Group group) {
-        if (group.name != null) {
-            this.name = group.name;
+    public void updateIfPresent(String name, String title) {
+        if (name != null) {
+            this.name = name;
         }
-        if (group.title != null) {
-            this.title = group.title;
+        if (title != null) {
+            this.title = title;
         }
     }
 

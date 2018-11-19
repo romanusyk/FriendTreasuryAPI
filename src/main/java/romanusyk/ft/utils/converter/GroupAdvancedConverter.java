@@ -2,7 +2,6 @@ package romanusyk.ft.utils.converter;
 
 import romanusyk.ft.data.entity.Group;
 import romanusyk.ft.data.model.dto.GroupAdvancedDTO;
-import romanusyk.ft.data.model.dto.GroupDTO;
 
 import java.math.BigDecimal;
 import java.util.stream.Collectors;

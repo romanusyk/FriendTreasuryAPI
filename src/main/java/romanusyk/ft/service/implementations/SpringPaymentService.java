@@ -1,6 +1,8 @@
 package romanusyk.ft.service.implementations;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,11 +14,10 @@ import romanusyk.ft.data.model.value.DebtKey;
 import romanusyk.ft.data.entity.Group;
 import romanusyk.ft.data.entity.Payment;
 import romanusyk.ft.data.entity.User;
-import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import romanusyk.ft.exception.EntityIdNotValidException;
 import romanusyk.ft.exception.EntityNotFoundException;
-import romanusyk.ft.exception.UserAuthenticationException;
+import romanusyk.ft.exception.UserPermissionsException;
 import romanusyk.ft.repository.GroupRepository;
 import romanusyk.ft.repository.PaymentRepository;
 import romanusyk.ft.repository.PaymentSpecs;
@@ -25,6 +26,7 @@ import romanusyk.ft.service.interfaces.PaymentService;
 import romanusyk.ft.service.interfaces.UserService;
 import romanusyk.ft.utils.converter.PaymentConverter;
 
+import java.lang.invoke.MethodHandles;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -40,7 +42,7 @@ public class SpringPaymentService implements PaymentService {
     private final GroupRepository groupRepository;
     private final PaymentRepository paymentRepository;
 
-    private static final Logger logger = Logger.getLogger(SpringPaymentService.class);
+    private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     private List<Debt> getDebtList(Integer groupID, User client) {
         Set<Group> targetGroups = new HashSet<>();
@@ -199,7 +201,7 @@ public class SpringPaymentService implements PaymentService {
                     client.getId(),
                     existingPayment.getUserFrom().getId()
             ));
-            throw new UserAuthenticationException("User can update only his/her own payments.");
+            throw new UserPermissionsException("User can update only his/her own payments.");
         }
         if (payment.getUserFrom() != null
                 || payment.getUserTo() != null
@@ -227,7 +229,7 @@ public class SpringPaymentService implements PaymentService {
             throw new EntityIdNotValidException(Payment.class, paymentID);
         }
         if (!Objects.equals(payment.getUserFrom().getId(), client.getId())) {
-            throw new UserAuthenticationException("User can delete only his/her own payments.");
+            throw new UserPermissionsException("User can delete only his/her own payments.");
         }
         paymentRepository.delete(payment);
     }

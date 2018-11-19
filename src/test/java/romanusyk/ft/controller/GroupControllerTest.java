@@ -13,8 +13,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import romanusyk.ft.data.entity.Group;
+import romanusyk.ft.data.model.dto.GroupDTO;
 import romanusyk.ft.exception.EntityNotValidException;
 import romanusyk.ft.service.interfaces.GroupService;
+import romanusyk.ft.utils.converter.GroupConverter;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -69,7 +71,7 @@ public class GroupControllerTest {
     public void testCreateGroupOnValidGroup() throws Exception {
 
         // TODO:
-        Group group = Group.builder().title("testGroup").name("").build();
+        GroupDTO group = GroupConverter.to(Group.builder().title("testGroup").name("").build());
 
         when(groupService.createGroup(any(), eq(null))).thenReturn(group);
 

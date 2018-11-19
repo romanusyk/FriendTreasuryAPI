@@ -12,21 +12,14 @@ import romanusyk.ft.data.entity.Group;
 import romanusyk.ft.data.model.dto.GroupAdvancedDTO;
 import romanusyk.ft.data.entity.User;
 import romanusyk.ft.data.model.dto.GroupDTO;
-import romanusyk.ft.data.model.dto.UserStatistics;
 import romanusyk.ft.exception.EntityNotFoundException;
-import romanusyk.ft.exception.UserAuthenticationException;
 import romanusyk.ft.security.JwtUtil;
 import romanusyk.ft.service.interfaces.GroupService;
 import romanusyk.ft.service.interfaces.UserService;
-import romanusyk.ft.utils.converter.GroupAdvancedConverter;
-import romanusyk.ft.utils.converter.GroupConverter;
 
 import javax.validation.Valid;
 import java.lang.invoke.MethodHandles;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Roman Usyk on 12.09.17.
@@ -34,7 +27,7 @@ import java.util.Set;
 @CrossOrigin
 @RestController
 @Api("Group controller")
-@RequestMapping("/api/v1/groups") // TODO: 12.11.18 add conumes & produce
+@RequestMapping("/api/v1/groups") // TODO: 12.11.18 add consumes & produce
 @RequiredArgsConstructor
 public class GroupController {
 
@@ -50,16 +43,14 @@ public class GroupController {
     @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
     public GroupDTO getGroupByName(
-            @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token")
-                @RequestHeader("${ft.token.header}")
-                String authorization,
+            @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
             @RequestParam("name") String groupName
     ) {
-        Group group = groupService.getGroupByName(groupName);
+        GroupDTO group = groupService.getGroupByName(groupName);
         if (group == null) {
             throw new EntityNotFoundException(Group.class, GroupDTO.builder().title("unknown").name(groupName).build());
         }
-        return GroupConverter.to(group);
+        return group;
     }
 
     @PostMapping
@@ -70,11 +61,10 @@ public class GroupController {
             @RequestBody @Valid GroupDTO groupDTO) {
 
         User me = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
-        Group group = GroupConverter.from(groupDTO);
-        logger.debug(String.format("User %d is creating group %s", me.getId(), group.toString()));
+        logger.debug(String.format("User %d is creating group %s", me.getId(), groupDTO.toString()));
         User creator = userService.getUserByID(me.getId());
-        group = groupService.createGroup(group, creator);
-        return GroupConverter.to(group);
+        groupDTO = groupService.createGroup(groupDTO, creator);
+        return groupDTO;
     }
 
     @PatchMapping
@@ -83,15 +73,9 @@ public class GroupController {
     public GroupDTO updateGroup(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
             @RequestBody @Valid GroupDTO groupDTO) {
-        User u = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
-        User user = userService.getUserByID(u.getId());
-        Group group = GroupConverter.from(groupDTO);
-        if (!user.getGroups().contains(group)) {
-            logger.debug(String.format("Access denied for user %d trying to modify group %s", u.getId(), group.toString()));
-            throw new UserAuthenticationException("Group can be modified only by its participants.");
-        }
-        group = groupService.updateGroup(group);
-        return GroupConverter.to(group);
+        User client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        groupDTO = groupService.updateGroup(groupDTO, client);
+        return groupDTO;
     }
 
     @RequestMapping(value = "/my", method = RequestMethod.GET)
@@ -100,17 +84,8 @@ public class GroupController {
     public List<GroupAdvancedDTO> getUserGroups(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization
         ) {
-        User user = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
-        List<Group> groupList = groupService.getGroupsByUser(user);
-        List<GroupAdvancedDTO> groupDTOList = new LinkedList<>();
-        for (Group group: groupList) {
-            Set<Group> groupSet = new HashSet<>();
-            groupSet.add(group);
-            UserStatistics userStatistics = userService.getUserStatistics(user, groupSet);
-            GroupAdvancedDTO groupDTO = GroupAdvancedConverter.to(group, userStatistics.getDebt());
-            groupDTOList.add(groupDTO);
-        }
-        return groupDTOList;
+        User client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        return groupService.getGroupsByUserWithMeta(client);
     }
 
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
