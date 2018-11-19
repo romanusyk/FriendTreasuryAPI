@@ -11,6 +11,9 @@ import romanusyk.ft.data.model.value.Debt;
 public class DebtConverter {
 
     public static DebtDTO to(Debt debt) {
+        if (debt == null) {
+            return null;
+        }
         return DebtDTO.builder()
                 .userFrom(UserConverter.to(debt.getKey().getUserFrom()))
                 .userTo(UserConverter.to(debt.getKey().getUserTo()))
@@ -21,6 +24,9 @@ public class DebtConverter {
     }
 
     public static Debt from(DebtDTO debtDTO, User userFrom, User userTo, Group group) {
+        if (debtDTO == null) {
+            return null;
+        }
         return Debt.builder()
                 .key(userFrom, userTo, group)
                 .amount(debtDTO.getAmount())

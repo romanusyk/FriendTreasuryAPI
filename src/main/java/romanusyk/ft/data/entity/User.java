@@ -1,11 +1,10 @@
 package romanusyk.ft.data.entity;
 
 import lombok.*;
+import romanusyk.ft.utils.Mappable;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by romm on 01.02.17.
@@ -17,7 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-public class User {
+public class User implements Mappable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
@@ -47,6 +46,24 @@ public class User {
 
     public User() {
         groups = new HashSet<>();
+    }
+
+    public void updateIfPresent(String username, String email, String phone, String password, String creditCard) {
+        if (username != null) {
+            this.username = username;
+        }
+        if (email != null) {
+            this.email = email;
+        }
+        if (phone != null) {
+            this.phone = phone;
+        }
+        if (password != null) {
+            this.password = password;
+        }
+        if (creditCard != null) {
+            this.creditCard = creditCard;
+        }
     }
 
     @Override
@@ -85,6 +102,30 @@ public class User {
     @Override
     public int hashCode() {
         return id == null ? 0 : id;
+    }
+
+    @Override
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+        if (id != null) {
+            map.put("id", id);
+        }
+        if (username != null) {
+            map.put("username", username);
+        }
+        if (email != null) {
+            map.put("email", email);
+        }
+        if (phone != null) {
+            map.put("phone", phone);
+        }
+        if (password != null) {
+            map.put("password", password);
+        }
+        if (creditCard != null) {
+            map.put("creditCard", creditCard);
+        }
+        return map;
     }
 
 }

@@ -9,6 +9,9 @@ import romanusyk.ft.data.model.dto.UserDTO;
 public class UserConverter {
 
     public static UserDTO to(User user) {
+        if (user == null) {
+            return null;
+        }
         return UserDTO.builder()
                 .id(user.getId())
                 .username(user.getUsername())
@@ -19,6 +22,9 @@ public class UserConverter {
     }
 
     public static User from(UserDTO userDTO) {
+        if (userDTO == null) {
+            return null;
+        }
         return User.builder()
                 .id(userDTO.getId())
                 .username(userDTO.getUsername())

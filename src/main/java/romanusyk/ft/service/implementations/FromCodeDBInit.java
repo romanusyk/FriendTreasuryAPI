@@ -55,24 +55,17 @@ public class FromCodeDBInit implements DBInit {
                 .username("ro")
                 .email("ro@gmail.com")
                 .password("111")
-                .authorities("user")
                 .build();
         User yura = User.builder()
                 .username("yu")
                 .email("yu@gmail.com")
                 .password("111")
-                .authorities("user")
                 .build();
         User geka = User.builder()
                 .username("ge")
                 .email("ge@gmail.com")
                 .password("111")
-                .authorities("user")
                 .build();
-
-        SpringUserService.encryptPassword(roma);
-        SpringUserService.encryptPassword(yura);
-        SpringUserService.encryptPassword(geka);
 
         userService.createUser(roma);
         userService.createUser(yura);

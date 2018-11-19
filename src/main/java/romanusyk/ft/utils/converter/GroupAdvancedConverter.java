@@ -12,6 +12,9 @@ import java.util.stream.Collectors;
 public class GroupAdvancedConverter {
 
     public static GroupAdvancedDTO to(Group group) {
+        if (group == null) {
+            return null;
+        }
         return GroupAdvancedDTO.builder()
                 .id(group.getId())
                 .name(group.getName())
@@ -22,6 +25,9 @@ public class GroupAdvancedConverter {
     }
 
     public static GroupAdvancedDTO to(Group group, BigDecimal userDebt) {
+        if (group == null) {
+            return null;
+        }
         GroupAdvancedDTO result = to(group);
         result.setUserDebt(userDebt);
         return result;

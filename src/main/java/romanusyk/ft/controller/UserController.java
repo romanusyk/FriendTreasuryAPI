@@ -9,25 +9,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import romanusyk.ft.data.entity.Group;
 import romanusyk.ft.data.entity.User;
-import romanusyk.ft.data.model.dto.GroupDTO;
 import romanusyk.ft.data.model.dto.UserDTO;
 import romanusyk.ft.data.model.dto.UserStatistics;
 import romanusyk.ft.exception.NotValidPasswordException;
 import romanusyk.ft.exception.EntityNotFoundException;
-import romanusyk.ft.exception.UserPermissionsException;
 import romanusyk.ft.security.JwtAccessToken;
 import romanusyk.ft.security.JwtUtil;
-import romanusyk.ft.service.implementations.SpringUserService;
-import romanusyk.ft.service.interfaces.GroupService;
 import romanusyk.ft.service.interfaces.UserService;
-import romanusyk.ft.utils.converter.UserConverter;
 
 import javax.validation.Valid;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by Roman Usyk on 12.09.17.
@@ -40,7 +33,6 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private final UserService userService;
-    private final GroupService groupService;
     private final JwtUtil jwtUtil;
 
     @ApiOperation(
@@ -54,7 +46,7 @@ public class UserController {
     public List<UserDTO> getAllUsers(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization
     ) {
-        return userService.getAllUsers().stream().map(UserConverter::to).collect(Collectors.toList());
+        return userService.getAllUsersDTO();
     }
 
     @RequestMapping(value = "/me", method = RequestMethod.GET)
@@ -63,14 +55,14 @@ public class UserController {
     public UserDTO getUserInfo(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization
     ) {
-        User u = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
-        User user = userService.getUserByID(u.getId());
+        UserDTO client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        UserDTO user = userService.getUserDTOByID(client.getId());
         if (user == null) {
             User fakeUser = new User();
-            fakeUser.setId(u.getId());
+            fakeUser.setId(client.getId());
             throw new EntityNotFoundException(User.class, fakeUser);
         }
-        return UserConverter.to(user);
+        return user;
     }
 
     @RequestMapping(value = "/statistics", method = RequestMethod.GET)
@@ -78,31 +70,25 @@ public class UserController {
     public UserStatistics getUserStatistics(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization
     ) {
-        User client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
-        return userService.getUserStatistics(client);
+        UserDTO client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        return userService.getUserStatisticsByDTO(client);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public JwtAccessToken addUser(@RequestBody @Valid UserDTO userDTO) {
-        User user = UserConverter.from(userDTO);
-        user.setAuthorities("user");
-        SpringUserService.encryptPassword(user);
-        userService.createUser(user);
-
-        return jwtUtil.generateToken(user);
+        userDTO = userService.createUserFromDTO(userDTO);
+        return jwtUtil.generateToken(userDTO);
     }
 
     @RequestMapping(value = "/access", method = RequestMethod.POST)
     @ResponseBody
     public JwtAccessToken validateUser(@RequestBody UserDTO userDTO) {
-        User user = UserConverter.from(userDTO);
-        logger.info("Validating user : " + user);
-        logger.debug(user.getPassword());
-        User validatedUser = userService.validateUser(user);
+        logger.info("Validating user : " + userDTO);
+        UserDTO validatedUser = userService.validateUser(userDTO);
 
-        if (validatedUser == null) throw new NotValidPasswordException(user);
+        if (validatedUser == null) throw new NotValidPasswordException(userDTO);
 
         return jwtUtil.generateToken(validatedUser);
     }
@@ -114,13 +100,8 @@ public class UserController {
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
             @RequestBody @Valid UserDTO userDTO
         ) {
-        User u = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
-        User user = UserConverter.from(userDTO);
-        if (!u.equals(user)) {
-            logger.debug(String.format("Access denied for user %d trying to modify user %d", u.getId(), user.getId()));
-            throw new UserPermissionsException();
-        }
-        userService.updateUser(user);
+        UserDTO client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        userService.updateUser(userDTO, client);
     }
 
     @RequestMapping(value = "group/{groupname}", method = RequestMethod.PUT)
@@ -129,8 +110,8 @@ public class UserController {
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
             @PathVariable("groupname") String groupName) {
 
-        User user = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
-        userService.addUserToGroup(user.getId(), groupName);
+        UserDTO client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        userService.addUserToGroup(client.getId(), groupName);
     }
 
     @RequestMapping(value = "group/{groupname}", method = RequestMethod.DELETE)
@@ -138,30 +119,25 @@ public class UserController {
     public void leaveGroup(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
             @PathVariable("groupname") String groupName) {
-        User user = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
-        userService.removeUserFromGroup(user.getId(), groupName);
+        UserDTO client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        userService.removeUserFromGroup(client.getId(), groupName);
     }
 
-//    @RequestMapping(value = "group/{group}", method = RequestMethod.GET)
-//    @ResponseBody
-//    @PreAuthorize("@securityService.hasRole('user')")
-//    public List<UserDTO> getUsersInGroup(
-//            @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
-//            @PathVariable("group") Integer groupID) {
-//        GroupDTO group = groupService.getGroupById(groupID);
-//        if (group == null) {
-//            throw new EntityNotFoundException(Group.class, groupID);
-//        }
-//        User me = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
-//        if (!group.getUsers().contains(me)) {
-//            logger.debug(String.format(
-//                    "Access denied for user %d trying to get users of group %d",
-//                    me.getId(), group.getId()
-//            ));
-//            throw new UserPermissionsException("Group members are available only for its members.");
-//        }
-//        return group.getUsers().stream().map(UserConverter::to).collect(Collectors.toList());
-//    }
+    @RequestMapping(value = "group/{group}", method = RequestMethod.GET)
+    @ResponseBody
+    @PreAuthorize("@securityService.hasRole('user')")
+    public List<UserDTO> getUsersInGroup(
+            @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
+            @PathVariable("group") Integer groupID) {
+        UserDTO client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        return userService.getUsersInGroup(groupID, client);
+    }
+
+    @PostMapping(value = "/check")
+    @ResponseBody
+    public void checkIfUserExists(@RequestBody @Valid UserDTO userDTO) {
+        userService.checkIfUserNotExist(userDTO);
+    }
 
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 }

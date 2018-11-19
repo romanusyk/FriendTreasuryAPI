@@ -13,6 +13,9 @@ import romanusyk.ft.data.model.dto.PaymentDTO;
 public class PaymentConverter {
 
     public static PaymentDTO to(Payment payment) {
+        if (payment == null) {
+            return null;
+        }
         return PaymentDTO.builder()
                 .userFrom(UserConverter.to(payment.getUserFrom()))
                 .userTo(UserConverter.to(payment.getUserTo()))
@@ -26,6 +29,9 @@ public class PaymentConverter {
     }
 
     public static Payment from(PaymentDTO paymentDTO, User userFrom, User userTo, Group group) {
+        if (paymentDTO == null) {
+            return null;
+        }
         return Payment.builder()
                 .userFrom(userFrom)
                 .userTo(userTo)

@@ -9,6 +9,9 @@ import romanusyk.ft.data.entity.Group;
 public class GroupConverter {
 
     public static GroupDTO to(Group group) {
+        if (group == null) {
+            return null;
+        }
         return GroupDTO.builder()
                 .id(group.getId())
                 .name(group.getName())
@@ -17,6 +20,9 @@ public class GroupConverter {
     }
 
     public static Group from(GroupDTO dto) {
+        if (dto == null) {
+            return null;
+        }
         return Group.builder()
                 .id(dto.getId())
                 .name(dto.getName())

@@ -16,7 +16,7 @@ public class EntityAlreadyExistsException extends ApplicationException {
                 ),
                 ErrorData.ENTITY_ALREADY_EXISTS,
                 new HashMap<String, Object>(){{
-                    put("duplicatedFields", Arrays.toString(duplicatedFields));
+                    put("conflictFields", Arrays.toString(duplicatedFields));
                 }}
         );
     }

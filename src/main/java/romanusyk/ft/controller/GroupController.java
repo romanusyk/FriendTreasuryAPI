@@ -12,10 +12,10 @@ import romanusyk.ft.data.entity.Group;
 import romanusyk.ft.data.model.dto.GroupAdvancedDTO;
 import romanusyk.ft.data.entity.User;
 import romanusyk.ft.data.model.dto.GroupDTO;
+import romanusyk.ft.data.model.dto.UserDTO;
 import romanusyk.ft.exception.EntityNotFoundException;
 import romanusyk.ft.security.JwtUtil;
 import romanusyk.ft.service.interfaces.GroupService;
-import romanusyk.ft.service.interfaces.UserService;
 
 import javax.validation.Valid;
 import java.lang.invoke.MethodHandles;
@@ -32,7 +32,6 @@ import java.util.List;
 public class GroupController {
 
     private final GroupService groupService;
-    private final UserService userService;
     private final JwtUtil jwtUtil;
 
     @ApiOperation(
@@ -60,10 +59,9 @@ public class GroupController {
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
             @RequestBody @Valid GroupDTO groupDTO) {
 
-        User me = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
-        logger.debug(String.format("User %d is creating group %s", me.getId(), groupDTO.toString()));
-        User creator = userService.getUserByID(me.getId());
-        groupDTO = groupService.createGroup(groupDTO, creator);
+        UserDTO client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        logger.debug(String.format("User %d is creating group %s", client.getId(), groupDTO.toString()));
+        groupDTO = groupService.createGroup(groupDTO, client);
         return groupDTO;
     }
 
@@ -73,7 +71,7 @@ public class GroupController {
     public GroupDTO updateGroup(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
             @RequestBody @Valid GroupDTO groupDTO) {
-        User client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        UserDTO client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
         groupDTO = groupService.updateGroup(groupDTO, client);
         return groupDTO;
     }
@@ -84,8 +82,17 @@ public class GroupController {
     public List<GroupAdvancedDTO> getUserGroups(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization
         ) {
-        User client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        UserDTO client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
         return groupService.getGroupsByUserWithMeta(client);
+    }
+
+    @PostMapping(value = "/check")
+    @PreAuthorize("@securityService.hasRole('user')")
+    @ResponseBody
+    public void checkIfGroupExists(
+            @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
+            @RequestBody @Valid GroupDTO groupDTO) {
+        groupService.checkIfGroupNotExist(groupDTO);
     }
 
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());

@@ -3,9 +3,12 @@ package romanusyk.ft.data.entity;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+import romanusyk.ft.utils.Mappable;
 
 import javax.persistence.*;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -17,7 +20,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Group {
+public class Group implements Mappable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
@@ -79,6 +82,21 @@ public class Group {
     @Override
     public int hashCode() {
         return id == null ? 0 : id;
+    }
+
+    @Override
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+        if (id != null) {
+            map.put("id", id);
+        }
+        if (title != null) {
+            map.put("title", title);
+        }
+        if (name != null) {
+            map.put("name", name);
+        }
+        return map;
     }
 
 }

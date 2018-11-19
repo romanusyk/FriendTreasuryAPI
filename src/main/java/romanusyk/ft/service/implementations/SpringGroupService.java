@@ -5,18 +5,22 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Example;
 import romanusyk.ft.data.entity.Group;
 import romanusyk.ft.data.entity.User;
 import org.springframework.stereotype.Service;
 import romanusyk.ft.data.model.dto.GroupAdvancedDTO;
 import romanusyk.ft.data.model.dto.GroupDTO;
+import romanusyk.ft.data.model.dto.UserDTO;
 import romanusyk.ft.data.model.dto.UserStatistics;
 import romanusyk.ft.exception.EntityAlreadyExistsException;
 import romanusyk.ft.exception.EntityNotValidException;
 import romanusyk.ft.exception.UserPermissionsException;
+import romanusyk.ft.repository.GroupExampleBuilder;
 import romanusyk.ft.repository.GroupRepository;
 import romanusyk.ft.service.interfaces.GroupService;
 import romanusyk.ft.service.interfaces.UserService;
+import romanusyk.ft.utils.Mappable;
 import romanusyk.ft.utils.RandomString;
 import romanusyk.ft.utils.converter.GroupAdvancedConverter;
 import romanusyk.ft.utils.converter.GroupConverter;
@@ -36,7 +40,7 @@ public class SpringGroupService implements GroupService {
     private final UserService userService;
 
     @Override
-    public GroupDTO createGroup(GroupDTO groupDTO, User client) {
+    public GroupDTO createGroup(GroupDTO groupDTO, UserDTO client) {
 
         if (groupDTO.getId() != null) {
             throw new EntityNotValidException(
@@ -61,8 +65,10 @@ public class SpringGroupService implements GroupService {
             );
         }
 
+        User creator = userService.getUserByID(client.getId());
+
         Group group = GroupConverter.from(groupDTO);
-        group.getUsers().add(client);
+        group.getUsers().add(creator);
         group.setName(new RandomString().nextString());
 
         groupRepository.save(group);
@@ -71,7 +77,7 @@ public class SpringGroupService implements GroupService {
     }
 
     @Override
-    public GroupDTO updateGroup(GroupDTO groupDTO, User client) {
+    public GroupDTO updateGroup(GroupDTO groupDTO, UserDTO client) {
 
         if (groupDTO.getId() == null) {
             throw new EntityNotValidException("Attempt to update group with null id");
@@ -106,15 +112,16 @@ public class SpringGroupService implements GroupService {
     }
 
     @Override
-    public List<GroupAdvancedDTO> getGroupsByUserWithMeta(User client) {
+    public List<GroupAdvancedDTO> getGroupsByUserWithMeta(UserDTO client) {
 
-        List<Group> groupList = getGroupListByUser(client);
+        User user = userService.getUserByID(client.getId());
+        List<Group> groupList = getGroupListByUser(user);
 
         List<GroupAdvancedDTO> groupDTOList = new LinkedList<>();
         for (Group group: groupList) {
             Set<Group> groupSet = new HashSet<>();
             groupSet.add(group);
-            UserStatistics userStatistics = userService.getUserStatistics(client, groupSet);
+            UserStatistics userStatistics = userService.getUserStatistics(user, groupSet);
             GroupAdvancedDTO groupDTO = GroupAdvancedConverter.to(group, userStatistics.getDebt());
             groupDTOList.add(groupDTO);
         }
@@ -130,6 +137,30 @@ public class SpringGroupService implements GroupService {
     @Override
     public GroupDTO getGroupById(Integer groupID) {
         return GroupConverter.to(groupRepository.findOne(groupID));
+    }
+
+    @Override
+    public void checkIfGroupNotExist(GroupDTO groupDTO) {
+        Group group = GroupConverter.from(groupDTO);
+
+        GroupExampleBuilder builder = new GroupExampleBuilder();
+        Example<Group> example = builder.buildExistingGroupExample(group);
+        Iterable<Group> groups = groupRepository.findAll(example);
+
+        List<Mappable> groupList = new LinkedList<>();
+        groups.forEach(groupList::add);
+
+        String[] conflictFields = group.checkObjectIsNotPresentInList(
+                group,
+                groupList,
+                "name"
+        );
+        if (conflictFields.length > 0) {
+            throw new EntityAlreadyExistsException(
+                    Group.class,
+                    conflictFields
+            );
+        }
     }
 
     @Override

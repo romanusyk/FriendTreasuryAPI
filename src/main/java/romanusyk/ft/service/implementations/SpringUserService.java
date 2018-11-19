@@ -7,20 +7,26 @@ import org.springframework.data.domain.Example;
 import romanusyk.ft.data.entity.Group;
 import romanusyk.ft.data.entity.User;
 import org.springframework.stereotype.Service;
+import romanusyk.ft.data.model.dto.GroupDTO;
+import romanusyk.ft.data.model.dto.UserDTO;
 import romanusyk.ft.data.model.dto.UserStatistics;
 import romanusyk.ft.exception.EntityAlreadyExistsException;
 import romanusyk.ft.exception.EntityNotFoundException;
 import romanusyk.ft.exception.EntityNotValidException;
+import romanusyk.ft.exception.UserPermissionsException;
 import romanusyk.ft.repository.GroupRepository;
 import romanusyk.ft.repository.PaymentRepository;
 import romanusyk.ft.repository.UserExampleBuilder;
 import romanusyk.ft.repository.UserRepository;
 import romanusyk.ft.service.MD5Encrypter;
 import romanusyk.ft.service.interfaces.UserService;
+import romanusyk.ft.utils.Mappable;
+import romanusyk.ft.utils.converter.UserConverter;
 
 import java.lang.invoke.MethodHandles;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by romm on 28.02.17.
@@ -39,29 +45,8 @@ public class SpringUserService implements UserService {
     }
 
     @Override
-    public void checkIfExists(User user) {
-        UserExampleBuilder builder = new UserExampleBuilder();
-        Example<User> example = builder.buildExistingUserExample(user);
-        Iterable<User> users = userRepository.findAll(example);
-        Map<String, Integer> fieldCount = new HashMap<>();
-        for (User u: users) {
-            if (u.getUsername().equals(user.getUsername())) {
-                fieldCount.computeIfAbsent("username", k -> 1);
-            }
-            if (u.getEmail().equals(user.getEmail())) {
-                fieldCount.computeIfAbsent("email", k -> 1);
-            }
-            if (u.getPhone().equals(user.getPhone())) {
-                fieldCount.computeIfAbsent("phone", k -> 1);
-            }
-        }
-        if (!fieldCount.isEmpty()) {
-            String[] result = new String[fieldCount.size()];
-            throw new EntityAlreadyExistsException(
-                    User.class,
-                    fieldCount.keySet().toArray(result)
-            );
-        }
+    public UserDTO getUserDTOByID(Integer id) {
+        return UserConverter.to(getUserByID(id));
     }
 
     public static void encryptPassword(User u) {
@@ -69,18 +54,28 @@ public class SpringUserService implements UserService {
     }
 
     @Override
-    public Integer createUser(User user) {
-        checkIfExists(user);
-        return userRepository.save(user).getId();
+    public User createUser(User user) {
+        user.setAuthorities("user");
+        SpringUserService.encryptPassword(user);
+        return userRepository.save(user);
     }
 
     @Override
-    public User validateUser(User user) {
+    public UserDTO createUserFromDTO(UserDTO userDTO) {
+        User user = createUser(UserConverter.from(userDTO));
+        return UserConverter.to(user);
+    }
+
+    @Override
+    public UserDTO validateUser(UserDTO user) {
         User returnedUser = userRepository.findUserByUsername(user.getUsername());
         if (returnedUser == null) {
             return null;
         }
-        return Objects.equals(returnedUser.getPassword(), MD5Encrypter.encrypt(user.getPassword())) ? returnedUser : null;
+        if (!Objects.equals(returnedUser.getPassword(), MD5Encrypter.encrypt(user.getPassword()))) {
+            return null;
+        }
+        return UserConverter.to(returnedUser);
     }
 
     @Override
@@ -91,8 +86,29 @@ public class SpringUserService implements UserService {
     }
 
     @Override
-    public User getUserByUsername(String username) {
-        return userRepository.findUserByUsername(username);
+    public List<UserDTO> getAllUsersDTO() {
+        return getAllUsers().stream().map(UserConverter::to).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserDTO> getUsersInGroup(Integer groupId, UserDTO client) {
+        Group group = groupRepository.findOne(groupId);
+        if (group == null) {
+            throw new EntityNotFoundException(Group.class, groupId);
+        }
+        if (!group.getUsers().contains(UserConverter.from(client))) {
+            logger.debug(String.format(
+                    "Access denied for user %s trying to get users of group %s",
+                    client.getUsername(), group.getTitle()
+            ));
+            throw new UserPermissionsException("Group members are available only for its members.");
+        }
+        return group.getUsers().stream().map(UserConverter::to).collect(Collectors.toList());
+    }
+
+    @Override
+    public UserDTO getUserByUsername(String username) {
+        return UserConverter.to(userRepository.findUserByUsername(username));
     }
 
     @Override
@@ -110,20 +126,30 @@ public class SpringUserService implements UserService {
 
         encryptPassword(user);
 
-        existingUser.setUsername(user.getUsername());
-        existingUser.setEmail(user.getEmail());
-        existingUser.setPhone(user.getPhone());
-        existingUser.setPassword(user.getPassword());
-        existingUser.setCreditCard(user.getCreditCard());
+        existingUser.updateIfPresent(
+                user.getUsername(),
+                user.getEmail(),
+                user.getPhone(),
+                user.getPassword(),
+                user.getCreditCard()
+        );
 
-        checkIfExists(existingUser);
+        userRepository.save(existingUser);
+    }
 
-        try {
-            userRepository.save(existingUser);
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage());
-            throw new RuntimeException(e.getMessage());
+    @Override
+    public void updateUser(UserDTO userDTO, UserDTO creatorDTO) {
+        User user = UserConverter.from(userDTO);
+        User creator = UserConverter.from(creatorDTO);
+        if (!user.equals(creator)) {
+            logger.debug(String.format(
+                    "Access denied for user %s trying to modify user %s",
+                    creatorDTO.getUsername(),
+                    user.getUsername()
+            ));
+            throw new UserPermissionsException();
         }
+        createUser(user);
     }
 
     @Override
@@ -184,28 +210,60 @@ public class SpringUserService implements UserService {
     public UserStatistics getUserStatistics(User client) {
         User u = userRepository.findOne(client.getId());
         BigDecimal userOutcome = paymentRepository.getUserOutcome(u);
-        if (userOutcome == null) {
-            userOutcome = new BigDecimal(0);
-        }
         BigDecimal userIncome = paymentRepository.getUserIncome(u);
-        if (userIncome == null) {
-            userIncome = new BigDecimal(0);
-        }
-        return UserStatistics.builder().user(u).debt(userOutcome.subtract(userIncome)).build();
+        return UserStatistics.builder()
+                .user(u)
+                .debt(getUserDebt(userOutcome, userIncome))
+                .build();
+    }
+
+    @Override
+    public UserStatistics getUserStatisticsByDTO(UserDTO client) {
+        return getUserStatistics(UserConverter.from(client));
     }
 
     @Override
     public UserStatistics getUserStatistics(User client, Set<Group> groupSet) {
         User u = userRepository.findOne(client.getId());
         BigDecimal userOutcome = paymentRepository.getUserOutcomeInGroups(u, groupSet);
-        if (userOutcome == null) {
-            userOutcome = new BigDecimal(0);
-        }
         BigDecimal userIncome = paymentRepository.getUserIncomeInGroups(u, groupSet);
-        if (userIncome == null) {
-            userIncome = new BigDecimal(0);
+        return UserStatistics.builder()
+                .user(u)
+                .debt(getUserDebt(userOutcome, userIncome))
+                .build();
+    }
+
+    @Override
+    public void checkIfUserNotExist(UserDTO userDTO) {
+        User user = UserConverter.from(userDTO);
+
+        UserExampleBuilder builder = new UserExampleBuilder();
+        Example<User> example = builder.buildExistingUserExample(user);
+        Iterable<User> users = userRepository.findAll(example);
+
+        List<Mappable> userList = new LinkedList<>();
+        users.forEach(userList::add);
+        String[] conflictFields = user.checkObjectIsNotPresentInList(
+                user,
+                userList,
+                "username", "email", "phone"
+        );
+        if (conflictFields.length > 0) {
+            throw new EntityAlreadyExistsException(
+                    User.class,
+                    conflictFields
+            );
         }
-        return UserStatistics.builder().user(u).debt(userOutcome.subtract(userIncome)).build();
+    }
+
+    private static BigDecimal getUserDebt(BigDecimal userOutcome, BigDecimal userIncome) {
+        if (userOutcome == null) {
+            userOutcome = BigDecimal.ZERO;
+        }
+        if (userIncome == null) {
+            userIncome = BigDecimal.ZERO;
+        }
+        return userOutcome.subtract(userIncome);
     }
 
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());

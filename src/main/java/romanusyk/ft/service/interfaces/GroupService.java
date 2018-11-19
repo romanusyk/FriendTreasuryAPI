@@ -3,6 +3,7 @@ package romanusyk.ft.service.interfaces;
 import romanusyk.ft.data.entity.User;
 import romanusyk.ft.data.model.dto.GroupAdvancedDTO;
 import romanusyk.ft.data.model.dto.GroupDTO;
+import romanusyk.ft.data.model.dto.UserDTO;
 
 import java.util.List;
 
@@ -11,16 +12,18 @@ import java.util.List;
  */
 public interface GroupService {
 
-    GroupDTO createGroup(GroupDTO group, User client);
+    GroupDTO createGroup(GroupDTO group, UserDTO client);
 
     GroupDTO getGroupByName(String groupTitle);
 
-    GroupDTO updateGroup(GroupDTO group, User client);
+    GroupDTO updateGroup(GroupDTO group, UserDTO client);
 
     List<GroupDTO> getGroupsByUser(User client);
 
-    List<GroupAdvancedDTO> getGroupsByUserWithMeta(User client);
+    List<GroupAdvancedDTO> getGroupsByUserWithMeta(UserDTO client);
 
     GroupDTO getGroupById(Integer groupID);
+
+    void checkIfGroupNotExist(GroupDTO groupDTO);
 
 }

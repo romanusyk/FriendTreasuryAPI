@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import romanusyk.ft.data.model.dto.DebtDTO;
-import romanusyk.ft.data.model.dto.GroupDTO;
-import romanusyk.ft.data.model.dto.PaymentCreationDTO;
-import romanusyk.ft.data.model.dto.PaymentDTO;
+import romanusyk.ft.data.model.dto.*;
 import romanusyk.ft.data.model.value.Debt;
 import romanusyk.ft.data.entity.Group;
 import romanusyk.ft.data.entity.Payment;
@@ -22,6 +19,7 @@ import romanusyk.ft.service.interfaces.PaymentService;
 import romanusyk.ft.utils.converter.DebtConverter;
 import romanusyk.ft.utils.converter.GroupConverter;
 import romanusyk.ft.utils.converter.PaymentConverter;
+import romanusyk.ft.utils.converter.UserConverter;
 
 import javax.validation.Valid;
 import java.lang.invoke.MethodHandles;
@@ -59,8 +57,8 @@ public class PaymentController {
             @RequestParam(required = false) Integer userTo,
             @RequestParam(required = false) Integer group
             ) {
-        User client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
-        Page<Payment> pageResult = paymentService.getPaymentsPage(page, size, userFrom, userTo, group, client);
+        UserDTO client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        Page<Payment> pageResult = paymentService.getPaymentsPage(page, size, userFrom, userTo, group, UserConverter.from(client));
 //        if (Math.random() < 0.1) {
 //            throw new RuntimeException("Deep One ambushes you!");
 //        }
@@ -76,8 +74,8 @@ public class PaymentController {
             @RequestParam(required = false) Integer group
     ) {
         logger.debug("GET /getPaymentSum(" + user + ", " + group + ")");
-        User client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
-        Map <Group, List<Debt> > result = paymentService.getPaymentSum(user, group, client);
+        UserDTO client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        Map <Group, List<Debt> > result = paymentService.getPaymentSum(user, group, UserConverter.from(client));
 
         return result.values().stream().flatMap(List::stream).map(DebtConverter::to).collect(Collectors.toList());
     }
@@ -91,8 +89,8 @@ public class PaymentController {
             @RequestParam(required = false) Integer group
     ) {
         logger.debug("GET /getPaymentSum(" + user + ", " + group + ")");
-        User client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
-        Map <Group, List<Debt> > result = paymentService.getPaymentSum(user, group, client);
+        UserDTO client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        Map <Group, List<Debt> > result = paymentService.getPaymentSum(user, group, UserConverter.from(client));
 
         Map<GroupDTO, List<DebtDTO> > convertedResult = new HashMap<>();
         for (Group g: result.keySet()) {
@@ -112,8 +110,8 @@ public class PaymentController {
     @ResponseBody List<Debt> getPaymentSumForClientByAllGroups(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization
     ) {
-        User client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
-        Map <Group, List<Debt> > result = paymentService.getPaymentSum(client.getId(), 0, client);
+        UserDTO client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        Map <Group, List<Debt> > result = paymentService.getPaymentSum(client.getId(), 0, UserConverter.from(client));
         return result.values().stream().flatMap(List::stream).collect(Collectors.toList());
     }
 
@@ -123,8 +121,8 @@ public class PaymentController {
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
             @PathVariable("groupId") Integer groupId
     ) {
-        User client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
-        Map <Group, List<Debt> > result = paymentService.getPaymentSum(client.getId(), groupId, client);
+        UserDTO client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        Map <Group, List<Debt> > result = paymentService.getPaymentSum(client.getId(), groupId, UserConverter.from(client));
         return result.values().stream().flatMap(List::stream).collect(Collectors.toList());
     }
 
@@ -134,12 +132,12 @@ public class PaymentController {
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
             @RequestBody @Valid PaymentCreationDTO paymentDTO
     ) {
-        User u = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        UserDTO client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
         if (paymentDTO.getUserFrom() != null) {
-            logger.debug(String.format("Rejected. User %d tried to pay fromCreation user %d.", u.getId(), paymentDTO.getUserFrom()));
+            logger.debug(String.format("Rejected. User %d tried to pay fromCreation user %d.", client.getId(), paymentDTO.getUserFrom()));
             throw new UserPermissionsException("userFrom should be null. It is taken fromCreation auth token.");
         }
-        paymentDTO.setUserFrom(u.getId());
+        paymentDTO.setUserFrom(client.getId());
         paymentService.makeGroupPayment(paymentDTO);
     }
 
@@ -151,8 +149,8 @@ public class PaymentController {
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
             @RequestBody Payment payment
     ) {
-        User u = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
-        return paymentService.updatePayment(payment, u);
+        UserDTO client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        return paymentService.updatePayment(payment, UserConverter.from(client));
     }
 
     @RequestMapping(value = "", method = RequestMethod.DELETE)
@@ -162,8 +160,8 @@ public class PaymentController {
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
             @RequestParam Integer paymentID
     ) {
-        User u = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
-        paymentService.deletePayment(paymentID, u);
+        UserDTO client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
+        paymentService.deletePayment(paymentID, UserConverter.from(client));
     }
 
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
