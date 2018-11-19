@@ -40,6 +40,15 @@ public class Group {
         users = new HashSet<>();
     }
 
+    public void updateFromInstance(Group group) {
+        if (group.name != null) {
+            this.name = group.name;
+        }
+        if (group.title != null) {
+            this.title = group.title;
+        }
+    }
+
     @Override
     public String toString() {
         return String.format(

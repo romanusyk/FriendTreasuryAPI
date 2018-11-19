@@ -61,6 +61,9 @@ public class PaymentController {
             ) {
         User client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
         Page<Payment> pageResult = paymentService.getPaymentsPage(page, size, userFrom, userTo, group, client);
+//        if (Math.random() < 0.1) {
+//            throw new RuntimeException("Deep One ambushes you!");
+//        }
         return pageResult.map(PaymentConverter::to);
     }
 

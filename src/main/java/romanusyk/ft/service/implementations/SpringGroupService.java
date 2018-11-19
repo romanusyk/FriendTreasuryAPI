@@ -106,8 +106,7 @@ public class SpringGroupService implements GroupService {
             throw new EntityNotValidException("Attempt to update non-existing group by id: " + group.getId());
         }
 
-        existingGroup.setTitle(group.getTitle());
-        existingGroup.setName(group.getName());
+        existingGroup.updateFromInstance(group);
 
         checkIfExists(existingGroup);
 
