@@ -1,142 +1,171 @@
 package romanusyk.ft.service.implementations;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Example;
-import romanusyk.ft.domain.Group;
-import romanusyk.ft.domain.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import romanusyk.ft.data.entity.Group;
+import romanusyk.ft.data.entity.User;
 import org.springframework.stereotype.Service;
+import romanusyk.ft.data.model.dto.GroupAdvancedDTO;
+import romanusyk.ft.data.model.dto.GroupDTO;
+import romanusyk.ft.data.model.dto.UserDTO;
+import romanusyk.ft.data.model.dto.UserStatistics;
 import romanusyk.ft.exception.EntityAlreadyExistsException;
 import romanusyk.ft.exception.EntityNotValidException;
-import romanusyk.ft.repository.GroupExampleBuilder;
+import romanusyk.ft.exception.UserPermissionsException;
+import romanusyk.ft.utils.db.GroupExampleBuilder;
 import romanusyk.ft.repository.GroupRepository;
-import romanusyk.ft.repository.UserRepository;
 import romanusyk.ft.service.interfaces.GroupService;
+import romanusyk.ft.service.interfaces.UserService;
+import romanusyk.ft.utils.Mappable;
 import romanusyk.ft.utils.RandomString;
+import romanusyk.ft.utils.converter.GroupAdvancedConverter;
+import romanusyk.ft.utils.converter.GroupConverter;
 
 import java.lang.invoke.MethodHandles;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by romm on 29.08.17.
  */
 @Service
+@RequiredArgsConstructor
 public class SpringGroupService implements GroupService {
 
-    @Autowired
-    private GroupRepository groupRepository;
-
-    @Autowired
-    UserRepository userRepository;
+    private final GroupRepository groupRepository;
+    private final UserService userService;
 
     @Override
-    public void checkIfExists(Group group) {
-        GroupExampleBuilder builder = new GroupExampleBuilder();
-        Example<Group> example = builder.buildExistingGroupExample(group);
-        Iterable<Group> groups = groupRepository.findAll(example);
-        if (!groups.iterator().hasNext()) {
-            throw new EntityAlreadyExistsException(
-                    Group.class,
-                    new String[]{"name"}
-            );
-        }
-    }
+    public GroupDTO createGroup(GroupDTO groupDTO, UserDTO client) {
 
-    @Override
-    public Group createGroup(Group group, User creator) {
-
-        if (group.getId() != null) {
+        if (groupDTO.getId() != null) {
             throw new EntityNotValidException(
                     String.format(
                             "Attempt to create group \"%s\" with non-empty id: %d",
-                            group.getTitle(),
-                            group.getId()
+                            groupDTO.getTitle(),
+                            groupDTO.getId()
                     )
             );
         }
 
-        if (!group.getUsers().isEmpty()) {
-            throw new EntityNotValidException(
-                    String.format(
-                            "Attempt to create group \"%s\" with non-empty set of users.",
-                            group.getTitle()
-                    )
-            );
+        if (client == null) {
+            logger.error(String.format("Creating new Group \"%s\" without an owner", groupDTO.getTitle()));
         }
 
-        if (creator == null) {
-            logger.error(String.format("Creating new Group \"%s\" without an owner", group.getTitle()));
-        } else {
-            group.getUsers().add(creator);
-        }
-
-        if (group.getName() != null) {
+        if (groupDTO.getName() != null) {
             throw new EntityNotValidException(
                     String.format(
                             "Attempt to create group \"%s\" with non null name.",
-                            group.getName()
+                            groupDTO.getName()
                     )
             );
-        } else {
-            RandomString randomString = new RandomString();
-            group.setName(randomString.nextString());
         }
 
-        try {
-            groupRepository.save(group);
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage());
-            throw new RuntimeException(e.getMessage());
-        }
+        User creator = userService.getUserByID(client.getId());
 
-        return group;
+        Group group = GroupConverter.from(groupDTO);
+        group.getUsers().add(creator);
+        group.setName(new RandomString().nextString());
 
+        groupRepository.save(group);
+
+        return GroupConverter.to(group);
     }
 
     @Override
-    public Group updateGroup(Group group) {
+    public GroupDTO updateGroup(GroupDTO groupDTO, UserDTO client) {
 
-        if (group.getId() == null) {
+        if (groupDTO.getId() == null) {
             throw new EntityNotValidException("Attempt to update group with null id");
         }
 
-        Group existingGroup = groupRepository.findOne(group.getId());
+        Group existingGroup = groupRepository.findOne(groupDTO.getId());
 
         if (existingGroup == null) {
-            throw new EntityNotValidException("Attempt to update non-existing group by id: " + group.getId());
+            throw new EntityNotValidException("Attempt to update non-existing group by id: " + groupDTO.getId());
         }
 
-        existingGroup.updateFromInstance(group);
+        checkIfGroupNotExist(groupDTO);
 
-        checkIfExists(existingGroup);
-
-        try {
-            groupRepository.save(existingGroup);
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage());
-            throw new RuntimeException(e.getMessage());
+        User user = userService.getUserByID(client.getId());
+        if (!user.getGroups().contains(existingGroup)) {
+            logger.debug(String.format(
+                    "Access denied for user %d trying to modify group %s",
+                    client.getId(),
+                    existingGroup.toString()
+            ));
+            throw new UserPermissionsException("Group can be modified only by its participants.");
         }
 
-        return existingGroup;
+        existingGroup.updateIfPresent(groupDTO.getName(), groupDTO.getTitle());
 
+        groupRepository.save(existingGroup);
+
+        return GroupConverter.to(existingGroup);
     }
 
     @Override
-    public List<Group> getGroupsByUser(User user) {
-        User existingUser = userRepository.findOne(user.getId());
+    public List<GroupDTO> getGroupsByUser(User client) {
+        return getGroupListByUser(client).stream().map(GroupConverter::to).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<GroupAdvancedDTO> getGroupsByUserWithMeta(UserDTO client) {
+
+        User user = userService.getUserByID(client.getId());
+        List<Group> groupList = getGroupListByUser(user);
+
+        List<GroupAdvancedDTO> groupDTOList = new LinkedList<>();
+        for (Group group: groupList) {
+            Set<Group> groupSet = new HashSet<>();
+            groupSet.add(group);
+            UserStatistics userStatistics = userService.getUserStatistics(user, groupSet);
+            GroupAdvancedDTO groupDTO = GroupAdvancedConverter.to(group, userStatistics.getDebt());
+            groupDTOList.add(groupDTO);
+        }
+
+        return groupDTOList;
+    }
+
+    private List<Group> getGroupListByUser(User client) {
+        User existingUser = userService.getUserByID(client.getId());
         return new ArrayList<>(existingUser.getGroups());
     }
 
     @Override
-    public Group getGroupById(Integer groupID) {
-        return groupRepository.findOne(groupID);
+    public GroupDTO getGroupById(Integer groupID) {
+        return GroupConverter.to(groupRepository.findOne(groupID));
     }
 
     @Override
-    public Group getGroupByName(String groupName) {
-        return groupRepository.findByName(groupName);
+    public void checkIfGroupNotExist(GroupDTO groupDTO) {
+        Group group = GroupConverter.from(groupDTO);
+
+        GroupExampleBuilder builder = new GroupExampleBuilder();
+        Example<Group> example = builder.buildExistingGroupExample(group);
+        Iterable<Group> groups = groupRepository.findAll(example);
+
+        List<Mappable> groupList = new LinkedList<>();
+        groups.forEach(groupList::add);
+
+        String[] conflictFields = group.checkObjectIsNotPresentInList(
+                group,
+                groupList,
+                "name"
+        );
+        if (conflictFields.length > 0) {
+            throw new EntityAlreadyExistsException(
+                    Group.class,
+                    conflictFields
+            );
+        }
+    }
+
+    @Override
+    public GroupDTO getGroupByName(String groupName) {
+        return GroupConverter.to(groupRepository.findByName(groupName));
     }
 
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());

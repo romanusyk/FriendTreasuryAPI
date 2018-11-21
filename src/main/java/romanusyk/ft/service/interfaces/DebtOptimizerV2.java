@@ -1,7 +1,7 @@
 package romanusyk.ft.service.interfaces;
 
-import romanusyk.ft.domain.Debt;
-import romanusyk.ft.domain.UserStatistics;
+import romanusyk.ft.data.model.value.Debt;
+import romanusyk.ft.data.model.dto.UserStatistics;
 
 import java.util.List;
 

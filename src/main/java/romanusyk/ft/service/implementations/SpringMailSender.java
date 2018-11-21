@@ -5,9 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import romanusyk.ft.domain.Debt;
-import romanusyk.ft.domain.Group;
-import romanusyk.ft.domain.User;
+import romanusyk.ft.data.model.value.Debt;
+import romanusyk.ft.data.entity.Group;
+import romanusyk.ft.data.entity.User;
 import romanusyk.ft.service.interfaces.MailSender;
 
 import java.util.*;
@@ -38,15 +38,15 @@ public class SpringMailSender implements MailSender {
         List<User> allUsers = userService.getAllUsers();
         for (User user: allUsers) {
             Map<Group, List<Debt> > result = paymentService.getPaymentSum(null, null, user);
-            Group key = new Group().setId(0);
+            Group key = Group.builder().id(0).build();
             List<Debt> debts = result.get(key);
             List<String> goodDebts = new LinkedList<>();
             List<String> badDebts = new LinkedList<>();
             for (Debt debt: debts) {
-                if (Objects.equals(debt.getUserFrom().getId(), user.getId())) {
-                    goodDebts.add(debt.getUserTo().getUsername() + ": " + debt.getAmount() + " hryvnas");
-                } else if (Objects.equals(debt.getUserTo().getId(), user.getId())) {
-                    badDebts.add(debt.getUserFrom().getUsername() + ": " + debt.getAmount() + " hryvnas");
+                if (Objects.equals(debt.getKey().getUserFrom().getId(), user.getId())) {
+                    goodDebts.add(debt.getKey().getUserTo().getUsername() + ": " + debt.getAmount() + " hryvnas");
+                } else if (Objects.equals(debt.getKey().getUserTo().getId(), user.getId())) {
+                    badDebts.add(debt.getKey().getUserFrom().getUsername() + ": " + debt.getAmount() + " hryvnas");
                 }
             }
             if (goodDebts.size() == 0 && badDebts.size() == 0){
@@ -55,18 +55,18 @@ public class SpringMailSender implements MailSender {
             String message = "Hi, " +
                     user.getUsername() +
                     "!\n" +
-                    "You're must be fucking happy to receive this kindly reminder from Friend Treasury!\n\n";
+                    "You're must be fucking happy to receive this kindly reminder fromCreation Friend Treasury!\n\n";
             if (goodDebts.size() > 0) {
                 message += "We are glad to let you know that these fucking assholes own you some money and you " +
                         "should go and beat shit out them:\n\n" +
                         String.join("\n", goodDebts) + "\n\n";
             }
             if (badDebts.size() > 0) {
-                message += "We are hurry to warn you that these bastards are expecting some money from you " +
+                message += "We are hurry to warn you that these bastards are expecting some money fromCreation you " +
                         "and you should be aware of them:\n\n" +
                         String.join("\n", badDebts) + "\n\n";
             }
-            message += "If you want to unsubscribe from this mailing, you can donate us to make us able " +
+            message += "If you want to unsubscribe fromCreation this mailing, you can donate us to make us able " +
                     "to hire first payed developer!\n" +
                     "Also we don't thank you for being with us so long because you cannot leave us " +
                     "and we will keep your personal data and send emails forever :)\n\n" +

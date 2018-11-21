@@ -1,16 +1,14 @@
 package romanusyk.ft.service.implementations;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
-import romanusyk.ft.domain.Group;
-import romanusyk.ft.domain.Payment;
-import romanusyk.ft.domain.User;
+import romanusyk.ft.data.entity.Group;
+import romanusyk.ft.data.entity.Payment;
+import romanusyk.ft.data.entity.User;
 import romanusyk.ft.repository.GroupRepository;
 import romanusyk.ft.repository.PaymentRepository;
 import romanusyk.ft.repository.UserRepository;
-import romanusyk.ft.repository.UserExampleBuilder;
 import romanusyk.ft.service.interfaces.DBInit;
 import romanusyk.ft.service.interfaces.UserService;
 import romanusyk.ft.utils.RandomString;
@@ -21,19 +19,13 @@ import java.math.BigDecimal;
  * Created by Roman Usyk on 12.09.17.
  */
 @Service
+@RequiredArgsConstructor
 public class FromCodeDBInit implements DBInit {
 
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    UserService userService;
-
-    @Autowired
-    GroupRepository groupRepository;
-
-    @Autowired
-    PaymentRepository paymentRepository;
+    private final UserRepository userRepository;
+    private final UserService userService;
+    private final GroupRepository groupRepository;
+    private final PaymentRepository paymentRepository;
 
     @Value("${ft.initdb}")
     private Boolean initDB;
@@ -47,19 +39,33 @@ public class FromCodeDBInit implements DBInit {
 
         RandomString randomString = new RandomString();
 
-        Group guys = new Group("test1", randomString.nextString());
-        Group universe = new Group("test2", randomString.nextString());
+        Group guys = Group.builder()
+                .title("test1")
+                .name(randomString.nextString())
+                .build();
+        Group universe = Group.builder()
+                .title("test2")
+                .name(randomString.nextString())
+                .build();
 
         groupRepository.save(guys);
         groupRepository.save(universe);
 
-        User roma = new User("ro","ro@gmail.com", "380123456789", "111", "1234123412341234", "user");
-        User yura = new User("yu","yu@gmail.com", "380234567891", "111", "1234123412341234", "user");
-        User geka = new User("ge","ge@gmail.com", "380345678912", "111", "1234123412341234", "user");
-
-        SpringUserService.encryptPassword(roma);
-        SpringUserService.encryptPassword(yura);
-        SpringUserService.encryptPassword(geka);
+        User roma = User.builder()
+                .username("ro")
+                .email("ro@gmail.com")
+                .password("111")
+                .build();
+        User yura = User.builder()
+                .username("yu")
+                .email("yu@gmail.com")
+                .password("111")
+                .build();
+        User geka = User.builder()
+                .username("ge")
+                .email("ge@gmail.com")
+                .password("111")
+                .build();
 
         userService.createUser(roma);
         userService.createUser(yura);
@@ -84,14 +90,56 @@ public class FromCodeDBInit implements DBInit {
         groupRepository.save(guys);
         groupRepository.save(universe);
 
-        Payment payment1 = new Payment(roma, yura, guys, new BigDecimal(100), "Test", 33.33, 6.66);
-        Payment payment2 = new Payment(roma, yura, guys, new BigDecimal(300), "Test", 33.33, 6.66);
-        Payment payment3 = new Payment(yura, roma, guys, new BigDecimal(200), "Test", 33.33, 6.66);
+        Payment payment1 = Payment.builder()
+                .userFrom(roma)
+                .userTo(yura)
+                .group(guys)
+                .amount(new BigDecimal(100))
+                .description("Test")
+                .build();
+        Payment payment2 = Payment.builder()
+                .userFrom(roma)
+                .userTo(yura)
+                .group(guys)
+                .amount(new BigDecimal(300))
+                .description("Test")
+                .build();
+        Payment payment3 = Payment.builder()
+                .userFrom(yura)
+                .userTo(roma)
+                .group(guys)
+                .amount(new BigDecimal(200))
+                .description("Test")
+                .build();
 
-        Payment payment4 = new Payment(roma, yura, universe, new BigDecimal(100), "Test", 33.33, 6.66);
-        Payment payment5 = new Payment(roma, yura, universe, new BigDecimal(300), "Test", 33.33, 6.66);
-        Payment payment6 = new Payment(yura, roma, universe, new BigDecimal(200), "Test", 33.33, 6.66);
-        Payment payment7 = new Payment(roma, geka, universe, new BigDecimal(200), "Test", 33.33, 6.66);
+        Payment payment4 = Payment.builder()
+                .userFrom(roma)
+                .userTo(yura)
+                .group(universe)
+                .amount(new BigDecimal(100))
+                .description("Test")
+                .build();
+        Payment payment5 = Payment.builder()
+                .userFrom(roma)
+                .userTo(yura)
+                .group(universe)
+                .amount(new BigDecimal(300))
+                .description("Test")
+                .build();
+        Payment payment6 = Payment.builder()
+                .userFrom(yura)
+                .userTo(roma)
+                .group(universe)
+                .amount(new BigDecimal(200))
+                .description("Test")
+                .build();
+        Payment payment7 = Payment.builder()
+                .userFrom(roma)
+                .userTo(geka)
+                .group(universe)
+                .amount(new BigDecimal(200))
+                .description("Test")
+                .build();
 
         paymentRepository.save(payment1);
         paymentRepository.save(payment2);

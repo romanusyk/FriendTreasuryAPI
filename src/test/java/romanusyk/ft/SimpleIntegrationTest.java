@@ -15,13 +15,11 @@ import org.springframework.mock.http.MockHttpInputMessage;
 import org.springframework.mock.http.MockHttpOutputMessage;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import romanusyk.ft.domain.Group;
-import romanusyk.ft.domain.Payment;
-import romanusyk.ft.domain.PaymentDTO;
-import romanusyk.ft.domain.User;
+import romanusyk.ft.data.entity.Group;
+import romanusyk.ft.data.model.dto.PaymentCreationDTO;
+import romanusyk.ft.data.entity.User;
 import romanusyk.ft.repository.GroupRepository;
 import romanusyk.ft.repository.PaymentRepository;
 import romanusyk.ft.repository.UserRepository;
@@ -105,7 +103,11 @@ public class SimpleIntegrationTest {
         // TODO:
         Group group = new Group();//groupRepository.findByTitle("guys");
 
-        String s = this.json(new User("123", "Roma", "111", ""));
+        String s = this.json(User.builder()
+                .username("roma")
+                .password("111")
+                .authorities("user")
+                .build());
 
         logger.warn(s);
 
@@ -118,7 +120,7 @@ public class SimpleIntegrationTest {
                     .getResponse()
                     .getContentAsByteArray()
         );
-        PaymentDTO paymentDTO = new PaymentDTO(
+        PaymentCreationDTO paymentDTO = new PaymentCreationDTO(
                 roma.getId(),
                 new Integer[]{yura.getId(), geka.getId()},
                 group.getId(),

@@ -1,11 +1,10 @@
 package romanusyk.ft.service.interfaces;
 
-import romanusyk.ft.domain.Group;
-import romanusyk.ft.domain.User;
-import org.springframework.transaction.annotation.Transactional;
-import romanusyk.ft.domain.UserStatistics;
+import romanusyk.ft.data.entity.Group;
+import romanusyk.ft.data.entity.User;
+import romanusyk.ft.data.model.dto.UserDTO;
+import romanusyk.ft.data.model.dto.UserStatistics;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Set;
 
@@ -16,24 +15,36 @@ public interface UserService {
 
     User getUserByID(Integer id);
 
-    User validateUser(User user);
+    UserDTO getUserDTOByID(Integer id);
+
+    UserDTO validateUser(UserDTO user);
 
     List<User> getAllUsers();
 
-    User getUserByUsername(String username);
+    List<UserDTO> getAllUsersDTO();
 
-    Integer createUser(User user);
+    List<UserDTO> getUsersInGroup(Integer groupId, UserDTO client);
+
+    UserDTO getUserByUsername(String username);
+
+    User createUser(User user);
+
+    UserDTO createUserFromDTO(UserDTO user);
 
     void updateUser(User user);
+
+    void updateUser(UserDTO userDTO, UserDTO creatorDTO);
 
     void addUserToGroup(Integer userID, String groupName);
 
     void removeUserFromGroup(Integer userID, String groupName);
 
-    void checkIfExists(User user);
-
     UserStatistics getUserStatistics(User client);
 
+    UserStatistics getUserStatisticsByDTO(UserDTO client);
+
     UserStatistics getUserStatistics(User client, Set<Group> groupSet);
+
+    void checkIfUserNotExist(UserDTO userDTO);
 
 }

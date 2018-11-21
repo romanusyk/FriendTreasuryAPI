@@ -7,7 +7,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import romanusyk.ft.domain.User;
+import romanusyk.ft.data.entity.User;
+import romanusyk.ft.data.model.dto.UserDTO;
 import romanusyk.ft.repository.GroupRepository;
 import romanusyk.ft.repository.UserRepository;
 import romanusyk.ft.service.implementations.SpringUserService;
@@ -38,7 +39,11 @@ public class SpringUserServiceTest {
 
     @Before
     public void setUp() {
-        roma = new User("12345", "roma", "111", "user");
+        roma = User.builder()
+                .username("roma")
+                .password("111")
+                .authorities("user")
+                .build();
     }
 
     @Test
@@ -46,7 +51,7 @@ public class SpringUserServiceTest {
 
         when(userRepository.findUserByUsername(roma.getUsername())).thenReturn(roma);
 
-        User resultUser = userService.getUserByUsername(roma.getUsername());
+        UserDTO resultUser = userService.getUserByUsername(roma.getUsername());
 
         assertThat(resultUser, notNullValue());
         assertThat(resultUser.getUsername(), equalTo(roma.getUsername()));
@@ -57,7 +62,7 @@ public class SpringUserServiceTest {
 
         when(userRepository.findUserByUsername(anyString())).thenReturn(null);
 
-        User resultUser = userService.getUserByUsername(roma.getUsername());
+        UserDTO resultUser = userService.getUserByUsername(roma.getUsername());
 
         assertThat(resultUser, nullValue());
     }

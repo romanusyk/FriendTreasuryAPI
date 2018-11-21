@@ -9,9 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-import romanusyk.ft.domain.User;
+import romanusyk.ft.data.entity.User;
 
 import java.lang.invoke.MethodHandles;
 
@@ -37,7 +36,11 @@ public class UserRepositoryTest {
 
     @Before
     public void init() {
-        roma = new User("12345", "Roma", "111", "user");
+        roma = User.builder()
+                .username("roma")
+                .password("111")
+                .authorities("user")
+                .build();
         entityManager.persist(roma);
         entityManager.flush();
     }

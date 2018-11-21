@@ -9,8 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import romanusyk.ft.domain.User;
-import romanusyk.ft.service.interfaces.UserService;
+import romanusyk.ft.data.model.dto.UserDTO;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -18,7 +17,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * Created by Roman Usyk on 17.09.17.
@@ -41,7 +39,7 @@ public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFil
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String authToken = httpRequest.getHeader(this.tokenHeader);
 
-        User user = this.jwtUtil.getUserFromClaims(this.jwtUtil.getClamsFromToken(authToken));
+        UserDTO user = this.jwtUtil.getUserFromClaims(this.jwtUtil.getClamsFromToken(authToken));
 
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
 

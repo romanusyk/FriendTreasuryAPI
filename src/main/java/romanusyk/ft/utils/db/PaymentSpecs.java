@@ -1,10 +1,10 @@
-package romanusyk.ft.repository;
+package romanusyk.ft.utils.db;
 
 import org.springframework.data.jpa.domain.Specification;
 import static org.springframework.data.jpa.domain.Specifications.*;
 
-import romanusyk.ft.domain.Group;
-import romanusyk.ft.domain.Payment;
+import romanusyk.ft.data.entity.Group;
+import romanusyk.ft.data.entity.Payment;
 
 import java.util.Set;
 

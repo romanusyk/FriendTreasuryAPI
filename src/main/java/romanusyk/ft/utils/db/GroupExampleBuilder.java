@@ -1,7 +1,7 @@
-package romanusyk.ft.repository;
+package romanusyk.ft.utils.db;
 
 import org.springframework.data.domain.Example;
-import romanusyk.ft.domain.Group;
+import romanusyk.ft.data.entity.Group;
 
 /**
  * Created by Roman Usyk on 15.11.17.

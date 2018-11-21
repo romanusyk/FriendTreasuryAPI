@@ -35,7 +35,7 @@ public class EntryPointUnauthorizedHandler implements AuthenticationEntryPoint {
         response.getOutputStream().println(String.format(
                 "{ " +
                         "\"status\": \"%s\"," +
-                        "\"error\": \"%s\"," +
+                        "\"type\": \"%s\"," +
                         "\"message\": \"%s\"" +
                 "}",
                 "401",

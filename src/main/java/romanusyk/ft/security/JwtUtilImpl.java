@@ -3,11 +3,11 @@ package romanusyk.ft.security;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import romanusyk.ft.domain.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import romanusyk.ft.data.model.dto.UserDTO;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.invoke.MethodHandles;
@@ -22,7 +22,7 @@ public class JwtUtilImpl implements JwtUtil {
     @Value("${ft.token.secret}")
     private String secret;
 
-    public static final long EXPIRE_TIME = 60 * 60 * 24;
+    private static final long EXPIRE_TIME = 60 * 60 * 24;
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     @Override
@@ -52,21 +52,21 @@ public class JwtUtilImpl implements JwtUtil {
     }
 
     @Override
-    public User getUserFromClaims(Claims claims) {
+    public UserDTO getUserFromClaims(Claims claims) {
 
         if (claims == null)
             return null;
 
-        User u = new User();
+        UserDTO u = new UserDTO();
         try {
             u.setId((Integer) claims.get("id"));
             u.setUsername((String) claims.get("username"));
             return u;
         } catch (JwtException | ClassCastException e) {
             logger.error(String.format(
-                    "Failed to get %s from claims: %s. Error: %s",
+                    "Failed to get %s fromCreation claims: %s. Error: %s",
                     "User",
-                    claims == null ? "null" : claims.toString(),
+                    claims,
                     e.getMessage()
             ));
             return null;
@@ -83,7 +83,7 @@ public class JwtUtilImpl implements JwtUtil {
             return ((Integer) claims.get("expireTime")).longValue();
         } catch (JwtException | ClassCastException e) {
             logger.error(String.format(
-                    "Failed to get %s from claims: %s. Error: %s",
+                    "Failed to get %s fromCreation claims: %s. Error: %s",
                     "expireTime",
                     claims.toString(),
                     e.getMessage()
@@ -92,7 +92,7 @@ public class JwtUtilImpl implements JwtUtil {
         }
     }
 
-    protected String generateToken(User u, long expireTime) {
+    private String generateToken(UserDTO u, long expireTime) {
         if (u.getUsername() == null || u.getPassword() == null) {
             return null;
         }
@@ -116,9 +116,10 @@ public class JwtUtilImpl implements JwtUtil {
     }
 
     @Override
-    public JwtAccessToken generateToken(User user) {
+    public JwtAccessToken generateToken(UserDTO user) {
         long expireTime = new Date().getTime() / 1000 + EXPIRE_TIME;
         String token = generateToken(user, expireTime);
         return new JwtAccessToken(token, expireTime, user.getId());
     }
+
 }

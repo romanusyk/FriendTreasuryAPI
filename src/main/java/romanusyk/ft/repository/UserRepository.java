@@ -1,12 +1,9 @@
 package romanusyk.ft.repository;
 
 import org.springframework.data.repository.query.QueryByExampleExecutor;
-import romanusyk.ft.domain.Group;
-import romanusyk.ft.domain.User;
+import romanusyk.ft.data.entity.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-
-import java.util.List;
 
 /**
  * Created by romm on 28.02.17.

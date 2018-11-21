@@ -6,10 +6,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import romanusyk.ft.domain.Group;
+import romanusyk.ft.data.entity.Group;
+import romanusyk.ft.data.model.dto.GroupDTO;
 import romanusyk.ft.exception.EntityNotValidException;
 import romanusyk.ft.repository.GroupRepository;
 import romanusyk.ft.service.implementations.SpringGroupService;
+import romanusyk.ft.utils.converter.GroupConverter;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -31,14 +33,15 @@ public class SpringGroupServiceTest {
     public void testCreateGroupOnValidGroup() {
 
         // TODO:
-        Group group = new Group("testGroup", "");
+        Group group = Group.builder().title("testGroup").name("").build();
+        GroupDTO groupDTO = GroupConverter.to(group);
 
         when(groupRepository.save(group)).then(invocationOnMock -> {
             group.setId(1);
             return group;
         });
 
-        Group resultGroup = groupService.createGroup(group, null);
+        GroupDTO resultGroup = groupService.createGroup(groupDTO, null);
 
         assertThat(resultGroup.getId()).isEqualTo(1);
 
@@ -48,8 +51,7 @@ public class SpringGroupServiceTest {
     public void testCreateGroupOnGroupWithId() {
 
         // TODO:
-        Group group = new Group("testGroup", "");
-        group.setId(1);
+        GroupDTO group = GroupConverter.to(Group.builder().id(1).title("testGroup").name("").build());
 
         groupService.createGroup(group, null);
 

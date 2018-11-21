@@ -1,4 +1,4 @@
-package romanusyk.ft.web;
+package romanusyk.ft.controller;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,7 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import romanusyk.ft.domain.User;
+import romanusyk.ft.data.entity.User;
 import romanusyk.ft.service.interfaces.UserService;
 
 import static org.hamcrest.Matchers.is;
@@ -37,7 +37,11 @@ public class UserControllerTest {
     @Test
     public void testGetUserByIdOnValidId() throws Exception {
 
-        User roma = new User("12345", "roma", "111", "user");
+        User roma = User.builder().
+                username("roma").
+                password("111").
+                authorities("user").
+                build();
         roma.setId(1);
 
         when(userService.getUserByID(roma.getId())).thenReturn(roma);
@@ -51,7 +55,11 @@ public class UserControllerTest {
     @Test
     public void testGetUserByUsernameOnInvalidUsername() throws Exception {
 
-        User roma = new User("12345", "roma", "111", "user");
+        User roma = User.builder()
+                .username("roma")
+                .password("111")
+                .authorities("user")
+                .build();
         roma.setId(1);
 
         when(userService.getUserByID(anyInt())).thenReturn(null);
