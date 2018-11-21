@@ -1,4 +1,4 @@
-  import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {OnDestroy} from '@angular/core/src/metadata/lifecycle_hooks';
 import {Payment} from '../../core/payments/payment.model';
 import {Debt} from '../../core/payments/debt.model';
