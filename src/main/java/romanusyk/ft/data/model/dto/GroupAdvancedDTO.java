@@ -1,7 +1,6 @@
 package romanusyk.ft.data.model.dto;
 
 import lombok.*;
-import romanusyk.ft.data.entity.User;
 
 import java.math.BigDecimal;
 import java.util.Set;

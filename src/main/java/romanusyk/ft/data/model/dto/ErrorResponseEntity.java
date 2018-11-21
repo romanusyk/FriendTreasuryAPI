@@ -2,7 +2,6 @@ package romanusyk.ft.data.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
-import org.springframework.http.HttpStatus;
 
 import java.util.Map;
 

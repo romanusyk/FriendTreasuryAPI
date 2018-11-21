@@ -1,5 +1,6 @@
 package romanusyk.ft.configuration;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,16 +27,12 @@ import romanusyk.ft.service.MD5Encrypter;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@RequiredArgsConstructor
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private EntryPointUnauthorizedHandler unauthorizedHandler;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Autowired
-    private SecurityService securityService;
+    private final EntryPointUnauthorizedHandler unauthorizedHandler;
+    private final UserDetailsService userDetailsService;
+    private final SecurityService securityService;
 
     @Autowired
     public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {

@@ -1,11 +1,8 @@
 package romanusyk.ft.utils.converter;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import romanusyk.ft.data.model.dto.ErrorResponseEntity;
-import romanusyk.ft.exception.ApplicationException;
 import romanusyk.ft.exception.ErrorData;
 
 /**

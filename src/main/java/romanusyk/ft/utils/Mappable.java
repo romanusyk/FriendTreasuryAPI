@@ -1,7 +1,5 @@
 package romanusyk.ft.utils;
 
-import romanusyk.ft.exception.EntityAlreadyExistsException;
-
 import java.util.*;
 import java.util.stream.Collectors;
 

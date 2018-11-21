@@ -1,4 +1,4 @@
-package romanusyk.ft.repository;
+package romanusyk.ft.utils.db;
 
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;

@@ -1,7 +1,6 @@
 package romanusyk.ft.security;
 
 import io.jsonwebtoken.Claims;
-import romanusyk.ft.data.entity.User;
 import romanusyk.ft.data.model.dto.UserDTO;
 
 /**

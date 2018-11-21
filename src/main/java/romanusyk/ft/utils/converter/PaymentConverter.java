@@ -3,7 +3,6 @@ package romanusyk.ft.utils.converter;
 import romanusyk.ft.data.entity.Group;
 import romanusyk.ft.data.entity.Payment;
 import romanusyk.ft.data.entity.User;
-import romanusyk.ft.data.model.dto.GroupDTO;
 import romanusyk.ft.data.model.dto.PaymentCreationDTO;
 import romanusyk.ft.data.model.dto.PaymentDTO;
 

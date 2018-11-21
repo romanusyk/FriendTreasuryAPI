@@ -1,4 +1,4 @@
-package romanusyk.ft.repository;
+package romanusyk.ft.utils.db;
 
 import org.springframework.data.jpa.domain.Specification;
 import static org.springframework.data.jpa.domain.Specifications.*;

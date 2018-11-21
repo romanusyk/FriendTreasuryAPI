@@ -3,8 +3,7 @@ package romanusyk.ft.data.model.value;
 import lombok.*;
 import romanusyk.ft.data.entity.Group;
 import romanusyk.ft.data.entity.User;
-
-import java.io.Serializable;
+import romanusyk.ft.utils.logging.ObjectRepresentation;
 
 /**
  * Created by romm on 27.02.17.
@@ -24,12 +23,7 @@ public class DebtKey {
 
     @Override
     public String toString() {
-        return String.format(
-                "{user_from: %s, user_to: %s, group: %s}",
-                userFrom,
-                userTo,
-                group
-        );
+        return ObjectRepresentation.toString(this);
     }
 
     @Override

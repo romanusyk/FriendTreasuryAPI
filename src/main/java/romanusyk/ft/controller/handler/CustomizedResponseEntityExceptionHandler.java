@@ -1,27 +1,19 @@
 package romanusyk.ft.controller.handler;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import romanusyk.ft.data.entity.Group;
 import romanusyk.ft.data.model.dto.ErrorResponseEntity;
 import romanusyk.ft.exception.ApplicationException;
-import romanusyk.ft.exception.EntityAlreadyExistsException;
 import romanusyk.ft.exception.ErrorData;
 import romanusyk.ft.utils.converter.ErrorResponseEntityConverter;
 
 import java.lang.invoke.MethodHandles;
-import java.util.HashMap;
 
 /**
  * Created by Roman Usyk on 15.11.18.

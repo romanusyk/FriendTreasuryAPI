@@ -1,6 +1,5 @@
 package romanusyk.ft.exception;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 /**

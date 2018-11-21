@@ -1,11 +1,10 @@
 package romanusyk.ft.data.entity;
 
 import lombok.*;
-import romanusyk.ft.data.model.value.DebtKey;
+import romanusyk.ft.utils.logging.ObjectRepresentation;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.Date;
 
 /**
@@ -61,32 +60,18 @@ public class Payment {
         timestamp = new Date().getTime();
     }
 
-    @Override
-    public String toString() {
-        DecimalFormat df = new DecimalFormat();
-        df.setMaximumFractionDigits(2);
-        return String.format(
-                "{id: %d, key: (%s: %s -> %s), amount: %s, time: %d}",
-                id,
-                group == null ? "null" : group.getTitle(),
-                userFrom == null ? "null" : userFrom.getUsername(),
-                userTo == null ? "null" : userTo.getUsername(),
-                df.format(amount),
-                timestamp
-        );
+    public void updateIfPresent(BigDecimal amount, String description) {
+        if (amount != null) {
+            this.amount = amount;
+        }
+        if (description != null) {
+            this.description = description;
+        }
     }
 
-    public String toDetailedString() {
-        DecimalFormat df = new DecimalFormat();
-        df.setMaximumFractionDigits(2);
-        return String.format(
-                "{id: %d, key: %s, amount: %s, description: %s, time: %d}",
-                id,
-                new DebtKey(userFrom, userTo, group),
-                df.format(amount),
-                description,
-                timestamp
-        );
+    @Override
+    public String toString() {
+        return ObjectRepresentation.toString(this);
     }
 
     @Override

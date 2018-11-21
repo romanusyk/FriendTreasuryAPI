@@ -7,7 +7,6 @@ import org.springframework.data.domain.Example;
 import romanusyk.ft.data.entity.Group;
 import romanusyk.ft.data.entity.User;
 import org.springframework.stereotype.Service;
-import romanusyk.ft.data.model.dto.GroupDTO;
 import romanusyk.ft.data.model.dto.UserDTO;
 import romanusyk.ft.data.model.dto.UserStatistics;
 import romanusyk.ft.exception.EntityAlreadyExistsException;
@@ -16,7 +15,7 @@ import romanusyk.ft.exception.EntityNotValidException;
 import romanusyk.ft.exception.UserPermissionsException;
 import romanusyk.ft.repository.GroupRepository;
 import romanusyk.ft.repository.PaymentRepository;
-import romanusyk.ft.repository.UserExampleBuilder;
+import romanusyk.ft.utils.db.UserExampleBuilder;
 import romanusyk.ft.repository.UserRepository;
 import romanusyk.ft.service.MD5Encrypter;
 import romanusyk.ft.service.interfaces.UserService;
@@ -62,6 +61,7 @@ public class SpringUserService implements UserService {
 
     @Override
     public UserDTO createUserFromDTO(UserDTO userDTO) {
+        checkIfUserNotExist(userDTO);
         User user = createUser(UserConverter.from(userDTO));
         return UserConverter.to(user);
     }
@@ -149,6 +149,7 @@ public class SpringUserService implements UserService {
             ));
             throw new UserPermissionsException();
         }
+        checkIfUserNotExist(userDTO);
         createUser(user);
     }
 

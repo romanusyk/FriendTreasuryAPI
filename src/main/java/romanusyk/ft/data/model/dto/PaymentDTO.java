@@ -1,14 +1,8 @@
 package romanusyk.ft.data.model.dto;
 
 import lombok.*;
-import romanusyk.ft.data.entity.Group;
-import romanusyk.ft.data.entity.User;
-import romanusyk.ft.data.model.value.DebtKey;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.util.Date;
 
 /**
  * Created by romm on 01.02.17.

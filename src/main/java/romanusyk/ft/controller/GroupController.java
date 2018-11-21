@@ -8,9 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import romanusyk.ft.data.entity.Group;
 import romanusyk.ft.data.model.dto.GroupAdvancedDTO;
-import romanusyk.ft.data.entity.User;
 import romanusyk.ft.data.model.dto.GroupDTO;
 import romanusyk.ft.data.model.dto.UserDTO;
 import romanusyk.ft.exception.EntityNotFoundException;
@@ -38,7 +36,7 @@ public class GroupController {
             value = "Get group by title",
             produces = "Application/json"
     )
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @GetMapping
     @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
     public GroupDTO getGroupByName(
@@ -47,7 +45,7 @@ public class GroupController {
     ) {
         GroupDTO group = groupService.getGroupByName(groupName);
         if (group == null) {
-            throw new EntityNotFoundException(Group.class, GroupDTO.builder().title("unknown").name(groupName).build());
+            throw new EntityNotFoundException(GroupDTO.class, GroupDTO.builder().title("unknown").name(groupName).build());
         }
         return group;
     }
@@ -76,7 +74,7 @@ public class GroupController {
         return groupDTO;
     }
 
-    @RequestMapping(value = "/my", method = RequestMethod.GET)
+    @GetMapping(value = "/my")
     @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
     public List<GroupAdvancedDTO> getUserGroups(

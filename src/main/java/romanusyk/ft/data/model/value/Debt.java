@@ -6,9 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 import romanusyk.ft.data.entity.Group;
 import romanusyk.ft.data.entity.User;
+import romanusyk.ft.utils.logging.ObjectRepresentation;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.Date;
 
 /**
@@ -35,14 +35,7 @@ public class Debt {
 
     @Override
     public String toString() {
-        DecimalFormat df = new DecimalFormat();
-        df.setMaximumFractionDigits(2);
-        return String.format(
-                "{key: %s, amount: %s, time: %d}",
-                key,
-                df.format(amount),
-                timestamp
-        );
+        return ObjectRepresentation.toString(this);
     }
 
     @Override

@@ -7,8 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import romanusyk.ft.data.model.dto.PaymentCreationDTO;
-import romanusyk.ft.data.model.dto.UserStatistics;
+import romanusyk.ft.data.model.dto.*;
 import romanusyk.ft.data.model.value.Debt;
 import romanusyk.ft.data.model.value.DebtKey;
 import romanusyk.ft.data.entity.Group;
@@ -20,15 +19,18 @@ import romanusyk.ft.exception.EntityNotFoundException;
 import romanusyk.ft.exception.UserPermissionsException;
 import romanusyk.ft.repository.GroupRepository;
 import romanusyk.ft.repository.PaymentRepository;
-import romanusyk.ft.repository.PaymentSpecs;
+import romanusyk.ft.utils.db.PaymentSpecs;
 import romanusyk.ft.repository.UserRepository;
 import romanusyk.ft.service.interfaces.PaymentService;
 import romanusyk.ft.service.interfaces.UserService;
+import romanusyk.ft.utils.converter.DebtConverter;
+import romanusyk.ft.utils.converter.GroupConverter;
 import romanusyk.ft.utils.converter.PaymentConverter;
 
 import java.lang.invoke.MethodHandles;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by romm on 16.03.17.
@@ -42,41 +44,26 @@ public class SpringPaymentService implements PaymentService {
     private final GroupRepository groupRepository;
     private final PaymentRepository paymentRepository;
 
-    private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    @Override
+    public List<PaymentDTO> getPayments(Integer userFromID, Integer userToID, Integer groupID, User client) {
+        validateKeys(userFromID, userToID, groupID);
+        return paymentRepository
+                .findAll(getFilter(userFromID, userToID, groupID, client))
+                .stream()
+                .map(PaymentConverter::to)
+                .collect(Collectors.toList());
+    }
 
-    private List<Debt> getDebtList(Integer groupID, User client) {
-        Set<Group> targetGroups = new HashSet<>();
-        if (groupID != null) {
-            Group selectedGroup = groupRepository.findOne(groupID);
-            targetGroups.add(selectedGroup);
-        } else {
-            targetGroups.addAll(client.getGroups());
-        }
-        List<User> targetUsers = new LinkedList<>();
-        for (Group group: targetGroups) {
-            targetUsers.addAll(group.getUsers());
-        }
-        List<UserStatistics> statistics = new LinkedList<>();
-        for (User u: targetUsers) {
-            statistics.add(userService.getUserStatistics(u, targetGroups));
-        }
-        SimpleDebtOptimizerV2 optimizer = new SimpleDebtOptimizerV2();
-        List<Debt> debts = optimizer.getOptimalPayments(statistics);
-        if (!optimizer.whetherAllDebtsReturned()) {
-            if (groupID != null) {
-                throw new RuntimeException(String.format("Payments are incorrect for group %d!", groupID));
-            }
-            debts = new LinkedList<>();
-            for (Group g: targetGroups) {
-                debts.addAll(getDebtList(g.getId(), client));
-            }
-        }
-        Group group = new Group();
-        group.setId(groupID == null ? 0 : groupID);
-        for (Debt d: debts) {
-            d.getKey().setGroup(group);
-        }
-        return debts;
+    @Override
+    public Page<PaymentDTO> getPaymentsPage(int page, int size,
+                                            Integer userFromID, Integer userToID, Integer groupID, User client) {
+        validateKeys(userFromID, userToID, groupID);
+        Pageable pageable = new PageRequest(
+                page,size
+        );
+        return paymentRepository
+                .findAll(getFilter(userFromID, userToID, groupID, client), pageable)
+                .map(PaymentConverter::to);
     }
 
     @Override
@@ -117,6 +104,133 @@ public class SpringPaymentService implements PaymentService {
         return debtMap;
     }
 
+    @Override
+    public Map<GroupDTO, List<DebtDTO> > getPaymentSumDTO(Integer user, Integer groupID, User client) {
+        return getPaymentSum(user, groupID, client)
+                .entrySet()
+                .stream()
+                .collect(
+                        Collectors.toMap(
+                                e -> GroupConverter.to(e.getKey()),
+                                e -> e.getValue()
+                                        .stream()
+                                        .map(DebtConverter::to)
+                                        .collect(Collectors.toList())
+                        )
+                );
+    }
+
+    @Override
+    public void makeGroupPayment(PaymentCreationDTO paymentDTO) {
+        User userFrom = userRepository.findOne(paymentDTO.getUserFrom());
+        Group group = groupRepository.findOne(paymentDTO.getGroup());
+
+        checkUserInGroup(userFrom, group);
+
+        BigDecimal amountPerUser = paymentDTO.getAmount().divide(
+                new BigDecimal(paymentDTO.getUsersTo().length + paymentDTO.getShallIPayForMyself()),
+                2,
+                BigDecimal.ROUND_CEILING
+        );
+        paymentDTO.setAmount(amountPerUser);
+
+        for (Integer userToID : paymentDTO.getUsersTo()) {
+            User userTo = userRepository.findOne(userToID);
+
+            if (userTo == null) {
+                throw new RuntimeException(String.format("Unable to make payment. User with id %d does not exists.", userToID));
+            }
+            checkUserInGroup(userTo, group);
+
+            Payment payment = PaymentConverter.fromCreation(paymentDTO, userFrom, userTo, group);
+            paymentRepository.save(payment);
+        }
+
+    }
+
+    @Override
+    public PaymentDTO updatePayment(PaymentDTO payment, User client) {
+        if (payment.getId() == null) {
+            throw new EntityIdNotValidException(Payment.class, payment.getId());
+        }
+        Payment existingPayment = paymentRepository.findOne(payment.getId());
+        if (existingPayment == null) {
+            throw new EntityNotFoundException(Payment.class, payment);
+        }
+        if (!Objects.equals(existingPayment.getUserFrom().getId(), client.getId())) {
+            logger.debug(String.format(
+                    "Rejected. User %d tried to pay from user %d.",
+                    client.getId(),
+                    existingPayment.getUserFrom().getId()
+            ));
+            throw new UserPermissionsException("User can update only his/her own payments.");
+        }
+        if (payment.getUserFrom() != null
+                || payment.getUserTo() != null
+                || payment.getGroup() != null) {
+            throw new EntityIdNotValidException("user_from, user_to and group_id cannot be changed." +
+                    " Please, remove this payment and create a correct one.");
+        }
+
+        existingPayment.updateIfPresent(payment.getAmount(), payment.getDescription());
+
+        paymentRepository.save(existingPayment);
+        return PaymentConverter.to(existingPayment);
+    }
+
+    @Override
+    public void deletePayment(Integer paymentID, User client) {
+        Payment payment = paymentRepository.findOne(paymentID);
+        if (payment == null) {
+            throw new EntityIdNotValidException(Payment.class, paymentID);
+        }
+        if (!Objects.equals(payment.getUserFrom().getId(), client.getId())) {
+            throw new UserPermissionsException("User can delete only his/her own payments.");
+        }
+        paymentRepository.delete(payment);
+    }
+
+    @Override
+    public Specification<Payment> getFilter(Integer userFrom, Integer userTo, Integer groupId, User client) {
+        client = userRepository.findOne(client.getId());
+        return PaymentSpecs.filterPayment(userFrom, userTo, groupId, client.getGroups());
+    }
+
+    private List<Debt> getDebtList(Integer groupID, User client) {
+        Set<Group> targetGroups = new HashSet<>();
+        if (groupID != null) {
+            Group selectedGroup = groupRepository.findOne(groupID);
+            targetGroups.add(selectedGroup);
+        } else {
+            targetGroups.addAll(client.getGroups());
+        }
+        List<User> targetUsers = new LinkedList<>();
+        for (Group group: targetGroups) {
+            targetUsers.addAll(group.getUsers());
+        }
+        List<UserStatistics> statistics = new LinkedList<>();
+        for (User u: targetUsers) {
+            statistics.add(userService.getUserStatistics(u, targetGroups));
+        }
+        SimpleDebtOptimizerV2 optimizer = new SimpleDebtOptimizerV2();
+        List<Debt> debts = optimizer.getOptimalPayments(statistics);
+        if (!optimizer.whetherAllDebtsReturned()) {
+            if (groupID != null) {
+                throw new RuntimeException(String.format("Payments are incorrect for group %d!", groupID));
+            }
+            debts = new LinkedList<>();
+            for (Group g: targetGroups) {
+                debts.addAll(getDebtList(g.getId(), client));
+            }
+        }
+        Group group = new Group();
+        group.setId(groupID == null ? 0 : groupID);
+        for (Debt d: debts) {
+            d.getKey().setGroup(group);
+        }
+        return debts;
+    }
+
     private static void putDebtToGroupMap(Map<DebtKey, List<Debt> > groupMap, Debt debt) {
         DebtKey direct = debt.getKey();
         DebtKey mapKey = direct;
@@ -135,103 +249,6 @@ public class SpringPaymentService implements PaymentService {
             }
         }
         groupMap.get(mapKey).add(mapValue);
-    }
-
-    @Override
-    public Specification<Payment> getFilter(Integer userFrom, Integer userTo, Integer groupId, User client) {
-        client = userRepository.findOne(client.getId());
-        return PaymentSpecs.filterPayment(userFrom, userTo, groupId, client.getGroups());
-    }
-
-    @Override
-    public Page<Payment> getPaymentsPage(int page, int size,
-                                         Integer userFromID, Integer userToID, Integer groupID, User client) {
-        validateKeys(userFromID, userToID, groupID);
-        Pageable pageable = new PageRequest(
-                page,size
-        );
-        return paymentRepository.findAll(getFilter(userFromID, userToID, groupID, client), pageable);
-    }
-
-    @Override
-    public List<Payment> getPayments(Integer userFromID, Integer userToID, Integer groupID, User client) {
-        validateKeys(userFromID, userToID, groupID);
-        return paymentRepository.findAll(getFilter(userFromID, userToID, groupID, client));
-    }
-
-    @Override
-    public void makeGroupPayment(PaymentCreationDTO paymentDTO) {
-        User userFrom = userRepository.findOne(paymentDTO.getUserFrom());
-        Group group = groupRepository.findOne(paymentDTO.getGroup());
-
-        checkUserInGroup(userFrom, group);
-
-        BigDecimal amountPerUser = paymentDTO.getAmount().divide(
-                new BigDecimal(paymentDTO.getUsersTo().length + paymentDTO.getShallIPayForMyself()),
-                2,
-                BigDecimal.ROUND_CEILING
-        );
-        paymentDTO.setAmount(amountPerUser);
-        for (Integer userToID : paymentDTO.getUsersTo()) {
-            User userTo = userRepository.findOne(userToID);
-
-            if (userTo == null) {
-                throw new RuntimeException(String.format("Unable to make payment. User with id %d does not exists.", userToID));
-            }
-            checkUserInGroup(userTo, group);
-
-            Payment payment = PaymentConverter.fromCreation(paymentDTO, userFrom, userTo, group);
-            paymentRepository.save(payment);
-        }
-
-    }
-
-    @Override
-    public Payment updatePayment(Payment payment, User client) {
-        if (payment.getId() == null) {
-            throw new EntityIdNotValidException(Payment.class, payment.getId());
-        }
-        Payment existingPayment = paymentRepository.findOne(payment.getId());
-        if (existingPayment == null) {
-            throw new EntityNotFoundException(Payment.class, payment);
-        }
-        if (!Objects.equals(existingPayment.getUserFrom().getId(), client.getId())) {
-            logger.debug(String.format(
-                    "Rejected. User %d tried to pay fromCreation user %d.",
-                    client.getId(),
-                    existingPayment.getUserFrom().getId()
-            ));
-            throw new UserPermissionsException("User can update only his/her own payments.");
-        }
-        if (payment.getUserFrom() != null
-                || payment.getUserTo() != null
-                || payment.getGroup() != null) {
-            throw new EntityIdNotValidException("user_from, user_to and group_id cannot be changed." +
-                    " Please, remove this payment and create a correct one.");
-        }
-        // Mapping fields
-        // TODO: use mapper or smth like that
-        if (payment.getAmount() != null) {
-            existingPayment.setAmount(payment.getAmount());
-        }
-        if (payment.getDescription() != null) {
-            existingPayment.setDescription(payment.getDescription());
-        }
-
-        paymentRepository.save(existingPayment);
-        return existingPayment;
-    }
-
-    @Override
-    public void deletePayment(Integer paymentID, User client) {
-        Payment payment = paymentRepository.findOne(paymentID);
-        if (payment == null) {
-            throw new EntityIdNotValidException(Payment.class, paymentID);
-        }
-        if (!Objects.equals(payment.getUserFrom().getId(), client.getId())) {
-            throw new UserPermissionsException("User can delete only his/her own payments.");
-        }
-        paymentRepository.delete(payment);
     }
 
     /**
@@ -268,5 +285,7 @@ public class SpringPaymentService implements PaymentService {
             ));
         }
     }
+
+    private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 }

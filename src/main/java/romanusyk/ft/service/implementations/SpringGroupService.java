@@ -1,10 +1,8 @@
 package romanusyk.ft.service.implementations;
 
 import lombok.RequiredArgsConstructor;
-import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Example;
 import romanusyk.ft.data.entity.Group;
 import romanusyk.ft.data.entity.User;
@@ -16,7 +14,7 @@ import romanusyk.ft.data.model.dto.UserStatistics;
 import romanusyk.ft.exception.EntityAlreadyExistsException;
 import romanusyk.ft.exception.EntityNotValidException;
 import romanusyk.ft.exception.UserPermissionsException;
-import romanusyk.ft.repository.GroupExampleBuilder;
+import romanusyk.ft.utils.db.GroupExampleBuilder;
 import romanusyk.ft.repository.GroupRepository;
 import romanusyk.ft.service.interfaces.GroupService;
 import romanusyk.ft.service.interfaces.UserService;
@@ -88,6 +86,8 @@ public class SpringGroupService implements GroupService {
         if (existingGroup == null) {
             throw new EntityNotValidException("Attempt to update non-existing group by id: " + groupDTO.getId());
         }
+
+        checkIfGroupNotExist(groupDTO);
 
         User user = userService.getUserByID(client.getId());
         if (!user.getGroups().contains(existingGroup)) {

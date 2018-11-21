@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import romanusyk.ft.utils.Mappable;
+import romanusyk.ft.utils.logging.ObjectRepresentation;
 
 import javax.persistence.*;
 import java.util.HashMap;
@@ -54,20 +55,11 @@ public class Group implements Mappable {
 
     @Override
     public String toString() {
-        return String.format(
-                "{id: %d, title: \"%s\"}",
-                id,
-                title
-        );
+        return ObjectRepresentation.toString(this);
     }
 
     public String toDetailedString() {
-        return String.format(
-                "{id: %d, title: \"%s\", users: %s}",
-                id,
-                title,
-                users.toString()
-        );
+        return ObjectRepresentation.toDetailedString(this);
     }
 
     @Override

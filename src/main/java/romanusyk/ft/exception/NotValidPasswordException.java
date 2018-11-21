@@ -1,8 +1,5 @@
 package romanusyk.ft.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import romanusyk.ft.data.entity.User;
 import romanusyk.ft.data.model.dto.UserDTO;
 
 /**

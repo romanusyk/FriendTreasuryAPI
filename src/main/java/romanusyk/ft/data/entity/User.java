@@ -2,6 +2,7 @@ package romanusyk.ft.data.entity;
 
 import lombok.*;
 import romanusyk.ft.utils.Mappable;
+import romanusyk.ft.utils.logging.ObjectRepresentation;
 
 import javax.persistence.*;
 import java.util.*;
@@ -68,26 +69,11 @@ public class User implements Mappable {
 
     @Override
     public String toString() {
-        return String.format(
-                "{id: %d, username: \"%s\", email: \"%s\", phone: \"%s\"}",
-                id,
-                username,
-                email,
-                phone
-        );
+        return ObjectRepresentation.toString(this);
     }
 
     public String toDetailedString() {
-        return String.format(
-                "{id: %d, username: \"%s\", email: \"%s\", phone: \"%s\", " +
-                        "password : \"%s\", groups: %s}",
-                id,
-                username,
-                email,
-                phone,
-                password,
-                groups.toString()
-        );
+        return ObjectRepresentation.toDetailedString(this);
     }
 
     @Override

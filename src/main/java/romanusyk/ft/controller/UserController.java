@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import romanusyk.ft.data.entity.User;
 import romanusyk.ft.data.model.dto.UserDTO;
 import romanusyk.ft.data.model.dto.UserStatistics;
 import romanusyk.ft.exception.NotValidPasswordException;
@@ -40,7 +39,7 @@ public class UserController {
             notes = "get all all all users",
             produces = "Application/json"
     )
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @GetMapping
     @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
     public List<UserDTO> getAllUsers(
@@ -49,7 +48,7 @@ public class UserController {
         return userService.getAllUsersDTO();
     }
 
-    @RequestMapping(value = "/me", method = RequestMethod.GET)
+    @GetMapping(value = "/me")
     @PreAuthorize("@securityService.hasRole('user')")
     @ResponseBody
     public UserDTO getUserInfo(
@@ -58,14 +57,12 @@ public class UserController {
         UserDTO client = jwtUtil.getUserFromClaims(jwtUtil.getClamsFromToken(authorization));
         UserDTO user = userService.getUserDTOByID(client.getId());
         if (user == null) {
-            User fakeUser = new User();
-            fakeUser.setId(client.getId());
-            throw new EntityNotFoundException(User.class, fakeUser);
+            throw new EntityNotFoundException(UserDTO.class, UserDTO.builder().id(client.getId()).build());
         }
         return user;
     }
 
-    @RequestMapping(value = "/statistics", method = RequestMethod.GET)
+    @GetMapping(value = "/statistics")
     @ResponseBody
     public UserStatistics getUserStatistics(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization
@@ -74,7 +71,7 @@ public class UserController {
         return userService.getUserStatisticsByDTO(client);
     }
 
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public JwtAccessToken addUser(@RequestBody @Valid UserDTO userDTO) {
@@ -82,7 +79,7 @@ public class UserController {
         return jwtUtil.generateToken(userDTO);
     }
 
-    @RequestMapping(value = "/access", method = RequestMethod.POST)
+    @PostMapping(value = "/access")
     @ResponseBody
     public JwtAccessToken validateUser(@RequestBody UserDTO userDTO) {
         logger.info("Validating user : " + userDTO);
@@ -94,7 +91,7 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "", method = RequestMethod.PATCH)
+    @PatchMapping
     @PreAuthorize("@securityService.hasRole('user')")
     public void updateUser(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
@@ -104,7 +101,7 @@ public class UserController {
         userService.updateUser(userDTO, client);
     }
 
-    @RequestMapping(value = "group/{groupname}", method = RequestMethod.PUT)
+    @PutMapping(value = "group/{groupname}")
     @PreAuthorize("@securityService.hasRole('user')")
     public void joinGroup(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
@@ -114,7 +111,7 @@ public class UserController {
         userService.addUserToGroup(client.getId(), groupName);
     }
 
-    @RequestMapping(value = "group/{groupname}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "group/{groupname}")
     @PreAuthorize("@securityService.hasRole('user')")
     public void leaveGroup(
             @ApiParam(name = "X-Auth-Token", value = "X-Auth-Token") @RequestHeader("${ft.token.header}") String authorization,
@@ -123,7 +120,7 @@ public class UserController {
         userService.removeUserFromGroup(client.getId(), groupName);
     }
 
-    @RequestMapping(value = "group/{group}", method = RequestMethod.GET)
+    @GetMapping(value = "group/{group}")
     @ResponseBody
     @PreAuthorize("@securityService.hasRole('user')")
     public List<UserDTO> getUsersInGroup(
