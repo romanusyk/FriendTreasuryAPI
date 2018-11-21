@@ -48,7 +48,7 @@ public class SpringUserService implements UserService {
         return UserConverter.to(getUserByID(id));
     }
 
-    public static void encryptPassword(User u) {
+    private static void encryptPassword(User u) {
         u.setPassword(MD5Encrypter.encrypt(u.getPassword()));
     }
 
