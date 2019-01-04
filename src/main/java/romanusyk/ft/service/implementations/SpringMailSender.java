@@ -23,7 +23,7 @@ import javax.mail.internet.*;
 public class SpringMailSender implements MailSender {
 
     private final SpringUserService userService;
-    private final SpringPaymentService paymentService;
+    private final DebtServiceV1 debtServiceV1;
 
     @Value("${mail.username}")
     public String mailUsername;
@@ -37,7 +37,7 @@ public class SpringMailSender implements MailSender {
     public void sendEmails() {
         List<User> allUsers = userService.getAllUsers();
         for (User user: allUsers) {
-            Map<Group, List<Debt> > result = paymentService.getPaymentSum(null, null, user);
+            Map<Group, List<Debt> > result = debtServiceV1.getDebts(null, null, user);
             Group key = Group.builder().id(0).build();
             List<Debt> debts = result.get(key);
             List<String> goodDebts = new LinkedList<>();

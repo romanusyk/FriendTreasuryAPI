@@ -4,15 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import romanusyk.ft.data.model.dto.ErrorResponseEntity;
 import romanusyk.ft.exception.ApplicationException;
 import romanusyk.ft.exception.ErrorData;
@@ -26,7 +22,7 @@ import java.util.stream.Collectors;
  */
 @RestControllerAdvice
 @RequiredArgsConstructor
-public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+public class CustomizedResponseEntityExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
@@ -62,27 +58,9 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return new ResponseEntity<>(errorResponseEntity, errorData.getHttpStatus());
     }
 
-    @ExceptionHandler({Exception.class})
-    public final ResponseEntity<ErrorResponseEntity> handleAllExceptions(Exception ex) {
-
-        ErrorData errorData = ErrorData.UNEXPECTED_ERROR;
-        ErrorResponseEntity errorResponseEntity = ErrorResponseEntityConverter.to(
-                ex.getMessage(),
-                errorData,
-                null
-        );
-
-        logger.error(errorData.getType(), ex);
-
-        return new ResponseEntity<>(errorResponseEntity, errorData.getHttpStatus());
-    }
-
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(
-            MethodArgumentNotValidException ex,
-            HttpHeaders headers,
-            HttpStatus status,
-            WebRequest request) {
+    @ExceptionHandler({MethodArgumentNotValidException.class})
+    public ResponseEntity<ErrorResponseEntity> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex) {
         ErrorData errorData = ErrorData.ENTITY_NOT_VALID;
         ErrorResponseEntity responseEntity = ErrorResponseEntityConverter.to(
                 "Not valid entity passed to parameter " + ex.getParameter().getParameterIndex(),
@@ -97,6 +75,21 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         );
         logger.error("" + errorData.getCode(), ex);
         return new ResponseEntity<>(responseEntity, errorData.getHttpStatus());
+    }
+
+    @ExceptionHandler({Exception.class})
+    public final ResponseEntity<ErrorResponseEntity> handleAllExceptions(Exception ex) {
+
+        ErrorData errorData = ErrorData.UNEXPECTED_ERROR;
+        ErrorResponseEntity errorResponseEntity = ErrorResponseEntityConverter.to(
+                ex.getMessage(),
+                errorData,
+                null
+        );
+
+        logger.error(errorData.getType(), ex);
+
+        return new ResponseEntity<>(errorResponseEntity, errorData.getHttpStatus());
     }
 
 }

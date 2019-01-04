@@ -4,9 +4,7 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-import romanusyk.ft.data.entity.Group;
-import romanusyk.ft.data.entity.Payment;
-import romanusyk.ft.data.entity.User;
+import romanusyk.ft.data.entity.*;
 import romanusyk.ft.data.model.dto.GroupDTO;
 import romanusyk.ft.data.model.value.Debt;
 import romanusyk.ft.data.model.value.DebtKey;
@@ -16,6 +14,21 @@ import romanusyk.ft.utils.Mappable;
  * Created by Roman Usyk on 19.11.18.
  */
 public class ObjectRepresentation {
+
+    public static String toString(Share share) {
+        return new ObjectStringBuilder()
+                .put("key", share.getKey().toString())
+                .put("type", share.getType())
+                .put("amount", share.getAmount())
+                .build();
+    }
+
+    public static String toString(ShareKey shareKey) {
+        return new ObjectStringBuilder()
+                .put("user", shareKey.getUser().toString())
+                .put("event", shareKey.getEvent().getId())
+                .build();
+    }
 
     public static String toString(Group group) {
         return new ObjectStringBuilder()

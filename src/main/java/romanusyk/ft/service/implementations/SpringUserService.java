@@ -80,9 +80,7 @@ public class SpringUserService implements UserService {
 
     @Override
     public List<User> getAllUsers() {
-        List<User> result = new LinkedList<>();
-        userRepository.findAll().forEach(result::add);
-        return result;
+        return userRepository.findAll();
     }
 
     @Override

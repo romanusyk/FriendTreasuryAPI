@@ -34,6 +34,15 @@ public class UserStatistics {
     @JsonIgnore
     private Set<Group> groups;
 
+    public UserStatistics(User user, BigDecimal debt) {
+        this.user = user;
+        this.username = user.getUsername();
+        this.userId = user.getId();
+        this.groups = user.getGroups();
+        this.groupCount = this.groups.size();
+        this.debt = debt;
+    }
+
     public static class UserStatisticsBuilder {
 
         public UserStatisticsBuilder groups(Set<Group> groups) {

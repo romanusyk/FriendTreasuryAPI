@@ -3,6 +3,7 @@ package romanusyk.ft.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.JpaRepository;
 import romanusyk.ft.data.entity.Group;
 import romanusyk.ft.data.entity.Payment;
 import romanusyk.ft.data.entity.User;
@@ -17,7 +18,7 @@ import java.util.Set;
 /**
  * Created by romm on 16.03.17.
  */
-public interface PaymentRepository extends CrudRepository<Payment, Integer> {
+public interface PaymentRepository extends JpaRepository<Payment, Integer> {
 
     Page<Payment> findAll(Specification<Payment> specification, Pageable pageable);
 

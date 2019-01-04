@@ -24,10 +24,6 @@ public interface PaymentService {
     Page<PaymentDTO> getPaymentsPage(int page, int size,
                                     Integer userFromID, Integer userToID, Integer groupID, User client);
 
-    Map<Group, List<Debt> > getPaymentSum(Integer user, Integer groupID, User client);
-
-    Map<GroupDTO, List<DebtDTO> > getPaymentSumDTO(Integer user, Integer groupID, User client);
-
     void makeGroupPayment(PaymentCreationDTO paymentDTO);
 
     PaymentDTO updatePayment(PaymentDTO payment, User client);
