@@ -2,6 +2,7 @@ package romanusyk.ft.data.entity;
 
 import lombok.*;
 import romanusyk.ft.utils.Mappable;
+import romanusyk.ft.utils.logging.ObjectRepresentation;
 
 import javax.persistence.*;
 import java.util.*;
@@ -59,6 +60,11 @@ public class Event implements Mappable {
     @JoinTable(name = "event_members")
     @Builder.Default
     private Set<User> members = new HashSet<>();
+
+    @Override
+    public String toString() {
+        return ObjectRepresentation.toString(this);
+    }
 
     @Override
     public Map<String, Object> toMap() {

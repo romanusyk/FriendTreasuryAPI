@@ -63,7 +63,7 @@ public class SpringEventService implements EventService {
         User client = UserConverter.from(clientDTO);
         client = userService.getUserByID(client.getId());
         Event event = EventConverter.from(eventDTO, client);
-
+        System.out.println(event);
         validateEvent(event, client);
 
         // Group

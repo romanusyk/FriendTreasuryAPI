@@ -15,6 +15,14 @@ import romanusyk.ft.utils.Mappable;
  */
 public class ObjectRepresentation {
 
+    public static String toString(Event event) {
+        ObjectStringBuilder builder = new ObjectStringBuilder();
+        for (Map.Entry<String, Object> e: event.toMap().entrySet()) {
+            builder.put(e.getKey(), e.getValue());
+        }
+        return builder.build();
+    }
+
     public static String toString(Share share) {
         return new ObjectStringBuilder()
                 .put("key", share.getKey().toString())
