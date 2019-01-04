@@ -16,6 +16,7 @@ public class PaymentConverter {
             return null;
         }
         return PaymentDTO.builder()
+                .id(payment.getId())
                 .userFrom(UserConverter.to(payment.getUserFrom()))
                 .userTo(UserConverter.to(payment.getUserTo()))
                 .group(GroupConverter.to(payment.getGroup()))
@@ -32,6 +33,7 @@ public class PaymentConverter {
             return null;
         }
         return Payment.builder()
+                .id(paymentDTO.getId())
                 .userFrom(userFrom)
                 .userTo(userTo)
                 .group(group)
