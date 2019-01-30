@@ -10,7 +10,7 @@ services:
         - PASSWORD=${DB_PASSWORD}
     restart: always
     volumes:
-      - /home/yevhenii/database:/var/lib/postgresql/data
+      - ${DB_VOLUME}:/var/lib/postgresql/data
     ports:
      - "${DB_OUTER_PORT}:${DB_INNER_PORT}"
 
@@ -31,11 +31,11 @@ services:
     - "${SERVER_PORT}:${SERVER_PORT}"
     depends_on:
     - db
-    
-  frontend:
-    build: "./webclient"
-    ports:
-    - "80:80"
-    depends_on:
-    - backend
+      
+    frontend:
+      build: "./webclient"
+      ports:
+      - "80:80"
+      depends_on:
+      - backend
 
