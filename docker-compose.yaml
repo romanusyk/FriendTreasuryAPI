@@ -31,11 +31,11 @@ services:
     - "${SERVER_PORT}:${SERVER_PORT}"
     depends_on:
     - db
-      
-    frontend:
-      build: "./webclient"
-      ports:
-      - "80:80"
-      depends_on:
-      - backend
+    
+  frontend:
+    build: "./webclient"
+    ports:
+    - "80:80"
+    depends_on:
+    - backend
 
